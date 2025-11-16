@@ -13,12 +13,12 @@ from libs.CertifiedMath import CertifiedMath, BigNum128
 
 def main():
     print("CertifiedMath Example Usage")
-    print("=" * 30)
+    print("==============================")
     
-    # Create some fixed-point numbers (1.0 and 2.0)
-    a = CertifiedMath.from_string("1000000000000000000")  # 1.0
-    b = CertifiedMath.from_string("2000000000000000000")  # 2.0
-    c = CertifiedMath.from_string("500000000000000000")   # 0.5
+    # Create BigNum128 instances with smaller values to avoid overflow
+    a = BigNum128(1000000000000000000)  # 1.0
+    b = BigNum128(2000000000000000000)  # 2.0
+    c = BigNum128(500000000000000000)   # 0.5 instead of 500000000000000000000
     
     print(f"a = {a.value / 10**18}")
     print(f"b = {b.value / 10**18}")
@@ -53,9 +53,9 @@ def main():
             if entry['quantum_metadata']:
                 print(f"     Quantum Metadata: {entry['quantum_metadata']}")
     
-    # Demonstrate quantum metadata filtering
+    # Demonstrate quantum metadata handling (no filtering in core library)
     print("\n" + "=" * 30)
-    print("Quantum Metadata Filtering Example")
+    print("Quantum Metadata Handling Example")
     
     quantum_metadata = {
         "quantum_seed": "qrng-001",
@@ -63,9 +63,9 @@ def main():
         "entanglement_index": "ent-123",
         "quantum_source_id": "source-456",
         "quantum_entropy": "entropy-abc",
-        "current_timestamp": "1234567890",  # This will be filtered out
-        "native_float": 3.14159,           # This will be filtered out
-        "random_value": "should_be_removed" # This will be filtered out
+        "current_timestamp": "1234567890",  # This is logged as-is (filtering happens in SDK)
+        "native_float": 3.14159,           # This is logged as-is (filtering happens in SDK)
+        "random_value": "should_be_kept"   # This is logged as-is (filtering happens in SDK)
     }
     
     with CertifiedMath.LogContext() as session_log:
@@ -77,13 +77,9 @@ def main():
         logged_metadata = session_log[0]['quantum_metadata']
         print(f"Logged Metadata: {logged_metadata}")
         
-        # Show that only allowed keys are present
+        # Show that all keys are preserved (filtering is handled by SDK)
         if logged_metadata:
-            allowed_keys = {"quantum_seed", "vdf_output_hash", "entanglement_index", 
-                           "quantum_source_id", "quantum_entropy"}
-            logged_keys = set(logged_metadata.keys())
-            print(f"Allowed keys preserved: {logged_keys}")
-            print(f"Filtered out keys: {allowed_keys - logged_keys}")
+            print("All metadata keys preserved (filtering handled by SDK layer)")
 
 if __name__ == "__main__":
     main()
