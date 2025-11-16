@@ -1,0 +1,1 @@
+[{"inputs": [1000000000000000000, 2000000000000000000], "op_name": "add", "pqc_cid": "test-pqc-cid-001", "quantum_metadata": {"quantum_entropy": "a1b2c3d4e5f6", "quantum_source_id": "qrng-001", "vdf_output_hash": "vdf-hash-7890"}, "result": 3000000000000000000}]
