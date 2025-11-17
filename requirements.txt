@@ -1,0 +1,25 @@
+# QFS V13 Core Dependencies
+typing-extensions>=4.0.0
+jsonschema>=4.0.0
+hashlib
+
+# Post-Quantum Cryptography
+pqcrystals>=1.0.0
+
+# Testing Dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+hypothesis>=6.0.0
+
+# Development Tools
+black>=22.0.0
+isort>=5.0.0
+mypy>=1.0.0
+pyright>=1.1.0
+
+# Security Analysis
+bandit>=1.7.0
+semgrep>=1.0.0
+
+# Documentation
+sphinx>=5.0.0

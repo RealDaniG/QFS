@@ -1,0 +1,69 @@
+# Pre-commit hooks for QFS V13
+# Enforces Zero-Simulation compliance and code quality standards
+
+repos:
+  - repo: local
+    hooks:
+      - id: ast-zero-sim-check
+        name: AST Zero-Simulation Enforcement
+        entry: python src/libs/AST_ZeroSimChecker.py
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        description: "Enforce Zero-Simulation compliance using AST checker"
+
+  - repo: local
+    hooks:
+      - id: deterministic-hash-check
+        name: Deterministic Hash Check
+        entry: python tools/deterministic_hash_check.py
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        description: "Verify deterministic serialization functions"
+
+  - repo: local
+    hooks:
+      - id: pqc-integrity-check
+        name: PQC Key Integrity Check
+        entry: python tools/validate_pqc_integrity.py
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        description: "Ensure PQC keys exist and are generated deterministically"
+
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        name: Black Code Formatter
+        description: "Format code according to Black style"
+        language_version: python3
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: Import Sorter
+        description: "Sort imports alphabetically and separate them into sections"
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        name: Flake8 Linter
+        description: "Check code style and complexity"
+
+  - repo: local
+    hooks:
+      - id: fast-unit-tests
+        name: Fast Unit Tests
+        entry: python -m pytest tests/unit/ -x
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        description: "Run fast subset of unit tests"

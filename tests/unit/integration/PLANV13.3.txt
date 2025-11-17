@@ -1,0 +1,95 @@
+QFS V13 – Phase 1–2 Adaptation Plan (Enhanced, Plan 13.3.1)
+
+Goal: Fully operational, deterministic, PQC-sealed, and Zero-Simulation-compliant HSMF-driven treasury, governance, and reward system for the 5-token economy.
+
+Phase 1: Deterministic Core & Metric Enforcement
+1. Files to Update/Build
+File	Purpose	Key Tasks / Enhancements
+CertifiedMath.py	Deterministic arithmetic engine	- Implement calculate_Delta_Lambda (S_FLX) & calculate_Delta_H (S_PsiSync)
+- Ensure BigNum128 fixed-point for all calculations
+- Integrate deterministic _safe_exp and _safe_ln for 2^X / φ-series functions
+- Add logging hooks for pqc_cid and quantum metadata
+HSMF.py	Harmonic Stability & Action Cost computation	- Compute Action_Cost_QFS = S_RES + λ1S_FLX + λ2S_PsiSync + f(ATR)
+- Implement check_directional_encoding for f(ATR)
+- Compute C_holo proxy (1 / (1 + total_dissonance))
+- Validate survival imperative (S_CHR > C_CRIT)
+TokenStateBundle.py	Encapsulate system parameters	- Decouple λ1, λ2, C_CRIT as AGI-signed constants
+- Ensure deterministic retrieval and logging
+AST_ZeroSimChecker.py	Structural enforcement	- Scan all Python files pre-runtime to prevent native floats, random(), Date.now() usage
+- Integrate with pre-commit hooks and CI/CD pipelines
+2. Phase 1 Verification & Validation Tasks
+
+Zero-Simulation Enforcement: Run AST scans on the HSMF and CertifiedMath updates to ensure compliance.
+
+2^X / φ-series Audit: Confirm transcendentals are computed with deterministic fixed-point implementations.
+
+S_FLX & S_PsiSync Verification: Cross-verify ΔΛ and ΔH calculations against reference token states using deterministic inputs.
+
+Directional Encoding Check: Ensure ATR inputs remain bounded and monotonic.
+
+Phase 2: Treasury, Reward Distribution, & Security Finality
+1. Files to Update/Build
+File	Purpose	Key Tasks / Enhancements
+TreasuryEngine.py	Compute reward allocations deterministically	- Implement hybrid tiered reward formula: Reward_Token_i = Base_Funding * f(C_holo, S_FLX, S_PsiSync, f(ATR)) * Eligibility
+- Apply survival and coherence gates (S_CHR > C_CRIT)
+- Use CertifiedMath for all calculations
+RewardAllocator.py	Manage token distribution	- Trigger PQC seal for final reward bundle (Treasury Steward role)
+- Attach quantum metadata from HSMF & DRV_Packet
+- Prepare deterministic ledger update
+CoherenceLedger.py	Immutable ledger artifact	- Generate final AEGIS_FINALITY_SEAL.json post allocation
+- Record token states, HSMF metrics, quantum metadata
+CIR302_Handler.py	Quarantine & halt system on failure	- Implement SEC-HSM-HALT-FINAL primitive
+- Trigger on HSMF validation failure, treasury computation errors, or coherence breach
+UtilityOracleInterface.py	Deterministic input management	- Validate f(ATR), directional encoding, and upstream DRV_Packet sequence
+- Provide monotonic α field updates for ATR
+2. Phase 2 Verification & Validation Tasks
+
+RES Atomic Back-Commit Verification: Confirm that RES mint triggers a single atomic commit updating ATR, ΨSync, CHR simultaneously.
+
+Final Coherence Artifact Generation: Verify generation of CoherenceLedger.py entries & AEGIS_FINALITY_SEAL.json.
+
+CIR-302 Quarantine Verification: Test deterministic halt and instance quarantine.
+
+ATR α Field Monotonicity Verification: Ensure α ∈ [0.5, 1.5] across sequential updates.
+
+Cross-Runtime Deterministic Replay: Confirm identical reward outputs across multiple environments given identical HSMF inputs.
+
+Phase 1–2 Integration & Data Flow
+DRV_Packet / UtilityOracle Input
+        │
+        ▼
+   HSMF.py (CertifiedMath)
+    ├─ S_FLX (ΔΛ)
+    ├─ S_PsiSync (ΔH)
+    ├─ S_RES, S_CHR
+    ├─ f(ATR)
+    └─ C_holo
+        │
+        ▼
+ TreasuryEngine.py -> RewardAllocator.py
+    ├─ Compute rewards deterministically
+    ├─ Apply eligibility & coherence gates
+    ├─ PQC-seal & attach quantum metadata
+    └─ Update CoherenceLedger.py & generate AEGIS_FINALITY_SEAL.json
+        │
+        ▼
+CIR302_Handler.py (if triggered)
+    ├─ Halt & quarantine instance
+    └─ Prevent further commits
+
+Critical Compliance Notes
+
+Zero-Simulation Compliance: AST checker enforced for all runtime files.
+
+Deterministic Core: CertifiedMath + HSMF provides fully reproducible metrics.
+
+PQC Sealing: Treasury & reward distribution bundles are cryptographically sealed.
+
+Quantum Metadata: Tracked throughout HSMF → Treasury → Ledger chain.
+
+CIR-302 Enforcement: System halts deterministically on failure.
+
+Atomic Multi-Token Updates: RES mint and reward distribution update all dependent tokens in a single atomic commit.
+
+Auditability & Security Finality: CoherenceLedger + AEGIS_FINALITY_SEAL ensures immutable, verifiable state.
+

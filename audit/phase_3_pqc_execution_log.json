@@ -1,0 +1,17 @@
+[
+  {
+    "log_index": 0,
+    "pqc_cid": "PQC_AUDIT_001",
+    "op_name": "add",
+    "inputs": {
+      "a": "7.500000000000000000",
+      "b": "3.200000000000000000"
+    },
+    "result": "10.700000000000000000",
+    "quantum_metadata": {
+      "audit": "phase3",
+      "test": "pqc_integration",
+      "deterministic_seed": "5146535f5631335f41554449545f44455445524d494e49535449435f534545445f32303235"
+    }
+  }
+]

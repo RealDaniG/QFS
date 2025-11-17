@@ -1,13 +1,10 @@
-"""
-Test file for QFS V13 SDK
-"""
 import sys
 import os
 import json
 
-# Add the sdk directory to the path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'sdk'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'libs'))
+# Add the sdk directory to the path - updated to reflect new directory structure
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'sdk'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'libs'))
 
 from QFSV13SDK import QFSV13SDK, DRV_Packet
 

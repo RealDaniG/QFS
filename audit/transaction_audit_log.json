@@ -1,0 +1,25 @@
+{
+  "audit_log": [
+    {
+      "drv_packet": {
+        "pqc_signature": "1d92c2578feec6440a100bcac71bf40cd36054c9d321055d653fed162287b9d2",
+        "seed": "deterministic_seed_12345",
+        "sequenceNumber": 0,
+        "ttsTimestamp": 1678901234
+      },
+      "log_hash": "97e5cbbe06151355fc86baa4636325b92b835bfe7642020588477db03005d99c",
+      "operands": [
+        "1000000000000000000",
+        "2000000000000000000"
+      ],
+      "operation": "add",
+      "operation_id": "1f44aefb387d178601e90428406ce4df",
+      "pqc_signature": "1d92c2578feec6440a100bcac71bf40cd36054c9d321055d653fed162287b9d2",
+      "result": "3000000000000000000",
+      "timestamp": 1678901234
+    }
+  ],
+  "export_timestamp": 1763309961,
+  "log_hash": "370a76e7b4d41bbeb712187321c7ef0bba11636996fefaa5eea11444ac8b6256",
+  "pqc_signature": "225007fa12fa7271090fb9907c2f2da8fecd9df3152340ab8a10303ec32db108"
+}

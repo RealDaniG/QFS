@@ -1,0 +1,17 @@
+{
+  "certifiedmath": {
+    "arithmetic_1000_ops": 0.07390003884211183,
+    "transcendental_100_ops": 0.020900042727589607
+  },
+  "pqc": {
+    "keygen_10_ops": 0.07589999586343765,
+    "sign_50_ops": 0.11449999874457717
+  },
+  "hsmf": {
+    "validation_100_ops": 0.014199991710484028
+  },
+  "deterministic_replay": {
+    "replay_deterministic": true,
+    "replay_time_consistency": 0.06289995508268476
+  }
+}

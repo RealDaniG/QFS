@@ -1,0 +1,95 @@
+[
+  {
+    "operation": "add",
+    "properties": [
+      "commutativity",
+      "associativity",
+      "identity",
+      "inverse"
+    ],
+    "proofs": [
+      "a + b = b + a (commutativity)",
+      "(a + b) + c = a + (b + c) (associativity)",
+      "a + 0 = a (identity)",
+      "a + (-a) = 0 (inverse)"
+    ]
+  },
+  {
+    "operation": "mul",
+    "properties": [
+      "commutativity",
+      "associativity",
+      "identity",
+      "distributivity"
+    ],
+    "proofs": [
+      "a * b = b * a (commutativity)",
+      "(a * b) * c = a * (b * c) (associativity)",
+      "a * 1 = a (identity)",
+      "a * (b + c) = a * b + a * c (distributivity)"
+    ]
+  },
+  {
+    "operation": "sub",
+    "properties": [
+      "subtraction_definition",
+      "self_inverse"
+    ],
+    "proofs": [
+      "a - b = a + (-b) (subtraction definition)",
+      "a - a = 0 (self inverse)"
+    ]
+  },
+  {
+    "operation": "div",
+    "properties": [
+      "division_definition",
+      "cancelation",
+      "associativity"
+    ],
+    "proofs": [
+      "a / b = a * (1/b) (division definition)",
+      "(a * b) / b = a (cancelation)",
+      "(a / b) / c = a / (b * c) (associativity)"
+    ]
+  },
+  {
+    "operation": "sqrt",
+    "properties": [
+      "sqrt_squared_identity",
+      "square_sqrt_identity"
+    ],
+    "proofs": [
+      "sqrt(x) * sqrt(x) = x (sqrt squared identity)",
+      "sqrt(x^2) = |x| (square sqrt identity)"
+    ]
+  },
+  {
+    "operation": "exp_ln",
+    "properties": [
+      "exp_ln_identity",
+      "ln_exp_identity",
+      "exp_additive",
+      "ln_multiplicative"
+    ],
+    "proofs": [
+      "exp(ln(x)) = x for x > 0 (exp-ln identity)",
+      "ln(exp(x)) = x (ln-exp identity)",
+      "exp(x + y) = exp(x) * exp(y) (exp additive)",
+      "ln(x * y) = ln(x) + ln(y) for x, y > 0 (ln multiplicative)"
+    ]
+  },
+  {
+    "operation": "phi_series",
+    "properties": [
+      "atan_zero",
+      "atan_one",
+      "convergence"
+    ],
+    "proofs": [
+      "arctan(0) = 0",
+      "arctan(1) = \u03c0/4",
+      "Series converges for |x| \u2264 1"
+    ]
+  }
+]

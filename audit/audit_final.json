@@ -1,0 +1,24 @@
+{
+  "zero_sim": "PASS",
+  "determinism": "PASS",
+  "pqc": "PASS",
+  "quantum_metadata": "PASS",
+  "cir302": "PASS",
+  "alignment": "PASS",
+  "agent_self_audit": "PASS",
+  "overall": "PASS",
+  "severity_indexing": {
+    "critical_failures": 0,
+    "high_risk": 0,
+    "medium_risk": 0,
+    "low_risk": 0
+  },
+  "risk_scoring": {
+    "security_risk": "LOW",
+    "compliance_risk": "LOW",
+    "operational_risk": "LOW"
+  },
+  "failure_class_typing": [],
+  "audit_duration_seconds": 0.31149959564208984,
+  "timestamp": 1763338067.589489
+}

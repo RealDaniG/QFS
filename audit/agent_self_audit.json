@@ -1,0 +1,10 @@
+{
+  "agent_code_hash": "8fe5d405a703c5c78286bd4c2ed717f0a16a2a13e0eb298ff070eef4c002141a",
+  "traceability_matrix_hash": "6327d5bae4a55f770969244b705ca7b8a508431aaadece64cb8b26c740e9eb47",
+  "evidence_chain_hash": "cd46d2af5057bb141861b11dc52cc11d3d8feaab894b1a1bb57e0aafda2aecc9",
+  "replay_integrity_chain_length": 6,
+  "anti_forgery_equation_present": true,
+  "chain_integrity": true,
+  "afe_valid": true,
+  "timestamp": 1763338067.5204885
+}

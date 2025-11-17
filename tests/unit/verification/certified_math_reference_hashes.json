@@ -1,0 +1,101 @@
+{
+  "add_1.5_2.5": {
+    "inputs": {
+      "a": "1.5",
+      "b": "2.5"
+    },
+    "result": "4.000000000000000000",
+    "hash": "c244b9e8f0954e7815e73803f4941d39ff6c192dd57a79689d56d154ffa0bc38",
+    "operation": "add"
+  },
+  "sub_5.0_3.0": {
+    "inputs": {
+      "a": "5.0",
+      "b": "3.0"
+    },
+    "result": "2.000000000000000000",
+    "hash": "c44bb92a740b2f53ba9bdeef2f0dee05d379377c2e3585c70577cae8aabfbb0c",
+    "operation": "sub"
+  },
+  "mul_2.0_3.0": {
+    "inputs": {
+      "a": "2.0",
+      "b": "3.0"
+    },
+    "result": "6.000000000000000000",
+    "hash": "7577885d662f7a3e15ea7d8f7543f84fa2f0c32bd996581e0d73c889303b27b8",
+    "operation": "mul"
+  },
+  "div_8.0_2.0": {
+    "inputs": {
+      "a": "8.0",
+      "b": "2.0"
+    },
+    "result": "4.000000000000000000",
+    "hash": "fb7686606c53259960f55eda6afdae2f280da37ea6e4cf8a47450e79e7092af5",
+    "operation": "div"
+  },
+  "sqrt_16.0": {
+    "inputs": {
+      "a": "16.0"
+    },
+    "result": "4.000000000000000000",
+    "hash": "cf63ef7f5003c772981c3dd1a6850a099f37cc515a6660d13aad69517bc561e7",
+    "operation": "sqrt"
+  },
+  "exp_1.0": {
+    "inputs": {
+      "a": "1.0"
+    },
+    "result": "2.718281828459045226",
+    "hash": "420019393397735b47286a927951d6cb040c3448ab1ef32246ca13cade09390a",
+    "operation": "exp"
+  },
+  "ln_e": {
+    "inputs": {
+      "a": "2.718281828459045235"
+    },
+    "result": "1.000000000000000122",
+    "hash": "f3a5cb239bd6ed2456c6dab8d13f033a7001e1f08aa427490d028f3a48175bd1",
+    "operation": "ln"
+  },
+  "phi_series_0.5": {
+    "inputs": {
+      "a": "0.5"
+    },
+    "result": "0.100000000000000000",
+    "hash": "adc9bbf9b29e0f5c64ea9fd004ad784e7626ba2086289bc1a42e159929865d79",
+    "operation": "phi_series"
+  },
+  "two_to_the_power_2.0": {
+    "inputs": {
+      "a": "2.0"
+    },
+    "result": "3.999999999999999986",
+    "hash": "60b5e9fffe8e1715011c5f723087caa6752bb956abb3a6d1ac8a37376cbb0726",
+    "operation": "two_to_the_power"
+  },
+  "pow_2.0_3.0": {
+    "inputs": {
+      "base": "2.0",
+      "exponent": "3.0"
+    },
+    "result": "8.390067843017971769",
+    "hash": "19d624a564a70c6ff20139da50bf8ac5e7ed1f6e8c829fcb28f9874087d99b43",
+    "operation": "pow"
+  },
+  "complex_chain": {
+    "inputs": {
+      "a": "1.234567",
+      "b": "2.345678"
+    },
+    "operations": [
+      "add",
+      "mul",
+      "exp"
+    ],
+    "final_result": "83.100633810570987760",
+    "hash": "d7e0ff3e8a0232b456239ad21a94dfa3f39ccb71d36475533944ad97628682fc",
+    "operation": "complex_chain"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "certifiedmath": {
+    "add": "5.0",
+    "add_replay": "5.0",
+    "exp": "4.481689070338064708",
+    "exp_replay": "4.481689070338064708",
+    "ln": "0.0",
+    "ln_replay": "0.0",
+    "pow": "1.0",
+    "pow_replay": "1.0"
+  },
+  "pqc": {
+    "keypair1_pub": "8a365b13debd8b29e9cf5b10321a2b5dc87556c738e3a05e46acebe8d3f5dc9d659f8d7189b061c12566ccf8adbc5156fcafe26ad276ee987076f600025797d98a365b13debd8b29e9cf5b10321a2b5dc87556c738e3a05e46acebe8d3f5dc9d659f8d7189b061c12566ccf8adbc5156fcafe26ad276ee987076f600025797d9",
+    "keypair1_priv_len": "256",
+    "keypair2_pub": "8a365b13debd8b29e9cf5b10321a2b5dc87556c738e3a05e46acebe8d3f5dc9d659f8d7189b061c12566ccf8adbc5156fcafe26ad276ee987076f600025797d98a365b13debd8b29e9cf5b10321a2b5dc87556c738e3a05e46acebe8d3f5dc9d659f8d7189b061c12566ccf8adbc5156fcafe26ad276ee987076f600025797d9",
+    "keypair2_priv_len": "256",
+    "signature1": "788ae1984efb3dba6b1fb2e8a5999491a47dfffd97cd70e256b02db2ae0de29ea68fee823a61b6bf0433431d7406bbef23d52a9189bd8789f091dd538dc42a7a788ae1984efb3dba6b1fb2e8a5999491a47dfffd97cd70e256b02db2ae0de29ea68fee823a61b6bf0433431d7406bbef23d52a9189bd8789f091dd538dc42a7a",
+    "signature2": "788ae1984efb3dba6b1fb2e8a5999491a47dfffd97cd70e256b02db2ae0de29ea68fee823a61b6bf0433431d7406bbef23d52a9189bd8789f091dd538dc42a7a788ae1984efb3dba6b1fb2e8a5999491a47dfffd97cd70e256b02db2ae0de29ea68fee823a61b6bf0433431d7406bbef23d52a9189bd8789f091dd538dc42a7a"
+  },
+  "drv_packet": {
+    "packet1_hash": "1aa09a4c40b536153b8e69671ef76b7a5bf0a40611b8d651b4f4b9f5ecbc4545a410b0d76d0fd4fbb23489e1b437f574d1d4ae74f82bc5ed595cd45dde62acaf",
+    "packet2_hash": "1aa09a4c40b536153b8e69671ef76b7a5bf0a40611b8d651b4f4b9f5ecbc4545a410b0d76d0fd4fbb23489e1b437f574d1d4ae74f82bc5ed595cd45dde62acaf",
+    "serialized_match": "True"
+  },
+  "token_state_bundle": {
+    "bundle1_hash": "a9d1d5e6022c482db395538cd969a5ec4fa7125dd00a8b5f0d0e37c1bb4d6039",
+    "bundle2_hash": "a9d1d5e6022c482db395538cd969a5ec4fa7125dd00a8b5f0d0e37c1bb4d6039",
+    "bundle_serialized_match": "True"
+  },
+  "hsmf": {
+    "hsmf_result1_valid": "False",
+    "hsmf_result1_dez": "True",
+    "hsmf_result1_survival": "False",
+    "hsmf_result2_valid": "False",
+    "hsmf_result2_dez": "True",
+    "hsmf_result2_survival": "False"
+  }
+}
