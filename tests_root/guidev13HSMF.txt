@@ -1,0 +1,323 @@
+GUIDE HSMF UPDATE:
+Okay, let's create a comprehensive guide to reconcile the provided `HSMF.py` (which is a *template*) and the analysis of the *missing* pieces in `CertifiedMath.py` to produce a **100% QFS V13 ready** version.
+
+The provided `HSMF.py` correctly implements the *structure* for the HSMF framework, using a `CertifiedMath` instance. However, the `CertifiedMath` instance it interacts with (referenced by `self.cm`) needs to be *complete* and compliant with the V13 plans for the *entire system* to be ready.
+
+---
+
+### **Guide: Making QFS V13 `HSMF.py` & `CertifiedMath.py` 100% Ready**
+
+**Objective:** Integrate the `HSMF.py` template with a fully compliant, deterministic, auditable `CertifiedMath.py` core.
+
+**Phase A: Completing the `CertifiedMath.py` Core (The Engine)**
+
+The `HSMF.py` template *depends* on the `CertifiedMath` class having the correct *public API* and *internal deterministic logic*. The previous analysis identified that `CertifiedMath.py` was missing several `_safe_*` functions and public wrappers.
+
+1.  **Implement Missing `_safe_*` Arithmetic Functions in `CertifiedMath.py`:**
+    *   **Issue:** The `HSMF.py` template calls `self.cm._safe_*` methods (e.g., `_safe_abs`, `_safe_gte`, `_safe_lte`, `_safe_fast_sqrt`, `_safe_phi_series`, `_safe_ln`, `_safe_pow`, `_safe_two_to_the_power`). These functions are likely *missing* or *not fully implemented* in the `CertifiedMath.py` file.
+    *   **Plan Alignment:** Phase 1 (Section II) mandates "All arithmetic must go through `_safe_add`, `_safe_sub`, `_safe_mul`, `_safe_div`, `fast_sqrt`, and `phi_series`. No bypass allowed." The plans imply a broader set of safe functions.
+    *   **Action:** Implement all the missing `_safe_*` functions in `CertifiedMath.py` using fixed-point integer arithmetic (`BigNum128.value`), including overflow/underflow checks, and calling the internal `_log_operation` method.
+
+    ```python
+    # Inside CertifiedMath class definition (in CertifiedMath.py)
+
+    # --- Add missing _safe_* functions ---
+
+    def _safe_abs(self, a: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> BigNum128:
+        """Calculate absolute value."""
+        result_value = abs(a.value)
+        result = BigNum128(result_value)
+        self._log_operation("abs", {"input": a}, result, log_list, pqc_cid, quantum_metadata)
+        return result
+
+    def _safe_gte(self, a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> bool:
+        """Check if a >= b."""
+        result = a.value >= b.value
+        # Log the comparison result (true/false) - might need a specific log type
+        self._log_operation("gte", {"a": a, "b": b}, BigNum128.from_int(1 if result else 0), log_list, pqc_cid, quantum_metadata)
+        return result
+
+    def _safe_lte(self, a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> bool:
+        """Check if a <= b."""
+        result = a.value <= b.value
+        # Log the comparison result (true/false) - might need a specific log type
+        self._log_operation("lte", {"a": a, "b": b}, BigNum128.from_int(1 if result else 0), log_list, pqc_cid, quantum_metadata)
+        return result
+
+    # ... Implement _safe_fast_sqrt, _safe_phi_series, _safe_ln, _safe_pow, _safe_two_to_the_power ...
+    # (Implementation details for these functions were provided in earlier examples)
+
+    # Ensure _log_operation is correctly defined
+    @staticmethod
+    def _log_operation(
+        op_name: str,
+        inputs: Dict[str, Any],
+        result: Any, # Could be BigNum128 or bool for comparisons
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_meta Optional[Dict[str, Any]] = None,
+    ):
+        """Appends a deterministic operation entry to the provided log_list."""
+        # Convert inputs and result to serializable format (e.g., string representation for BigNum128)
+        entry_inputs = {k: (v.to_decimal_string() if isinstance(v, BigNum128) else str(v)) for k, v in inputs.items()}
+        entry_result = result.to_decimal_string() if isinstance(result, BigNum128) else str(result)
+
+        entry = {
+            "op_name": op_name,
+            "inputs": entry_inputs,
+            "result": entry_result,
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata, # Log as received per V13 plan (upstream validation)
+        }
+        log_list.append(entry)
+    ```
+
+2.  **Implement Missing Public API Wrappers in `CertifiedMath.py`:**
+    *   **Issue:** The `HSMF.py` template calls public methods on `self.cm` (e.g., `self.cm.add`, `self.cm.sub`, `self.cm.mul`, `self.cm.div`, `self.cm.abs`, `self.cm.gte`, `self.cm.lte`, `self.cm.exp`, `self.cm.ln`, `self.cm.pow`, `self.cm.two_to_the_power`, `self.cm.fast_sqrt`, `self.cm.phi_series`). These public wrappers are likely *missing* or *incomplete* in `CertifiedMath.py`.
+    *   **Plan Alignment:** Phase 1 (Section II) implies these wrappers exist to enforce the use of the `_safe_*` functions. Phase 2 (Section IV) mentions the API exposing these functions.
+    *   **Action:** Implement all the missing public API wrapper functions in `CertifiedMath.py`. These wrappers must enforce the `log_list` parameter (if not passed via the class instance's `log_list`) and call the corresponding `_safe_*` function, passing through `pqc_cid` and `quantum_metadata`.
+
+    ```python
+    # Inside CertifiedMath class definition (in CertifiedMath.py)
+
+    # --- Add missing public API wrappers ---
+
+    def abs(self, a: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> BigNum128:
+        if log_list is None: raise ValueError("log_list is required for abs")
+        return self._safe_abs(a, log_list, pqc_cid, quantum_metadata)
+
+    def gte(self, a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> bool:
+        if log_list is None: raise ValueError("log_list is required for gte")
+        return self._safe_gte(a, b, log_list, pqc_cid, quantum_metadata)
+
+    def lte(self, a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_metadata=None) -> bool:
+        if log_list is None: raise ValueError("log_list is required for lte")
+        return self._safe_lte(a, b, log_list, pqc_cid, quantum_metadata)
+
+    # ... Implement public wrappers for fast_sqrt, phi_series, ln, pow, two_to_the_power ...
+    # (Implementation details for these wrappers were provided in earlier examples)
+    ```
+
+3.  **Correct `BigNum128.from_string` for Zero-Simulation:**
+    *   **Issue:** The placeholder `BigNum128.from_string` uses `float(decimal_str)`. This is a **Zero-Simulation violation**.
+    *   **Plan Alignment:** Phase 1 (Section I) mandates Zero-Simulation.
+    *   **Action:** Implement `BigNum128.from_string` *without* using native floats, correctly parsing integer and fractional parts.
+
+    ```python
+    # Inside BigNum128 class definition (in CertifiedMath.py or a separate BigNum128.py)
+
+    @classmethod
+    def from_string(cls, decimal_str: str):
+        """Zero-Simulation Compliant string parser."""
+        sign = -1 if decimal_str.startswith("-") else 1
+        decimal_str = decimal_str.lstrip("+-")
+        
+        integer_part, fractional_part = (decimal_str.split('.') + ['0'])[:2]
+        
+        # Pad or truncate fractional part to exactly SCALE_DIGITS (18)
+        fractional_part = (fractional_part + '0' * cls.SCALE_DIGITS)[:cls.SCALE_DIGITS]
+        
+        # Validate that the parts are numeric after processing
+        if not integer_part.isdigit() or not fractional_part.isdigit():
+             raise ValueError(f"Invalid numeric string format: {decimal_str}")
+
+        val = int(integer_part) * cls.SCALE + int(fractional_part)
+        return cls(sign * val)
+    ```
+
+4.  **Integrate Real PQC Library (Placeholder for `sign`/`verify_signature`):**
+    *   **Issue:** The `CertifiedMath` file likely contains placeholder `sign`/`verify_signature` functions using `hashlib`.
+    *   **Plan Alignment:** Phase 1 (Section IV), Phase 2 (Section I), Phase 3 (Section I) require PQC.
+    *   **Action:** Replace placeholder simulation code with calls to a real PQC library (e.g., `pqcrystals.dilithium`).
+
+5.  **Ensure AST Tooling Compliance:**
+    *   **Issue:** The final `CertifiedMath.py` file must pass the AST Zero-Simulation checks.
+    *   **Plan Alignment:** Phase 1 (Section I).
+    *   **Action:** The *completed* `CertifiedMath.py` file, with all functions implemented using integer arithmetic and no native floats/random/time, should pass the AST scanner.
+
+**Phase B: Correcting the `HSMF.py` Template (The Controller)**
+
+Now, align the `HSMF.py` template to correctly *use* the completed `CertifiedMath.py`.
+
+1.  **Correct Method Calls in `HSMF.py`:**
+    *   **Issue:** The `HSMF.py` template calls `self.cm._safe_*` methods directly. The public API wrappers (e.g., `self.cm.add`, `self.cm.exp`, `self.cm.abs`) are designed to be the *entry point* for SDK/API layers, ensuring `log_list` is passed correctly. The `HSMF.py` itself should ideally use the *public* API wrappers *if* it manages its own `log_list` context. However, the `HSMF.py` receives the `log_list` *from* the SDK/API (e.g., via `validate_action_bundle` arguments). Therefore, the `HSMF.py` should call the `_safe_*` methods directly *but ensure it passes the `log_list` it received*.
+    *   **Plan Alignment:** The plans don't specify *where* the `log_list` is managed, just that *every* operation is logged deterministically. The `LogContext` pattern (discussed previously) is one way to manage it. The `HSMF.py` receives the context.
+    *   **Action:** Ensure all calls within `HSMF.py` (like in `_calculate_delta_lambda`, `_calculate_I_eff`, etc.) pass the `log_list` context received by the `validate_action_bundle` function down to the `CertifiedMath` calls. This likely means modifying the signatures of internal `_calculate_*` methods to accept `log_list`, `pqc_cid`, and `quantum_metadata`.
+
+    ```python
+    # Inside HSMF class definition (in HSMF.py)
+
+    # Correct the internal function signatures to accept log_list and other context
+    def _calculate_I_eff(self, s_chr: BigNum128, beta_penalty: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_meta=None) -> BigNum128:
+        # Use the log_list passed in, not self.cm.log_list (which might not exist)
+        diff = self.cm.sub(self.ONE, s_chr, log_list, pqc_cid, quantum_meta) # Call public wrapper which uses _safe_sub internally
+        diff_squared = self.cm.mul(diff, diff, log_list, pqc_cid, quantum_meta)
+        s_res = self.cm.mul(beta_penalty, diff_squared, log_list, pqc_cid, quantum_meta)
+        # The 'sub', 'mul' wrappers already log the operations using the passed log_list
+        return s_res
+
+    def _calculate_delta_lambda(self, flx_state: Dict[str, List[BigNum128]], phi_const: BigNum128, log_list: List[Dict[str, Any]], pqc_cid=None, quantum_meta=None) -> BigNum128:
+        magnitudes = flx_state.get("magnitudes", [])
+        total_deviation = self.ZERO
+        phi = phi_const if isinstance(phi_const, BigNum128) else self.PHI_DEFAULT
+
+        if len(magnitudes) < 2:
+            # Log the insufficient data case if needed, using the passed log_list
+            self.cm._log_operation("calc_s_flx_insufficient_data", {"magnitudes_len": BigNum128.from_int(len(magnitudes))}, total_deviation, log_list)
+            return total_deviation
+
+        for i in range(1, len(magnitudes)):
+            mag_curr = magnitudes[i]
+            mag_prev = magnitudes[i-1]
+            if mag_prev.value == 0:
+                error_msg = f"Critical S_FLX Zero-Div at index {i-1}"
+                # Trigger CIR-302 via the handler provided to HSMF
+                if self.cir302_handler:
+                    self.cir302_handler.trigger_quarantine(error_msg, {
+                        "magnitudes_len": len(magnitudes),
+                        "index": i-1
+                    })
+                else:
+                    # Fallback to raising an exception
+                    raise RuntimeError(f"CIR-302: {error_msg}")
+                return self.ONE
+            # Use public wrappers which call _safe_* internally and log
+            ratio_actual = self.cm.div(mag_curr, mag_prev, log_list, pqc_cid, quantum_meta)
+            deviation_raw = self.cm.sub(ratio_actual, phi, log_list, pqc_cid, quantum_meta)
+            deviation = self.cm.abs(deviation_raw, log_list, pqc_cid, quantum_meta)
+            # Accumulate correctly
+            total_deviation = self.cm.add(total_deviation, deviation, log_list, pqc_cid, quantum_meta)
+
+        # Log the final result using the passed log_list
+        self.cm._log_operation("calc_s_flx_final", {"magnitudes_len": BigNum128.from_int(len(magnitudes)), "phi_const": phi}, total_deviation, log_list, pqc_cid=pqc_cid, quantum_metadata=quantum_meta)
+        return total_deviation
+
+    # Update other _calculate_* methods similarly
+
+    # Update validate_action_bundle to pass the log_list context down
+    def validate_action_bundle(self, token_bundle: TokenStateBundle, f_atr: BigNum128, log_list: List[Dict[str, Any]], pqc_cid: Optional[str] = None, raise_on_failure: bool = False, strict_atr_coherence: bool = False, quantum_metadata: Optional[Dict[str, Any]] = None) -> ValidationResult:
+        errors = []
+        is_valid = True
+
+        dez_ok = self._check_directional_encoding(f_atr, log_list) # Pass log_list
+        if not dez_ok:
+            errors.append("Structural DEZ check failed: f(ATR) must be in [0,1]")
+            is_valid = False
+
+        # Ensure token_bundle has a get_coherence_metric method returning BigNum128
+        s_chr = token_bundle.get_coherence_metric() # Assuming this returns BigNum128
+        # Ensure token_bundle has a c_crit attribute of type BigNum128
+        c_crit = token_bundle.c_crit # Assuming this is BigNum128
+        # Use public wrapper which calls _safe_gte internally
+        survival_ok = self.cm.gte(s_chr, c_crit, log_list, pqc_cid, quantum_metadata) # Pass log_list
+        if not survival_ok:
+            errors.append("Survival Imperative failed: S_CHR < C_CRIT")
+            is_valid = False
+
+        atr_coherent = self._check_atr_coherence(token_bundle.atr_state, f_atr, quantum_metadata) # Quantum meta for this check
+        if not atr_coherent and strict_atr_coherence:
+            errors.append("ATR Coherence hard failure due to strict policy")
+            is_valid = False
+
+        # Get configuration parameters from token_bundle
+        # Ensure token_bundle has these attributes or methods returning BigNum128
+        LAMBDA1 = token_bundle.lambda1 # Assuming BigNum128
+        LAMBDA2 = token_bundle.lambda2 # Assuming BigNum128
+        BETA_PENALTY = token_bundle.beta_penalty # Assuming BigNum128
+        PHI_CONSTANT = self.PHI_DEFAULT # Or get from token_bundle
+
+        # Calculate core metrics, passing the log_list context
+        s_res = self._calculate_I_eff(s_chr, BETA_PENALTY, log_list, pqc_cid, quantum_metadata) # Pass log_list
+        s_flx = self._calculate_delta_lambda(token_bundle.flx_state, PHI_CONSTANT, log_list, pqc_cid, quantum_metadata) # Pass log_list
+        # Ensure token_bundle has psi_sync_state and timestamp fields/methods
+        s_psi_sync = self._calculate_delta_h(token_bundle.psi_sync_state, BigNum128.from_int(token_bundle.timestamp), log_list, pqc_cid, quantum_metadata) # Pass log_list
+
+        # Calculate composite metrics, passing the log_list context
+        action_cost = self._calculate_action_cost_qfs(s_res, s_flx, s_psi_sync, f_atr, LAMBDA1, LAMBDA2, log_list, pqc_cid, quantum_metadata) # Pass log_list
+        c_holo = self._calculate_c_holo(s_res, s_flx, s_psi_sync, log_list, pqc_cid, quantum_metadata) # Pass log_list
+
+        # Log bundle audit reference using the passed log_list
+        self.cm._log_operation("bundle_audit_ref", {
+            "chr": s_chr,
+            "c_crit": c_crit,
+            "f_atr": f_atr
+        }, BigNum128.from_int(token_bundle.timestamp), log_list, quantum_metadata={
+            "version": getattr(token_bundle, 'bundle_id', "unknown"), # Use getattr for safety
+            "drv_id": getattr(token_bundle, 'pqc_cid', "unknown") # Use getattr for safety
+        })
+
+        # Trigger CIR-302 if configured and validation failed
+        if raise_on_failure and not is_valid:
+            error_details = f"HSMF Validation Failed. Errors: {'; '.join(errors)}"
+            self.cm._log_operation("cir302_trigger", {"error": BigNum128.from_int(1)}, self.ONE, log_list,
+                                  pqc_cid="CIR302_TRIGGER", quantum_metadata=quantum_metadata)
+            if self.cir302_handler:
+                self.cir302_handler.trigger_quarantine(error_details, {
+                    "token_bundle_id": getattr(token_bundle, 'bundle_id', "unknown"),
+                    "errors": errors
+                })
+            else:
+                raise RuntimeError(f"CIR-302: {error_details}")
+
+        # Log final validation result using the passed log_list
+        self.cm._log_operation("validate_action_bundle_final_result", {}, BigNum128.from_int(1 if is_valid else 0), log_list, pqc_cid=pqc_cid, quantum_metadata=quantum_metadata)
+
+        # Prepare raw metrics
+        raw_metrics = {
+            "action_cost": action_cost,
+            "c_holo": c_holo,
+            "s_res": s_res,
+            "s_flx": s_flx,
+            "s_psi_sync": s_psi_sync,
+            "f_atr": f_atr,
+            "s_chr": s_chr
+        }
+
+        # Return ValidationResult
+        return ValidationResult(
+            is_valid=is_valid,
+            dez_ok=dez_ok,
+            survival_ok=survival_ok, # Note: This variable name conflicts with local scope, need to fix
+            errors=errors,
+            raw_metrics=raw_metrics
+        )
+    ```
+
+2.  **Fix Variable Name Conflict:**
+    *   **Issue:** In the `validate_action_bundle` example above, the line `survival_ok = self.cm.gte(...)` reassigns the local `survival_ok` variable. The return statement `return ValidationResult(..., survival_ok=survival_ok, ...)` then uses the *boolean result* of the `gte` call. However, the `ValidationResult` constructor expects `survival_ok` as a boolean. The initial `survival_ok` was likely meant to be `survival_ok = True` initially, and then potentially set to `False` if the check fails. The code should reflect this logic.
+    *   **Action:** Correct the logic for `survival_ok` inside `validate_action_bundle`.
+
+    ```python
+    # Inside validate_action_bundle in HSMF.py
+    # ...
+    # Ensure token_bundle has a get_coherence_metric method returning BigNum128
+    s_chr = token_bundle.get_coherence_metric() # Assuming this returns BigNum128
+    # Ensure token_bundle has a c_crit attribute of type BigNum128
+    c_crit = token_bundle.c_crit # Assuming this is BigNum128
+
+    # Correct logic for survival_ok
+    # Use public wrapper which calls _safe_gte internally
+    survival_check_result = self.cm.gte(s_chr, c_crit, log_list, pqc_cid, quantum_metadata) # Pass log_list
+    survival_ok = survival_check_result # Assign the boolean result directly
+    if not survival_check_result: # Check the result
+        errors.append("Survival Imperative failed: S_CHR < C_CRIT")
+        is_valid = False
+    # ...
+    ```
+
+**Phase C: System-Level Integration (SDK/API)**
+
+1.  **Log Context Management:** The *calling layer* (SDK) must provide the `log_list` to `HSMF.validate_action_bundle`. This is typically done using a `LogContext` manager.
+2.  **PQC Signing:** The SDK/API must generate the PQC signature for the final log hash.
+3.  **CIR-302 Handling:** The SDK/API must react to `ValidationResult.is_valid` being `False` by potentially triggering the `CIR302_Handler`.
+4.  **DRV_Packet Integration:** The SDK/API must validate the `DRV_Packet`, extract values (timestamp, sequence, seed), and use them to create/validate `TokenStateBundle`.
+
+**Conclusion:**
+
+The provided `HSMF.py` template is a good *conceptual* structure. To make it 100% QFS V13 ready, the following must be completed:
+
+1.  **`CertifiedMath.py`** must be fully implemented with all `_safe_*` functions and corresponding public API wrappers, using deterministic fixed-point arithmetic, enforcing `log_list` passing, and integrating real PQC.
+2.  **`HSMF.py`** must correctly call the *public API* of `CertifiedMath` (or the `_safe_*` functions if passing the `log_list` context correctly) and manage the `log_list` received from the calling layer (SDK/API).
+3.  The **system integration** (SDK/API) must correctly manage the `LogContext`, perform PQC signing/verification, handle CIR-302 triggers, and integrate `DRV_Packet` validation.
+
+Once these components are correctly implemented and integrated, the system will achieve the "Absolute Determinism", "Zero-Simulation Compliance", "PQC Integrity", "Auditability", and "Quantum Readiness" goals outlined in the QFS V13 plans (Phases 1, 2, 3).

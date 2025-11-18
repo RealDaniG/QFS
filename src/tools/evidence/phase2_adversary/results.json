@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-11-18T14:48:43.931154",
+  "attacks": [
+    {
+      "attack_name": "oracle_spoof",
+      "triggered_cir302": false,
+      "error_message": "Wrong exit code: 302000000000000000000",
+      "recovery_state": false
+    },
+    {
+      "attack_name": "pqc_replay",
+      "triggered_cir302": false,
+      "error_message": "Error: attempted relative import beyond top-level package",
+      "recovery_state": false
+    },
+    {
+      "attack_name": "coherence_crash",
+      "triggered_cir302": false,
+      "error_message": "Wrong exit: 302000000000000000000",
+      "recovery_state": false
+    }
+  ]
+}

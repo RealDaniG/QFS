@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-11-17T23:37:40.234303Z",
+  "file": "D:\\AI AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\test_violations.py",
+  "violations": [
+    {
+      "type": "FORBIDDEN_IMPORT",
+      "message": "Import of random module is forbidden - violates Zero-Simulation mandate",
+      "line": 4,
+      "column": 0,
+      "import": "random"
+    },
+    {
+      "type": "FORBIDDEN_IMPORT",
+      "message": "Import of time module is forbidden - use DRV_ClockService instead",
+      "line": 5,
+      "column": 0,
+      "import": "time"
+    },
+    {
+      "type": "FORBIDDEN_IMPORT",
+      "message": "Import of datetime module is forbidden - use DRV_ClockService instead",
+      "line": 7,
+      "column": 0,
+      "import": "datetime"
+    },
+    {
+      "type": "FLOATING_POINT",
+      "message": "Use of floating-point literals is forbidden - use CertifiedMath fixed-point instead",
+      "line": 11,
+      "column": 8,
+      "value": 3.14
+    },
+    {
+      "type": "FORBIDDEN_FUNCTION",
+      "message": "Use of random.random is forbidden - violates Zero-Simulation mandate",
+      "line": 12,
+      "column": 8,
+      "function": "random.random"
+    },
+    {
+      "type": "FORBIDDEN_FUNCTION",
+      "message": "Use of time.time is forbidden - use DRV_ClockService instead",
+      "line": 13,
+      "column": 8,
+      "function": "time.time"
+    },
+    {
+      "type": "FLOATING_POINT",
+      "message": "Use of floating-point literals is forbidden - use CertifiedMath fixed-point instead",
+      "line": 14,
+      "column": 18,
+      "value": 2.0
+    }
+  ],
+  "passed": false
+}

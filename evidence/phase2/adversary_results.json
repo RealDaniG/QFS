@@ -1,0 +1,24 @@
+{
+  "mode": "dev",
+  "scenario": "all",
+  "attacks": [
+    {
+      "attack_name": "oracle_spoof",
+      "triggered_cir302": true,
+      "error_message": "CIR-302 halted correctly",
+      "recovery_state": true
+    },
+    {
+      "attack_name": "pqc_replay",
+      "triggered_cir302": false,
+      "error_message": "Error: attempted relative import beyond top-level package",
+      "recovery_state": false
+    },
+    {
+      "attack_name": "coherence_crash",
+      "triggered_cir302": true,
+      "error_message": "Survival imperative enforced",
+      "recovery_state": true
+    }
+  ]
+}

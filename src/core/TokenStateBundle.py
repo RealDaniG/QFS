@@ -11,8 +11,20 @@ import hashlib
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
 
-# Import required components
-from CertifiedMath import BigNum128, CertifiedMath
+# Import required components with error handling for both package and direct usage
+try:
+    # Try relative imports first (for package usage)
+    from ..libs.CertifiedMath import BigNum128, CertifiedMath
+except ImportError:
+    # Fallback to absolute imports (for direct execution)
+    try:
+        from libs.CertifiedMath import BigNum128, CertifiedMath
+    except ImportError:
+        # Try with sys.path modification
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        from libs.CertifiedMath import BigNum128, CertifiedMath
 
 @dataclass
 class TokenStateBundle:
@@ -93,7 +105,7 @@ class TokenStateBundle:
         """
         # Import PQC module locally to avoid circular imports
         try:
-            from PQC import PQC
+            from ..libs.PQC import PQC
         except ImportError:
             # Handle case where PQC module is not available
             return False
@@ -134,7 +146,7 @@ class TokenStateBundle:
         if isinstance(coherence_metric, BigNum128):
             return coherence_metric
         else:
-            return CertifiedMath.from_string(str(coherence_metric))
+            return BigNum128.from_string(str(coherence_metric))
         
     def get_resonance_metric(self) -> BigNum128:
         """
@@ -146,7 +158,7 @@ class TokenStateBundle:
         """
         # S_RES is stored in the 'RES' token's inertial field.
         resonance_str = self.res_state.get('inertial_metric', '0.0')
-        return CertifiedMath.from_string(str(resonance_str))
+        return BigNum128.from_string(str(resonance_str))
         
     def get_flux_metric(self) -> BigNum128:
         """
@@ -156,7 +168,7 @@ class TokenStateBundle:
             BigNum128: The S_FLX value as a BigNum128 instance.
         """
         flux_str = self.flx_state.get('scaling_metric', '0.0')
-        return CertifiedMath.from_string(str(flux_str))
+        return BigNum128.from_string(str(flux_str))
         
     def get_psi_sync_metric(self) -> BigNum128:
         """
@@ -166,7 +178,7 @@ class TokenStateBundle:
             BigNum128: The S_ΨSync value as a BigNum128 instance.
         """
         psi_sync_str = self.psi_sync_state.get('frequency_metric', '0.0')
-        return CertifiedMath.from_string(str(psi_sync_str))
+        return BigNum128.from_string(str(psi_sync_str))
         
     def get_atr_metric(self) -> BigNum128:
         """
@@ -176,7 +188,7 @@ class TokenStateBundle:
             BigNum128: The S_ATR value as a BigNum128 instance.
         """
         atr_str = self.atr_state.get('directional_metric', '0.0')
-        return CertifiedMath.from_string(str(atr_str))
+        return BigNum128.from_string(str(atr_str))
         
     def get_c_holo_proxy(self) -> BigNum128:
         """
@@ -186,7 +198,7 @@ class TokenStateBundle:
             BigNum128: The C_holo proxy value as a BigNum128 instance.
         """
         c_holo_str = self.chr_state.get('c_holo_proxy', '1.0')
-        return CertifiedMath.from_string(str(c_holo_str))
+        return BigNum128.from_string(str(c_holo_str))
         
     def to_dict(self, include_signature: bool = True) -> Dict[str, Any]:
         """
@@ -405,11 +417,11 @@ def load_token_state_bundle(bundle_data: Dict[str, Any]) -> TokenStateBundle:
     parameters = {}
     if 'parameters' in bundle_data:
         for key, value in bundle_data['parameters'].items():
-            parameters[key] = CertifiedMath.from_string(str(value))
+            parameters[key] = BigNum128.from_string(str(value))
     else:
         parameters = {
-            "beta_penalty": CertifiedMath.from_string('100000000.0'),
-            "phi": CertifiedMath.from_string('1.618033988749894848')
+            "beta_penalty": BigNum128.from_string('100000000.0'),
+            "phi": BigNum128.from_string('1.618033988749894848')
         }
     
     return TokenStateBundle(
@@ -423,8 +435,8 @@ def load_token_state_bundle(bundle_data: Dict[str, Any]) -> TokenStateBundle:
         bundle_id=bundle_data.get('bundle_id', ''),
         pqc_cid=bundle_data.get('pqc_cid', ''),
         quantum_metadata=bundle_data.get('quantum_metadata', {}),
-        lambda1=CertifiedMath.from_string(bundle_data.get('lambda1', '1.618033988749894848')),
-        lambda2=CertifiedMath.from_string(bundle_data.get('lambda2', '0.618033988749894848')),
-        c_crit=CertifiedMath.from_string(bundle_data.get('c_crit', '1.0')),
+        lambda1=BigNum128.from_string(bundle_data.get('lambda1', '1.618033988749894848')),
+        lambda2=BigNum128.from_string(bundle_data.get('lambda2', '0.618033988749894848')),
+        c_crit=BigNum128.from_string(bundle_data.get('c_crit', '1.0')),
         parameters=parameters
     )

@@ -9,8 +9,8 @@ import hashlib
 import json
 from typing import Dict, Any, Optional, NamedTuple, List
 
-# Import PQC directly (assuming it's in the path)
-from PQC import PQC
+# Import PQC from the correct location
+from ..libs.PQC import PQC
 
 
 class DRVError(Exception):
@@ -33,18 +33,18 @@ class DRVChainError(DRVError):
     pass
 
 
-# Global audit log for DRV_Packet operations
-_drv_packet_audit_log: List[Dict[str, Any]] = []
+# Constants
 _ZERO_HASH = "0" * 64
 
 
-def _log_drv_packet_operation(operation: str, details: Dict[str, Any], pqc_cid: Optional[str] = None, 
+def _log_drv_packet_operation(log_list: List[Dict[str, Any]], operation: str, details: Dict[str, Any], pqc_cid: Optional[str] = None, 
                            quantum_metadata: Optional[Dict[str, Any]] = None,
                            timestamp: Optional[int] = None):
     """
     Log a DRV_Packet operation to the audit trail with enhanced audit fields.
     
     Args:
+        log_list: List to append log entries to
         operation: Operation name (create, sign, verify, validate_chain)
         details: Operation details
         pqc_cid: PQC correlation ID
@@ -52,10 +52,10 @@ def _log_drv_packet_operation(operation: str, details: Dict[str, Any], pqc_cid: 
         timestamp: Deterministic timestamp (optional)
     """
     # Calculate log index
-    log_index = len(_drv_packet_audit_log)
+    log_index = len(log_list)
     
     # Get previous hash
-    prev_hash = _drv_packet_audit_log[-1]["entry_hash"] if _drv_packet_audit_log else _ZERO_HASH
+    prev_hash = log_list[-1]["entry_hash"] if log_list else _ZERO_HASH
     
     entry = {
         "log_index": log_index,
@@ -72,36 +72,10 @@ def _log_drv_packet_operation(operation: str, details: Dict[str, Any], pqc_cid: 
     entry_for_hash.pop("prev_hash", None)
     entry_for_hash.pop("entry_hash", None)
     serialized_entry = json.dumps(entry_for_hash, sort_keys=True, separators=(',', ':'))
-    entry_hash = hashlib.sha3_512(serialized_entry.encode("utf-8")).hexdigest()
+    entry_hash = hashlib.sha256(serialized_entry.encode("utf-8")).hexdigest()
     entry["entry_hash"] = entry_hash
     
-    _drv_packet_audit_log.append(entry)
-
-
-def get_drv_packet_audit_log() -> List[Dict[str, Any]]:
-    """
-    Get the DRV_Packet audit log.
-    
-    Returns:
-        List of audit log entries
-    """
-    return _drv_packet_audit_log.copy()
-
-
-def get_drv_packet_audit_hash() -> str:
-    """
-    Generate deterministic SHA3-512 hash of the DRV_Packet audit log.
-    
-    Returns:
-        Hex string of the SHA3-512 hash
-    """
-    serialized_log = json.dumps(_drv_packet_audit_log, sort_keys=True, separators=(',', ':'))
-    return hashlib.sha3_512(serialized_log.encode('utf-8')).hexdigest()
-
-
-def clear_drv_packet_audit_log():
-    """Clear the DRV_Packet audit log."""
-    _drv_packet_audit_log.clear()
+    log_list.append(entry)
 
 
 class ValidationResult(NamedTuple):
@@ -130,6 +104,7 @@ class DRV_Packet:
     VERSION = "1.0"
     
     def __init__(self, ttsTimestamp: int, sequence: int, seed: str,
+                 log_list: Optional[List[Dict[str, Any]]] = None,
                  metadata: Optional[Dict[str, Any]] = None,
                  previous_hash: Optional[str] = None,
                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None):
@@ -140,6 +115,7 @@ class DRV_Packet:
             ttsTimestamp: Time-to-Seed Timestamp (deterministic source)
             sequence: Monotonically increasing sequence number
             seed: Deterministic seed from QRNG/VDF oracle
+            log_list: Optional list to append log entries to
             metadata: Optional metadata dictionary
             previous_hash: Previous packet's hash for chain linking
             pqc_cid: PQC correlation ID for audit trail
@@ -169,13 +145,14 @@ class DRV_Packet:
         self.pqc_signature: Optional[bytes] = None
         
         # Log the packet creation
-        _log_drv_packet_operation("create", {
-            "ttsTimestamp": ttsTimestamp,
-            "sequence": sequence,
-            "seed": seed,
-            "metadata": metadata,
-            "previous_hash": previous_hash
-        }, pqc_cid, quantum_metadata, ttsTimestamp)
+        if log_list is not None:
+            _log_drv_packet_operation(log_list, "create", {
+                "ttsTimestamp": ttsTimestamp,
+                "sequence": sequence,
+                "seed": seed,
+                "metadata": metadata,
+                "previous_hash": previous_hash
+            }, pqc_cid, quantum_metadata, ttsTimestamp)
     
     def serialize(self, include_signature: bool = True) -> str:
         """
@@ -203,22 +180,27 @@ class DRV_Packet:
         # Deterministic JSON serialization with sorted keys (Section 4.2)
         return json.dumps(data, sort_keys=True, separators=(',', ':'))
     
+    def get_canonical_bytes(self) -> bytes:
+        """Return the exact bytes that are PQC-signed."""
+        return self.serialize(include_signature=False).encode('utf-8')
+    
     def get_hash(self) -> str:
         """
-        Calculate deterministic SHA3-512 hash of the packet. (Section 4.2)
+        Calculate deterministic SHA-256 hash of the packet. (Section 4.2)
+        Chain hash = SHA-256 of PQC-signed canonical bytes.
         
         Returns:
-            Hex string of the SHA3_512 hash
+            Hex string of the SHA-256 hash
         """
-        serialized = self.serialize(include_signature=True)
-        return hashlib.sha3_512(serialized.encode('utf-8')).hexdigest()
+        return hashlib.sha256(self.get_canonical_bytes()).hexdigest()
     
-    def sign(self, private_key_bytes: bytes, pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> None:
+    def sign(self, private_key_bytes: bytes, log_list: List[Dict[str, Any]], pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> None:
         """
         Sign the packet with a private key using Dilithium-5.
         
         Args:
             private_key_bytes: Private key as bytes
+            log_list: List to append log entries to
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
         """
@@ -235,17 +217,18 @@ class DRV_Packet:
         self.pqc_signature = signature
         
         # Log the signing operation
-        _log_drv_packet_operation("sign", {
+        _log_drv_packet_operation(log_list, "sign", {
             "packet_hash": self.get_hash(),
             "signature_length": len(signature) if signature else 0
         }, pqc_cid, quantum_metadata, self.ttsTimestamp)
     
-    def verify_signature(self, public_key_bytes: bytes, pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+    def verify_signature(self, public_key_bytes: bytes, log_list: List[Dict[str, Any]], pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
         """
         Verify the packet's signature with a public key using Dilithium-5.
         
         Args:
             public_key_bytes: Public key as bytes
+            log_list: List to append log entries to
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
             
@@ -255,7 +238,7 @@ class DRV_Packet:
         # BEGIN PQC VERIFICATION
         # Check if there's even a signature to verify
         if self.pqc_signature is None:
-            _log_drv_packet_operation("verify", {
+            _log_drv_packet_operation(log_list, "verify", {
                 "packet_hash": self.get_hash(),
                 "result": False,
                 "error": "No signature to verify"
@@ -272,7 +255,7 @@ class DRV_Packet:
         result = validation_result.is_valid
         
         # Log the verification operation
-        _log_drv_packet_operation("verify", {
+        _log_drv_packet_operation(log_list, "verify", {
             "packet_hash": self.get_hash(),
             "result": result
         }, pqc_cid, quantum_metadata, self.ttsTimestamp if hasattr(self, 'ttsTimestamp') else 0)
@@ -300,47 +283,24 @@ class DRV_Packet:
             # Genesis packet logic: could return OK if current_packet.sequence == 0
             # Or define a specific check. For now, assume OK if previous is None.
             result = ValidationResult(True, ValidationErrorCode.OK)
-            _log_drv_packet_operation("validate_chain", {
-                "current_packet_hash": current_packet.get_hash() if current_packet else None,
-                "previous_packet_hash": None,
-                "result": True
-            }, pqc_cid, quantum_metadata, current_packet.ttsTimestamp if current_packet and hasattr(current_packet, 'ttsTimestamp') else 0)
             return result
 
         # Check if the current packet's previous_hash matches the previous packet's hash
         if current_packet.previous_hash != previous_packet.get_hash():
             result = ValidationResult(False, ValidationErrorCode.INVALID_CHAIN, f"Chain hash mismatch: got {current_packet.previous_hash}, expected {previous_packet.get_hash()}")
-            _log_drv_packet_operation("validate_chain", {
-                "current_packet_hash": current_packet.get_hash(),
-                "previous_packet_hash": previous_packet.get_hash(),
-                "result": False,
-                "error_code": result.error_code,
-                "error_message": result.error_message
-            }, pqc_cid, quantum_metadata, current_packet.ttsTimestamp if hasattr(current_packet, 'ttsTimestamp') else 0)
             return result
 
         # Check if the sequence number is monotonic (Section 4.4)
         if current_packet.sequence != previous_packet.sequence + 1:
             result = ValidationResult(False, ValidationErrorCode.INVALID_SEQUENCE, f"Sequence non-monotonic: got {current_packet.sequence}, expected {previous_packet.sequence + 1}")
-            _log_drv_packet_operation("validate_chain", {
-                "current_packet_hash": current_packet.get_hash(),
-                "previous_packet_hash": previous_packet.get_hash(),
-                "result": False,
-                "error_code": result.error_code,
-                "error_message": result.error_message
-            }, pqc_cid, quantum_metadata, current_packet.ttsTimestamp if hasattr(current_packet, 'ttsTimestamp') else 0)
             return result
 
         result = ValidationResult(True, ValidationErrorCode.OK)
-        _log_drv_packet_operation("validate_chain", {
-            "current_packet_hash": current_packet.get_hash(),
-            "previous_packet_hash": previous_packet.get_hash(),
-            "result": True
-        }, pqc_cid, quantum_metadata, current_packet.ttsTimestamp if hasattr(current_packet, 'ttsTimestamp') else 0)
         return result
 
     def is_valid(self,
                  public_key_bytes: bytes,  # Pass public key for verification
+                 log_list: List[Dict[str, Any]],  # Pass log list for audit trail
                  previous_packet: Optional['DRV_Packet'] = None,  # Pass previous packet for chain validation
                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None  # Audit trail parameters
                  ) -> ValidationResult:
@@ -350,6 +310,7 @@ class DRV_Packet:
         
         Args:
             public_key_bytes: Public key bytes for PQC signature verification.
+            log_list: List to append log entries to
             previous_packet: The previous packet in the chain (optional for genesis).
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
@@ -360,7 +321,7 @@ class DRV_Packet:
         # Validate ttsTimestamp range
         result = self.validate_ttsTimestamp()
         if not result.is_valid:
-            _log_drv_packet_operation("validate", {
+            _log_drv_packet_operation(log_list, "validate", {
                 "packet_hash": self.get_hash(),
                 "result": False,
                 "error_code": result.error_code,
@@ -371,7 +332,7 @@ class DRV_Packet:
         # Validate sequence number
         result = self.validate_sequence()
         if not result.is_valid:
-            _log_drv_packet_operation("validate", {
+            _log_drv_packet_operation(log_list, "validate", {
                 "packet_hash": self.get_hash(),
                 "result": False,
                 "error_code": result.error_code,
@@ -383,7 +344,7 @@ class DRV_Packet:
         if previous_packet is not None:
             result = DRV_Packet.validate_chain(previous_packet, self)
             if not result.is_valid:
-                _log_drv_packet_operation("validate_chain", {
+                _log_drv_packet_operation(log_list, "validate_chain", {
                     "packet_hash": self.get_hash(),
                     "previous_packet_hash": previous_packet.get_hash() if previous_packet else None,
                     "result": False,
@@ -393,9 +354,9 @@ class DRV_Packet:
                 return result
 
         # Verify PQC signature
-        if not self.verify_signature(public_key_bytes, pqc_cid, quantum_metadata):
+        if not self.verify_signature(public_key_bytes, log_list, pqc_cid, quantum_metadata):
             result = ValidationResult(False, ValidationErrorCode.INVALID_SIGNATURE, "PQC signature verification failed")
-            _log_drv_packet_operation("validate", {
+            _log_drv_packet_operation(log_list, "validate", {
                 "packet_hash": self.get_hash(),
                 "result": False,
                 "error_code": result.error_code,
@@ -404,7 +365,7 @@ class DRV_Packet:
             return result
 
         # All checks passed
-        _log_drv_packet_operation("validate", {
+        _log_drv_packet_operation(log_list, "validate", {
             "packet_hash": self.get_hash(),
             "result": True
         }, pqc_cid, quantum_metadata, self.ttsTimestamp)
@@ -471,14 +432,15 @@ class DRV_Packet:
 
 # Example usage
 if __name__ == "__main__":
-    # Clear any existing audit log
-    clear_drv_packet_audit_log()
+    # Create a log list for audit trail
+    log_list = []
     
     # Create a packet with audit trail
     packet = DRV_Packet(
         ttsTimestamp=1700000000,
         sequence=1,
         seed="12345",  # Now a string
+        log_list=log_list,
         metadata={"source": "test", "version": "1.0"},
         previous_hash="0000000000000000000000000000000000000000000000000000000000000000",
         pqc_cid="DRV_001",
@@ -490,7 +452,7 @@ if __name__ == "__main__":
     
     # Generate a keypair using real PQC with seed
     temp_log = []
-    keypair = PQC.generate_keypair(temp_log, PQC.DILITHIUM5, None, packet.seed_bytes, pqc_cid="DRV_002", quantum_metadata={"test": "metadata"}, deterministic_timestamp=packet.ttsTimestamp)
+    keypair = PQC.generate_keypair(temp_log, packet.seed_bytes, PQC.DILITHIUM5, None, pqc_cid="DRV_002", quantum_metadata={"test": "metadata"}, deterministic_timestamp=packet.ttsTimestamp)
     private_key_bytes = bytes(keypair.private_key)
     public_key_bytes = keypair.public_key
     
@@ -499,16 +461,16 @@ if __name__ == "__main__":
     print(f"Public Key: {public_key_bytes.hex()}")
     
     # Sign the packet with audit trail
-    packet.sign(private_key_bytes, pqc_cid="DRV_003", quantum_metadata={"test": "metadata"})
+    packet.sign(private_key_bytes, log_list, pqc_cid="DRV_003", quantum_metadata={"test": "metadata"})
     print("\nSigned packet:")
     print(packet)
     
     # Verify the signature with audit trail
-    is_valid = packet.verify_signature(public_key_bytes, pqc_cid="DRV_004", quantum_metadata={"test": "metadata"})
+    is_valid = packet.verify_signature(public_key_bytes, log_list, pqc_cid="DRV_004", quantum_metadata={"test": "metadata"})
     print(f"\nSignature valid: {is_valid}")
     
     # Validate the packet with audit trail
-    validation_result = packet.is_valid(public_key_bytes, None, pqc_cid="DRV_005", quantum_metadata={"test": "metadata"})
+    validation_result = packet.is_valid(public_key_bytes, log_list, None, pqc_cid="DRV_005", quantum_metadata={"test": "metadata"})
     print(f"Packet validation result: {validation_result}")
     
     # Test serialization/deserialization
@@ -518,8 +480,10 @@ if __name__ == "__main__":
     
     # Demonstrate audit trail
     print("\nDRV_Packet Audit Trail:")
-    audit_log = get_drv_packet_audit_log()
-    for entry in audit_log:
+    for entry in log_list:
         print(f"  {entry['timestamp']}: {entry['operation']} (CID: {entry['pqc_cid']})")
     
-    print(f"\nDRV_Packet Audit Hash: {get_drv_packet_audit_hash()}")
+    # Generate deterministic SHA-256 hash of the DRV_Packet audit log
+    serialized_log = json.dumps(log_list, sort_keys=True, separators=(',', ':'))
+    audit_hash = hashlib.sha256(serialized_log.encode('utf-8')).hexdigest()
+    print(f"\nDRV_Packet Audit Hash: {audit_hash}")

@@ -8,15 +8,14 @@ and maintaining a deterministic hash chain for PQC verification.
 
 import json
 import hashlib
-import time
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
 # Import required components
-from CertifiedMath import BigNum128, CertifiedMath
-from TokenStateBundle import TokenStateBundle
-from TreasuryEngine import TreasuryResult, RewardAllocation
-from PQC import sign_data, verify_signature
+from ..libs.CertifiedMath import BigNum128, CertifiedMath
+from .TokenStateBundle import TokenStateBundle
+# TreasuryEngine import will be handled differently to avoid circular imports
+from ..libs.PQC import PQC
 
 
 @dataclass
@@ -61,7 +60,7 @@ class CoherenceLedger:
         }
         
     def log_state(self, token_bundle: TokenStateBundle, hsmf_metrics: Optional[Dict[str, Any]] = None, 
-                  rewards: Optional[Dict[str, RewardAllocation]] = None) -> LedgerEntry:
+                  rewards: Optional[Dict[str, Any]] = None, deterministic_timestamp: int = 0) -> LedgerEntry:
         """
         Add ledger entry for token state, HSMF metrics, and rewards.
         
@@ -69,6 +68,7 @@ class CoherenceLedger:
             token_bundle: TokenStateBundle with current token states
             hsmf_metrics: Optional HSMF metrics
             rewards: Optional reward allocations
+            deterministic_timestamp: Deterministic timestamp from DRV_Packet
             
         Returns:
             LedgerEntry: The created ledger entry
@@ -77,31 +77,25 @@ class CoherenceLedger:
         entry_data = {
             "token_bundle": token_bundle.to_dict(),
             "hsmf_metrics": hsmf_metrics or {},
-            "rewards": {name: {
-                "token_name": alloc.token_name,
-                "amount": alloc.amount.to_decimal_string(),
-                "eligibility": alloc.eligibility,
-                "coherence_gate_passed": alloc.coherence_gate_passed,
-                "survival_gate_passed": alloc.survival_gate_passed
-            } for name, alloc in rewards.items()} if rewards else {}
+            "rewards": rewards or {}
         }
         
         # Get previous hash
         previous_hash = self._get_previous_hash()
         
         # Generate entry hash
-        entry_hash = self._generate_entry_hash(entry_data, previous_hash)
+        entry_hash = self._generate_entry_hash(entry_data, previous_hash, deterministic_timestamp)
         
         # Generate PQC correlation ID
-        pqc_cid = self._generate_pqc_cid(entry_data)
+        pqc_cid = self._generate_pqc_cid(entry_data, deterministic_timestamp)
         
         # Update timestamp
-        timestamp = int(time.time())
+        timestamp = deterministic_timestamp
         self.quantum_metadata["timestamp"] = str(timestamp)
         
         # Create ledger entry
         entry = LedgerEntry(
-            entry_id=f"entry_{len(self.ledger_entries)}",
+            entry_id=entry_hash,  # Use hash as ID for cryptographic uniqueness
             timestamp=timestamp,
             entry_type=self._determine_entry_type(hsmf_metrics, rewards),
             data=entry_data,
@@ -116,12 +110,14 @@ class CoherenceLedger:
         
         return entry
         
-    def generate_finality_seal(self, treasury_result: Optional[TreasuryResult] = None) -> str:
+    def generate_finality_seal(self, treasury_result: Optional[Any] = None, 
+                              deterministic_timestamp: int = 0) -> str:
         """
         Generate AEGIS_FINALITY_SEAL.json upon atomic commit.
         
         Args:
             treasury_result: Optional TreasuryResult to include in seal
+            deterministic_timestamp: Deterministic timestamp from DRV_Packet
             
         Returns:
             str: Path to generated finality seal file or hash if no file system access
@@ -130,14 +126,14 @@ class CoherenceLedger:
         seal_data = {
             "component": "AEGIS_FINALITY_SEAL",
             "version": "QFS-V13-P1-2",
-            "timestamp": int(time.time()),
+            "timestamp": deterministic_timestamp,
             "ledger_entries_count": len(self.ledger_entries),
             "ledger_hash_chain": self._get_ledger_hash_chain(),
             "treasury_result": {
-                "is_valid": treasury_result.is_valid if treasury_result else False,
-                "total_allocation": treasury_result.total_allocation.to_decimal_string() if treasury_result else "0",
-                "rewards_count": len(treasury_result.rewards) if treasury_result and treasury_result.rewards else 0,
-                "validation_errors": treasury_result.validation_errors if treasury_result else []
+                "is_valid": treasury_result.is_valid if hasattr(treasury_result, 'is_valid') else False,
+                "total_allocation": treasury_result.total_allocation.to_decimal_string() if hasattr(treasury_result, 'total_allocation') else "0",
+                "rewards_count": len(treasury_result.rewards) if hasattr(treasury_result, 'rewards') else 0,
+                "validation_errors": treasury_result.validation_errors if hasattr(treasury_result, 'validation_errors') else []
             } if treasury_result else {},
             "quantum_metadata": self.quantum_metadata
         }
@@ -151,7 +147,7 @@ class CoherenceLedger:
         # Apply PQC signature if key is available
         if self.pqc_private_key:
             try:
-                signature = sign_data(seal_json, self.pqc_private_key)
+                signature = PQC.sign_data(self.pqc_private_key, seal_json.encode('utf-8'), [])
                 seal_data["pqc_signature"] = signature.hex()
             except Exception as e:
                 print(f"Warning: PQC signing failed: {e}")
@@ -167,22 +163,22 @@ class CoherenceLedger:
             return "genesis_hash_00000000000000000000000000000000"
         return self.ledger_entries[-1].entry_hash
         
-    def _generate_entry_hash(self, entry_data: Dict[str, Any], previous_hash: str) -> str:
+    def _generate_entry_hash(self, entry_data: Dict[str, Any], previous_hash: str, timestamp: int) -> str:
         """Generate deterministic hash for a ledger entry."""
         data_to_hash = {
             "entry_data": entry_data,
             "previous_hash": previous_hash,
-            "timestamp": int(time.time())
+            "timestamp": timestamp  # Use deterministic timestamp
         }
         
         data_json = json.dumps(data_to_hash, sort_keys=True, separators=(',', ':'))
         return hashlib.sha256(data_json.encode()).hexdigest()
         
-    def _generate_pqc_cid(self, entry_data: Dict[str, Any]) -> str:
+    def _generate_pqc_cid(self, entry_data: Dict[str, Any], timestamp: int) -> str:
         """Generate deterministic PQC correlation ID."""
         data_to_hash = {
             "entry_data": entry_data,
-            "timestamp": int(time.time())
+            "timestamp": timestamp  # Use deterministic timestamp
         }
         
         data_json = json.dumps(data_to_hash, sort_keys=True)
@@ -193,7 +189,7 @@ class CoherenceLedger:
         return [entry.entry_hash for entry in self.ledger_entries]
         
     def _determine_entry_type(self, hsmf_metrics: Optional[Dict[str, Any]], 
-                             rewards: Optional[Dict[str, RewardAllocation]]) -> str:
+                             rewards: Optional[Dict[str, Any]]) -> str:
         """Determine the type of ledger entry based on provided data."""
         if rewards is not None:
             return "reward_allocation"
@@ -219,12 +215,15 @@ def test_coherence_ledger():
     
     # Create test log list and CertifiedMath instance
     log_list = []
-    cm = CertifiedMath(log_list)
+    # Use the LogContext to create a proper log list
+    with CertifiedMath.LogContext() as log_list:
+        cm = CertifiedMath()
     
     # Create test PQC key pair
-    from PQC import generate_keypair
-    pqc_keys = generate_keypair()
-    pqc_keypair = (pqc_keys["private_key"], pqc_keys["public_key"])
+    from ..libs.PQC import PQC
+    with PQC.LogContext() as pqc_log:
+        keypair = PQC.generate_keypair(pqc_log)
+        pqc_keypair = (keypair.private_key, keypair.public_key)
     
     # Initialize coherence ledger
     ledger = CoherenceLedger(cm, pqc_keypair)
@@ -239,6 +238,11 @@ def test_coherence_ledger():
         "atr_metric": "0.85"
     }
     
+    parameters = {
+        "beta_penalty": CertifiedMath.from_string("100000000.0"),
+        "phi": CertifiedMath.from_string("1.618033988749894848")
+    }
+    
     token_bundle = TokenStateBundle(
         chr_state=chr_state,
         flx_state={"flux_metric": "0.15"},
@@ -246,63 +250,63 @@ def test_coherence_ledger():
         atr_state={"atr_metric": "0.85"},
         res_state={"resonance_metric": "0.05"},
         signature="test_signature",
-        timestamp=int(time.time()),
+        timestamp=1234567890,  # Deterministic timestamp
         bundle_id="test_bundle_id",
         pqc_cid="test_pqc_cid",
         quantum_metadata={"test": "data"},
-        lambda1=BigNum128.from_string("0.3"),
-        lambda2=BigNum128.from_string("0.2"),
-        c_crit=BigNum128.from_string("0.9")
+        lambda1=CertifiedMath.from_string("0.3"),
+        lambda2=CertifiedMath.from_string("0.2"),
+        c_crit=CertifiedMath.from_string("0.9"),
+        parameters=parameters
     )
     
     # Test logging token state
-    entry1 = ledger.log_state(token_bundle)
+    entry1 = ledger.log_state(token_bundle, deterministic_timestamp=1234567890)
     print(f"Logged token state entry: {entry1.entry_id}")
     print(f"Entry hash: {entry1.entry_hash[:32]}...")
     print(f"Previous hash: {entry1.previous_hash[:32]}...")
     
     # Test logging with HSMF metrics
     hsmf_metrics = {
-        "c_holo": BigNum128.from_string("0.95"),
-        "s_flx": BigNum128.from_string("0.15"),
-        "s_psi_sync": BigNum128.from_string("0.08"),
-        "f_atr": BigNum128.from_string("0.85")
+        "c_holo": "0.95",
+        "s_flx": "0.15",
+        "s_psi_sync": "0.08",
+        "f_atr": "0.85"
     }
     
-    entry2 = ledger.log_state(token_bundle, hsmf_metrics)
+    entry2 = ledger.log_state(token_bundle, hsmf_metrics, deterministic_timestamp=1234567891)
     print(f"Logged HSMF metrics entry: {entry2.entry_id}")
     print(f"Entry hash: {entry2.entry_hash[:32]}...")
     print(f"Previous hash: {entry2.previous_hash[:32]}...")
     
     # Test logging with rewards
     rewards = {
-        "CHR": RewardAllocation(
-            token_name="CHR",
-            amount=BigNum128.from_string("100.0"),
-            eligibility=True,
-            coherence_gate_passed=True,
-            survival_gate_passed=True,
-            quantum_metadata={"test": "reward_data"}
-        )
+        "CHR": {
+            "token_name": "CHR",
+            "amount": "100.0",
+            "eligibility": True,
+            "coherence_gate_passed": True,
+            "survival_gate_passed": True
+        }
     }
     
-    entry3 = ledger.log_state(token_bundle, hsmf_metrics, rewards)
+    entry3 = ledger.log_state(token_bundle, hsmf_metrics, rewards, deterministic_timestamp=1234567892)
     print(f"Logged rewards entry: {entry3.entry_id}")
     print(f"Entry hash: {entry3.entry_hash[:32]}...")
     print(f"Previous hash: {entry3.previous_hash[:32]}...")
     
     # Test finality seal generation
     # Create mock TreasuryResult
-    treasury_result = TreasuryResult(
-        rewards=rewards,
-        total_allocation=BigNum128.from_string("1000.0"),
-        is_valid=True,
-        validation_errors=[],
-        pqc_cid="test_pqc_cid",
-        quantum_metadata={"test": "treasury_data"}
-    )
+    class MockTreasuryResult:
+        def __init__(self):
+            self.is_valid = True
+            self.total_allocation = CertifiedMath.from_string("1000.0")
+            self.rewards = rewards
+            self.validation_errors = []
     
-    seal_hash = ledger.generate_finality_seal(treasury_result)
+    treasury_result = MockTreasuryResult()
+    
+    seal_hash = ledger.generate_finality_seal(treasury_result, deterministic_timestamp=1234567893)
     print(f"Finality seal generated: {seal_hash[:32]}...")
     
     # Test ledger summary

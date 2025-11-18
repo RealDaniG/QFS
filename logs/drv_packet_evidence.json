@@ -1,0 +1,11 @@
+{
+  "packet1_hash": "8d1b329b2d10ef2125046dec30ef830051ddb6d6125791195acf213fb79427d9",
+  "packet2_hash": "8d1b329b2d10ef2125046dec30ef830051ddb6d6125791195acf213fb79427d9",
+  "hash_match": true,
+  "serialization_match": true,
+  "signature_match": true,
+  "verification_results": [
+    false,
+    false
+  ]
+}

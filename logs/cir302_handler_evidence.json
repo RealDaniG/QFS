@@ -1,0 +1,17 @@
+{
+  "quarantine1": {
+    "is_quarantined": true,
+    "reason": "Test reason 1",
+    "timestamp": 0,
+    "pqc_cid": "154543857988fc2457bfd194b22c77f4"
+  },
+  "quarantine2": {
+    "is_quarantined": true,
+    "reason": "Test reason 1",
+    "timestamp": 0,
+    "pqc_cid": ""
+  },
+  "seal1_prefix": "cb2b998f5eb6a5f79f0a018bff80f4eb",
+  "seal2_prefix": "cb2b998f5eb6a5f79f0a018bff80f4eb",
+  "seal_match": true
+}

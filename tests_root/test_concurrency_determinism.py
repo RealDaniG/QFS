@@ -1,0 +1,39 @@
+import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
+sys.path.append('src')
+
+from src.libs.CertifiedMath import CertifiedMath, BigNum128
+
+def worker(results, worker_id):
+    """Worker function to perform deterministic calculations"""
+    log_list = []
+    # Perform a deterministic calculation
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+    log_hash = CertifiedMath.get_log_hash(log_list)
+    results[worker_id] = (result.to_decimal_string(), log_hash)
+
+# Test parallel function determinism
+results = {}
+threads = []
+
+# Create and start threads
+for i in range(16):
+    thread = threading.Thread(target=worker, args=(results, i))
+    threads.append(thread)
+    thread.start()
+
+# Wait for all threads to complete
+for thread in threads:
+    thread.join()
+
+# Check if all results are identical
+result_values = [result[0] for result in results.values()]
+log_hashes = [result[1] for result in results.values()]
+
+if len(set(result_values)) == 1 and len(set(log_hashes)) == 1:
+    print("✓ Concurrency determinism test passed - all results identical")
+else:
+    print(f"✗ Concurrency determinism test failed:")
+    print(f"  Unique result values: {len(set(result_values))}")
+    print(f"  Unique log hashes: {len(set(log_hashes))}")

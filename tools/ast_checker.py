@@ -11,7 +11,7 @@ by checking for prohibited constructs like:
 
 import ast
 import sys
-import os
+import pathlib
 from typing import List, Tuple, Set, Optional
 
 # Prohibited modules and functions
@@ -138,16 +138,14 @@ def check_directory(directory: str, exclude_dirs: Optional[List[str]] = None) ->
     
     results = {}
     
-    for root, dirs, files in os.walk(directory):
-        # Skip excluded directories
-        dirs[:] = [d for d in dirs if d not in exclude_dirs]
-        
-        for file in files:
-            if file.endswith('.py'):
-                filepath = os.path.join(root, file)
-                errors = check_file(filepath)
-                if errors:
-                    results[filepath] = errors
+    # Use pathlib for directory walking
+    path = pathlib.Path(directory)
+    for filepath in path.rglob('*.py'):
+        # Check if any parent directory is in exclude_dirs
+        if not any(excluded in filepath.parts for excluded in exclude_dirs):
+            errors = check_file(str(filepath))
+            if errors:
+                results[str(filepath)] = errors
     
     return results
 
@@ -161,18 +159,19 @@ def main():
         target = sys.argv[1]
     else:
         # Default to the QFS V13 directory
-        target = os.path.join(os.path.dirname(__file__), "..")
+        target = str(pathlib.Path(__file__).parent.parent)
     
     # Normalize the path
-    target = os.path.abspath(target)
+    target = str(pathlib.Path(target).resolve())
     
     print(f"Checking: {target}")
     
     # Check for compliance
-    if os.path.isfile(target) and target.endswith('.py'):
+    target_path = pathlib.Path(target)
+    if target_path.is_file() and target.endswith('.py'):
         errors = check_file(target)
         results = {target: errors} if errors else {}
-    elif os.path.isdir(target):
+    elif target_path.is_dir():
         results = check_directory(target, exclude_dirs=['__pycache__', '.git', 'venv', 'env'])
     else:
         print(f"Error: {target} is not a valid file or directory")

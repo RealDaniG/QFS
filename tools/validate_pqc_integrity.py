@@ -5,9 +5,9 @@ Ensures PQC keys exist and are generated deterministically.
 """
 
 import sys
-import os
 import json
 import hashlib
+import pathlib
 from typing import Dict, Any
 
 def validate_pqc_key_format(key_data: bytes, key_type: str) -> bool:
@@ -42,7 +42,7 @@ def validate_deterministic_key_generation() -> bool:
     """
     try:
         # Try to import the PQC module
-        sys.path.insert(0, 'src/libs')
+        sys.path.insert(0, str(pathlib.Path('src/libs').resolve()))
         from PQC import PQC
         
         # Test deterministic key generation

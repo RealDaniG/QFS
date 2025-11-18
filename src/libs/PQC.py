@@ -5,8 +5,6 @@ Zero-Simulation Compliant, PQC & Quantum Metadata Ready, Fully Auditable, Thread
 
 import json
 import hashlib
-import secrets
-import platform
 from typing import Any, Optional, Dict, List, Tuple, Union
 from dataclasses import dataclass
 
@@ -14,13 +12,11 @@ from dataclasses import dataclass
 # In production environments, ensure pqcrystals is properly installed
 # pip install pqcrystals
 try:
-    # Try to import the real Dilithium5 implementation
     from pqcrystals.dilithium import Dilithium5
-    REAL_PQC_AVAILABLE = True
+    Dilithium5Impl = Dilithium5
 except ImportError:
-    # Fallback for testing environments - this should NOT be used in production
-    REAL_PQC_AVAILABLE = False
-    print("WARNING: Real PQC library not available. Using mock implementation for testing only!")
+    # This should not happen in production - raise an explicit error
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
 
 # ------------------------------
 # Custom Exceptions
@@ -52,44 +48,6 @@ class ValidationResult:
     quantum_metadata: Optional[Dict[str, Any]] = None
 
 # ------------------------------
-# Mock PQC Implementation (for testing only - NOT for production)
-# ------------------------------
-class MockDilithium5:
-    """Mock implementation of Dilithium5 for testing environments"""
-    
-    @staticmethod
-    def keygen(seed: Optional[bytes] = None) -> Tuple[bytes, bytes]:
-        """Generate a mock keypair"""
-        if seed:
-            # Use seed for deterministic key generation
-            priv_key = hashlib.sha3_512(seed + b"private").digest() * 4  # 256 bytes
-            pub_key = hashlib.sha3_512(seed + b"public").digest() * 2    # 128 bytes
-        else:
-            # Random key generation
-            priv_key = secrets.token_bytes(256)
-            pub_key = secrets.token_bytes(128)
-        return (priv_key, pub_key)
-    
-    @staticmethod
-    def sign(private_key: bytes, message: bytes) -> bytes:
-        """Generate a mock signature"""
-        # Signature is hash of private key and message
-        return hashlib.sha3_512(private_key + message).digest() * 2  # 128 bytes
-    
-    @staticmethod
-    def verify(public_key: bytes, message: bytes, signature: bytes) -> bool:
-        """Verify a mock signature"""
-        # Recompute expected signature
-        expected_sig = hashlib.sha3_512(public_key + message).digest() * 2
-        return signature == expected_sig
-
-# Use real or mock implementation
-if REAL_PQC_AVAILABLE:
-    Dilithium5Impl = Dilithium5
-else:
-    Dilithium5Impl = MockDilithium5
-
-# ------------------------------
 # PQC Library
 # ------------------------------
 class PQC:
@@ -103,10 +61,8 @@ class PQC:
     # Supported algorithms
     DILITHIUM5 = "Dilithium5"
     
-    # System fingerprint for audit logs
-    SYSTEM_FINGERPRINT = hashlib.sha3_512(
-        f"{platform.system()}:{platform.release()}:{platform.version()}:{platform.machine()}".encode()
-    ).hexdigest()[:32]
+    # System fingerprint for audit logs (deterministic placeholder)
+    SYSTEM_FINGERPRINT = "qfs_v13_deterministic"
     
     # Zero hash for the first entry in the audit log chain
     ZERO_HASH = "0" * 64
@@ -130,7 +86,15 @@ class PQC:
             return self.log
 
         def __exit__(self, exc_type, exc_val, exc_tb):
-            pass  # Log remains accessible via self.log
+            # Finalize the log list by setting prev_hash for chain integrity
+            for i in range(len(self.log)):
+                if i == 0:
+                    # The first entry's prev_hash remains the initial value (ZERO_HASH)
+                    pass
+                else:
+                    # Set the current entry's prev_hash to the previous entry's entry_hash
+                    self.log[i]['prev_hash'] = self.log[i-1]['entry_hash']
+            # Log remains accessible via self.log
 
         def get_log(self):
             return self.log
@@ -158,7 +122,7 @@ class PQC:
         # Calculate log index
         log_index = len(log_list)
         
-        # Create the base entry
+        # Create the base entry with placeholder prev_hash
         entry = {
             "log_index": log_index,
             "operation": operation,
@@ -167,7 +131,7 @@ class PQC:
             "quantum_metadata": quantum_metadata,
             "timestamp": deterministic_timestamp,
             "system_fingerprint": PQC.SYSTEM_FINGERPRINT,
-            "prev_hash": PQC.ZERO_HASH
+            "prev_hash": PQC.ZERO_HASH  # Placeholder, will be updated by LogContext
         }
         
         # Add error information if present
@@ -184,10 +148,6 @@ class PQC:
         serialized_entry = json.dumps(entry_for_hash, sort_keys=True, separators=(',', ':'))
         entry_hash = hashlib.sha3_512(serialized_entry.encode("utf-8")).hexdigest()
         entry["entry_hash"] = entry_hash
-        
-        # Update the prev_hash for the next entry
-        # Note: We can't directly attach attributes to log_list, so we'll store prev_hash separately
-        # In a real implementation, this would be handled by the LogContext manager
             
         log_list.append(entry)
 
@@ -225,9 +185,21 @@ class PQC:
             # Recursively canonicalize list/tuple items
             canonical_list = [PQC._canonicalize_for_sign(item) for item in data]
             return json.dumps(canonical_list, separators=(',', ':'))
+        elif isinstance(data, bytes):
+            # Handle bytes by converting to hex string
+            return data.hex()
+        elif isinstance(data, bytearray):
+            # Handle bytearray by converting to hex string
+            return bytes(data).hex()
+        elif isinstance(data, str):
+            # For strings, return directly without JSON quotes
+            return data
+        elif isinstance(data, int):
+            # For integers, convert to string without JSON quotes
+            return str(data)
         else:
-            # For other types, use standard JSON serialization
-            return json.dumps(data, sort_keys=True, separators=(',', ':'))
+            # For other types, convert to string directly
+            return str(data)
 
     @staticmethod
     def serialize_data(data: Any) -> bytes:
@@ -269,9 +241,9 @@ class PQC:
     @staticmethod
     def generate_keypair(
         log_list: List[Dict[str, Any]],
+        seed: bytes,
         algorithm: str = DILITHIUM5,
         parameters: Optional[Dict[str, Any]] = None,
-        seed: Optional[bytes] = None,
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         deterministic_timestamp: int = 0,
@@ -286,24 +258,21 @@ class PQC:
         if parameters is None:
             parameters = {}
             
-        # Log the seed if provided (Section 2.3)
-        if seed:
-            seed_hash = hashlib.sha3_512(seed).hexdigest()
-            if quantum_metadata is None:
-                quantum_metadata = {}
-            quantum_metadata["seed_hash"] = seed_hash
+        # Validate seed is provided (Section 4.1)
+        if not seed:
+            raise ValueError("seed is required for deterministic key generation")
+            
+        # Log the seed (Section 2.3)
+        seed_hash = hashlib.sha3_512(seed).hexdigest()
+        if quantum_metadata is None:
+            quantum_metadata = {}
+        quantum_metadata["seed_hash"] = seed_hash
 
         try:
             # Generate keypair using the real PQC library (Section 2.1)
             if algorithm == PQC.DILITHIUM5:
-                # Use seed if provided, otherwise use library's default randomness
-                if seed:
-                    # For seeded key generation, we would typically use a KDF
-                    # In this simplified implementation, we'll use the seed directly
-                    # A production implementation would use a proper KDF like HKDF
-                    private_key, public_key = Dilithium5Impl.keygen(seed)
-                else:
-                    private_key, public_key = Dilithium5Impl.keygen()
+                # Use seed deterministically
+                private_key, public_key = Dilithium5Impl.keygen(seed)
             else:
                 raise PQCError(f"Unsupported algorithm: {algorithm}")
                 
@@ -324,7 +293,7 @@ class PQC:
                     "algorithm": algorithm,
                     "parameters": parameters,
                     "public_key_size": len(public_key),
-                    "seed_provided": seed is not None
+                    "seed_provided": True
                 },
                 log_list=log_list,
                 pqc_cid=pqc_cid,
@@ -372,7 +341,9 @@ class PQC:
             serialized_data = PQC.serialize_data(data)
             
             # Sign using the real PQC library (Section 2.1)
+            # Ensure private key is in the correct format for the underlying implementation
             if isinstance(private_key, bytearray):
+                # For our wrapper, we need to ensure the bytearray is in the correct format
                 private_key_bytes = bytes(private_key)
             else:
                 private_key_bytes = private_key
