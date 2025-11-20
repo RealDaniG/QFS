@@ -1,25 +1,25 @@
-# QFS V13 Core Dependencies
+# QFS V13 Phase-3 Requirements
+# Zero-Simulation Compliant Dependencies
+
+# Core Type System
 typing-extensions>=4.0.0
+
+# JSON Schema Validation
 jsonschema>=4.0.0
-hashlib
 
-# Post-Quantum Cryptography
-pqcrystals>=1.0.0
-
-# Testing Dependencies
+# Testing Framework
 pytest>=7.0.0
 pytest-cov>=4.0.0
 hypothesis>=6.0.0
 
-# Development Tools
+# Code Quality
+pylint>=2.0.0
 black>=22.0.0
 isort>=5.0.0
 mypy>=1.0.0
-pyright>=1.1.0
 
-# Security Analysis
-bandit>=1.7.0
-semgrep>=1.0.0
+# Post-Quantum Cryptography (Production)
+liboqs-python>=0.14.0
 
-# Documentation
-sphinx>=5.0.0
+# Optional: Performance Monitoring
+# psutil>=5.9.0

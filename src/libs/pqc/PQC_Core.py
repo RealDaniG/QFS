@@ -9,17 +9,43 @@ import hashlib
 from typing import Any, Optional, Dict, List, Union
 from dataclasses import dataclass
 
-# Production implementation uses the real PQC library
-# In production environments, ensure pqcrystals is properly installed
-# pip install pqcrystals
+# Production implementation uses dilithium-py (pqcrystals implementation)
+# Install: pip install dilithium-py
 try:
-    from pqcrystals.dilithium import Dilithium5
-    Dilithium5Impl = Dilithium5
-except ImportError:
+    from dilithium import Dilithium as DilithiumBase
+    
+    class Dilithium5Impl:
+        """Adapter for dilithium-py Dilithium implementation (Dilithium5 parameters)"""
+        
+        @staticmethod
+        def keygen(seed: bytes):
+            """Generate Dilithium keypair (deterministic with seed)"""
+            if len(seed) != 32:
+                raise ValueError(f"Seed must be 32 bytes, got {len(seed)}")
+            
+            # dilithium-py uses deterministic keygen with seed
+            d = DilithiumBase(seed=seed)
+            public_key, private_key = d.keygen()
+            
+            return private_key, public_key
+        
+        @staticmethod
+        def sign(private_key: bytes, message: bytes):
+            """Sign message with Dilithium private key"""
+            d = DilithiumBase()
+            return d.sign(private_key, message)
+        
+        @staticmethod
+        def verify(public_key: bytes, message: bytes, signature: bytes):
+            """Verify Dilithium signature"""
+            d = DilithiumBase()
+            return d.verify(public_key, message, signature)
+    
+except ImportError as e:
     # Production enforcement: PQC library is mandatory
     raise ImportError(
-        "pqcrystals.dilithium.Dilithium5 not available. "
-        "PQC.py cannot run in production without Dilithium5."
+        f"dilithium-py not available: {e}. "
+        "Install with: pip install dilithium-py"
     )
 
 # Import Phase-3 modules
