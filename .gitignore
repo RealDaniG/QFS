@@ -146,20 +146,6 @@ Thumbs.db
 
 # Audit logs and evidence (these are generated during CI/CD)
 audit/runs/*/
-!audit/runs/.gitkeep
-
-# Temporary files
-*.tmp
-*.temp
-
-# Log files
-*.log
-
-# Build artifacts
-*.exe
-*.dll
-*.so
-*.dylib
 
 # Distribution packages
 *.whl

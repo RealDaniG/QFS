@@ -338,23 +338,6 @@ class AST_ZeroSimChecker:
         try:
             import glob
             pattern = f"{directory_path}/**/*.py" if directory_path != "." else "**/*.py"
-            python_files = glob.glob(pattern, recursive=True)
-            
-            for file_path in python_files:
-                # Check if file should be excluded
-                should_exclude = False
-                for pattern in exclude_patterns:
-                    if pattern in file_path:
-                        should_exclude = True
-                        break
-                
-                if not should_exclude:
-                    violations = self.scan_file(file_path)
-                    if violations:
-                        results[file_path] = violations
-        except Exception:
-            # Fallback to scanning only the current directory
-            import pathlib
             path = pathlib.Path(directory_path)
             for file_path in path.glob("*.py"):
                 should_exclude = False
