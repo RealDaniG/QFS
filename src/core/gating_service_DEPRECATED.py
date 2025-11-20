@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-"""
-Gating Service for Global Curvature Resonance System
-Implements GAS calculation, memory locking, and safe mode triggers
-"""
-
-import numpy as np
-import logging
 import time
 from typing import Dict, Any, Optional
 import json

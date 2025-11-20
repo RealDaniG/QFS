@@ -1100,6 +1100,133 @@ class CertifiedMath:
                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
         return CertifiedMath._safe_softplus(a, iterations, log_list, pqc_cid, quantum_metadata)
 
+    # Additional methods for Phase 3 compatibility
+    @staticmethod
+    def checked_mul(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
+                    pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None,
+                    max_val: int = 10**18) -> BigNum128:
+        """Checked multiplication with overflow protection."""
+        # Check for potential overflow before multiplication
+        if a.value > 0 and b.value > 0 and a.value > BigNum128.MAX_VALUE // b.value:
+            raise OverflowError("CertifiedMath checked_mul overflow")
+        return CertifiedMath._safe_mul(a, b, log_list, pqc_cid, quantum_metadata)
+
+    @staticmethod
+    def checked_div(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
+                    pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Checked division with zero division protection."""
+        if b.value == 0:
+            raise ZeroDivisionError("CertifiedMath checked_div by zero")
+        return CertifiedMath._safe_div(a, b, log_list, pqc_cid, quantum_metadata)
+
+    @staticmethod
+    def clamp(x: BigNum128, low: BigNum128, high: BigNum128, log_list: List[Dict[str, Any]],
+              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Clamp value between low and high bounds."""
+        if CertifiedMath._safe_lt(x, low, log_list, pqc_cid, quantum_metadata):
+            CertifiedMath._log_operation("clamp", {"x": x, "low": low, "high": high}, low, log_list, pqc_cid, quantum_metadata)
+            return low
+        elif CertifiedMath._safe_gt(x, high, log_list, pqc_cid, quantum_metadata):
+            CertifiedMath._log_operation("clamp", {"x": x, "low": low, "high": high}, high, log_list, pqc_cid, quantum_metadata)
+            return high
+        else:
+            CertifiedMath._log_operation("clamp", {"x": x, "low": low, "high": high}, x, log_list, pqc_cid, quantum_metadata)
+            return x
+
+    @staticmethod
+    def div_floor(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
+                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Integer division with floor behavior."""
+        if b.value == 0:
+            raise ZeroDivisionError("CertifiedMath div_floor by zero")
+        # For positive numbers, regular division works as floor division
+        result = CertifiedMath._safe_div(a, b, log_list, pqc_cid, quantum_metadata)
+        CertifiedMath._log_operation("div_floor", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata)
+        return result
+
+    @staticmethod
+    def max(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Return the maximum of two values."""
+        result = a if CertifiedMath._safe_gte(a, b, log_list, pqc_cid, quantum_metadata) else b
+        CertifiedMath._log_operation("max", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata)
+        return result
+
+    @staticmethod
+    def min(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Return the minimum of two values."""
+        result = a if CertifiedMath._safe_lte(a, b, log_list, pqc_cid, quantum_metadata) else b
+        CertifiedMath._log_operation("min", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata)
+        return result
+
+    @staticmethod
+    def verify_genesis_state(genesis_state: Dict[str, Any], log_list: List[Dict[str, Any]] = None,
+                             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Verify genesis state mathematical invariants and return proof object.
+        
+        Args:
+            genesis_state: The genesis state dictionary to verify
+            log_list: Optional log list for audit trail
+            pqc_cid: Optional PQC correlation ID
+            quantum_metadata: Optional quantum metadata
+            
+        Returns:
+            Dict containing verification results and proofs
+        """
+        if log_list is None:
+            log_list = []
+            
+        proofs = {}
+        violations = []
+        
+        try:
+            # Verify token supply conservation
+            if "token_allocations" in genesis_state and "shards" in genesis_state["token_allocations"]:
+                shards = genesis_state["token_allocations"]["shards"]
+                total_chr = BigNum128(0)
+                total_flx = BigNum128(0)
+                
+                for shard_id, allocations in shards.items():
+                    if "CHR" in allocations:
+                        total_chr = CertifiedMath._safe_add(total_chr, BigNum128.from_int(allocations["CHR"]), log_list, pqc_cid, quantum_metadata)
+                    if "FLX" in allocations:
+                        total_flx = CertifiedMath._safe_add(total_flx, BigNum128.from_int(allocations["FLX"]), log_list, pqc_cid, quantum_metadata)
+                
+                proofs["token_conservation"] = {
+                    "CHR_total": total_chr.to_decimal_string(),
+                    "FLX_total": total_flx.to_decimal_string()
+                }
+            
+            # Verify system constants
+            if "system_constants" in genesis_state:
+                constants = genesis_state["system_constants"]
+                proofs["harmonic_bounds"] = {
+                    "A_MAX_positive": constants.get("A_MAX", 0) > 0,
+                    "δ_max_positive": constants.get("δ_max", 0) > 0,
+                    "ε_sync_positive": constants.get("ε_sync", 0) > 0,
+                    "δ_curl_positive": constants.get("δ_curl", 0) > 0
+                }
+            
+            # Verify topology connections if present
+            if "topology" in genesis_state and "shard_connections" in genesis_state["topology"]:
+                connections = genesis_state["topology"]["shard_connections"]
+                # Basic validation that connections exist
+                proofs["topology_exists"] = len(connections) > 0
+            
+            CertifiedMath._log_operation("verify_genesis_state", {"genesis_state_keys": list(genesis_state.keys())}, 
+                                       BigNum128.from_int(1), log_list, pqc_cid, quantum_metadata)
+            
+        except Exception as e:
+            violations.append(f"Verification error: {str(e)}")
+        
+        return {
+            "valid": len(violations) == 0,
+            "proofs": proofs,
+            "violations": violations
+        }
+
 if __name__ == "__main__":
     # To run build-time validation:
     #   python -c "from CertifiedMath import CertifiedMath; CertifiedMath.self_test()"

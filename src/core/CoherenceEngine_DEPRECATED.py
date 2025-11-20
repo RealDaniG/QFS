@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-"""
-Coherence Engine with Modulator Clamp Response
-Implements recursive stabilization and telemetry synchronization
-"""
-
-import numpy as np
-import logging
-import time
 from typing import List, Dict, Any, Optional
 import sys
 import os
