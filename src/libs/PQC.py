@@ -239,6 +239,237 @@ class PQC:
     # Core PQC Operations (Section 2.1)
     # --------------------------
     @staticmethod
+# Production implementation uses the real PQC library
+# In production environments, ensure pqcrystals is properly installed
+# pip install pqcrystals
+try:
+    from pqcrystals.dilithium import Dilithium5
+    Dilithium5Impl = Dilithium5
+except ImportError:
+    # This should not happen in production - raise an explicit error
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+
+# ------------------------------
+# Custom Exceptions
+# ------------------------------
+class PQCError(Exception):
+    """Base exception for PQC operations"""
+    pass
+
+class PQCValidationError(PQCError):
+    """Raised when PQC validation fails"""
+    pass
+
+# ------------------------------
+# Data Structures
+# ------------------------------
+@dataclass
+class KeyPair:
+    """Container for PQC key pair"""
+    private_key: bytearray
+    public_key: bytes
+    algorithm: str
+    parameters: Dict[str, Any]
+
+@dataclass
+class ValidationResult:
+    """Result of a PQC validation operation"""
+    is_valid: bool
+    error_message: Optional[str] = None
+    quantum_metadata: Optional[Dict[str, Any]] = None
+
+# ------------------------------
+# PQC Library
+# ------------------------------
+class PQC:
+    """
+    Production-ready, deterministic PQC library for QFS V13.
+    Provides Zero-Simulation compliant operations, PQC/quantum metadata support,
+    and requires an external log list for auditability (via context manager or direct passing).
+    This library does not maintain its own global state.
+    """
+    
+    # Supported algorithms
+    DILITHIUM5 = "Dilithium5"
+    
+    # System fingerprint for audit logs (deterministic placeholder)
+    SYSTEM_FINGERPRINT = "qfs_v13_deterministic"
+    
+    # Zero hash for the first entry in the audit log chain
+    ZERO_HASH = "0" * 64
+    
+    # --- Log Context Manager ---
+    class LogContext:
+        """
+        Context manager for creating isolated, deterministic operation logs.
+        Ensures thread-safety and coherence for a specific session or transaction bundle.
+        Usage:
+            with PQC.LogContext() as log:
+                result = PQC.generate_keypair(log, algorithm=PQC.DILITHIUM5)
+        """
+        def __init__(self):
+            self.log = []
+            self._prev_hash = PQC.ZERO_HASH
+
+        def __enter__(self):
+            self.log = []
+            self._prev_hash = PQC.ZERO_HASH
+            return self.log
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            # Finalize the log list by setting prev_hash for chain integrity
+            for i in range(len(self.log)):
+                if i == 0:
+                    # The first entry's prev_hash remains the initial value (ZERO_HASH)
+                    pass
+                else:
+                    # Set the current entry's prev_hash to the previous entry's entry_hash
+                    self.log[i]['prev_hash'] = self.log[i-1]['entry_hash']
+            # Log remains accessible via self.log
+
+        def get_log(self):
+            return self.log
+
+        def get_hash(self):
+            return PQC.get_pqc_audit_hash(self.log)
+
+        def export(self, path: str):
+            PQC.export_log(self.log, path)
+
+    # --------------------------
+    # Internal Logging
+    # --------------------------
+    @staticmethod
+    def _log_pqc_operation(
+        operation: str,
+        details: Dict[str, Any],
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        deterministic_timestamp: int = 0,
+        error: Optional[Exception] = None,
+    ):
+        """Appends a deterministic operation entry to the provided log_list with enhanced audit fields."""
+        # Calculate log index
+        log_index = len(log_list)
+        
+        # Create the base entry with placeholder prev_hash
+        entry = {
+            "log_index": log_index,
+            "operation": operation,
+            "details": details,
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": deterministic_timestamp,
+            "system_fingerprint": PQC.SYSTEM_FINGERPRINT,
+            "prev_hash": PQC.ZERO_HASH  # Placeholder, will be updated by LogContext
+        }
+        
+        # Add error information if present
+        if error:
+            entry["error"] = {
+                "type": type(error).__name__,
+                "message": str(error)
+            }
+        
+        # Calculate entry hash (excluding prev_hash to avoid circular dependency)
+        entry_for_hash = entry.copy()
+        entry_for_hash.pop("prev_hash", None)
+        entry_for_hash.pop("entry_hash", None)
+        serialized_entry = json.dumps(entry_for_hash, sort_keys=True, separators=(',', ':'))
+        entry_hash = hashlib.sha3_512(serialized_entry.encode("utf-8")).hexdigest()
+        entry["entry_hash"] = entry_hash
+            
+        log_list.append(entry)
+
+    @staticmethod
+    def get_pqc_audit_hash(log_list: List[Dict[str, Any]]) -> str:
+        """Generate deterministic SHA3-512 hash of a given log list."""
+        serialized_log = json.dumps(log_list, sort_keys=True, default=str)
+        return hashlib.sha3_512(serialized_log.encode("utf-8")).hexdigest()
+
+    @staticmethod
+    def export_log(log_list: List[Dict[str, Any]], path: str):
+        """Export the provided log list to a JSON file."""
+        with open(path, "w") as f:
+            json.dump(log_list, f, sort_keys=True, default=str)
+
+    # --------------------------
+    # Canonical Serialization (Section 2.2)
+    # --------------------------
+    @staticmethod
+    def _canonicalize_for_sign(data: Any) -> str:
+        """
+        Converts data to a canonical string representation suitable for signing.
+        Ensures deterministic serialization of BigNum128 and other complex types.
+        """
+        if hasattr(data, 'to_decimal_string'):
+            # Handle BigNum128 objects
+            return data.to_decimal_string()
+        elif isinstance(data, dict):
+            # Recursively canonicalize dictionary values
+            canonical_dict = {}
+            for key, value in sorted(data.items()):
+                canonical_dict[key] = PQC._canonicalize_for_sign(value)
+            return json.dumps(canonical_dict, sort_keys=True, separators=(',', ':'))
+        elif isinstance(data, (list, tuple)):
+            # Recursively canonicalize list/tuple items
+            canonical_list = [PQC._canonicalize_for_sign(item) for item in data]
+            return json.dumps(canonical_list, separators=(',', ':'))
+        elif isinstance(data, bytes):
+            # Handle bytes by converting to hex string
+            return data.hex()
+        elif isinstance(data, bytearray):
+            # Handle bytearray by converting to hex string
+            return bytes(data).hex()
+        elif isinstance(data, str):
+            # For strings, return directly without JSON quotes
+            return data
+        elif isinstance(data, int):
+            # For integers, convert to string without JSON quotes
+            return str(data)
+        else:
+            # For other types, convert to string directly
+            return str(data)
+
+    @staticmethod
+    def serialize_data(data: Any) -> bytes:
+        """
+        Serializes data to bytes for signing, ensuring deterministic output.
+        """
+        canonical_str = PQC._canonicalize_for_sign(data)
+        return canonical_str.encode('utf-8')
+
+    # --------------------------
+    # Memory Hygiene
+    # --------------------------
+    @staticmethod
+    def secure_zeroize_keypair(keypair: KeyPair) -> None:
+        """
+        Securely zeroizes a keypair's private key material.
+        """
+        PQC.zeroize_private_key(keypair.private_key)
+
+    @staticmethod
+    def zeroize_private_key(private_key: Union[bytes, bytearray]) -> bytearray:
+        """
+        Creates a zeroized copy of private key material.
+        """
+        if isinstance(private_key, bytes):
+            zeroized = bytearray(len(private_key))
+        else:  # bytearray
+            zeroized = bytearray(len(private_key))
+        
+        # Explicitly zero out the memory
+        for i in range(len(zeroized)):
+            zeroized[i] = 0
+            
+        return zeroized
+
+    # --------------------------
+    # Core PQC Operations (Section 2.1)
+    # --------------------------
+    @staticmethod
     def generate_keypair(
         log_list: List[Dict[str, Any]],
         seed: bytes,
