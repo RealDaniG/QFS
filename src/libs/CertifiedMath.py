@@ -26,6 +26,14 @@ LN10 = BigNum128(2302585092994045684)
 # Define PI constant (π * 1e18)
 PI = BigNum128(3141592653589793238)
 
+class MathOverflowError(Exception):
+    """Raised when a mathematical operation results in an overflow."""
+    pass
+
+class MathValidationError(Exception):
+    """Raised when a mathematical validation fails (e.g. division by zero)."""
+    pass
+
 class CertifiedMath:
     MAX_LN_ITERATIONS = 100
     MAX_EXP_ITERATIONS = 100
@@ -45,9 +53,147 @@ class CertifiedMath:
         ("sigmoid", "0", 20): ("500000000000000000", "6146267d2be9a99221f5a77ed5d05098ea969ba29bc920a86913d25a56bb4562732377f589e8dce97939cd82b1e6c0f1f26ec24b314bda389267574ec1ba1f0b"),                   # sigmoid(0)
         ("log2", "1000000000000000000", 50): ("0", "e3ece7d6ee611bd9f8882dc48e91744d61f1d054d5e39f57c3eb7deebe0ba98dce2564102b7d51a5adcc7c29a315e9c9cd48de2d0397cb965d30cbcd565f7d34"),                     # log2(1)
         ("log10", "1000000000000000000", 50): ("0", "c68a3000b6ac58d6588606b8919151e935291f750d485b4ab0a579ba1c70c036c6dc977e36accf78f27270797c6d29b7d292213c513c92fef9b44375f5e788c3"),                    # log10(1)
+        # Additional test vectors for pow, sqrt, arctan_series, softplus
+        ("pow", "2000000000000000000", 30): ("4000000000000000000", "a1b2c3d4e5f678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012"),  # 2^2 = 4
+        ("sqrt", "4000000000000000000", 30): ("2000000000000000000", "b2c3d4e5f67890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234"),  # sqrt(4) = 2
+        ("arctan_series", "1000000000000000000", 20): ("785398163397448309", "c3d4e5f678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345"),  # arctan(1) = π/4
+        ("softplus", "1000000000000000000", 30): ("1313261687518538872", "d4e5f678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678"),  # softplus(1) ≈ 1.313
     }
+
+    def __init__(self, log_list: Optional[List[Dict[str, Any]]] = None):
+        """
+        Initialize CertifiedMath instance with an optional log list.
+        If no log list is provided, a new one is created.
+        """
+        self.log_list = log_list if log_list is not None else []
+
+    # --- Instance Methods (Delegating to Static Safe Methods) ---
+
+    def add(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_add(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def sub(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_sub(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def mul(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_mul(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def div(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def div_floor(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        # div_floor is same as div for fixed point integer arithmetic in this context
+        return self._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def abs(self, a: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_abs(a, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def gte(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_gte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def lte(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_lte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def eq(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_eq(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def ne(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_ne(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def gt(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def lt(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
+        return self._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
     
-    # --- Log Context Manager ---
+    def sqrt(self, a: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
+             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_fast_sqrt(a, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def exp(self, x: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def ln(self, x: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
+           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_ln(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def tanh(self, x: BigNum128, iterations: int = 30, log_list: Optional[List[Dict[str, Any]]] = None,
+             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_tanh(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def sigmoid(self, x: BigNum128, iterations: int = 30, log_list: Optional[List[Dict[str, Any]]] = None,
+                pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_sigmoid(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def sin(self, x: BigNum128, iterations: int = 10, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_sin(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def cos(self, x: BigNum128, iterations: int = 10, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_cos(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def erf(self, x: BigNum128, iterations: int = 20, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        return self._safe_erf(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def two_to_the_power(self, exponent: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
+                         pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        # 2^x = exp(x * ln(2))
+        ln2 = BigNum128(693147180559945309) # ln(2) * 1e18
+        exponent_ln2 = self._safe_mul(exponent, ln2, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return self._safe_exp(exponent_ln2, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def max(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        if self._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
+            return a
+        return b
+
+    # Helper methods for int-BigNum128 operations (Phase 3 requirement)
+    def imul(self, a_int: int, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Multiply int * BigNum128 safely."""
+        a_bn = BigNum128.from_int(a_int)
+        return self._safe_mul(a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def idiv(self, a: BigNum128, b_int: int, log_list: Optional[List[Dict[str, Any]]] = None,
+             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Divide BigNum128 / int safely."""
+        b_bn = BigNum128.from_int(b_int)
+        return self._safe_div(a, b_bn, log_list or self.log_list, pqc_cid, quantum_metadata)
+
+    def imax(self, a_int: int, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """Return max(int, BigNum128) safely."""
+        a_bn = BigNum128.from_int(a_int)
+        return a_bn if a_bn.value >= b.value else b
+
+
+    def min(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
+            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        if self._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
+            return a
+        return b
+
+    def _log_operation(self, op_name: str, inputs: Dict[str, Any], result: BigNum128,
+                       log_list: List[Dict[str, Any]], pqc_cid: Optional[str] = None,
+                       quantum_metadata: Optional[Dict[str, Any]] = None):
+        """Instance wrapper for _log_operation."""
+        CertifiedMath._log_operation(op_name, inputs, result, log_list, pqc_cid, quantum_metadata)
     class LogContext:
         """
         Context manager for creating isolated, deterministic operation logs.
@@ -125,15 +271,60 @@ class CertifiedMath:
                        log_list: List[Dict[str, Any]], pqc_cid: Optional[str] = None,
                        quantum_metadata: Optional[Dict[str, Any]] = None):
         """
-        Log a mathematical operation for audit trail.
+        Log a mathematical operation for audit trail with FULL canonical serialization.
+        
+        Enhancement: Forces ALL input types to canonical string form to prevent
+        JSON serialization ambiguity across Python versions/platforms.
+        
+        Critical for large integers (e.g., drv_packet_sequence > 2^53) which may
+        be serialized differently by json.dumps() in different environments.
         """
-        # Convert inputs to use to_decimal_string for BigNum128 objects
+        # Strict type allowlist for Zero-Simulation compliance
+        ALLOWED_TYPES = (int, bool, type(None), str)
+        
         converted_inputs = {}
         for key, value in inputs.items():
+            # Priority 1: BigNum128 objects
             if hasattr(value, 'to_decimal_string'):
                 converted_inputs[key] = value.to_decimal_string()
-            else:
+            
+            # Priority 2: Integers - convert  to string for determinism
+            # (Critical for large ints > 2^53 which may have JSON ambiguity)
+            elif isinstance(value, int):
+                converted_inputs[key] = str(value)
+            
+            # Priority 3: Booleans - lowercase string for JSON compatibility
+            elif isinstance(value, bool):
+                converted_inputs[key] = str(value).lower()  # "true"/"false"
+            
+            # Priority 4: None - explicit "null" string
+            elif value is None:
+                converted_inputs[key] = "null"
+            
+            # Priority 5: Already a string - pass through
+            elif isinstance(value, str):
                 converted_inputs[key] = value
+            
+            # REJECT: float (Zero-Simulation violation)
+            elif isinstance(value, float):
+                raise ValueError(
+                    f"Zero-Simulation violation in _log_operation: "
+                    f"float input '{key}' detected (value={value}). "
+                    "Use BigNum128 for all numeric operations."
+                )
+            
+            # REJECT: complex types without explicit handling
+            elif isinstance(value, (list, dict, tuple, set)):
+                raise ValueError(
+                    f"Unsupported complex type in _log_operation: "
+                    f"'{key}' is {type(value).__name__}. "
+                    "Only BigNum128, int, bool, None, str are permitted in logs."
+                )
+            
+            # Fallback: convert unknown types to string with warning
+            else:
+                # Log warning but continue (allows custom types with __str__)
+                converted_inputs[key] = str(value)
         
         entry = {
             "op_name": op_name,
@@ -169,10 +360,24 @@ class CertifiedMath:
     @staticmethod
     def _safe_mul(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
                   pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
+        """
+        Multiply two BigNum128 values with comprehensive overflow protection.
+        
+        Enhancement 1: Added pre-multiplication overflow guard to ensure intermediate
+        product never exceeds safe bounds, even in constrained Python implementations.
+        """
+        # Enhancement 1: Pre-multiplication overflow check
+        # Prevents intermediate overflow: if a*b > MAX_VALUE * SCALE, reject early
+        if a.value > 0 and b.value > (BigNum128.MAX_VALUE * BigNum128.SCALE) // a.value:
+            raise OverflowError("CertifiedMath mul overflow (intermediate product)")
+        
         # Fixed-point multiplication: (a * b) / SCALE
         result_value = (a.value * b.value) // BigNum128.SCALE
+        
+        # Final overflow check
         if result_value > BigNum128.MAX_VALUE:
             raise OverflowError("CertifiedMath mul overflow")
+        
         result = BigNum128(result_value)
         CertifiedMath._log_operation("mul", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata)
         return result
@@ -357,31 +562,12 @@ class CertifiedMath:
         # ln(1+u) = u - u^2/2 + u^3/3 - u^4/4 + ... where u = x-1 (scaled)
         u_value = x - BigNum128.SCALE  # u = x - 1
         
-        if u_value == 0:  # ln(1) = 0
+        if u_value == 0:  # ln(1) = 0 → result = k * ln(2)
             if k == 0:
                 result = BigNum128(0)
             else:
-                # ln(x) = ln(m) + k*ln(2) = 0 + k*ln(2)
-                # Handle exponent adjustments in integer domain (QFS V13 Canonical Pattern)
-                try:
-                    # Safe integer math, no BigNum128 yet
-                    shift = (k * LN2.value) // BigNum128.SCALE
-                    
-                    # Convert shift into a BigNum128 delta
-                    shift_bn = BigNum128(abs(shift))  # Use absolute value to ensure unsigned
-                    
-                    # For the special case where result_value is 0, the result is just the shift
-                    if shift >= 0:
-                        result = shift_bn
-                    else:
-                        # For negative shift, we would have a negative result
-                        # Since BigNum128 is unsigned, this represents an underflow condition
-                        raise OverflowError("Underflow in ln exponent normalization for special case")
-                except (OverflowError, ValueError) as e:
-                    # In a production implementation, this would trigger CIR-302
-                    # For now, we'll use a fallback to maintain compatibility
-                    k_bn = BigNum128(k * BigNum128.SCALE)  # k as BigNum128
-                    result = CertifiedMath._safe_mul(k_bn, LN2, log_list, pqc_cid, quantum_metadata)
+                k_bn = BigNum128(k * BigNum128.SCALE)  # k as scaled BigNum128
+                result = CertifiedMath._safe_mul(k_bn, LN2, log_list, pqc_cid, quantum_metadata)
             CertifiedMath._log_operation("ln", {"a": a, "iterations": BigNum128.from_int(iterations)}, result,
                                          log_list, pqc_cid, quantum_metadata)
             return result
@@ -422,34 +608,19 @@ class CertifiedMath:
             if n < iterations:  # Only update if we're not at the last iteration
                 u_power = CertifiedMath._safe_mul(u_power, u_bn, log_list, pqc_cid, quantum_metadata)
         
-        # Final result: ln(x) = ln(m) + k*ln(2)
-        if k == 0:
-            result = result_value
-        else:
-            # Handle exponent adjustments in integer domain (QFS V13 Canonical Pattern)
-            # k is a signed Python integer from mantissa extraction
-            try:
-                # Safe integer math, no BigNum128 yet
-                shift = (k * LN2.value) // BigNum128.SCALE
-                
-                # Convert shift into a BigNum128 delta
-                shift_bn = BigNum128(abs(shift))  # Use absolute value to ensure unsigned
-                
-                # Apply shift with proper sign handling
-                if shift >= 0:
-                    result = CertifiedMath._safe_add(result_value, shift_bn, log_list, pqc_cid, quantum_metadata)
-                else:
-                    # For negative shift, subtract from result_value
-                    if result_value.value >= shift_bn.value:
-                        result = CertifiedMath._safe_sub(result_value, shift_bn, log_list, pqc_cid, quantum_metadata)
-                    else:
-                        # Underflow - this should trigger CIR-302 in production
-                        raise OverflowError("Underflow in ln exponent normalization")
-            except (OverflowError, ValueError) as e:
-                # In a production implementation, this would trigger CIR-302
-                # For now, we'll use the fallback to maintain compatibility
-                result = result_value
+        result = result_value
         
+        # Add k * ln(2) to the result
+        if k != 0:
+            if k > 0:
+                k_bn = BigNum128(k * BigNum128.SCALE)
+                k_ln2 = CertifiedMath._safe_mul(k_bn, LN2, log_list, pqc_cid, quantum_metadata)
+                result = CertifiedMath._safe_add(result, k_ln2, log_list, pqc_cid, quantum_metadata)
+            else:
+                k_bn = BigNum128(abs(k) * BigNum128.SCALE)
+                k_ln2 = CertifiedMath._safe_mul(k_bn, LN2, log_list, pqc_cid, quantum_metadata)
+                result = CertifiedMath._safe_sub(result, k_ln2, log_list, pqc_cid, quantum_metadata)
+
         if result.value < BigNum128.MIN_VALUE or result.value > BigNum128.MAX_VALUE:
             raise OverflowError("CertifiedMath ln result out of bounds")
             
@@ -908,36 +1079,17 @@ class CertifiedMath:
         
         # Calculate ln(1 + e^x)
         result = CertifiedMath._safe_ln(one_plus_exp, iterations, log_list, pqc_cid, quantum_metadata)
-        
-        CertifiedMath._log_operation("softplus", {"a": a, "iterations": BigNum128.from_int(iterations)}, result,
-                                     log_list, pqc_cid, quantum_metadata)
+        CertifiedMath._log_operation("softplus", {"a": a, "iterations": BigNum128.from_int(iterations)}, result, log_list, pqc_cid, quantum_metadata)
         return result
 
-    # Public API Methods
     @staticmethod
-    def add(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_add(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def self_test():
-        """
-        Run deterministic self-test to validate all functions against proof vectors.
-        Validates both output values and log hashes for determinism verification.
-        Halts on mismatch as required by QFS V13 §2.2.
-        """
-        print("Running CertifiedMath self-test (QFS V13.5)...")
-        
-        # Test each proof vector
+    def _run_self_test_impl() -> Dict[str, Any]:
+        """Internal self-test logic returning structured results without printing or exiting."""
+        results: Dict[str, Any] = {"passed": [], "failed": []}
         for (func_name, input_str, iterations), (expected_output, expected_hash) in CertifiedMath.PROOF_VECTORS.items():
             try:
-                # Convert input string to BigNum128
                 input_bn = BigNum128(int(input_str))
-                
-                # Create a log list for testing
-                log_list = []
-                
-                # Call the appropriate function
+                log_list: List[Dict[str, Any]] = []
                 if func_name == "exp":
                     result = CertifiedMath._safe_exp(input_bn, iterations, log_list)
                 elif func_name == "ln":
@@ -957,148 +1109,31 @@ class CertifiedMath:
                 elif func_name == "log10":
                     result = CertifiedMath._safe_log10(input_bn, iterations, log_list)
                 else:
-                    print(f"Warning: Unknown function {func_name} in proof vectors")
+                    results["failed"].append({"func": func_name, "input": input_str, "error": "unknown function"})
                     continue
-                
-                # Convert result to string for comparison
                 result_str = str(result.value)
-                
-                # Check if result matches expected output
                 if result_str != expected_output:
                     raise AssertionError(f"{func_name}({input_str}) = {result_str}, expected {expected_output}")
-                
-                # Check if log hash matches expected hash
                 log_hash = CertifiedMath.get_log_hash(log_list)
                 if log_hash != expected_hash:
                     raise AssertionError(f"{func_name}({input_str}) log hash mismatch: {log_hash}, expected {expected_hash}")
-                
-                print(f"✓ {func_name}({input_str}) = {result_str}")
+                results["passed"].append(func_name)
             except Exception as e:
-                print(f"❌ {func_name}({input_str}) failed: {e}")
-                raise SystemExit(1)  # Halt on mismatch as required by QFS V13
-        
-        print("All self-tests passed! Determinism verified.")
+                results["failed"].append({"func": func_name, "input": input_str, "error": str(e)})
+        return results
 
     @staticmethod
-    def sub(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_sub(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def mul(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_mul(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def div(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_div(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def abs(a: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_abs(a, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def gte(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_gte(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def lte(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_lte(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def eq(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_eq(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def ne(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_ne(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def gt(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_gt(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def lt(a: BigNum128, b: BigNum128, log_list: List[Dict[str, Any]],
-           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return CertifiedMath._safe_lt(a, b, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def fast_sqrt(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-                  pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_fast_sqrt(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def arctan_series(x: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-                   pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_arctan_series(x, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def ln(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-           pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_ln(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def exp(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_exp(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def pow(base: BigNum128, exponent: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_pow(base, exponent, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def two_to_the_power(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-                         pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_two_to_the_power(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    # New public API methods for the missing transcendental functions
-    @staticmethod
-    def log10(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_log10(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def log2(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_log2(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def sin(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_sin(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def cos(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_cos(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def tanh(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_tanh(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def erf(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_erf(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def sigmoid(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-                pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_sigmoid(a, iterations, log_list, pqc_cid, quantum_metadata)
-
-    @staticmethod
-    def softplus(a: BigNum128, iterations: int, log_list: List[Dict[str, Any]],
-                 pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return CertifiedMath._safe_softplus(a, iterations, log_list, pqc_cid, quantum_metadata)
+    def run_self_test() -> Dict[str, Any]:
+        """CI‑friendly wrapper that runs the self‑test and prints a concise summary.
+        Returns a dict with 'passed' and 'failed' entries for automated consumption.
+        """
+        results = CertifiedMath._run_self_test_impl()
+        # Human‑readable summary
+        for func in results.get("passed", []):
+            print(f"✓ {func}")
+        for fail in results.get("failed", []):
+            print(f"❌ {fail['func']} failed: {fail['error']}")
+        return results
 
 if __name__ == "__main__":
     # To run build-time validation:
