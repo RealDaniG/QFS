@@ -40,6 +40,353 @@ This repository documents the **systematic remediation** of QFS V13 from its bas
 
 ---
 
+## 🌐 QFS Economy System & ATLAS Integration
+
+### Overview
+
+QFS V13.5 implements a **deterministic financial-reputation economy** designed for integration into decentralized social media platforms. The system operates as a predictive coherence engine that evaluates user actions through energy-based scoring, token economics, and transparent governance—all while maintaining **zero-simulation compliance** and **post-quantum security**.
+
+### Five-Token Harmonic System
+
+QFS manages five interconnected tokens that work together to create a stable, self-regulating economy:
+
+| Token | Symbol | Purpose | Function |
+|-------|--------|---------|----------|
+| **Coherence** | CHR | System stability | Base measure of network health (S_CHR metric) |
+| **Flexibility** | FLX | Rewards & incentives | Primary token for user rewards and penalties |
+| **Psi-Sync** | ΨSync | Predictive alignment | Measures user action coherence with network state |
+| **Attestation** | ATR | Reputation tracking | Oracle-verified user reputation scores |
+| **Reserve** | RES | Economic buffer | Stabilization reserve for market shocks |
+
+**Token Interactions:**
+- All tokens are managed through **TokenStateBundle** (immutable snapshots)
+- State transitions are atomic and PQC-signed
+- HSMF (Harmonic Stability Management Framework) enforces coherence thresholds
+- TreasuryEngine calculates deterministic rewards based on HSMF metrics
+- RewardAllocator distributes FLX tokens to users based on predictive coherence
+
+### Integration into ATLAS Social Media Platform
+
+**ATLAS** is a decentralized, censorship-resistant social media platform built on P2P/TOR networks. QFS serves as its **deterministic financial-reputation layer**, evaluating every user action through predictive coherence and issuing real-time rewards/penalties.
+
+#### Architecture: QFS as ATLAS Engine
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      ATLAS Platform                              │
+│  (P2P/TOR Network - Censorship Resistant)                       │
+│                                                                  │
+│  ┌────────────────┐  ┌──────────────┐  ┌────────────────────┐  │
+│  │  User Actions  │  │   Content    │  │   Governance       │  │
+│  │  • Posts       │  │  • Metadata  │  │  • Visibility      │  │
+│  │  │ Likes     │  │  • AI Analysis│  │  • Policy Updates │  │
+│  │  • Shares      │  │  • Moderation│  │  • Disputes        │  │
+│  └────────┬───────┘  └──────┬───────┘  └────────┬───────────┘  │
+│           │                 │                   │               │
+│           └─────────────────┼───────────────────┘               │
+│                             ↓                                   │
+│              ╔═══════════════════════════════╗                  │
+│              ║   Open-A.G.I / AEGIS API      ║                  │
+│              ║  (Distributed Computation)    ║                  │
+│              ╠═══════════════════════════════╣                  │
+│              ║ • P2P Messaging               ║                  │
+│              ║ • PBFT Consensus              ║                  │
+│              ║ • Node Telemetry              ║                  │
+│              ║ • Ledger Management           ║                  │
+│              ║ • Cryptography (Ed25519)      ║                  │
+│              ╚═══════════════╤═══════════════╝                  │
+│                              ↓                                   │
+└──────────────────────────────┼───────────────────────────────────┘
+                               │
+                               ↓
+┌────────────────────────────────────────────────────────────────┐
+│              QFS V13.5 - Deterministic Engine                   │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Predictive Coherence Module (PCM)                       │  │
+│  │  • Analyzes user actions against network state           │  │
+│  │  • Calculates ΨSync alignment scores                     │  │
+│  │  • Predicts future coherence impact                      │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              ↓                                  │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  HSMF v2 (Harmonic Stability Framework)                  │  │
+│  │  • Energy-based action scoring (Action_Cost_QFS)         │  │
+│  │  • Coherence validation (S_CHR, C_holo metrics)          │  │
+│  │  • Threshold enforcement (C_MIN, DEZ checks)             │  │
+│  │  • CIR-302 critical failure handling                     │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              ↓                                  │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Adaptive Token Weighting (ATW)                           │  │
+│  │  • Dynamic FLX reward calculation                         │  │
+│  │  • Weighted allocation based on coherence                │  │
+│  │  • Penalty distribution for violations                   │  │
+│  │  • Treasury-based economic balancing                     │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              ↓                                  │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Expanded Quantum Metadata (EQM)                          │  │
+│  │  • Full audit trail generation                            │  │
+│  │  • PQC-signed metadata (Dilithium-5)                     │  │
+│  │  • Deterministic hash chains (SHA3-512)                  │  │
+│  │  • Immutable CoherenceLedger logging                     │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              ↓                                  │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Integrated Governance Layer (IGL)                        │  │
+│  │  • Deterministic quorum calculations                      │  │
+│  │  • Content visibility decisions                           │  │
+│  │  • Policy update mechanisms                               │  │
+│  │  • Dispute resolution protocols                           │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              ↓                                  │
+│            ╔════════════════════════════════╗                  │
+│            ║  StateTransitionEngine        ║                  │
+│            ║  • Atomic token updates       ║                  │
+│            ║  • PQC-signed state commits   ║                  │
+│            ║  • AEGIS_FINALITY_SEAL        ║                  │
+│            ╚═══════════════╤════════════════╝                  │
+└────────────────────────────┼───────────────────────────────────┘
+                             │
+                             ↓
+                   Token Ledger Updates
+              (Consensus-verified via AEGIS API)
+```
+
+#### Core Integration Components
+
+**1. Predictive Coherence Module (PCM)**
+- **Purpose:** Evaluates how well user actions align with current network state
+- **Metrics:**
+  - ΨSync score: Measures coherence between user intent and system stability
+  - Historical pattern analysis: Tracks user behavior over time
+  - Predictive impact: Forecasts how actions affect S_CHR (system coherence)
+- **Implementation:** Uses CertifiedMath for deterministic calculations
+- **Output:** Coherence scores fed into HSMF for reward calculation
+
+**2. HSMF v2 (Harmonic Stability Management Framework)**
+- **Purpose:** Energy-based scoring system for all user actions
+- **Key Functions:**
+  - `calculate_action_cost()`: Determines energy cost of user actions
+  - `validate_coherence()`: Checks if C_holo >= C_MIN (minimum coherence)
+  - `compute_s_chr()`: Calculates system-wide stability metric
+  - `trigger_cir302()`: Immediate halt on critical failures
+- **Components:**
+  - `src/core/HSMF.py`: Core framework implementation
+  - `src/core/CoherenceEngine.py`: Modulator calculations and Ω updates
+  - `src/handlers/CIR302_Handler.py`: Critical incident response
+- **Integration:** Consumes AEGIS API data (node metrics, consensus state)
+
+**3. Adaptive Token Weighting (ATW)**
+- **Purpose:** Dynamic FLX token reward/penalty distribution
+- **Algorithm:**
+  ```python
+  # Simplified ATW calculation
+  coherence_score = PCM.calculate_psi_sync(user_action, network_state)
+  energy_cost = HSMF.calculate_action_cost(action_type, coherence_score)
+  base_reward = TreasuryEngine.compute_reward(S_CHR, C_holo, energy_cost)
+  weighted_reward = RewardAllocator.apply_weights(base_reward, coherence_score)
+  ```
+- **Components:**
+  - `src/libs/governance/TreasuryEngine.py`: Reward calculations
+  - `src/libs/governance/RewardAllocator.py`: Distribution logic
+- **Characteristics:**
+  - Higher coherence = higher rewards
+  - Low coherence = penalties (negative FLX)
+  - Energy-intensive actions (spam, abuse) = higher costs
+
+**4. Expanded Quantum Metadata (EQM)**
+- **Purpose:** Full auditability and verifiability of all operations
+- **Data Captured:**
+  - User action type and timestamp (DRV_Packet.ttsTimestamp)
+  - Coherence scores and HSMF metrics
+  - FLX token allocation amounts
+  - Governance decisions and voting records
+  - PQC signatures (Dilithium-5) for all state changes
+- **Storage:** CoherenceLedger generates AEGIS_FINALITY_SEAL.json
+- **Verification:** SHA3-512 hash chains ensure immutability
+
+**5. Integrated Governance Layer (IGL)**
+- **Purpose:** Deterministic governance without centralized control
+- **Decisions Managed:**
+  - **Content Visibility:** Algorithmic ranking based on coherence scores
+  - **Policy Updates:** Community-driven proposals with quorum enforcement
+  - **Dispute Resolution:** Multi-signature verification for appeals
+- **Quorum Calculation:**
+  ```python
+  # Deterministic quorum (no randomness)
+  total_active_users = AEGIS_API.get_active_node_count()
+  quorum_threshold = CertifiedMath.multiply(
+      BigNum128.from_int(total_active_users),
+      BigNum128.from_string("0.66")  # 66% supermajority
+  )
+  ```
+- **Implementation:** Uses PBFT consensus via AEGIS API
+
+### Data Flow: User Action → Token Reward
+
+**Step-by-Step Process:**
+
+1. **User Action on ATLAS**
+   - User posts content, likes, shares, or votes
+   - ATLAS sends structured event payload to AEGIS API
+   - Example payload:
+     ```json
+     {
+       "user_id": "0x1234...",
+       "action_type": "post",
+       "content_hash": "sha256...",
+       "timestamp": 1702345678,
+       "signature": "dilithium5_sig..."
+     }
+     ```
+
+2. **AEGIS API Processing**
+   - Validates user signature (Ed25519/ChaCha20-Poly1305)
+   - Retrieves consensus-verified node data
+   - Queries historical interaction metrics
+   - Runs AI multimodal moderation (toxicity, spam detection)
+   - Returns network state to QFS
+
+3. **QFS Evaluation (PCM + HSMF)**
+   - PCM calculates ΨSync alignment score
+   - HSMF computes Action_Cost_QFS and validates C_holo
+   - Checks coherence thresholds (triggers CIR-302 if violated)
+   - Generates quantum_metadata for audit trail
+
+4. **Token Allocation (ATW)**
+   - TreasuryEngine computes base reward from HSMF metrics
+   - RewardAllocator applies coherence-based weighting
+   - FLX tokens allocated (positive for good actions, negative for violations)
+   - StateTransitionEngine atomically updates TokenStateBundle
+
+5. **Ledger Commit (EQM)**
+   - CoherenceLedger logs all changes with PQC signatures
+   - AEGIS_FINALITY_SEAL.json generated
+   - Updates submitted back to AEGIS API
+   - PBFT consensus validates across P2P network
+
+6. **User Receives Feedback**
+   - Token balance updated in ATLAS UI
+   - Coherence score displayed for transparency
+   - Governance rights adjusted based on reputation (ATR tokens)
+
+### Security & Privacy via AEGIS API
+
+**TOR Integration:**
+- All ATLAS ↔ AEGIS ↔ QFS communications routed through TOR
+- IP anonymization for censorship resistance
+- Onion routing prevents traffic analysis
+
+**Cryptography:**
+- **Transport:** Ed25519 (authentication) + ChaCha20-Poly1305 (encryption)
+- **Signatures:** Dilithium-5 (post-quantum resistant)
+- **Hashing:** SHA3-512 (deterministic, quantum-safe)
+
+**Privacy Model:**
+- User actions are pseudonymous (public keys, not real identities)
+- Coherence scores visible to maintain transparency
+- Governance votes cryptographically verifiable but voter-anonymous
+- Audit trails allow verification without revealing user data
+
+### Deployment & Monitoring
+
+**AEGIS API Endpoints Used by QFS:**
+- `POST /api/v1/actions/submit`: User action ingestion
+- `GET /api/v1/network/state`: Real-time network metrics
+- `GET /api/v1/consensus/history`: Historical interaction data
+- `POST /api/v1/tokens/allocate`: FLX token distribution
+- `POST /api/v1/governance/vote`: IGL decision submission
+- `GET /api/v1/telemetry/metrics`: Prometheus-compatible monitoring
+
+**Key Performance Indicators (KPIs):**
+- **Coherence Health:** S_CHR metric (target: >= C_MIN)
+- **Token Velocity:** FLX circulation rate
+- **Energy Abuse Rate:** Actions exceeding Action_Cost threshold
+- **Governance Participation:** Voter turnout percentage
+- **Audit Compliance:** Evidence artifact generation rate
+
+**Monitoring Tools:**
+- Prometheus metrics exported by AEGIS API
+- Grafana dashboards for real-time KPI visualization
+- Alerting on CIR-302 triggers (critical failures)
+- Evidence directory monitoring for compliance
+
+### Use Cases
+
+**1. Quality Content Incentivization**
+- High-coherence posts (well-researched, constructive) → **+FLX rewards**
+- Viral engagement aligned with network values → **+ΨSync boost**
+- Outcome: Users incentivized to produce valuable content
+
+**2. Spam & Abuse Deterrence**
+- Repetitive posting (high energy cost) → **-FLX penalties**
+- Toxic content (low coherence) → **reputation decay (ATR loss)**
+- Persistent violations → **CIR-302 halt + account freeze**
+- Outcome: Economic disincentive for bad actors
+
+**3. Decentralized Moderation**
+- Community flags content → **IGL governance vote**
+- Quorum reached deterministically (no manipulation)
+- Decision enforced via StateTransitionEngine
+- Outcome: Transparent, auditable content moderation
+
+**4. Economic Stability**
+- Market shock detected → **RES token deployed from Treasury**
+- HSMF adjusts reward rates to maintain C_holo >= C_MIN
+- Automatic rebalancing without human intervention
+- Outcome: Self-regulating economy resilient to volatility
+
+### Technical Advantages
+
+**Zero-Simulation Compliance:**
+- No floating-point operations → deterministic across all platforms
+- No random number generation → reproducible calculations
+- No time-based operations → replay-safe for auditing
+- BigNum128 fixed-point arithmetic ensures precision
+
+**Post-Quantum Security:**
+- Dilithium-5 signatures secure against quantum attacks
+- Kyber-1024 KEM for future key exchange needs
+- SHA3-512 resistant to Grover's algorithm
+- Future-proof cryptography for long-term deployment
+
+**Censorship Resistance:**
+- P2P/TOR architecture → no single point of failure
+- PBFT consensus → Byzantine fault tolerant
+- Distributed ledger → no central authority
+- Open-source verification → full transparency
+
+**Auditability:**
+- Every action logged in CoherenceLedger
+- PQC-signed metadata (EQM) prevents tampering
+- SHA3-512 hash chains enable forensic analysis
+- Machine-readable evidence for compliance automation
+
+### Summary: QFS as ATLAS' Deterministic Backbone
+
+QFS operates as a **deterministic engine on top of AEGIS**, using its API as the backbone for:
+- **Secure, distributed computation** (P2P/TOR network)
+- **Token management** (FLX allocation via TreasuryEngine)
+- **Governance** (IGL quorum decisions)
+- **Auditability** (EQM metadata + CoherenceLedger)
+
+**No central servers required.** All operations are consensus-verified through PBFT, cryptographically secured with Ed25519/Dilithium-5, and fully auditable via SHA3-512 hash chains. The result is a **censorship-resistant, economically stable social media platform** where quality content is rewarded, abuse is deterred, and users maintain full privacy.
+
+**Integration Status:**
+- ✅ Core QFS components implemented (Phase 1: 80% complete)
+- ⏳ AEGIS API integration (Phase 3+)
+- ⏳ PCM/ATW/EQM/IGL modules (Phase 3+)
+- 🎯 Target: Full ATLAS integration by Phase 5 (365-day roadmap)
+
+**See:**
+- [ROADMAP-V13.5-REMEDIATION.md](ROADMAP-V13.5-REMEDIATION.md) - Integration timeline
+- [docs/qfs-v13.5-dashboard.html](docs/qfs-v13.5-dashboard.html) - Real-time progress
+- [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Current compliance status
+
+---
+
 ## Overview
 
 **QFS V13** is designed to be a fully deterministic, post-quantum secure financial system implementing the Five-Token Harmonic System (CHR, FLX, ΨSync, ATR, RES). This repository contains:
