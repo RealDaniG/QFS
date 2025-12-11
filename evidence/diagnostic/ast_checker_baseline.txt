@@ -1,0 +1,2505 @@
+QFS V13 Zero-Simulation Compliance Checker
+=============================================
+Checking: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+Traceback (most recent call last):
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tools\ast_checker.py", line 194, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tools\ast_checker.py", line 175, in main
+    results = check_directory(target, exclude_dirs=['__pycache__', '.git', 'venv', 'env'])
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tools\ast_checker.py", line 146, in check_directory
+    errors = check_file(str(filepath))
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tools\ast_checker.py", line 131, in check_file
+    checker.visit(tree)
+    ~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 430, in generic_visit
+    self.visit(item)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 430, in generic_visit
+    self.visit(item)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 430, in generic_visit
+    self.visit(item)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 432, in generic_visit
+    self.visit(value)
+    ~~~~~~~~~~^^^^^^^
+  File "C:\Python313\Lib\ast.py", line 422, in visit
+    return visitor(node)
+  File "C:\Python313\Lib\ast.py", line 426, in generic_visit
+    for field, value in iter_fields(node):
+                        ~~~~~~~~~~~^^^^^^
+RecursionError: maximum recursion depth exceeded

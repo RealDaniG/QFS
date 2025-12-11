@@ -18,6 +18,11 @@ import os
 import fnmatch
 from typing import List, Set
 from dataclasses import dataclass
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -37,8 +42,10 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         self.lines: List[str] = []
         self.inside_function = False
         self.current_function_args = set()
+        # Check if any part of the path contains deterministic module names
+        path_parts = self.file_path.replace(os.sep, '/').split('/')
         self.is_deterministic_module = any(
-            part in self.file_path.split(os.sep)
+            part in path_parts
             for part in ["economics", "core", "coherence", "state", "reward", "ledger"]
         )
         # Whitelist CertifiedMath itself
@@ -93,12 +100,15 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
     # 🔥 1 — CertifiedMath enforcement
     def visit_BinOp(self, node: ast.BinOp):
         if isinstance(node.op, ast.Div):
-            self.add_violation(node, "FORBIDDEN_OPERATION", "Use CertifiedMath.idiv(), not /")
+            self.add_violation(node, "FORBIDDEN_OPERATION", "Use CertifiedMath.idiv(), not / (produces float)")
+        elif isinstance(node.op, ast.FloorDiv):
+            # Check if FloorDiv could produce float in some contexts
+            self.add_violation(node, "FORBIDDEN_OPERATION", "Use CertifiedMath.idiv(), not // (can produce float)")
         elif isinstance(node.op, ast.Pow):
             self.add_violation(node, "FORBIDDEN_OPERATION", "Use CertifiedMath.pow(), not **")
         elif self.is_deterministic_module and not self.is_certified_math:
             op_name = type(node.op).__name__
-            if op_name in ('Add', 'Sub', 'Mult', 'FloorDiv'):
+            if op_name in ('Add', 'Sub', 'Mult'):
                 self.add_violation(
                     node, "UNCERTIFIED_ARITHMETIC",
                     f"Direct arithmetic forbidden in economics. Use CertifiedMath.{op_name.lower()}()"
@@ -135,11 +145,16 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                 self.add_violation(node, "FORBIDDEN_CALL", f"Forbidden function: {node.func.id}")
             if node.func.id == "hash":
                 self.add_violation(node, "FORBIDDEN_HASH", "hash() is randomized — forbidden")
+            if node.func.id in ("__import__", "import_module"):
+                self.add_violation(node, "DYNAMIC_IMPORT", "Dynamic imports forbidden")
         elif isinstance(node.func, ast.Attribute):
             obj = node.func.value
             attr = node.func.attr
             if isinstance(obj, ast.Name) and obj.id in self.forbidden_modules:
                 self.add_violation(node, "FORBIDDEN_MODULE_CALL", f"{obj.id}.{attr} forbidden")
+            # Check for importlib.import_module
+            if isinstance(obj, ast.Name) and obj.id == "importlib" and attr == "import_module":
+                self.add_violation(node, "DYNAMIC_IMPORT", "Dynamic imports forbidden")
             if attr in ("items", "keys", "values") and not self._parent_is_sorted(node):
                 self.add_violation(node, "NONDETERMINISTIC_ITERATION", f"{attr}() must be in sorted()")
         self.generic_visit(node)
@@ -210,13 +225,24 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Constant(self, node):
-        if isinstance(node.value, float):
+        if isinstance(node.value, float) or ('e' in str(node.value).lower()):
             self.add_violation(node, "FLOAT_LITERAL", "Float literals forbidden")
         self.generic_visit(node)
 
     def visit_Name(self, node):
         if node.id in ("set", "frozenset") and isinstance(node.ctx, ast.Load):
             self.add_violation(node, "FORBIDDEN_TYPE", f"{node.id} is nondeterministic")
+        self.generic_visit(node)
+
+    def visit_Attribute(self, node):
+        # Only flag global attribute mutation (when not inside a function)
+        if isinstance(node.ctx, ast.Store) and not self.inside_function:
+            self.add_violation(node, "GLOBAL_ATTR_MUTATION", f"Global attribute assignment forbidden: {node.attr}")
+        self.generic_visit(node)
+
+    def visit_GeneratorExp(self, node):
+        if self.is_deterministic_module:
+            self.add_violation(node, "FORBIDDEN_GENERATOR", "Generator expressions forbidden in deterministic modules")
         self.generic_visit(node)
 
 
@@ -246,10 +272,20 @@ class AST_ZeroSimChecker:
                         "Economics module must import DeterministicTime"
                     )
 
-        except SyntaxError:
-            pass  # handled by linter
-        except Exception:
-            pass  # defensive
+        except SyntaxError as e:
+            logger.warning(f"Syntax error in {file_path}: {e}")
+            # Still add a violation for syntax errors
+            visitor.add_violation(
+                ast.Module(), "SYNTAX_ERROR",
+                f"Syntax error: {e}"
+            )
+        except Exception as e:
+            logger.warning(f"Error parsing {file_path}: {e}")
+            # Still add a violation for parsing errors
+            visitor.add_violation(
+                ast.Module(), "PARSING_ERROR",
+                f"Parsing error: {e}"
+            )
         return visitor.violations
 
     def scan_directory(self, directory: str, exclude_patterns: List[str] = None) -> List[Violation]:
@@ -266,9 +302,14 @@ class AST_ZeroSimChecker:
                     all_violations.extend(self.scan_file(os.path.join(root, file)))
         return all_violations
 
-    def enforce_policy(self, directory: str, fail_on_violations: bool = False):
-        print(f"🔍 Enforcing QFS V13 Phase 3 Zero-Simulation policy in: {directory}")
-        violations = self.scan_directory(directory)
+    def enforce_policy(self, path: str, fail_on_violations: bool = False):
+        print(f"🔍 Enforcing QFS V13 Phase 3 Zero-Simulation policy in: {path}")
+        if os.path.isfile(path) and path.endswith(".py"):
+            # Handle single file
+            violations = self.scan_file(path)
+        else:
+            # Handle directory
+            violations = self.scan_directory(path)
         if violations:
             print(f"❌ {len(violations)} violations found:")
             for v in violations[:50]:
