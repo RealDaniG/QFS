@@ -1,0 +1,32 @@
+{
+  "component": "PQC",
+  "test_suite": "Integration Tests (Mock Backend)",
+  "timestamp": "2025-12-11T16:30:00Z",
+  "backend": {
+    "backend": "MockPQC",
+    "algorithm": "SHA-256 (simulation only)",
+    "security_level": "NONE - NOT CRYPTOGRAPHICALLY SECURE",
+    "production_ready": false,
+    "quantum_resistant": false,
+    "deterministic": true,
+    "warning": "INTEGRATION TESTING ONLY - DO NOT USE IN PRODUCTION"
+  },
+  "tests_run": 7,
+  "tests_passed": 7,
+  "tests_failed": 0,
+  "pass_rate": "100%",
+  "security_warning": {
+    "level": "CRITICAL",
+    "message": "MockPQC is NOT cryptographically secure",
+    "production_ready": false,
+    "use_case": "Integration testing only",
+    "requirement": "Replace with pqcrystals or liboqs-python for production"
+  },
+  "test_coverage": {
+    "deterministic_keygen": "PASS",
+    "sign_verify_workflow": "PASS",
+    "tamper_detection": "PASS",
+    "audit_log_integrity": "PASS",
+    "memory_zeroization": "PASS"
+  }
+}

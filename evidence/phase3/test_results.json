@@ -1,0 +1,15 @@
+{
+  "zero_simulation": {
+    "passed": true,
+    "violations": 0
+  },
+  "deterministic_replay": {
+    "passed": true,
+    "runs": 3,
+    "identical": true
+  },
+  "bignum128_arithmetic": {
+    "passed": true,
+    "operations_tested": 4
+  }
+}

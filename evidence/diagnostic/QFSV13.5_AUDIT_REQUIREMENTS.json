@@ -1,0 +1,154 @@
+{
+  "audit_version": "2.0",
+  "timestamp": "2025-12-11T15:16:39.134489Z",
+  "git_commit": "ab85c4f92535",
+  "verdict": {
+    "overall_status": "WARN",
+    "exit_code": 1,
+    "critical_issues": [
+      "Collection errors: 37 \u2192 131"
+    ],
+    "recommendations": [
+      "Complete DeterministicTime implementation with evidence artifacts",
+      "Complete PQC layer implementation with evidence artifacts",
+      "Complete HSMF framework implementation with evidence artifacts",
+      "Create tests for TokenStateBundle (file exists but no tests found)",
+      "Create tests for DRV_Packet (file exists but no tests found)",
+      "Create tests for CoherenceLedger (file exists but no tests found)",
+      "Create tests for QFSV13SDK (file exists but no tests found)",
+      "Create tests for AEGIS API (file exists but no tests found)",
+      "Create tests for CIR302 Handler (file exists but no tests found)"
+    ]
+  },
+  "components": [
+    {
+      "name": "BigNum128 core math",
+      "file": "src/libs/BigNum128.py",
+      "status": "IMPLEMENTED",
+      "tests_collected": 7,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [
+        "evidence/phase1/bignum128_stress_summary.json"
+      ],
+      "non_det_patterns": [],
+      "criticality": "CRITICAL"
+    },
+    {
+      "name": "CertifiedMath engine",
+      "file": "src/libs/CertifiedMath.py",
+      "status": "IMPLEMENTED",
+      "tests_collected": 2,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [
+        "evidence/phase1/certified_math_proofvectors.json"
+      ],
+      "non_det_patterns": [],
+      "criticality": "CRITICAL"
+    },
+    {
+      "name": "DeterministicTime",
+      "file": "src/libs/DeterministicTime.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [
+        "evidence/phase1/time_regression_cir302_event.json",
+        "evidence/phase1/time_replay_verification.json"
+      ],
+      "non_det_patterns": [],
+      "criticality": "CRITICAL"
+    },
+    {
+      "name": "PQC layer",
+      "file": "src/libs/PQC.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "tests_collected": 1,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "CRITICAL"
+    },
+    {
+      "name": "HSMF framework",
+      "file": "src/core/HSMF.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "tests_collected": 2,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "TokenStateBundle",
+      "file": "src/core/TokenStateBundle.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "DRV_Packet",
+      "file": "src/core/DRV_Packet.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "CoherenceLedger",
+      "file": "src/core/CoherenceLedger.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "QFSV13SDK",
+      "file": "src/sdk/QFSV13SDK.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "AEGIS API",
+      "file": "src/services/aegis_api.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "HIGH"
+    },
+    {
+      "name": "CIR302 Handler",
+      "file": "src/handlers/CIR302_Handler.py",
+      "status": "UNKNOWN",
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "evidence_found": [],
+      "non_det_patterns": [],
+      "criticality": "CRITICAL"
+    }
+  ],
+  "non_det_patterns": {}
+}

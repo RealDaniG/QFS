@@ -1,0 +1,516 @@
+Phase 3
+
+0
+GenesisHarmonicState.py
+Foundation
+—everything depends on a signed, verified genesis
+1
+PsiFieldEngine.py
+Physics layer
+—economics and ledger depend on ψ-metrics
+2
+HarmonicEconomics.py
+Token rules
+—uses ψ outputs; required for treasury & ledger
+6
+EconomicAdversarySuite.py
+Early adversarial validation
+—test Steps 0–2 against EA-1 to EA-7
+3
+CoherenceLedger.py
++
+SystemRecoveryProtocol.py
+Global state
+—requires economics + field inputs
+4
+TreasuryDistributionEngine.py
++
+HoloRewardEngine.py
+Value layer
+—depends on ledger & field
+5
+PsiSyncProtocol.py
+Final sync
+—validates global coherence
+7
+Phase3EvidenceBuilder.py
+Certification
+—packages all evidence
+
+PHASE 3 — HARMONIC ECONOMICS & ψ-DYNAMICS VERIFICATION
+Complete Implementation Blueprint
+🎯 PHASE 3 OBJECTIVES
+Implement, verify, and mathematically harden the Harmonic 5-Token Economy ensuring:
+
+Value creation, coherence, and state transitions form closed deterministic loop
+
+Attack-proof economic engine with ψ-synchronous operations
+
+Zero-simulation compliance with certified mathematical proofs
+
+📁 COMPLETE MODULE ARCHITECTURE
+CORE ENGINE MODULES
+Module	Purpose	Dependencies	Status
+GenesisHarmonicState.py	Immutable foundation & bootstrap	CertifiedMath	STEP 0
+PsiFieldEngine.py	ψ-density, gradient, curl, flux computations	Genesis, CertifiedMath	STEP 1
+HarmonicEconomics.py	5-token economic rules enforcement	PsiField, CertifiedMath	STEP 2
+CoherenceLedger.py	Global cross-shard consistency	Economics, PsiField	STEP 3
+SystemRecoveryProtocol.py	Safe mode & CIR handling	Ledger, Economics	STEP 3
+TreasuryDistributionEngine.py	Treasury → nodes → users distribution	Ledger, Economics	STEP 4
+HoloRewardEngine.py	Coherence → value conversion with monotonicity	Treasury, PsiField	STEP 4
+PsiSyncProtocol.py	Global ΨSync consensus & validation	Ledger, PsiField	STEP 5
+EconomicAdversarySuite.py	14-adversary attack resistance testing	All modules	STEP 6
+Phase3EvidenceBuilder.py	Cryptographic evidence packaging	All modules	STEP 7
+🔧 TECHNICAL SPECIFICATIONS
+TOKEN ECONOMICS MATRIX
+Token	Symbol	Purpose	Properties	Conservation Law
+Coheron	CHR	Ethical alignment measurement	Non-transferable, earned	∑CHR = Constant
+ΦLux	FLX	Energy expression token	Transferable, stakable	Flow balance: inflow = outflow
+ΨSync	PSY	Field coherence metric	Semi-transferable	Monotonic with coherence
+Attractor	ATR	Field stability anchors	Stakable for stability	Monotonic attractor law
+Resonance	RES	Cross-field bridging	Generated on alignment	Matches resonance envelope
+ψ-FIELD MATHEMATICS
+python
+# Discrete Differential Framework
+ψ-density(i) = CHR_i × ATR_i / (1 + DISSONANCE_i)
+ψ-gradient(i,j) = ψ(j) - ψ(i)  # Field pressure
+ψ-flux(i,j) = FLX_flow × gradient  # Economic flow
+ψ-curl(triangle) = Σgradient_around_cycle  # Topological defect detection
+CRITICAL INTEGRATION POINTS
+CHR Conservation: Global sum invariant verified each epoch
+
+FLX Balance: Kirchhoff's current law per shard
+
+ΨSync Convergence: Median-based Byzantine consensus
+
+ATR Stability: Monotonic increase during coherence growth
+
+RES Envelope: Bounded by system resonance capacity
+
+🚀 7-STEP EXECUTION ROADMAP
+STEP 0: FOUNDATION LOCK-IN
+Deliverable: GenesisHarmonicState.py
+
+Define initial 5-token allocations
+
+Set harmonic constants: A_MAX, δ_max, ε_sync, δ_curl
+
+Implement founding node PQC key registry
+
+Create genesis hash with multi-sig
+
+Validate genesis constraints mathematically
+
+Generate genesis_hash.sha256 + PQC signatures
+
+Acceptance Criteria:
+
+Genesis hash identical across Python/Node/Rust
+
+All constants satisfy harmonic bounds
+
+Multi-sig recovery mechanism operational
+
+STEP 1: ψ-DYNAMICS CORE
+Deliverable: PsiFieldEngine.py
+
+Implement discrete ψ-field calculus
+
+Create shard topology graph with explicit connections
+
+Develop gradient, flux, curl computations
+
+Integrate CIR-412 anomaly detection
+
+Generate phase3_psi_dynamics.json evidence
+
+Mathematical Guarantees:
+
+Integer-only computations via CertifiedMath
+
+Deterministic across all runtimes
+
+Topological consistency verification
+
+STEP 2: HARMONIC ECONOMICS ENFORCEMENT
+Deliverable: HarmonicEconomics.py
+
+Enforce 5-token conservation laws
+
+Implement flow-balance: FLX ∝ ψ-gradient
+
+Develop resonance envelope for RES token
+
+Create dissonance penalty system
+
+Generate phase3_harmonics.jsonl event log
+
+Economic Invariants:
+
+ΔCHR = 0 (strict conservation)
+
+FLX flow matches field gradients
+
+ATR follows monotonic attractor law
+
+RES bounded by system capacity
+
+STEP 3: LEDGER & RECOVERY PROTOCOL
+Deliverables: CoherenceLedger.py, SystemRecoveryProtocol.py
+
+Implement Byzantine-resistant two-phase commit
+
+Create canonical ordering for shard updates
+
+Develop cross-shard consistency validation
+
+Build safe mode activation triggers
+
+Generate phase3_ledger_consistency.json
+
+Consensus Mechanism:
+
+PQC-signed shard proposals
+
+Deterministic merge ordering
+
+Atomic rollback on CIR detection
+
+Graceful degradation protocols
+
+STEP 4: TREASURY & REWARD ENGINE
+Deliverables: TreasuryDistributionEngine.py, HoloRewardEngine.py
+
+Implement deterministic reward formulas
+
+Enforce monotonicity theorem (§14.3)
+
+Create bounded reward multipliers (≤ A_MAX)
+
+Develop harmonic dividend calculations
+
+Generate phase3_treasury.jsonl, phase3_holofield_rewards.json
+
+Reward Mathematics:
+
+python
+reward = base_treasury × (CHR_contrib × ψ_density × RES_feedback) / SCALE
+multiplier = min(A_MAX, intensity // BASE)  # Hard bound
+STEP 5: GLOBAL SYNCHRONIZATION
+Deliverable: PsiSyncProtocol.py
+
+Implement median-based ΨSync consensus
+
+Create Byzantine outlier detection
+
+Develop deviation threshold enforcement (ε_sync)
+
+Build cross-shard synchronization protocol
+
+Generate phase3_psisync.json
+
+Synchronization Guarantees:
+
+All shards converge to single ΨSync value
+
+Attack-resistant via median aggregation
+
+Bounded deviation detection triggers CIR-412
+
+STEP 6: ADVERSARIAL VALIDATION
+Deliverable: EconomicAdversarySuite.py
+
+Implement all 14 P0 adversary tests
+
+Create reproducible attack scenarios
+
+Develop formal adversarial specifications
+
+Verify CIR code triggering for each attack
+
+Generate phase3_adversary_results.json
+
+Adversary Matrix:
+
+EA-1: Coherence spoof → CIR-302
+
+EA-2: ΨSync desync → CIR-412
+
+EA-3: Treasury siphoning → CIR-511
+
+EA-4: Resonance overdrive → Cutoff + rollback
+
+EA-5: CHR inflation → Block commit
+
+EA-6: FLX negative flow → Zero-commit + CIR-302
+
+EA-7: ψCurl collapse → CIR-412
+
+EA-8: ΨSync race → Rollback both
+
+EA-9: Harmonic divergence → CIR-302
+
+EA-10: Cross-shard imbalance → Safe mode
+
+EA-11: Oracle timing → Reject snapshot
+
+EA-12: QPU mismatch → Fallback + evidence
+
+EA-13: Reward amplification → Hard cap < A_MAX
+
+EA-14: CHR imbalance → Rollback + CIR-511
+
+STEP 7: EVIDENCE & CERTIFICATION
+Deliverable: Phase3EvidenceBuilder.py
+
+Create cryptographic evidence chain
+
+Build Merkle tree of all outputs
+
+Implement cross-runtime consistency proof
+
+Generate final certification package
+
+Produce PQC-signed manifest
+
+Evidence Package:
+
+text
+evidence/phase3/
+├── phase3_psi_dynamics.json
+├── phase3_harmonics.jsonl
+├── phase3_treasury.jsonl
+├── phase3_ledger_consistency.json
+├── phase3_holofield_rewards.json
+├── phase3_psisync.json
+├── phase3_adversary_results.json
+├── phase3_final_hash.sha256
+├── phase3_manifest.json
+└── phase3_manifest.sig (Dilithium5)
+🛡️ SECURITY & COMPLIANCE FRAMEWORK
+CIR (CRITICAL INCIDENT RESPONSE) MATRIX
+CIR Code	Trigger Condition	System Response
+CIR-302	Local dissonance, math violation	Halt affected shard
+CIR-412	Ψ-field anomaly, sync breach	Halt shard group, recover
+CIR-511	Global ledger corruption	Activate safe mode, governance
+DETERMINISM VERIFICATION
+All modules use CertifiedMath integer operations
+
+Zero floating-point arithmetic
+
+Identical outputs across Python/Node/Rust
+
+Reproducible evidence generation
+
+Cryptographic proof of consistency
+
+BYZANTINE RESISTANCE
+33% malicious node assumption in design
+
+Automatic blacklisting on violation detection
+
+Median-based consensus resistant to outliers
+
+PQC signatures for all critical operations
+
+✅ FINAL ACCEPTANCE CRITERIA
+Phase 3 Certification Requires:
+
+Global coherence deviation ≤ δ_max
+
+ΨSync deviation ≤ ε_sync
+
+Treasury distribution deterministic across 3 runtimes
+
+All 14 adversaries detected & neutralized
+
+Global harmonic reward monotonicity holds
+
+Ledger cross-shard consistency verified
+
+Safe mode operational for CIR-511
+
+Evidence package cryptographically sound
+
+🎯 SUCCESS METRICS
+Technical Metrics:
+
+100% deterministic state transitions
+
+Zero simulation compliance
+
+Sub-second cross-shard consistency
+
+< 1% economic value leakage under attack
+
+Economic Metrics:
+
+CHR conservation maintained under stress
+
+FLX flow matches field gradients
+
+ATR stability during turbulence
+
+RES generation proportional to actual alignment
+
+🔮 ADVANCED EXTENSIONS (Optional)
+If Phase 3 completes early:
+
+HoloTensor Engine: Full resonance flow tensor modeling
+
+QPU Validation Mode: Physical quantum validation of ψ-density
+
+Behavioral Coherence Model: Predictive harmonic analysis using epoch history
+
+This comprehensive plan provides the complete architectural blueprint for Phase 3 implementation. Each step builds systematically on the previous, with rigorous verification checkpoints and cryptographic evidence at each stage.
+
+Excellent—this directory structure confirms that **QFS V13 already has a mature, layered architecture** with well-separated concerns, audit tooling, and compliance infrastructure.
+
+To integrate **Phase 3 (Harmonic 5-Token Economy)** cleanly and in full alignment with existing conventions, we must **place new modules in the correct layers**, respect naming patterns, and reuse existing error handlers (`CIR*.py`) and core interfaces.
+
+---
+
+## 🔧 STRUCTURAL UPDATE: PHASE 3 MODULE INTEGRATION PLAN
+
+Below is the **updated project structure** with Phase 3 files placed *exactly where they belong* in the QFS V13 architecture:
+
+```diff
+QFS_V13/
+├── src/
+│   ├── libs/                 
+│   │   ├── CertifiedMath.py
+│   │   ├── PQC.py
+│   │   ├── BigNum128.py
+│   │   ├── AST_ZeroSimChecker.py
+│   │   ├── core/
+│   │   │   ├── UtilityOracle.py
+│   │   │   ├── UtilityOracleInterface.py
+│   │   │   └── HSMF.py
++  │   │   ├── economics/                  # ← NEW: Economic engine layer (Layer 2)
++  │   │   │   ├── HarmonicEconomics.py   # Core 5-token rules
++  │   │   │   ├── TreasuryDistributionEngine.py
++  │   │   │   └── HoloRewardEngine.py
++  │   │   ├── field/                     # ← NEW: ψ-field physics layer
++  │   │   │   ├── PsiFieldEngine.py
++  │   │   │   └── QPUFieldMapper.py      # Optional QPU validator
+│   │   ├── governance/
+│   │   │   ├── RewardAllocator.py
+│   │   │   └── TreasuryEngine.py
+│   │   ├── quantum/
+│   │   │   └── QPU_Interface.py
+│   │   ├── integration/
+│   │   │   └── StateTransitionEngine.py
+│   │   └── __init__.py
+│   ├── core/                 
+│   │   ├── TokenStateBundle.py
+│   │   ├── reward_types.py
+│   │   ├── DRV_Packet.py
++  │   │   ├── CoherenceLedger.py         # ← MOVE: Already exists, keep here (global state)
++  │   │   ├── PsiSyncProtocol.py         # ← NEW: Cross-shard ΨSync consensus
+│   │   ├── gating_service.py
+│   │   └── __init__.py
+│   ├── handlers/             
+│   │   ├── CIR302_Handler.py  # Reused for dissonance, FLX imbalance
+│   │   ├── CIR412_Handler.py  # Reused for ψSync divergence, ψCurl collapse
+│   │   └── CIR511_Handler.py  # Reused for ledger corruption
++  │   ├── adversarial/                   # ← NEW: Security testing layer
++  │   │   └── EconomicAdversarySuite.py
+│   ├── sdk/
+│   │   └── QFSV13SDK.py       # Will expose Phase 3 methods
++  │   ├── bootstrap/                    # ← NEW: Genesis and recovery
++  │   │   ├── GenesisHarmonicState.py
++  │   │   └── SystemRecoveryProtocol.py
+│   ├── services/
+│   │   └── aegis_api.py
+│   └── utils/
+│       └── qfs_system.py
+│
++├── evidence/phase3/                    # Phase 3 evidence output (auto-generated)
+│   ├── phase3_psi_dynamics.json
+│   ├── phase3_harmonics.jsonl
+│   └── ... (as per your spec)
+│
+├── tools/
+│   └── audit/
++       └── phase3_validator.py          # NEW: Phase 3-specific audit tool
+│
+├── tests/
+│   ├── unit/
++  │   │   ├── test_psi_field_engine.py
++  │   │   ├── test_harmonic_economics.py
++  │   │   └── test_genesis_state.py
+│   ├── integration/
++  │   │   └── test_phase3_full_flow.py
+│   ├── adversarial/                    # ← NEW test category
++  │   │   └── test_economic_adversaries.py
+│   └── ...
+│
+└── scripts/
+    ├── run_tests.sh
++   └── run_phase3_verification.sh       # NEW: End-to-end Phase 3 cert script
+```
+
+---
+
+## 🧩 MODULE-TO-LAYER MAPPING (QFS V13 Alignment)
+
+| Phase 3 Module | Target Location | Layer | Rationale |
+|----------------|------------------|--------|---------|
+| `GenesisHarmonicState.py` | `src/bootstrap/` | **Bootstrap Layer** | Immutable foundation, not part of runtime logic |
+| `SystemRecoveryProtocol.py` | `src/bootstrap/` | **Recovery Layer** | Safe mode logic, triggered by CIR handlers |
+| `PsiFieldEngine.py` | `src/libs/field/` | **Physics Layer (2)** | Computationally pure, uses `CertifiedMath` |
+| `QPUFieldMapper.py` | `src/libs/field/` | **Optional Validator** | Mirrors `QPU_Interface.py` pattern |
+| `HarmonicEconomics.py` | `src/libs/economics/` | **Economics Layer (2)** | Core token logic, like `HSMF.py` |
+| `TreasuryDistributionEngine.py` | `src/libs/economics/` | **Economics Layer** | Complements `TreasuryEngine.py` |
+| `HoloRewardEngine.py` | `src/libs/economics/` | **Economics Layer** | Converts coherence → reward |
+| `CoherenceLedger.py` | `src/core/` | **Global State Layer (1)** | Already exists; keep with `TokenStateBundle.py` |
+| `PsiSyncProtocol.py` | `src/core/` | **Consensus Layer** | Cross-shard sync, like a mini-consensus protocol |
+| `EconomicAdversarySuite.py` | `src/adversarial/` | **Security Layer** | Follows adversarial testing pattern (new category) |
+| `Phase3EvidenceBuilder.py` | **Not a source file** → **Tool** | `tools/audit/phase3_validator.py` | Evidence built via audit tool, not runtime |
+
+> 💡 **Note**: `Phase3EvidenceBuilder.py` is best implemented as a **tool**, not a library, because:
+> - It runs post-execution
+> - It signs evidence (PQC)
+> - It belongs in `tools/audit/`, like other verification utilities
+
+---
+
+## 🔗 INTEGRATION HOOKS
+
+### 1. **CIR Handler Reuse**
+- `HarmonicEconomics.py` → calls `CIR302_Handler.halt()` on FLX imbalance
+- `PsiFieldEngine.py` → triggers `CIR412_Handler.halt()` on ψCurl > δ_curl
+- `CoherenceLedger.py` → invokes `CIR511_Handler.halt()` on cross-shard inconsistency
+
+### 2. **SDK Exposure**
+- `QFSV13SDK.py` will expose:
+  ```python
+  sdk.compute_harmonic_state(snapshot)
+  sdk.get_global_coherence()
+  sdk.run_adversarial_test(test_id)
+  ```
+
+### 3. **State Transition Flow**
+```
+DRV_Packet → 
+  TokenStateBundle → 
+    CoherenceLedger (validate) → 
+      HarmonicEconomics (transform) → 
+        TreasuryDistributionEngine → 
+          RewardAllocator → 
+            StateTransitionEngine (commit)
+```
+
+---
+
+## ✅ ARCHITECTURAL COMPLIANCE CHECK
+
+| Criterion | Status |
+|--------|--------|
+| **Layer Separation** | ✅ Physics, Economics, State, Governance cleanly separated |
+| **Reuses Existing Patterns** | ✅ Matches `HSMF.py`, `TreasuryEngine.py`, `CIR*.py` |
+| **Zero-Simulation Safe** | ✅ All new modules in `libs/` use `CertifiedMath` |
+| **Audit-Ready** | ✅ Evidence tool in `tools/audit/`, tests in `tests/adversarial/` |
+| **Deterministic** | ✅ No new randomness; all state from `DRV_Packet` |
+
+---

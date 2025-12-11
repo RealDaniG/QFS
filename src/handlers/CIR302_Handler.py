@@ -92,7 +92,8 @@ class CIR302_Handler:
         
         # HARD HALT — no return, no state, no quarantine
         # Exit code must be deterministically derived from the fault, not hardcoded
-        sys.exit(CIR302_Handler.CIR302_CODE.value)
+        exit_code = CIR302_Handler.CIR302_CODE.value // CIR302_Handler.CIR302_CODE.SCALE
+        sys.exit(exit_code)  # 302 integer exit code
         
     def generate_finality_seal(self, system_state: Optional[Dict[str, Any]] = None) -> str:
         """

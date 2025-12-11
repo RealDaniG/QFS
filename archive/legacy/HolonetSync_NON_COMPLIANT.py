@@ -1,10 +1,3 @@
-"""
-HolonetSync.py - Synchronize state and finality seals across nodes
-
-Implements the HolonetSync class for synchronizing state and finality seals across nodes,
-managing ttsTimestamp reconciliation if needed beyond DRV_Packet sequence, and propagating
-audit chain updates.
-"""
 
 import json
 import hashlib

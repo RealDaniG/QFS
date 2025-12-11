@@ -1,0 +1,1235 @@
+src/economics/test_economics_violations.py::test_function
+src/test_reward_system.py::test_imports
+src/test_reward_system.py::test_deterministic_iteration
+src/test_reward_system.py::test_c_holo_check
+src/tools/test_cir302_handler.py::test_cir302_handler
+tests/HSMF/test_hsmf_simple.py::test_hsmf_structure
+tests/HSMF/test_hsmf_v13.py::test_hsmf_v13_compliance
+tests/deterministic/test_deterministic_replay.py::test_deterministic_replay
+tests/final_integration_test.py::test_full_system_determinism
+tests/old/comprehensive_log_test.py::test_comprehensive_log_consistency
+tests/old/error_handling_comprehensive_test.py::test_comprehensive_error_handling
+tests/phase3/treasury/test_treasury_proportional_distribution.py::TestTreasuryProportionalDistribution::test_idempotency
+tests/phase3/treasury/test_treasury_proportional_distribution.py::TestTreasuryProportionalDistribution::test_proportional_distribution
+tests/test_ast_zerosimchecker_modules.py::test_forbidden_module_imports
+tests/test_ast_zerosimchecker_modules.py::test_safe_module_imports
+tests/test_ast_zerosimchecker_modules.py::test_deterministic_module_forbidden_imports
+tests/test_bignum128_comprehensive.py::test_integer_only_parsing
+tests/test_bignum128_comprehensive.py::test_fractional_parsing_exact_scale
+tests/test_bignum128_comprehensive.py::test_fractional_underflow
+tests/test_bignum128_comprehensive.py::test_fractional_rounding_truncation
+tests/test_bignum128_comprehensive.py::test_edge_cases
+tests/test_bignum128_comprehensive.py::test_scientific_notation
+tests/test_bignum128_comprehensive.py::test_negative_values
+tests/test_bignum128_comprehensive.py::test_copy_method
+tests/test_bignum128_copy.py::test_copy_method_basic
+tests/test_bignum128_copy.py::test_copy_method_edge_values
+tests/test_bignum128_copy.py::test_copy_method_modification_independence
+tests/test_bignum128_copy.py::test_copy_method_chained_operations
+tests/test_bignum128_edge_cases.py::test_addition_overflow
+tests/test_bignum128_edge_cases.py::test_subtraction_underflow
+tests/test_bignum128_edge_cases.py::test_division_by_zero
+tests/test_bignum128_edge_cases.py::test_multiplication_overflow
+tests/test_bignum128_edge_cases.py::test_valid_boundary_operations
+tests/test_bignum128_fixes.py::test_underflow_detection_fix
+tests/test_bignum128_fixes.py::test_round_half_up
+tests/test_bignum128_fixes.py::test_pqc_serialization
+tests/test_bignum128_fixes.py::test_modulo_operator
+tests/test_bignum128_fixes.py::test_integer_fraction_overflow
+tests/test_bignum128_operators.py::test_comparison_operators
+tests/test_bignum128_operators.py::test_arithmetic_operators
+tests/test_bignum128_operators.py::test_operator_type_safety
+tests/test_bignum128_operators.py::test_hash_function
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_maximum_value_representation
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_maximum_value_from_string
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_maximum_value_plus_rounding_overflow
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_precise_integer_overflow_after_rounding
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_minimum_nonzero_value_rounding
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_underflow_beyond_scale_digits
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_safe_underflow_with_zero_extra_digits
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_integer_fractional_overflow
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_arithmetic_overflow_add
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_arithmetic_overflow_sub
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_arithmetic_overflow_mul
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_arithmetic_overflow_div
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_division_by_zero
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_modulo_operator
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_serialization_correctness
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_canonical_decimal_string_serialization
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_copy_equality_comparison_operators
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_strict_type_safety_in_comparisons
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_hash_consistency
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_arithmetic_operator_overloads
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_constants
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_from_int_method
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_negative_input_rejection
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_invalid_string_rejection
+tests/test_bignum128_phase3_audit.py::TestBigNum128Phase3Audit::test_repr_and_str_methods
+tests/test_bignum128_underflow.py::test_fractional_underflow_exact_case
+tests/test_bignum128_underflow.py::test_fractional_underflow_long_fraction
+tests/test_bignum128_underflow.py::test_no_underflow_at_boundary
+tests/test_bignum128_underflow.py::test_valid_rounding_within_scale
+tests/test_certifiedmath_edge_cases.py::test_very_small_fractions
+tests/test_certifiedmath_edge_cases.py::test_very_large_integers
+tests/test_certifiedmath_edge_cases.py::test_boundary_values
+tests/test_certifiedmath_edge_cases.py::test_special_functions_edge_cases
+tests/test_pqc.py::test_pqc_requirements
+tests/test_zero_sim_violations.py::test_function
+tests/unit/test_certified_math_extensions.py::test_pow_function
+tests/unit/test_certified_math_extensions.py::test_two_to_the_power_function
+tests/unit/test_certified_math_extensions.py::test_log_operation_validation
+tests/unit/test_certified_math_extensions.py::test_pow_edge_cases
+tests/unit/test_certified_math_v13.py::test_v13_compliance
+tests/unit/test_certifiedmath_fixes.py::test_certifiedmath_fixes
+tests/unit/test_structure.py::test_imports
+tests/unit/test_structure.py::test_structure
+tests_root/patched_pqc_test.py::test_pqc_implementation
+tests_root/test_bignum_fixes.py::test_bignum_to_decimal_string
+tests_root/test_bignum_fixes.py::test_certified_math_bignum_to_decimal_string
+tests_root/test_hsmf_fixes.py::test_hsmf_constants
+tests_root/test_hsmf_fixes.py::test_hsmf_imports
+tests_root/test_memory_exhaustion.py::test_memory_exhaustion_protection
+tests_root/test_quantum_certifiedmath.py::test_quantum_metadata_logging
+tests_root/test_quantum_certifiedmath.py::test_fixed_point_safety
+tests_root/test_violations.py::test_function
+
+=================================== ERRORS ====================================
+_______ ERROR collecting audit/test_certified_math_audit_compliance.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\audit\test_certified_math_audit_compliance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+audit\test_certified_math_audit_compliance.py:16: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_____ ERROR collecting audit/test_certified_math_audit_trail_hardening.py _____
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\audit\test_certified_math_audit_trail_hardening.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+audit\test_certified_math_audit_trail_hardening.py:14: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+______ ERROR collecting audit/test_certified_math_cross_module_audit.py _______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\audit\test_certified_math_cross_module_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+audit\test_certified_math_cross_module_audit.py:10: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+________ ERROR collecting audit/test_certified_math_enhanced_audit.py _________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\audit\test_certified_math_enhanced_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+audit\test_certified_math_enhanced_audit.py:13: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_____________ ERROR collecting audit/test_serialization_audit.py ______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\audit\test_serialization_audit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+audit\test_serialization_audit.py:15: in <module>
+    from PQC import generate_keypair, sign_data, verify_signature, get_pqc_audit_log, get_pqc_audit_hash, clear_pqc_audit_log
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+
+During handling of the above exception, another exception occurred:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+audit\test_serialization_audit.py:19: in <module>
+    import PQC
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+_______ ERROR collecting libs/checks_tests/qfs_v13_integration_test.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\libs\checks_tests\qfs_v13_integration_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libs\checks_tests\qfs_v13_integration_test.py:21: in <module>
+    from PQC import PQC, KeyPair
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+________ ERROR collecting libs/checks_tests/quick_determinism_test.py _________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\libs\checks_tests\quick_determinism_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libs\checks_tests\quick_determinism_test.py:11: in <module>
+    from PQC import PQC
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+__________________ ERROR collecting src/test_bignum_fixes.py __________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_bignum_fixes.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_bignum_fixes.py:4: in <module>
+    from libs.BigNum128 import BigNum128, BigNum128Error
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+________________ ERROR collecting src/test_bignum_negative.py _________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_bignum_negative.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_bignum_negative.py:1: in <module>
+    from libs.BigNum128 import BigNum128
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+________________ ERROR collecting src/test_bignum_underflow.py ________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_bignum_underflow.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_bignum_underflow.py:1: in <module>
+    from libs.BigNum128 import BigNum128
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+________________ ERROR collecting src/test_division_by_zero.py ________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_division_by_zero.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_division_by_zero.py:2: in <module>
+    from libs.CertifiedMath import CertifiedMath
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_________________ ERROR collecting src/test_drv_timestamp.py __________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_drv_timestamp.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_drv_timestamp.py:1: in <module>
+    from core.DRV_Packet import DRV_Packet, ValidationErrorCode
+E   ModuleNotFoundError: No module named 'core.DRV_Packet'
+________________ ERROR collecting src/test_pqc_malleability.py ________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\test_pqc_malleability.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\test_pqc_malleability.py:1: in <module>
+    from libs.PQC import PQC
+E   ModuleNotFoundError: No module named 'libs.PQC'
+______________ ERROR collecting src/tests/comprehensive_test.py _______________
+import file mismatch:
+imported module 'comprehensive_test' has this __file__ attribute:
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\comprehensive_test.py
+which is not the same as the test file we want to collect:
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\tests\comprehensive_test.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+___________ ERROR collecting src/tests/test_certifiedmath_fixes.py ____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\tests\test_certifiedmath_fixes.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\tests\test_certifiedmath_fixes.py:13: in <module>
+    from libs.BigNum128 import BigNum128
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+_____________ ERROR collecting test_certified_math_integration.py _____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\test_certified_math_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_certified_math_integration.py:13: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_________________ ERROR collecting test_phase3_integration.py _________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\test_phase3_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_phase3_integration.py:13: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_____ ERROR collecting tests/HSMF/test_hsmf_certifiedmath_integration.py ______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\HSMF\test_hsmf_certifiedmath_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\HSMF\test_hsmf_certifiedmath_integration.py:12: in <module>
+    from CertifiedMath import BigNum128, CertifiedMath, LogContext
+E   ImportError: cannot import name 'LogContext' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_____________ ERROR collecting tests/HSMF/test_hsmf_compliance.py _____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\HSMF\test_hsmf_compliance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\HSMF\test_hsmf_compliance.py:6: in <module>
+    from HSMF import HSMF, ValidationResult
+E   ImportError: cannot import name 'HSMF' from 'HSMF' (unknown location)
+___________ ERROR collecting tests/HSMF/test_hsmf_implementation.py ___________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\HSMF\test_hsmf_implementation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\HSMF\test_hsmf_implementation.py:13: in <module>
+    from TokenStateBundle import TokenStateBundle, create_token_state_bundle
+E   ModuleNotFoundError: No module named 'TokenStateBundle'
+_ ERROR collecting tests/deterministic/test_deterministic_time_regression_cir302.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\test_deterministic_time_regression_cir302.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\deterministic\test_deterministic_time_regression_cir302.py:31: in <module>
+    from libs.DeterministicTime import DeterministicTime
+E   ModuleNotFoundError: No module named 'libs.DeterministicTime'
+___ ERROR collecting tests/deterministic/test_deterministic_time_replay.py ____
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\test_deterministic_time_replay.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\deterministic\test_deterministic_time_replay.py:31: in <module>
+    from libs.DeterministicTime import DeterministicTime
+E   ModuleNotFoundError: No module named 'libs.DeterministicTime'
+____________ ERROR collecting tests/drv_packet/test_drv_packet.py _____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\drv_packet\test_drv_packet.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+tests\drv_packet\test_drv_packet.py:11: in <module>
+    from PQC import generate_keypair, clear_pqc_audit_log, get_pqc_audit_log, get_pqc_audit_hash
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+
+During handling of the above exception, another exception occurred:
+src\libs\PQC.py:15: in <module>
+    from pqcrystals.dilithium import Dilithium5
+E   ModuleNotFoundError: No module named 'pqcrystals'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\drv_packet\test_drv_packet.py:14: in <module>
+    import PQC
+src\libs\PQC.py:19: in <module>
+    raise ImportError("Real PQC library (pqcrystals.dilithium) not available. This is required for production.")
+E   ImportError: Real PQC library (pqcrystals.dilithium) not available. This is required for production.
+________ ERROR collecting tests/drv_packet/test_drv_packet_version.py _________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\drv_packet\test_drv_packet_version.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\drv_packet\test_drv_packet_version.py:13: in <module>
+    from DRV_Packet import DRV_Packet
+E   ModuleNotFoundError: No module named 'DRV_Packet'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\drv_packet\test_drv_packet_version.py:16: in <module>
+    import DRV_Packet
+E   ModuleNotFoundError: No module named 'DRV_Packet'
+_______ ERROR collecting tests/old/hsmf_tokenstate_integration_test.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\old\hsmf_tokenstate_integration_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\old\hsmf_tokenstate_integration_test.py:5: in <module>
+    from HSMF import HSMF, ValidationResult
+E   ImportError: cannot import name 'HSMF' from 'HSMF' (unknown location)
+______________ ERROR collecting tests/old/test_all_operations.py ______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\old\test_all_operations.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\old\test_all_operations.py:11: in <module>
+    from QFSV13SDK import QFSV13SDK, DRV_Packet
+E   ModuleNotFoundError: No module named 'QFSV13SDK'
+________________ ERROR collecting tests/old/test_drv_chain.py _________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\old\test_drv_chain.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\old\test_drv_chain.py:1: in <module>
+    from libs.DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode
+E   ModuleNotFoundError: No module named 'libs.DRV_Packet'
+______________ ERROR collecting tests/old/test_version_check.py _______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\old\test_version_check.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\old\test_version_check.py:1: in <module>
+    from libs.DRV_Packet import DRV_Packet
+E   ModuleNotFoundError: No module named 'libs.DRV_Packet'
+___________________ ERROR collecting tests/pqc/test_pqc.py ____________________
+tests\pqc\test_pqc.py:10: in <module>
+    from PQC import generate_keypair, sign_data, verify_signature
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+tests\pqc\test_pqc.py:14: in <module>
+    generate_keypair = PQC.generate_keypair
+                       ^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'PQC' has no attribute 'generate_keypair'
+____________ ERROR collecting tests/pqc/test_pqc_key_management.py ____________
+tests\pqc\test_pqc_key_management.py:15: in <module>
+    from PQC import generate_keypair, export_key_to_hex, export_key_to_base64, export_key_to_json, import_key_from_hex, import_key_from_base64, import_keypair_from_json, zeroize_private_key, secure_zeroize_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+tests\pqc\test_pqc_key_management.py:19: in <module>
+    generate_keypair = PQC.generate_keypair
+                       ^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'PQC' has no attribute 'generate_keypair'
+___________ ERROR collecting tests/property/test_bignum128_fuzz.py ____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\property\test_bignum128_fuzz.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\property\test_bignum128_fuzz.py:26: in <module>
+    from libs.BigNum128 import BigNum128, BigNum128Error
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+___________________ ERROR collecting tests/sdk/test_sdk.py ____________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\sdk\test_sdk.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\sdk\test_sdk.py:9: in <module>
+    from QFSV13SDK import QFSV13SDK, DRV_Packet
+E   ModuleNotFoundError: No module named 'QFSV13SDK'
+_____________________ ERROR collecting tests/test_ast.py ______________________
+tests\test_ast.py:4: in <module>
+    with open("libs/PQC.py", "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'libs/PQC.py'
+___________________ ERROR collecting tests/test_ast_math.py ___________________
+tests\test_ast_math.py:4: in <module>
+    with open("libs/CertifiedMath.py", "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'libs/CertifiedMath.py'
+________________ ERROR collecting tests/test_functionality.py _________________
+tests\test_functionality.py:14: in <module>
+    result = CertifiedMath.add(a, b, log)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\libs\CertifiedMath.py:74: in add
+    return self._safe_add(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+E   AttributeError: 'BigNum128' object has no attribute '_safe_add'
+------------------------------- Captured stdout -------------------------------
+Testing CertifiedMath functionality...
+Created a = 2.0
+Created b = 3.0
+______________ ERROR collecting tests/test_phase3_integration.py ______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\test_phase3_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_phase3_integration.py:14: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_________________ ERROR collecting tests/test_psi_dynamics.py _________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\test_psi_dynamics.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_psi_dynamics.py:14: in <module>
+    from libs.economics.PsiFieldEngine import DiscretePsiField, create_secure_psi_field
+E   ModuleNotFoundError: No module named 'libs.economics'
+_ ERROR collecting tests/unit/determinism/test_certified_math_config_runtime.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\determinism\test_certified_math_config_runtime.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\determinism\test_certified_math_config_runtime.py:10: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_ ERROR collecting tests/unit/determinism/test_certified_math_extended_determinism.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\determinism\test_certified_math_extended_determinism.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\determinism\test_certified_math_extended_determinism.py:12: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_ ERROR collecting tests/unit/determinism/test_certified_math_stress_concurrency.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\determinism\test_certified_math_stress_concurrency.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\determinism\test_certified_math_stress_concurrency.py:17: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_________ ERROR collecting tests/unit/integration/run_simple_test.py __________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\run_simple_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\run_simple_test.py:10: in <module>
+    from TokenStateBundle import TokenStateBundle, create_token_state_bundle
+E   ModuleNotFoundError: No module named 'TokenStateBundle'
+_ ERROR collecting tests/unit/integration/test_certified_math_drv_integration.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_certified_math_drv_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_certified_math_drv_integration.py:8: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'LogContext' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+__ ERROR collecting tests/unit/integration/test_malformed_input_handling.py ___
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_malformed_input_handling.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_malformed_input_handling.py:14: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_malformed_input_handling.py:18: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+___ ERROR collecting tests/unit/integration/test_packet_creation_logging.py ___
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_packet_creation_logging.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_packet_creation_logging.py:15: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_packet_creation_logging.py:22: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+___ ERROR collecting tests/unit/integration/test_packet_hash_determinism.py ___
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_packet_hash_determinism.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_packet_hash_determinism.py:15: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_packet_hash_determinism.py:19: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+_______ ERROR collecting tests/unit/integration/test_qfs_integration.py _______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_qfs_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_qfs_integration.py:15: in <module>
+    from PQC import generate_keypair, sign_data, verify_signature, export_key_to_hex, import_key_from_hex
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_qfs_integration.py:19: in <module>
+    from PQC import generate_keypair, sign_data, verify_signature, export_key_to_hex, import_key_from_hex
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+_________ ERROR collecting tests/unit/integration/test_qfs_system.py __________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_qfs_system.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_qfs_system.py:11: in <module>
+    from qfs_system import get_system_audit_hash, clear_all_audit_logs
+E   ModuleNotFoundError: No module named 'qfs_system'
+_ ERROR collecting tests/unit/integration/test_qfs_v13_phase1_2_integration.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_qfs_v13_phase1_2_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_qfs_v13_phase1_2_integration.py:20: in <module>
+    from TokenStateBundle import TokenStateBundle, create_token_state_bundle
+E   ModuleNotFoundError: No module named 'TokenStateBundle'
+_ ERROR collecting tests/unit/integration/test_quantum_metadata_determinism.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_quantum_metadata_determinism.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_quantum_metadata_determinism.py:15: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_quantum_metadata_determinism.py:19: in <module>
+    from PQC import generate_keypair
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+_____ ERROR collecting tests/unit/integration/test_token_state_bundle.py ______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\integration\test_token_state_bundle.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+tests\unit\integration\test_token_state_bundle.py:14: in <module>
+    from PQC import generate_keypair, sign_data
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\integration\test_token_state_bundle.py:18: in <module>
+    from PQC import generate_keypair, sign_data
+E   ImportError: cannot import name 'generate_keypair' from 'PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\deterministic\..\..\src\libs\PQC.py)
+________ ERROR collecting tests/unit/test_certified_math_edge_cases.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_certified_math_edge_cases.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_certified_math_edge_cases.py:13: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_______ ERROR collecting tests/unit/test_certified_math_performance.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_certified_math_performance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_certified_math_performance.py:12: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'LogContext' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+_______ ERROR collecting tests/unit/test_certified_math_proofvectors.py _______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_certified_math_proofvectors.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_certified_math_proofvectors.py:21: in <module>
+    from libs.BigNum128 import BigNum128
+E   ModuleNotFoundError: No module named 'libs.BigNum128'
+___________________ ERROR collecting tests/unit/test_ln.py ____________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_ln.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_ln.py:11: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_______________ ERROR collecting tests/unit/test_phi_series.py ________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_phi_series.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_phi_series.py:10: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_____________ ERROR collecting tests/unit/test_transcendentals.py _____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\test_transcendentals.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_transcendentals.py:10: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_ ERROR collecting tests/unit/verification/test_certified_math_exception_verification.py _
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\unit\verification\test_certified_math_exception_verification.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\verification\test_certified_math_exception_verification.py:10: in <module>
+    from CertifiedMath import (
+E   ImportError: cannot import name 'PHI_INTENSITY_B' from 'CertifiedMath' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests\..\src\libs\CertifiedMath.py)
+______________ ERROR collecting tests_root/comprehensive_test.py ______________
+import file mismatch:
+imported module 'comprehensive_test' has this __file__ attribute:
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\comprehensive_test.py
+which is not the same as the test file we want to collect:
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\comprehensive_test.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+__________________ ERROR collecting tests_root/debug_test.py __________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\debug_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\debug_test.py:7: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+__________ ERROR collecting tests_root/deterministic_replay_test.py ___________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\deterministic_replay_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+src\libs\integration\StateTransitionEngine.py:18: in <module>
+    from ...libs.governance.RewardAllocator import AllocatedReward
+src\libs\governance\RewardAllocator.py:15: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+
+During handling of the above exception, another exception occurred:
+src\libs\integration\StateTransitionEngine.py:22: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+
+During handling of the above exception, another exception occurred:
+src\core\HSMF.py:19: in <module>
+    from ..libs.integration.StateTransitionEngine import StateTransitionEngine
+src\libs\integration\StateTransitionEngine.py:30: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+
+During handling of the above exception, another exception occurred:
+src\core\HSMF.py:24: in <module>
+    from libs.CertifiedMath import BigNum128, CertifiedMath
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\deterministic_replay_test.py:12: in <module>
+    from src.core.HSMF import HSMF
+src\core\HSMF.py:34: in <module>
+    from libs.CertifiedMath import BigNum128, CertifiedMath
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+________________ ERROR collecting tests_root/final_pqc_test.py ________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\final_pqc_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\final_pqc_test.py:34: in <module>
+    import libs.PQC
+E   ModuleNotFoundError: No module named 'libs.PQC'
+_________________ ERROR collecting tests_root/simple_test.py __________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\simple_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\simple_test.py:7: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+tests_root\patched_pqc_test.py:42: in mock_import
+    return _original_import(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+__________ ERROR collecting tests_root/test_certified_math_fixes.py ___________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_certified_math_fixes.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\test_certified_math_fixes.py:7: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+tests_root\patched_pqc_test.py:42: in mock_import
+    return _original_import(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+_______________ ERROR collecting tests_root/test_log_context.py _______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_log_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\test_log_context.py:18: in <module>
+    import libs.PQC
+tests_root\patched_pqc_test.py:42: in mock_import
+    return _original_import(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'libs.PQC'
+______________ ERROR collecting tests_root/verification_test.py _______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\verification_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests_root\verification_test.py:7: in <module>
+    from libs.CertifiedMath import CertifiedMath, BigNum128
+tests_root\patched_pqc_test.py:42: in mock_import
+    return _original_import(name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'libs.CertifiedMath'
+============================== warnings summary ===============================
+src\tools\test_cir302_handler.py:14
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\tools\test_cir302_handler.py:14: PytestCollectionWarning: cannot collect test class 'TestCIR302Handler' because it has a __init__ constructor (from: src/tools/test_cir302_handler.py)
+    class TestCIR302Handler:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR audit/test_certified_math_audit_compliance.py
+ERROR audit/test_certified_math_audit_trail_hardening.py
+ERROR audit/test_certified_math_cross_module_audit.py
+ERROR audit/test_certified_math_enhanced_audit.py
+ERROR audit/test_serialization_audit.py
+ERROR libs/checks_tests/qfs_v13_integration_test.py
+ERROR libs/checks_tests/quick_determinism_test.py
+ERROR src/test_bignum_fixes.py
+ERROR src/test_bignum_negative.py
+ERROR src/test_bignum_underflow.py
+ERROR src/test_division_by_zero.py
+ERROR src/test_drv_timestamp.py
+ERROR src/test_pqc_malleability.py
+ERROR src/tests/comprehensive_test.py
+ERROR src/tests/test_certifiedmath_fixes.py
+ERROR test_certified_math_integration.py
+ERROR test_phase3_integration.py
+ERROR tests/HSMF/test_hsmf_certifiedmath_integration.py
+ERROR tests/HSMF/test_hsmf_compliance.pyC:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-16 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-15 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-14 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-6 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-13 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-12 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-11 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-10 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-2 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-9 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-7 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-4 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-8 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-1 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-5 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-3 (worker)
+
+Traceback (most recent call last):
+  File "C:\Python313\Lib\threading.py", line 1043, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Python313\Lib\threading.py", line 994, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\tests_root\test_concurrency_determinism.py", line 12, in worker
+    result = CertifiedMath.exp(BigNum128(1), 30, log_list)
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\src\libs\CertifiedMath.py", line 127, in exp
+    return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+           ^^^^^^^^^^^^^^
+AttributeError: 'BigNum128' object has no attribute '_safe_exp'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+ERROR tests/HSMF/test_hsmf_implementation.py
+ERROR tests/deterministic/test_deterministic_time_regression_cir302.py
+ERROR tests/deterministic/test_deterministic_time_replay.py
+ERROR tests/drv_packet/test_drv_packet.py
+ERROR tests/drv_packet/test_drv_packet_version.py
+ERROR tests/old/hsmf_tokenstate_integration_test.py
+ERROR tests/old/test_all_operations.py
+ERROR tests/old/test_drv_chain.py
+ERROR tests/old/test_version_check.py
+ERROR tests/pqc/test_pqc.py - AttributeError: module 'PQC' has no attribute '...
+ERROR tests/pqc/test_pqc_key_management.py - AttributeError: module 'PQC' has...
+ERROR tests/property/test_bignum128_fuzz.py
+ERROR tests/sdk/test_sdk.py
+ERROR tests/test_ast.py - FileNotFoundError: [Errno 2] No such file or direct...
+ERROR tests/test_ast_math.py - FileNotFoundError: [Errno 2] No such file or d...
+ERROR tests/test_functionality.py - AttributeError: 'BigNum128' object has no...
+ERROR tests/test_phase3_integration.py
+ERROR tests/test_psi_dynamics.py
+ERROR tests/unit/determinism/test_certified_math_config_runtime.py
+ERROR tests/unit/determinism/test_certified_math_extended_determinism.py
+ERROR tests/unit/determinism/test_certified_math_stress_concurrency.py
+ERROR tests/unit/integration/run_simple_test.py
+ERROR tests/unit/integration/test_certified_math_drv_integration.py
+ERROR tests/unit/integration/test_malformed_input_handling.py
+ERROR tests/unit/integration/test_packet_creation_logging.py
+ERROR tests/unit/integration/test_packet_hash_determinism.py
+ERROR tests/unit/integration/test_qfs_integration.py
+ERROR tests/unit/integration/test_qfs_system.py
+ERROR tests/unit/integration/test_qfs_v13_phase1_2_integration.py
+ERROR tests/unit/integration/test_quantum_metadata_determinism.py
+ERROR tests/unit/integration/test_token_state_bundle.py
+ERROR tests/unit/test_certified_math_edge_cases.py
+ERROR tests/unit/test_certified_math_performance.py
+ERROR tests/unit/test_certified_math_proofvectors.py
+ERROR tests/unit/test_ln.py
+ERROR tests/unit/test_phi_series.py
+ERROR tests/unit/test_transcendentals.py
+ERROR tests/unit/verification/test_certified_math_exception_verification.py
+ERROR tests_root/comprehensive_test.py
+ERROR tests_root/debug_test.py
+ERROR tests_root/deterministic_replay_test.py
+ERROR tests_root/final_pqc_test.py
+ERROR tests_root/simple_test.py
+ERROR tests_root/test_certified_math_fixes.py
+ERROR tests_root/test_log_context.py
+ERROR tests_root/verification_test.py
+!!!!!!!!!!!!!!!!!! Interrupted: 65 errors during collection !!!!!!!!!!!!!!!!!!!
+94 tests collected, 65 errors in 1.88s
