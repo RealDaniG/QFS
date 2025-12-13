@@ -1,15 +1,22 @@
 """
-aegis_api.py - Secure API Gateway for QFS V13
+aegis_api.py - Secure API Gateway for QFS V13 with Telemetry Snapshot Infrastructure
 
 Implements the AEGIS API Gateway for receiving transaction bundles,
 validating PQC signatures, instantiating log contexts, and committing
 validated state updates with PQC-signed finality seals.
+
+V13.6 ENHANCEMENTS:
+- Deterministic AEGIS telemetry snapshots (hash-anchored, versioned)
+- AEGIS offline/degraded safe degradation policy
+- Constitutional guard integration
+- NOD-I4 deterministic replay support
 """
 
 import json
 import hashlib
 from typing import Dict, Any, Optional, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from enum import Enum
 
 # Import required components
 from ..libs.CertifiedMath import BigNum128, CertifiedMath
@@ -19,6 +26,182 @@ from ...libs.TreasuryEngine import TreasuryEngine
 from ..handlers.CIR302_Handler import CIR302_Handler
 from ..libs.PQC import PQC
 from ..core.DRV_Packet import DRV_Packet
+
+
+# === V13.6 TELEMETRY SNAPSHOT INFRASTRUCTURE ===
+
+class AEGISStatus(Enum):
+    """AEGIS system operational status."""
+    OPERATIONAL = "operational"
+    DEGRADED = "degraded"
+    OFFLINE = "offline"
+
+
+class AEGISOfflineError(Exception):
+    """Raised when AEGIS is offline and telemetry cannot be retrieved."""
+    pass
+
+
+@dataclass
+class AEGISTelemetrySnapshot:
+    """
+    Immutable, versioned AEGIS telemetry snapshot for deterministic replay.
+    
+    Constitutional Requirements (NOD-I4):
+    - SHA-256 hash of entire snapshot
+    - Block height anchoring
+    - Schema version for forward compatibility
+    - Completeness validation (reject partial data)
+    
+    This dataclass replaces live API calls to ensure bit-for-bit replay.
+    """
+    snapshot_version: str  # "AEGIS_SNAPSHOT_V1"
+    block_height: int
+    snapshot_timestamp: int  # Deterministic timestamp from DRV_Packet
+    node_metrics: Dict[str, Dict[str, Any]]  # node_id → {uptime_ratio, health_score, etc}
+    schema_version: str  # "NODE_METRICS_V1" - defines metrics structure
+    snapshot_hash: str = ""  # SHA-256 of entire snapshot (computed after init)
+    
+    def compute_hash(self) -> str:
+        """
+        Compute deterministic SHA-256 hash of snapshot.
+        
+        Returns:
+            str: 64-character hex hash
+        """
+        # Create deterministic hash input (sorted keys)
+        hash_data = {
+            "snapshot_version": self.snapshot_version,
+            "block_height": self.block_height,
+            "snapshot_timestamp": self.snapshot_timestamp,
+            "schema_version": self.schema_version,
+            "node_metrics": self.node_metrics  # Nested dict will be sorted in JSON
+        }
+        
+        # Serialize with sorted keys for determinism
+        data_json = json.dumps(hash_data, sort_keys=True, separators=(',', ':'))
+        return hashlib.sha256(data_json.encode('utf-8')).hexdigest()
+    
+    def validate_completeness(self) -> tuple[bool, Optional[str]]:
+        """
+        Validate snapshot completeness and structural integrity.
+        
+        Constitutional requirement: Reject partial/ambiguous data.
+        
+        Returns:
+            tuple[bool, Optional[str]]: (is_valid, error_message)
+        """
+        # Check required fields
+        if not self.snapshot_version:
+            return False, "Missing snapshot_version"
+        
+        if self.block_height < 0:
+            return False, f"Invalid block_height: {self.block_height}"
+        
+        if self.snapshot_timestamp <= 0:
+            return False, f"Invalid snapshot_timestamp: {self.snapshot_timestamp}"
+        
+        if not self.schema_version:
+            return False, "Missing schema_version"
+        
+        if not self.node_metrics or not isinstance(self.node_metrics, dict):
+            return False, "Missing or invalid node_metrics"
+        
+        # Validate hash (if provided)
+        if self.snapshot_hash:
+            expected_hash = self.compute_hash()
+            if self.snapshot_hash != expected_hash:
+                return False, f"Hash mismatch: expected {expected_hash}, got {self.snapshot_hash}"
+        
+        # Validate schema version is supported
+        supported_schemas = ["NODE_METRICS_V1"]
+        if self.schema_version not in supported_schemas:
+            return False, f"Unsupported schema_version: {self.schema_version}"
+        
+        # Validate node metrics structure (schema-specific)
+        if self.schema_version == "NODE_METRICS_V1":
+            for node_id, metrics in self.node_metrics.items():
+                if not isinstance(metrics, dict):
+                    return False, f"Node {node_id} metrics must be dict"
+                
+                # Required fields for NODE_METRICS_V1
+                required_fields = ["uptime_ratio", "health_score"]
+                for field in required_fields:
+                    if field not in metrics:
+                        return False, f"Node {node_id} missing required field: {field}"
+        
+        return True, None
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert snapshot to dictionary for serialization."""
+        return {
+            "snapshot_version": self.snapshot_version,
+            "block_height": self.block_height,
+            "snapshot_timestamp": self.snapshot_timestamp,
+            "node_metrics": self.node_metrics,
+            "schema_version": self.schema_version,
+            "snapshot_hash": self.snapshot_hash
+        }
+
+
+@dataclass
+class AEGISRegistrySnapshot:
+    """
+    Immutable, versioned AEGIS registry snapshot for deterministic node verification.
+    
+    Contains:
+    - Node registry entries (PQC keys, registration timestamps, revocation status)
+    - Block height anchoring
+    - SHA-256 hash for integrity
+    """
+    snapshot_version: str  # "AEGIS_REGISTRY_V1"
+    block_height: int
+    snapshot_timestamp: int
+    nodes: Dict[str, Dict[str, Any]]  # node_id → {pqc_public_key, pqc_scheme, revoked, etc}
+    schema_version: str  # "NODE_REGISTRY_V1"
+    snapshot_hash: str = ""
+    
+    def compute_hash(self) -> str:
+        """Compute deterministic SHA-256 hash of registry snapshot."""
+        hash_data = {
+            "snapshot_version": self.snapshot_version,
+            "block_height": self.block_height,
+            "snapshot_timestamp": self.snapshot_timestamp,
+            "schema_version": self.schema_version,
+            "nodes": self.nodes
+        }
+        data_json = json.dumps(hash_data, sort_keys=True, separators=(',', ':'))
+        return hashlib.sha256(data_json.encode('utf-8')).hexdigest()
+    
+    def validate_completeness(self) -> tuple[bool, Optional[str]]:
+        """Validate registry snapshot completeness."""
+        if not self.snapshot_version:
+            return False, "Missing snapshot_version"
+        if self.block_height < 0:
+            return False, f"Invalid block_height: {self.block_height}"
+        if not self.schema_version:
+            return False, "Missing schema_version"
+        if not self.nodes or not isinstance(self.nodes, dict):
+            return False, "Missing or invalid nodes"
+        
+        # Validate hash if provided
+        if self.snapshot_hash:
+            expected_hash = self.compute_hash()
+            if self.snapshot_hash != expected_hash:
+                return False, f"Hash mismatch: expected {expected_hash}, got {self.snapshot_hash}"
+        
+        return True, None
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert snapshot to dictionary."""
+        return {
+            "snapshot_version": self.snapshot_version,
+            "block_height": self.block_height,
+            "snapshot_timestamp": self.snapshot_timestamp,
+            "nodes": self.nodes,
+            "schema_version": self.schema_version,
+            "snapshot_hash": self.snapshot_hash
+        }
 
 
 @dataclass
@@ -41,7 +224,7 @@ class AEGIS_API:
     
     def __init__(self, cm_instance: CertifiedMath, pqc_key_pair: Optional[tuple] = None):
         """
-        Initialize the AEGIS API Gateway.
+        Initialize the AEGIS API Gateway with V13.6 telemetry snapshot infrastructure.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic operations
@@ -55,10 +238,273 @@ class AEGIS_API:
         self.cir302_handler = CIR302_Handler(cm_instance, pqc_key_pair)
         self.quantum_metadata = {
             "component": "AEGIS_API",
-            "version": "QFS-V13-P1-2",
+            "version": "QFS-V13.6-TELEMETRY",  # Updated for V13.6
             "timestamp": None,
             "pqc_scheme": "Dilithium-5"
         }
+        
+        # === V13.6 TELEMETRY SNAPSHOT INFRASTRUCTURE ===
+        self.aegis_status = AEGISStatus.OPERATIONAL  # Track AEGIS availability
+        self.snapshot_cache: Dict[int, AEGISTelemetrySnapshot] = {}  # block_height → snapshot
+        self.registry_cache: Dict[int, AEGISRegistrySnapshot] = {}  # block_height → registry
+        self.aegis_offline_triggered = False  # Track if degradation policy activated
+    
+    # =========================================================================
+    # TELEMETRY SNAPSHOT INFRASTRUCTURE (V13.6 - NOD-I4 COMPLIANCE)
+    # =========================================================================
+    
+    def get_telemetry_snapshot(
+        self,
+        block_height: int,
+        deterministic_timestamp: int,
+        log_list: List[Dict[str, Any]]
+    ) -> AEGISTelemetrySnapshot:
+        """
+        Get deterministic AEGIS telemetry snapshot for given block height.
+        
+        Constitutional Requirements:
+        - Versioned, hash-anchored snapshot (NOD-I4)
+        - Completeness validation (reject partial data)
+        - Block height anchoring for replay
+        
+        For replay: Fetch historical snapshot by block_height from cache/ledger.
+        For live: Query AEGIS (stub), hash result, cache for future replay.
+        
+        Args:
+            block_height: Block height to query telemetry for
+            deterministic_timestamp: Deterministic timestamp from DRV_Packet
+            log_list: Audit log list
+            
+        Returns:
+            AEGISTelemetrySnapshot: Versioned, hash-anchored snapshot
+            
+        Raises:
+            AEGISOfflineError: If AEGIS is offline/degraded
+            ValueError: If snapshot is incomplete or invalid
+        """
+        # Check if snapshot already cached (replay scenario)
+        if block_height in self.snapshot_cache:
+            cached_snapshot = self.snapshot_cache[block_height]
+            
+            # Log cache hit
+            log_list.append({
+                "operation": "aegis_snapshot_cache_hit",
+                "block_height": block_height,
+                "snapshot_hash": cached_snapshot.snapshot_hash,
+                "timestamp": deterministic_timestamp
+            })
+            
+            return cached_snapshot
+        
+        # Check AEGIS status before querying
+        if self.aegis_status == AEGISStatus.OFFLINE:
+            raise AEGISOfflineError(f"AEGIS offline at block {block_height}")
+        
+        # Query AEGIS for telemetry (STUB - in production, this would call actual AEGIS API)
+        raw_telemetry = self._query_aegis_telemetry(block_height)
+        
+        # Create immutable snapshot
+        snapshot = AEGISTelemetrySnapshot(
+            snapshot_version="AEGIS_SNAPSHOT_V1",
+            block_height=block_height,
+            snapshot_timestamp=deterministic_timestamp,
+            node_metrics=raw_telemetry,
+            schema_version="NODE_METRICS_V1"
+        )
+        
+        # Compute deterministic hash
+        snapshot.snapshot_hash = snapshot.compute_hash()
+        
+        # Validate completeness (constitutional requirement)
+        is_valid, error_message = snapshot.validate_completeness()
+        if not is_valid:
+            # Log validation failure
+            log_list.append({
+                "operation": "aegis_snapshot_validation_failed",
+                "block_height": block_height,
+                "error": error_message,
+                "timestamp": deterministic_timestamp
+            })
+            raise ValueError(f"Incomplete AEGIS telemetry snapshot: {error_message}")
+        
+        # Cache snapshot for future replay
+        self.snapshot_cache[block_height] = snapshot
+        
+        # Log snapshot creation
+        log_list.append({
+            "operation": "aegis_snapshot_created",
+            "block_height": block_height,
+            "snapshot_hash": snapshot.snapshot_hash,
+            "schema_version": snapshot.schema_version,
+            "node_count": len(snapshot.node_metrics),
+            "timestamp": deterministic_timestamp
+        })
+        
+        return snapshot
+    
+    def get_registry_snapshot(
+        self,
+        block_height: int,
+        deterministic_timestamp: int,
+        log_list: List[Dict[str, Any]]
+    ) -> AEGISRegistrySnapshot:
+        """
+        Get deterministic AEGIS registry snapshot for given block height.
+        
+        Args:
+            block_height: Block height to query registry for
+            deterministic_timestamp: Deterministic timestamp
+            log_list: Audit log list
+            
+        Returns:
+            AEGISRegistrySnapshot: Versioned, hash-anchored registry snapshot
+            
+        Raises:
+            AEGISOfflineError: If AEGIS is offline
+            ValueError: If snapshot is incomplete
+        """
+        # Check cache
+        if block_height in self.registry_cache:
+            return self.registry_cache[block_height]
+        
+        # Check AEGIS status
+        if self.aegis_status == AEGISStatus.OFFLINE:
+            raise AEGISOfflineError(f"AEGIS offline at block {block_height}")
+        
+        # Query AEGIS registry (STUB)
+        raw_registry = self._query_aegis_registry(block_height)
+        
+        # Create snapshot
+        snapshot = AEGISRegistrySnapshot(
+            snapshot_version="AEGIS_REGISTRY_V1",
+            block_height=block_height,
+            snapshot_timestamp=deterministic_timestamp,
+            nodes=raw_registry,
+            schema_version="NODE_REGISTRY_V1"
+        )
+        
+        # Compute hash
+        snapshot.snapshot_hash = snapshot.compute_hash()
+        
+        # Validate
+        is_valid, error_message = snapshot.validate_completeness()
+        if not is_valid:
+            log_list.append({
+                "operation": "aegis_registry_validation_failed",
+                "block_height": block_height,
+                "error": error_message,
+                "timestamp": deterministic_timestamp
+            })
+            raise ValueError(f"Incomplete AEGIS registry snapshot: {error_message}")
+        
+        # Cache
+        self.registry_cache[block_height] = snapshot
+        
+        # Log
+        log_list.append({
+            "operation": "aegis_registry_snapshot_created",
+            "block_height": block_height,
+            "snapshot_hash": snapshot.snapshot_hash,
+            "node_count": len(snapshot.nodes),
+            "timestamp": deterministic_timestamp
+        })
+        
+        return snapshot
+    
+    def _query_aegis_telemetry(self, block_height: int) -> Dict[str, Dict[str, Any]]:
+        """
+        Query AEGIS for raw telemetry data (STUB).
+        
+        In production, this would:
+        - Call AEGIS REST API or gRPC endpoint
+        - Authenticate with PQC credentials
+        - Handle network errors and retries
+        - Enforce rate limits
+        
+        For now, returns mock data for testing.
+        
+        Args:
+            block_height: Block height to query
+            
+        Returns:
+            Dict[str, Dict[str, Any]]: node_id → metrics
+        """
+        # STUB: Mock telemetry data
+        return {
+            "node_alpha": {
+                "uptime_ratio": "0.98",
+                "health_score": "0.95",
+                "conflict_detected": False
+            },
+            "node_beta": {
+                "uptime_ratio": "0.92",
+                "health_score": "0.88",
+                "conflict_detected": False
+            }
+        }
+    
+    def _query_aegis_registry(self, block_height: int) -> Dict[str, Dict[str, Any]]:
+        """
+        Query AEGIS registry for node entries (STUB).
+        
+        Args:
+            block_height: Block height to query
+            
+        Returns:
+            Dict[str, Dict[str, Any]]: node_id → registry entry
+        """
+        # STUB: Mock registry data
+        return {
+            "node_alpha": {
+                "pqc_public_key": "0x" + "a" * 64,
+                "pqc_scheme": "Dilithium5",
+                "revoked": False,
+                "registration_timestamp": 1000000
+            },
+            "node_beta": {
+                "pqc_public_key": "0x" + "b" * 64,
+                "pqc_scheme": "Dilithium5",
+                "revoked": False,
+                "registration_timestamp": 1000100
+            }
+        }
+    
+    def _trigger_aegis_offline_policy(self, log_list: List[Dict[str, Any]], timestamp: int):
+        """
+        Trigger AEGIS offline/degraded safe degradation policy.
+        
+        Constitutional Requirements (Global AEGIS Offline Policy):
+        - Freeze NOD allocation
+        - Freeze infrastructure governance
+        - Allow user rewards to continue (cached state)
+        - Prohibit any telemetry approximation
+        - Maintain zero-simulation integrity
+        
+        Args:
+            log_list: Audit log list
+            timestamp: Deterministic timestamp
+        """
+        if not self.aegis_offline_triggered:
+            self.aegis_offline_triggered = True
+            self.aegis_status = AEGISStatus.OFFLINE
+            
+            # Log degradation event
+            log_list.append({
+                "operation": "aegis_offline_policy_triggered",
+                "policy": "freeze_nod_governance_allow_user_rewards",
+                "timestamp": timestamp,
+                "severity": "CRITICAL"
+            })
+            
+            print("[AEGIS OFFLINE POLICY] System entering safe degradation mode:")
+            print("  - NOD allocation: FROZEN")
+            print("  - Infrastructure governance: FROZEN")
+            print("  - User rewards: CONTINUE (cached state)")
+            print("  - Telemetry approximation: PROHIBITED")
+    
+    # =========================================================================
+    # TRANSACTION PROCESSING (ORIGINAL METHODS)
+    # =========================================================================
         
     def process_transaction_bundle(self, drv_packet: DRV_Packet, 
                                  token_bundle: TokenStateBundle,
