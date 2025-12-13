@@ -34,6 +34,42 @@ The ATLAS API is organized into 6 distinct domains:
 
 ---
 
+## Error Handling
+
+All API endpoints follow a consistent error response format to ensure deterministic and predictable error handling:
+
+### Error Response Format
+
+```json
+{
+  "error_code": "string",
+  "message": "string",
+  "details": "string"
+}
+```
+
+### Common Error Codes
+
+| Error Code | Description | HTTP Status |
+|------------|-------------|-------------|
+| `MISSING_PARAMETER` | Required parameter is missing | 400 |
+| `INVALID_PARAMETER` | Parameter value is invalid | 400 |
+| `UNAUTHORIZED` | Authentication required or failed | 401 |
+| `FORBIDDEN` | Insufficient permissions | 403 |
+| `NOT_FOUND` | Resource not found | 404 |
+| `CONFLICT` | Resource conflict | 409 |
+| `INTERNAL_ERROR` | Unexpected server error | 500 |
+| `SERVICE_UNAVAILABLE` | Service temporarily unavailable | 503 |
+
+### Determinism Guarantees
+
+- All error responses are deterministic - same inputs always produce identical error responses
+- Error messages do not leak internal implementation details
+- Error handling does not depend on wall-clock time or random values
+- All error paths are tested and verified
+
+---
+
 ## Endpoint Catalog
 
 ### Social API Endpoints

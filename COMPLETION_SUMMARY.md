@@ -29,6 +29,8 @@ Successfully moved from "minimal deterministic substrate" to "usable social laye
   - Observation-only mode preserving determinism
   - Dedicated ledger event logging for guard observations
   - Zero-Sim compliant implementation with PQC correlation IDs
+  - Runs SafetyGuard on real content text for feed ranking and social interaction
+  - Serializes BigNum128 values as strings in internal observations
 
 ### 3. Event Ledger Explorer Backend
 - **Module:** `src/atlas_api/ledger_handler.py`
@@ -56,6 +58,8 @@ Successfully moved from "minimal deterministic substrate" to "usable social laye
 - **Integration Pattern:** Meta-guard orchestrator
 - **QFS Components Used:** CertifiedMath, EconomicsGuard, CoherenceLedger
 - **Current Status:** Observation-only mode (no veto power)
+- **Safety Guard Integration:** Runs on real content text for meaningful safety checks
+- **Economics Guard Integration:** Uses placeholder/demo values in observation mode
 - **Future Roadmap:** Full guard evaluation logic implementation
 
 ### OPEN-AGI Role System
@@ -107,6 +111,26 @@ All P1 components maintain strict adherence to:
 ### Updated Backlog Files
 - `backlog/ATLAS_QFS_P1_BACKLOG.json` - All items marked COMPLETE
 - `TASKS-ATLAS-QFS.md` - All P1 items checked off
+
+### New Specification Documents
+- `docs/protocol/AEGIS_GUARD_SPEC.md` - Detailed specification for AEGIS Guard
+- `docs/protocol/SOCIAL_LAYER_FEED_SPEC.md` - Detailed specification for social layer/feed ranking
+
+## Post-Audit Fixes
+- Added missing AtlasAPIGateway._build_hsmf_metrics_from_interaction(...)
+- Updated AtlasAPIGateway._fetch_content_candidates(...) to include real content text
+- Updated _build_coherence_input(...) so content text is available for SafetyGuard
+- Fixed AEGISGuard JSON serialization by converting BigNum128 fields to strings before hashing/serializing
+- Removed duplicate code in _build_feature_vector
+- All relevant tests now pass:
+  - SafetyGuard integration test
+  - Feed safety test
+  - Step-by-step feed processing test
+- System now runs feed ranking with meaningful content safety checks
+- Handles safe vs unsafe content correctly
+- Maintains deterministic behavior
+- Integrates SafetyGuard and EconomicsGuard via AEGISGuard
+- Uses real content text for safety evaluation instead of empty strings
 
 ## Next Steps
 
