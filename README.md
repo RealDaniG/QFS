@@ -255,10 +255,10 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 │  └──────────────────────────────────────────────────────────┘  │
 │                              ↓                                 │
 │            ╔════════════════════════════════╗                  │
-│            ║  StateTransitionEngine        ║                   │
-│            ║  • Atomic token updates       ║                   │
-│            ║  • PQC-signed state commits   ║                   │
-│            ║  • AEGIS_FINALITY_SEAL        ║                   │
+│            ║  StateTransitionEngine         ║                  │
+│            ║  • Atomic token updates        ║                  │
+│            ║  • PQC-signed state commits    ║                  │
+│            ║  • AEGIS_FINALITY_SEAL         ║                  │
 │            ╚═══════════════╤════════════════╝                  │
 └────────────────────────────┼───────────────────────────────────┘
                              │
