@@ -12,8 +12,32 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
 # Import required modules
-from libs.CertifiedMath import CertifiedMath, BigNum128
-from core.reward_types import RewardBundle
+try:
+    from ...libs.CertifiedMath import CertifiedMath, BigNum128
+    from ...core.reward_types import RewardBundle
+    # V13.6: Import EconomicsGuard for structural enforcement
+    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+    from ...libs.economics.economic_constants import (
+        MAX_REWARD_PER_ADDRESS,
+        MIN_DUST_THRESHOLD
+    )
+except ImportError:
+    try:
+        from src.libs.CertifiedMath import CertifiedMath, BigNum128
+        from src.core.reward_types import RewardBundle
+        from src.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from src.libs.economics.economic_constants import (
+            MAX_REWARD_PER_ADDRESS,
+            MIN_DUST_THRESHOLD
+        )
+    except ImportError:
+        from libs.CertifiedMath import CertifiedMath, BigNum128
+        from core.reward_types import RewardBundle
+        from libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from libs.economics.economic_constants import (
+            MAX_REWARD_PER_ADDRESS,
+            MIN_DUST_THRESHOLD
+        )
 
 
 @dataclass
@@ -38,12 +62,15 @@ class RewardAllocator:
 
     def __init__(self, cm_instance: CertifiedMath):
         """
-        Initialize the Reward Allocator.
+        Initialize the Reward Allocator with V13.6 constitutional guards.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
         """
         self.cm = cm_instance
+        
+        # === V13.6: ECONOMICS GUARD (STRUCTURAL ENFORCEMENT) ===
+        self.economics_guard = EconomicsGuard(cm_instance)
 
     def allocate_rewards(
         self,
@@ -103,6 +130,41 @@ class RewardAllocator:
                 ),
                 log_list, pqc_cid, quantum_metadata
             )
+            
+            # === V13.6 GUARD: Validate per-address cap ===
+            addr_validation = self.economics_guard.validate_per_address_reward(
+                address=address,
+                chr_amount=chr_amount,
+                flx_amount=flx_amount,
+                res_amount=res_amount,
+                total_amount=total_amount,
+                log_list=log_list
+            )
+            
+            if not addr_validation.passed:
+                # Economic guard violation - HALT allocation
+                log_list.append({
+                    "operation": "reward_allocation_per_address_violation",
+                    "address": address,
+                    "error_code": addr_validation.error_code,
+                    "error_message": addr_validation.error_message,
+                    "details": addr_validation.details,
+                    "timestamp": deterministic_timestamp
+                })
+                raise ValueError(f"[GUARD] Per-address reward violation for {address}: {addr_validation.error_message} (code: {addr_validation.error_code})")
+            
+            # === V13.6 GUARD: Handle dust amounts (log policy decision) ===
+            is_dust = self.cm.lt(total_amount, MIN_DUST_THRESHOLD, log_list, pqc_cid, quantum_metadata)
+            if is_dust:
+                # Log dust policy decision (amounts below threshold are still allocated but flagged)
+                log_list.append({
+                    "operation": "reward_allocation_dust_detected",
+                    "address": address,
+                    "total_amount": total_amount.to_decimal_string(),
+                    "dust_threshold": MIN_DUST_THRESHOLD.to_decimal_string(),
+                    "policy": "allocate_with_warning",
+                    "timestamp": deterministic_timestamp
+                })
             
             allocated_rewards[address] = AllocatedReward(
                 address=address,
