@@ -88,7 +88,7 @@ PSI_MEMORY_WINDOW_BLOCKS = BigNum128.from_int(2048)  # [MUTABLE] ~9.7 hours look
 
 # Volatility Clamps
 PSI_MAX_DELTA_PER_EPOCH = BigNum128.from_string("0.10")  # [IMMUTABLE] 10% max change
-PSI_MIN_DELTA_PER_EPOCH = BigNum128.from_string("-0.10")  # [IMMUTABLE] -10% max change
+PSI_MIN_DELTA_MAGNITUDE = BigNum128.from_string("0.10")  # [IMMUTABLE] 10% max decrease magnitude
 
 # Saturation & Decay
 PSI_SATURATION_CAP = BigNum128.from_int(1_000_000)  # [MUTABLE] max PSI accumulation
@@ -147,7 +147,7 @@ MIN_QUORUM_THRESHOLD = BigNum128.from_string("0.51")  # [IMMUTABLE] 51% min
 # Emission Controls
 NOD_MIN_ACTIVE_NODES = BigNum128.from_int(3)  # [IMMUTABLE] minimum network size
 NOD_MAX_ISSUANCE_PER_EPOCH = BigNum128.from_string("1000000")  # [MUTABLE] max epoch issuance
-NOD_ZERO_ACTIVITY_FLOOR = BigNum128.ZERO  # [IMMUTABLE] no issuance when idle
+NOD_ZERO_ACTIVITY_FLOOR = BigNum128.from_int(0)  # [IMMUTABLE] no issuance when idle
 
 # Anti-Centralization
 MAX_NOD_VOTING_POWER_RATIO = BigNum128.from_string("0.25")  # [IMMUTABLE] 25% per node cap
