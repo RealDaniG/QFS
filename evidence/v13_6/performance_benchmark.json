@@ -1,0 +1,47 @@
+{
+  "test_suite": "PerformanceBenchmark",
+  "version": "V13.6",
+  "timestamp": "2025-12-13T00:00:00Z",
+  "test_status": "PENDING",
+  "description": "TPS, latency, and overhead measurement with full guard stack active",
+  "benchmark_metrics": {
+    "transactions_per_second": {
+      "description": "Target throughput with full guards active",
+      "unit": "TPS",
+      "target": ">=100 TPS with full guard overhead"
+    },
+    "latency": {
+      "description": "P50, P95, P99 latencies for NOD allocation and governance operations",
+      "unit": "milliseconds",
+      "target_p50": "<=10ms",
+      "target_p95": "<=50ms",
+      "target_p99": "<=200ms"
+    },
+    "guard_overhead": {
+      "description": "Percentage overhead of guard operations relative to baseline",
+      "unit": "percent",
+      "target": "<=5% for economics guard, <=10% for invariant checker"
+    }
+  },
+  "test_scenarios": [
+    {
+      "scenario": "NOD Allocation Performance",
+      "description": "Measure throughput and latency of NOD allocations with guard enforcement",
+      "operations": "1000 concurrent allocations",
+      "guards_active": ["EconomicsGuard", "AEGIS_Node_Verification"]
+    },
+    {
+      "scenario": "Governance Operation Performance",
+      "description": "Measure throughput and latency of proposal creation and voting with guards",
+      "operations": "100 proposals with 500 votes each",
+      "guards_active": ["NODInvariantChecker", "AEGIS_Node_Verification", "InfrastructureGovernance"]
+    },
+    {
+      "scenario": "Mixed Workload Performance",
+      "description": "Realistic mixed workload with user rewards and infrastructure operations",
+      "workload": "80% user rewards, 15% NOD allocation, 5% governance",
+      "guards_active": ["EconomicsGuard", "NODInvariantChecker", "AEGIS_Node_Verification"]
+    }
+  ],
+  "notes": "PerformanceBenchmark.py awaits execution. Guard integration complete; performance testing pending."
+}

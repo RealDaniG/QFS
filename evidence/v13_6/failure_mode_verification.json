@@ -1,0 +1,42 @@
+{
+  "test_suite": "FailureModeTests",
+  "version": "V13.6",
+  "timestamp": "2025-12-13T00:00:00Z",
+  "test_status": "PENDING",
+  "description": "Guard-triggered halts and safe degradation verification",
+  "guard_enforcement": {
+    "economics_guard": {
+      "failure_mode": "Reward bounds exceeded",
+      "expected_behavior": "HALT with ECON_* error code",
+      "status": "STRUCTURE_VERIFIED"
+    },
+    "nod_invariant_checker": {
+      "failure_mode": "NOD invariant violation (NOD-I1 through NOD-I4)",
+      "expected_behavior": "HALT with INVARIANT_VIOLATION_* error code",
+      "status": "STRUCTURE_VERIFIED"
+    },
+    "aegis_node_verification": {
+      "failure_mode": "Unverified node attempting allocation/governance",
+      "expected_behavior": "REJECT with UNVERIFIED_* reason code",
+      "status": "STRUCTURE_VERIFIED"
+    }
+  },
+  "test_scenarios": [
+    {
+      "scenario": "Economic violation (CHR max exceeded)",
+      "guard": "EconomicsGuard",
+      "expected_error_code": "ECON_CHR_MAX_REWARD_EXCEEDED"
+    },
+    {
+      "scenario": "NOD invariant violation (NOD-I1: transfer attempted)",
+      "guard": "NODInvariantChecker",
+      "expected_error_code": "INVARIANT_VIOLATION_NOD_TRANSFER"
+    },
+    {
+      "scenario": "Node verification failure (low uptime)",
+      "guard": "AEGIS_Node_Verification",
+      "expected_rejection_reason": "UNVERIFIED_LOW_UPTIME"
+    }
+  ],
+  "notes": "FailureModeTests.py awaits execution. All guards structured and wired into StateTransitionEngine."
+}
