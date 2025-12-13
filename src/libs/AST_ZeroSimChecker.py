@@ -240,7 +240,8 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Constant(self, node):
-        if isinstance(node.value, float) or ('e' in str(node.value).lower()):
+        # Only flag actual float literals, not strings containing 'e'
+        if isinstance(node.value, float):
             self.add_violation(node, "FLOAT_LITERAL", "Float literals forbidden")
         self.generic_visit(node)
 
@@ -325,7 +326,7 @@ class AST_ZeroSimChecker:
         return all_violations
 
     def enforce_policy(self, path: str, fail_on_violations: bool = False):
-        print(f"🔍 Enforcing QFS V13 Phase 3 Zero-Simulation policy in: {path}")
+        print(f"[SCAN] Enforcing QFS V13 Phase 3 Zero-Simulation policy in: {path}")
         if os.path.isfile(path) and path.endswith(".py"):
             # Handle single file
             violations = self.scan_file(path)
@@ -333,7 +334,7 @@ class AST_ZeroSimChecker:
             # Handle directory
             violations = self.scan_directory(path)
         if violations:
-            print(f"❌ {len(violations)} violations found:")
+            print(f"[FAIL] {len(violations)} violations found:")
             for v in violations[:50]:
                 print(f"  {v.file_path}:{v.line_number} [{v.violation_type}] {v.message}")
                 if v.code_snippet:
@@ -341,7 +342,7 @@ class AST_ZeroSimChecker:
             if fail_on_violations:
                 sys.exit(1)
         else:
-            print("✅ Zero-Simulation compliance verified.")
+            print("[OK] Zero-Simulation compliance verified.")
 
 
 if __name__ == "__main__":

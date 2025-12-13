@@ -62,9 +62,6 @@ class SystemRecoveryProtocol:
         """
         Trigger a system recovery event.
         """
-            "timestamp_source": f"drv_packet:{drv_packet_seq}"
-        })
-        
         self._notify_components_of_recovery_state()
         return True
 
