@@ -28,6 +28,8 @@ try:
         GOVERNANCE_EMERGENCY_QUORUM,
         MAX_NOD_VOTING_POWER_RATIO
     )
+    # V13.6: Import AEGIS_Node_Verifier for structural enforcement
+    from .AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
 except ImportError:
     # Fallback to absolute imports (for direct execution)
     try:
@@ -44,6 +46,7 @@ except ImportError:
             GOVERNANCE_EMERGENCY_QUORUM,
             MAX_NOD_VOTING_POWER_RATIO
         )
+        from src.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
     except ImportError:
         # Try with sys.path modification
         import sys
@@ -62,6 +65,7 @@ except ImportError:
             GOVERNANCE_EMERGENCY_QUORUM,
             MAX_NOD_VOTING_POWER_RATIO
         )
+        from libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
 
 
 class GovernanceProposalType(Enum):
@@ -117,13 +121,16 @@ class InfrastructureGovernance:
 
     def __init__(self, cm_instance: CertifiedMath, quorum_threshold: BigNum128 = None):
         """
-        Initialize the Infrastructure Governance system.
+        Initialize the Infrastructure Governance system with V13.6 AEGIS verification.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
             quorum_threshold: Minimum percentage of total NOD supply required for quorum (default: 0.66)
         """
         self.cm = cm_instance
+        
+        # === V13.6: AEGIS NODE VERIFIER (STRUCTURAL ENFORCEMENT) ===
+        self.aegis_node_verifier = AEGIS_Node_Verifier(cm_instance)
         
         # Set quorum threshold with constitutional bounds enforcement
         if quorum_threshold is None:
@@ -153,6 +160,8 @@ class InfrastructureGovernance:
         parameters: Dict[str, Any],
         total_nod_supply: BigNum128,
         creation_timestamp: int,
+        registry_snapshot: Dict[str, Any],  # V13.6: AEGIS registry snapshot (required)
+        telemetry_snapshot: Dict[str, Any],  # V13.6: AEGIS telemetry snapshot (required)
         voting_duration_blocks: int = None,  # Default from economic_constants
         log_list: List[Dict[str, Any]] = None,
         pqc_cid: Optional[str] = None,
@@ -160,6 +169,8 @@ class InfrastructureGovernance:
     ) -> str:
         """
         Create a new infrastructure governance proposal.
+        
+        V13.6: Now requires AEGIS registry + telemetry snapshots for NOD-I2 compliance.
         
         Args:
             title: Title of the proposal
@@ -169,6 +180,8 @@ class InfrastructureGovernance:
             parameters: Proposal parameters
             total_nod_supply: Total NOD token supply
             creation_timestamp: Timestamp when proposal is created
+            registry_snapshot: AEGIS registry snapshot (hash-anchored, versioned)
+            telemetry_snapshot: AEGIS telemetry snapshot (hash-anchored, versioned)
             voting_duration_blocks: Duration of voting period in blocks (default from constants)
             log_list: Audit log list
             pqc_cid: PQC correlation ID
@@ -188,9 +201,9 @@ class InfrastructureGovernance:
             if time_since_last < cooldown_seconds:
                 raise ValueError(f"Proposal cooldown not satisfied: {time_since_last}s < {cooldown_seconds}s required")
         
-        # Verify proposer is a valid active node (stub - requires AEGIS integration)
-        if not self._is_valid_active_node(proposer_node_id):
-            raise ValueError(f"Proposer {proposer_node_id} is not a valid active node")
+        # Verify proposer is a valid active node (V13.6: AEGIS verification with snapshots)
+        if not self._is_valid_active_node(proposer_node_id, registry_snapshot, telemetry_snapshot, log_list):
+            raise ValueError(f"Proposer {proposer_node_id} is not a valid active node (AEGIS verification failed)")
         
         # Validate proposal parameters (constitutional requirement)
         self._validate_proposal_parameters(proposal_type, parameters)
@@ -246,24 +259,51 @@ class InfrastructureGovernance:
         
         return proposal_id
 
-    def _is_valid_active_node(self, node_id: str) -> bool:
+    def _is_valid_active_node(
+        self,
+        node_id: str,
+        registry_snapshot: Dict[str, Any],
+        telemetry_snapshot: Dict[str, Any],
+        log_list: Optional[List[Dict[str, Any]]] = None
+    ) -> bool:
         """
         Verify that a node ID corresponds to a valid active AEGIS node.
         
-        This is a stub pending AEGIS API integration. In production, this should:
-        - Query AEGIS registry for node status
-        - Verify node has minimum uptime/contribution
-        - Check node hasn't been slashed
+        V13.6: Replaced stub with AEGIS_Node_Verifier integration for structural enforcement.
+        Uses deterministic registry + telemetry snapshots (hash-anchored) to ensure NOD-I2
+        compliance: only verified nodes can participate in governance.
         
         Args:
             node_id: Node ID to verify
+            registry_snapshot: AEGIS registry snapshot (hash-anchored, versioned)
+            telemetry_snapshot: AEGIS telemetry snapshot (hash-anchored, versioned)
+            log_list: Optional audit log list
             
         Returns:
-            bool: True if node is valid and active
+            bool: True if node is valid and active (passes all AEGIS verification checks)
         """
-        # STUB: Accept all node_ids for now
-        # TODO: Integrate with AEGIS_API.is_active_node(node_id)
-        return len(node_id) > 0
+        if log_list is None:
+            log_list = []
+        
+        # Use AEGIS_Node_Verifier for structural node verification
+        verification_result = self.aegis_node_verifier.verify_node(
+            node_id=node_id,
+            registry_snapshot=registry_snapshot,
+            telemetry_snapshot=telemetry_snapshot,
+            log_list=log_list
+        )
+        
+        # Log verification result for audit trail
+        if not verification_result.is_valid:
+            log_list.append({
+                "operation": "governance_node_verification_failed",
+                "node_id": node_id,
+                "status": verification_result.status.value,
+                "reason_code": verification_result.reason_code,
+                "reason_message": verification_result.reason_message
+            })
+        
+        return verification_result.is_valid
     
     def _validate_proposal_parameters(self, proposal_type: GovernanceProposalType, parameters: Dict[str, Any]):
         """
@@ -1021,23 +1061,7 @@ def test_infrastructure_governance():
 
 
 if __name__ == "__main__":
-    test_infrastructure_governance()proposal.voting_end_timestamp,
-            "execution_earliest_timestamp": proposal.execution_earliest_timestamp
-        }
-        
-        # Generate SHA-256 event hash for Merkle inclusion
-        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
-        
-        # Log entry
-        log_list.append({
-            "operation": "infrastructure_proposal_creation",
-            "details": event_data,
-            "event_hash": event_hash,
-            "result": proposal.quorum_required.to_decimal_string(),
-            "pqc_cid": pqc_cid,
-            "quantum_metadata": quantum_metadata,
-            "timestamp": timestamp
-        })
+    test_infrastructure_governance()
 
     def _log_vote(
         self,

@@ -152,6 +152,19 @@ class NODAllocator:
             List[NODAllocation]: List of NOD allocations for verified nodes only
         """
         # === V13.6 GUARD STEP 1: Filter nodes via AEGIS verification ===
+        # V13.6 NOD-I4: Log snapshot hashes for deterministic replay
+        registry_hash = registry_snapshot.get("snapshot_hash", "MISSING_HASH")
+        telemetry_hash = telemetry_snapshot.get("snapshot_hash", "MISSING_HASH")
+        
+        if log_list is not None:
+            log_list.append({
+                "operation": "nod_aegis_snapshot_anchoring",
+                "registry_snapshot_hash": registry_hash,
+                "telemetry_snapshot_hash": telemetry_hash,
+                "epoch": epoch_number,
+                "timestamp": deterministic_timestamp
+            })
+        
         verified_nodes = {}
         unverified_nodes = []
         
