@@ -1,0 +1,77 @@
+{
+  "nod_i4_compliance": true,
+  "passed_tests": 2,
+  "test_results": [
+    {
+      "passed": true,
+      "reference_log_hash": "99898f2e7950336857f0880dd83b2d8a2e0ef10a18ddeb1a392297f49b26c7f0",
+      "reference_nod_allocated": "0.0",
+      "results": [
+        {
+          "log_hash": "99898f2e7950336857f0880dd83b2d8a2e0ef10a18ddeb1a392297f49b26c7f0",
+          "nod_allocated": "0.0",
+          "node_allocations": [],
+          "registry_snapshot_hash": "483c68f72ce2a887d47901bff526f4b95478308bc5b9fa65cad627a69891d535",
+          "run": 1,
+          "telemetry_snapshot_hash": "0aad2a3464caed0912e60181923199a86ee7f5028027cec9695fd522afcfcb95"
+        },
+        {
+          "log_hash": "99898f2e7950336857f0880dd83b2d8a2e0ef10a18ddeb1a392297f49b26c7f0",
+          "nod_allocated": "0.0",
+          "node_allocations": [],
+          "registry_snapshot_hash": "483c68f72ce2a887d47901bff526f4b95478308bc5b9fa65cad627a69891d535",
+          "run": 2,
+          "telemetry_snapshot_hash": "0aad2a3464caed0912e60181923199a86ee7f5028027cec9695fd522afcfcb95"
+        },
+        {
+          "log_hash": "99898f2e7950336857f0880dd83b2d8a2e0ef10a18ddeb1a392297f49b26c7f0",
+          "nod_allocated": "0.0",
+          "node_allocations": [],
+          "registry_snapshot_hash": "483c68f72ce2a887d47901bff526f4b95478308bc5b9fa65cad627a69891d535",
+          "run": 3,
+          "telemetry_snapshot_hash": "0aad2a3464caed0912e60181923199a86ee7f5028027cec9695fd522afcfcb95"
+        }
+      ],
+      "runs": 3,
+      "test": "nod_allocation_replay"
+    },
+    {
+      "passed": true,
+      "reference_log_hash": "2d86c6c5d9d3a51993d85964f9ff078bc143a277b16b9c347e8f9618eea2358d",
+      "reference_passed": false,
+      "reference_status": "rejected",
+      "results": [
+        {
+          "log_hash": "2d86c6c5d9d3a51993d85964f9ff078bc143a277b16b9c347e8f9618eea2358d",
+          "proposal_passed": false,
+          "proposal_status": "rejected",
+          "run": 1,
+          "votes_against": "0.0",
+          "votes_for": "500000.0"
+        },
+        {
+          "log_hash": "2d86c6c5d9d3a51993d85964f9ff078bc143a277b16b9c347e8f9618eea2358d",
+          "proposal_passed": false,
+          "proposal_status": "rejected",
+          "run": 2,
+          "votes_against": "0.0",
+          "votes_for": "500000.0"
+        },
+        {
+          "log_hash": "2d86c6c5d9d3a51993d85964f9ff078bc143a277b16b9c347e8f9618eea2358d",
+          "proposal_passed": false,
+          "proposal_status": "rejected",
+          "run": 3,
+          "votes_against": "0.0",
+          "votes_for": "500000.0"
+        }
+      ],
+      "runs": 3,
+      "test": "governance_replay"
+    }
+  ],
+  "test_suite": "DeterministicReplayTest",
+  "timestamp": "2025-12-13T15:00:00Z",
+  "total_tests": 2,
+  "version": "V13.6"
+}

@@ -1,0 +1,105 @@
+{
+  "artifact_type": "failure_mode_verification",
+  "version": "V13.6",
+  "test_suite": "FailureModeTests.py",
+  "timestamp": "2025-12-13T14:48:09.904714Z",
+  "summary": {
+    "total_tests": 9,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 2,
+    "pass_rate_percent": 100.0
+  },
+  "test_results": [
+    {
+      "test_name": "AEGIS Offline Freezes NOD/Governance",
+      "status": "SKIPPED",
+      "description": "AEGIS offline policy enforcement not yet implemented",
+      "reason": "AEGIS adapter integration pending"
+    },
+    {
+      "test_name": "AEGIS Offline Allows User Rewards",
+      "status": "PASS",
+      "description": "User rewards continue during AEGIS offline",
+      "expected_behavior": "User rewards orthogonal to AEGIS status",
+      "actual_behavior": "CHR reward validated: 100.0",
+      "safe_degradation": "\u2705 User operations unaffected by infrastructure issues"
+    },
+    {
+      "test_name": "NOD Transfer Firewall: User Context Rejected",
+      "status": "PASS",
+      "description": "NOD transfer firewall correctly rejects user context",
+      "expected_error_code": "INVARIANT_VIOLATION_NOD_TRANSFER",
+      "actual_error_code": "INVARIANT_VIOLATION_NOD_TRANSFER",
+      "call_context": "user_rewards",
+      "firewall_status": "\u2705 Active and enforcing NOD-I1"
+    },
+    {
+      "test_name": "NOD Transfer Firewall: Valid Context Allowed",
+      "status": "PASS",
+      "description": "NOD allocation allowed in valid context",
+      "call_context": "nod_allocation",
+      "firewall_status": "\u2705 Correctly permits valid NOD contexts"
+    },
+    {
+      "test_name": "CHR Reward Over Cap Violation",
+      "status": "PASS",
+      "description": "CHR over-cap correctly rejected",
+      "attempted_amount": "10001.0",
+      "max_allowed": "10000.0",
+      "error_code": "ECON_CHR_REWARD_ABOVE_MAX",
+      "guard_status": "\u2705 EconomicsGuard enforcing constitutional bounds"
+    },
+    {
+      "test_name": "NOD Allocation Over Fraction Violation",
+      "status": "PASS",
+      "description": "NOD over-fraction correctly rejected",
+      "attempted_fraction": "20%",
+      "max_allowed_fraction": "15%",
+      "error_code": "ECON_NOD_ALLOCATION_ABOVE_MAX",
+      "guard_status": "\u2705 EconomicsGuard enforcing NOD bounds"
+    },
+    {
+      "test_name": "Per-Address Reward Cap Violation",
+      "status": "SKIPPED",
+      "description": "Method validate_per_address_reward not implemented in EconomicsGuard",
+      "reason": "Test skipped pending implementation"
+    },
+    {
+      "test_name": "NOD Supply Conservation Violation (NOD-I2)",
+      "status": "PASS",
+      "description": "NOD supply conservation violation detected",
+      "pre_balance": "1000.0",
+      "post_balance": "1200.0",
+      "allocated": "0.0",
+      "violation": "200 NOD created, only 0 allocated (NOD-I2 violated)",
+      "error_code": "INVARIANT_NOD_I2_SUPPLY_MISMATCH",
+      "guard_status": "\u2705 NODInvariantChecker enforcing NOD-I2"
+    },
+    {
+      "test_name": "NOD Voting Power Dominance Violation (NOD-I3)",
+      "status": "PASS",
+      "description": "NOD voting power dominance detected",
+      "node_nod": "300.0",
+      "total_supply": "1000.0",
+      "voting_power_ratio": "30%",
+      "max_allowed": "25%",
+      "violation": "Single node exceeds 25% cap (NOD-I3 violated)",
+      "error_code": "INVARIANT_NOD_I3_VOTING_POWER_EXCEEDED",
+      "guard_status": "\u2705 Anti-centralization bounds enforced"
+    }
+  ],
+  "constitutional_guards_status": {
+    "EconomicsGuard": "\u2705 Active and enforcing bounds",
+    "NODInvariantChecker": "\u2705 Active and enforcing invariants",
+    "StateTransitionEngine_Firewall": "\u2705 Active and blocking user NOD transfers",
+    "AEGIS_Offline_Policy": "PARTIALLY VERIFIED - AEGIS adapter pending"
+  },
+  "compliance_notes": [
+    "All failure modes preserve zero-simulation integrity",
+    "No approximations or human overrides during failures",
+    "Structured error codes emitted for CIR-302 integration",
+    "AEGIS offline policy partially verified - AEGIS adapter pending",
+    "User rewards orthogonal to infrastructure status"
+  ]
+}

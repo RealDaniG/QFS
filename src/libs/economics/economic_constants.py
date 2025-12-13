@@ -155,7 +155,16 @@ MAX_NODE_REWARD_SHARE = BigNum128.from_string("0.30")  # [IMMUTABLE] 30% max rew
 
 
 # =============================================================================
-# SECTION 8: GOVERNANCE TIMING & COOLDOWNS [IMMUTABLE]
+# SECTION 8: REWARD DISTRIBUTION BOUNDS [V13.6]
+# =============================================================================
+
+# Per-Address Reward Caps (for RewardAllocator)
+MAX_REWARD_PER_ADDRESS = BigNum128.from_int(1_000_000)  # [MUTABLE] prevents single-address capture
+MIN_DUST_THRESHOLD = BigNum128.from_int(1)  # [IMMUTABLE] minimum meaningful reward
+
+
+# =============================================================================
+# SECTION 9: GOVERNANCE TIMING & COOLDOWNS [IMMUTABLE]
 # =============================================================================
 
 # Proposal Lifecycle

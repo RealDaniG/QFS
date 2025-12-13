@@ -15,7 +15,7 @@
 | Phase B - Integration | 8 | 5 | 3 | 63% |
 | Phase C - Threat & Safety | 32 | 3 | 29 | 9% |
 | Phase D - Governance | 21 | 0 | 21 | 0% |
-| **TOTAL** | **89** | **21** | **68** | **24%** |
+| **TOTAL** | **91** | **23** | **68** | **25%** |
 
 ---
 
@@ -118,6 +118,7 @@
 | **Test Matrix** | ❌ FAIL | `tests/integration/test_end_to_end_matrix.py` | **HIGH** |
 | **Scenario Coverage** | ⚠️ PARTIAL | Advanced scenarios missing | **MEDIUM** |
 | **Evidence: Matrix Results** | ❌ FAIL | `evidence/integration_matrix_results.json` | **MEDIUM** |
+| **NOD Token Integration** | ⚠️ PARTIAL | NODAllocator and InfrastructureGovernance implemented | **HIGH** |
 
 ---
 

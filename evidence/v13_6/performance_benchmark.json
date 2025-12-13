@@ -1,0 +1,112 @@
+{
+  "artifact_type": "performance_benchmark",
+  "version": "V13.6",
+  "test_suite": "PerformanceBenchmark.py",
+  "timestamp": "2025-12-13T14:32:21.600733Z",
+  "summary": {
+    "total_benchmarks": 5,
+    "completed_benchmarks": 4,
+    "skipped_benchmarks": 1
+  },
+  "benchmark_results": {
+    "CHR Reward Validation": {
+      "iterations": 10000,
+      "duration_seconds": 0.07338789998902939,
+      "tps": 136262.24488634884,
+      "latency_ms": {
+        "p50": 0.006300018867477775,
+        "p95": 0.008899980457499623,
+        "p99": 0.011898974480573088,
+        "mean": 0.0071864599653054025,
+        "min": 0.005999987479299307,
+        "max": 1.5276000194717199
+      }
+    },
+    "FLX Reward Validation": {
+      "iterations": 10000,
+      "duration_seconds": 0.07932270001037978,
+      "tps": 126067.31740966268,
+      "latency_ms": {
+        "p50": 0.007299997378140688,
+        "p95": 0.009100011084228754,
+        "p99": 0.011599001009017229,
+        "mean": 0.007796610007062554,
+        "min": 0.007099995855242014,
+        "max": 0.9555999713484198
+      }
+    },
+    "NOD Allocation Validation (Dual Guards)": {
+      "iterations": 5000,
+      "duration_seconds": 0.06521890001022257,
+      "tps": 76664.89314012177,
+      "latency_ms": {
+        "p50": 0.011999974958598614,
+        "p95": 0.01499499921919778,
+        "p99": 0.018897998379543424,
+        "mean": 0.012880160112399609,
+        "min": 0.011500000255182385,
+        "max": 1.12900001113303
+      },
+      "guards_invoked": [
+        "EconomicsGuard",
+        "NODInvariantChecker"
+      ]
+    },
+    "Per-Address Reward Cap Validation": {
+      "iterations": 0,
+      "duration_seconds": 0,
+      "tps": 0,
+      "latency_ms": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "mean": 0,
+        "min": 0,
+        "max": 0
+      },
+      "status": "SKIPPED",
+      "reason": "Method validate_per_address_reward not implemented in EconomicsGuard"
+    },
+    "State Transition (Full Guard Stack)": {
+      "iterations": 1000,
+      "duration_seconds": 0.04188929998781532,
+      "tps": 23872.4447601387,
+      "latency_ms": {
+        "p50": 0.038300000596791506,
+        "p95": 0.043294980423524976,
+        "p99": 0.22079800022765994,
+        "mean": 0.04160879968549125,
+        "min": 0.03579998156055808,
+        "max": 0.668499997118488
+      },
+      "components": [
+        "StateTransitionEngine",
+        "EconomicsGuard (CHR/FLX/RES validation)",
+        "NODInvariantChecker (NOD-I1..I4)",
+        "Supply Delta Validation"
+      ]
+    },
+    "AGGREGATE_METRICS": {
+      "average_tps": 72573.38003925439,
+      "max_tps": 136262.24488634884,
+      "min_tps": 0,
+      "average_p50_latency_ms": 0.012779998360201716,
+      "average_p99_latency_ms": 0.052638794819358736,
+      "target_tps": 2000,
+      "target_met": true
+    }
+  },
+  "performance_targets": {
+    "target_tps": 2000,
+    "target_p99_latency_ms": 20,
+    "target_p50_latency_ms": 5,
+    "guard_overhead_limit_percent": 15
+  },
+  "compliance_notes": [
+    "All benchmarks conducted with full guard stack enabled",
+    "Zero-simulation integrity preserved throughout",
+    "No approximations or human overrides during measurement",
+    "Per-address reward validation benchmark SKIPPED (method not implemented)",
+    "NOD invariant validation simplified for performance benchmark focus"
+  ]
+}

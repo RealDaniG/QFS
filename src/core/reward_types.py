@@ -11,7 +11,19 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
 # Import required modules
-from libs.CertifiedMath import BigNum128
+try:
+    # Try relative imports first (for package usage)
+    from ..libs.CertifiedMath import BigNum128
+except ImportError:
+    # Fallback to absolute imports (for direct execution)
+    try:
+        from src.libs.CertifiedMath import BigNum128
+    except ImportError:
+        # Try with sys.path modification
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        from libs.CertifiedMath import BigNum128
 
 
 @dataclass
@@ -22,4 +34,5 @@ class RewardBundle:
     res_reward: BigNum128
     psi_sync_reward: BigNum128
     atr_reward: BigNum128
+    nod_reward: BigNum128  # ← NEW: NOD reward from ATR fees
     total_reward: BigNum128

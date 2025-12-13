@@ -1,0 +1,77 @@
+{
+  "artifact_type": "pqc_standardization_verification",
+  "version": "V13.6",
+  "test_suite": "TestPQCStandardization.py",
+  "backend": "MockPQC",
+  "backend_info": {
+    "backend": "MockPQC",
+    "algorithm": "SHA-256 (simulation only)",
+    "security_level": "NONE - NOT CRYPTOGRAPHICALLY SECURE",
+    "production_ready": false,
+    "quantum_resistant": false,
+    "deterministic": true,
+    "warning": "INTEGRATION TESTING ONLY - DO NOT USE IN PRODUCTION"
+  },
+  "timestamp": "2025-12-13T15:20:30.607697+00:00Z",
+  "summary": {
+    "total_tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "pass_rate_percent": 100.0
+  },
+  "test_results": [
+    {
+      "test_name": "Deterministic Keygen",
+      "status": "PASS",
+      "description": "Deterministic keygen produces identical keypairs with stable audit hash",
+      "seed_length": 33,
+      "private_key_length": 32,
+      "public_key_length": 32,
+      "audit_hash": "f70c2a648d2227ca...",
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "Sign/Verify Round-Trip",
+      "status": "PASS",
+      "description": "Sign/verify round-trip successful with canonical serialization",
+      "payload_hash": "a0be7df7062f435e...",
+      "signature_length": 32,
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "Tamper Detection",
+      "status": "PASS",
+      "description": "Tamper detection working - invalid signature rejected with audit log",
+      "audit_log_entry": {
+        "operation": "verify_signature",
+        "original_hash": "373e061079338e38...",
+        "tampered_hash": "47c3391acad24653...",
+        "result": "REJECTED",
+        "timestamp": 1765639230
+      },
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "SignedMessage Integration",
+      "status": "PASS",
+      "description": "SignedMessage creation and verification successful with tamper detection",
+      "sender": "test_node_001",
+      "recipient": "RewardAllocator",
+      "tick": 100,
+      "tamper_tests": [
+        "Payload Tamper: REJECTED",
+        "Tick Tamper: REJECTED",
+        "Timestamp Tamper: REJECTED"
+      ],
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "Seed Length Handling",
+      "status": "PASS",
+      "description": "Seed of length 5 handled appropriately",
+      "seed_length": 5,
+      "actual_key_length": 32,
+      "backend": "MockPQC"
+    }
+  ]
+}

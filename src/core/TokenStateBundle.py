@@ -45,6 +45,7 @@ class TokenStateBundle:
     psi_sync_state: Dict[str, Any] # ΨSync token state
     atr_state: Dict[str, Any]      # Attractor token state
     res_state: Dict[str, Any]      # Resonance token state
+    nod_state: Dict[str, Any]      # Node Operator Determination token state (NOD)
     
     # Security and validation
     signature: str                 # Dilithium-5 signature from AGI Control Plane
@@ -77,7 +78,7 @@ class TokenStateBundle:
         """Validate that all token states are properly structured."""
         required_states = [
             self.chr_state, self.flx_state, self.psi_sync_state,
-            self.atr_state, self.res_state
+            self.atr_state, self.res_state, self.nod_state
         ]
         
         for i, state in enumerate(required_states):
@@ -268,6 +269,7 @@ class TokenStateBundle:
             "psi_sync_state": psi_sync_state_serializable,
             "atr_state": atr_state_serializable,
             "res_state": res_state_serializable,
+            "nod_state": nod_state_serializable,  # ← NEW
             "timestamp": self.timestamp,
             "bundle_id": self.bundle_id,
             "pqc_cid": self.pqc_cid,
@@ -327,6 +329,7 @@ def create_token_state_bundle(
     psi_sync_state: Dict[str, Any],
     atr_state: Dict[str, Any],
     res_state: Dict[str, Any],
+    nod_state: Dict[str, Any],
     lambda1: BigNum128,
     lambda2: BigNum128,
     c_crit: BigNum128,
@@ -345,6 +348,7 @@ def create_token_state_bundle(
         psi_sync_state: ΨSync token state
         atr_state: Attractor token state
         res_state: Resonance token state
+        nod_state: Node Operator Determination token state (NOD)
         lambda1: Weight for S_FLX component
         lambda2: Weight for S_PsiSync component
         c_crit: Critical coherence threshold
@@ -366,6 +370,7 @@ def create_token_state_bundle(
             psi_sync_state=psi_sync_state,
             atr_state=atr_state,
             res_state=res_state,
+            nod_state=nod_state,  # ← NEW
             signature="",  # Temporary empty signature
             timestamp=timestamp,
             bundle_id="",  # Temporary empty ID
@@ -388,6 +393,7 @@ def create_token_state_bundle(
         psi_sync_state=psi_sync_state,
         atr_state=atr_state,
         res_state=res_state,
+        nod_state=nod_state,  # ← NEW
         signature="",  # Signature will be added by the AGI Control Plane
         timestamp=timestamp,
         bundle_id=bundle_id,
@@ -430,6 +436,7 @@ def load_token_state_bundle(bundle_data: Dict[str, Any]) -> TokenStateBundle:
         psi_sync_state=bundle_data.get('psi_sync_state', {}),
         atr_state=bundle_data.get('atr_state', {}),
         res_state=bundle_data.get('res_state', {}),
+        nod_state=bundle_data.get('nod_state', {}),  # ← NEW
         signature=bundle_data.get('signature', ''),
         timestamp=bundle_data.get('timestamp', 0),
         bundle_id=bundle_data.get('bundle_id', ''),

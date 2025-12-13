@@ -19,26 +19,27 @@ All NOD-related state changes MUST pass through NODInvariantChecker.
 
 import json
 import hashlib
-from typing import Dict, Any, Optional, List, Set
+from typing import Dict, Any, Optional, List, Set, TYPE_CHECKING
 from dataclasses import dataclass
 from enum import Enum
+
+# V13.6: TYPE_CHECKING import to avoid circular dependency with NODAllocator
+if TYPE_CHECKING:
+    from .NODAllocator import NODAllocation
 
 # Import required modules
 try:
     from ..CertifiedMath import BigNum128, CertifiedMath
-    from .NODAllocator import NODAllocation
     from ..economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO
 except ImportError:
     try:
         from src.libs.CertifiedMath import BigNum128, CertifiedMath
-        from src.libs.governance.NODAllocator import NODAllocation
         from src.libs.economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO
     except ImportError:
         import sys
         import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
         from CertifiedMath import BigNum128, CertifiedMath
-        from governance.NODAllocator import NODAllocation
         from economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO
 
 
@@ -188,7 +189,7 @@ class NODInvariantChecker:
         self,
         previous_total_supply: BigNum128,
         new_total_supply: BigNum128,
-        allocations: List[NODAllocation],
+        allocations: List['NODAllocation'],
         log_list: Optional[List[Dict[str, Any]]] = None
     ) -> InvariantCheckResult:
         """
@@ -320,7 +321,7 @@ class NODInvariantChecker:
     
     def check_deterministic_allocation(
         self,
-        allocations: List[NODAllocation],
+        allocations: List['NODAllocation'],
         expected_hash: Optional[str] = None,
         log_list: Optional[List[Dict[str, Any]]] = None
     ) -> InvariantCheckResult:
@@ -393,7 +394,7 @@ class NODInvariantChecker:
         previous_total_supply: BigNum128,
         new_total_supply: BigNum128,
         node_balances: Dict[str, BigNum128],
-        allocations: List[NODAllocation],
+        allocations: List['NODAllocation'],
         expected_hash: Optional[str] = None,
         log_list: Optional[List[Dict[str, Any]]] = None
     ) -> List[InvariantCheckResult]:
@@ -447,7 +448,7 @@ class NODInvariantChecker:
     # UTILITY METHODS
     # =========================================================================
     
-    def generate_allocation_hash(self, allocations: List[NODAllocation]) -> str:
+    def generate_allocation_hash(self, allocations: List['NODAllocation']) -> str:
         """
         Generate SHA-256 hash of allocation results for replay verification.
         
