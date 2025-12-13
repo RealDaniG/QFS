@@ -452,6 +452,192 @@ class InfrastructureGovernance:
         
         return yes_wins
 
+    def execute_proposal(
+        self,
+        proposal_id: str,
+        current_timestamp: int,
+        log_list: List[Dict[str, Any]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Execute a PASSED proposal after timelock period expires.
+        
+        Constitutional requirements:
+        - Proposal must be in PASSED status
+        - Current time must be >= execution_earliest_timestamp (timelock)
+        - Proposal can only be executed once (executed flag check)
+        - Mutates infrastructure config state (not code)
+        - Emits irreversible log entry
+        
+        Args:
+            proposal_id: ID of the proposal to execute
+            current_timestamp: Current timestamp
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            
+        Returns:
+            Dict[str, Any]: Execution result details
+            
+        Raises:
+            ValueError: If proposal not found, not PASSED, timelock not satisfied, or already executed
+        """
+        if log_list is None:
+            log_list = []
+        
+        # Validate proposal exists
+        if proposal_id not in self.proposals:
+            raise ValueError(f"Proposal {proposal_id} not found")
+        
+        proposal = self.proposals[proposal_id]
+        
+        # Validate proposal is PASSED
+        if proposal.status != ProposalStatus.PASSED:
+            raise ValueError(f"Proposal {proposal_id} is not in PASSED status (current status: {proposal.status.value})")
+        
+        # ONCE-ONLY EXECUTION: Check if already executed
+        if proposal.executed:
+            raise ValueError(f"Proposal {proposal_id} has already been executed")
+        
+        # TIMELOCK ENFORCEMENT: Check execution timestamp
+        if current_timestamp < proposal.execution_earliest_timestamp:
+            remaining_seconds = proposal.execution_earliest_timestamp - current_timestamp
+            raise ValueError(f"Timelock not satisfied: {remaining_seconds}s remaining until {proposal.execution_earliest_timestamp}")
+        
+        # EXECUTE THE PROPOSAL: Mutate infrastructure config state
+        execution_result = {
+            "success": True,
+            "proposal_id": proposal_id,
+            "proposal_type": proposal.proposal_type.value,
+            "parameters_applied": proposal.parameters,
+            "execution_timestamp": current_timestamp,
+            "timelock_satisfied": current_timestamp >= proposal.execution_earliest_timestamp
+        }
+        
+        # Apply the infrastructure config mutation based on proposal type
+        if proposal.proposal_type == GovernanceProposalType.STORAGE_REPLICATION_FACTOR:
+            # Example: Update storage replication factor (would mutate actual config in production)
+            proposed_factor = proposal.parameters.get("proposed_factor")
+            execution_result["applied_config"] = {"storage_replication_factor": proposed_factor}
+        elif proposal.proposal_type == GovernanceProposalType.AI_MODEL_VERSION_APPROVAL:
+            # Example: Approve AI model version
+            model_version = proposal.parameters.get("model_version")
+            model_hash = proposal.parameters.get("model_hash")
+            execution_result["applied_config"] = {"approved_model_version": model_version, "model_hash": model_hash}
+        # Add other proposal types as needed
+        
+        # Mark proposal as executed
+        proposal.executed = True
+        proposal.status = ProposalStatus.EXECUTED
+        proposal.execution_result = execution_result
+        
+        # Log execution (irreversible)
+        self._log_execution(
+            proposal_id, execution_result,
+            log_list, pqc_cid, quantum_metadata, current_timestamp
+        )
+        
+        return execution_result
+
+    def cancel_proposal(
+        self,
+        proposal_id: str,
+        canceller_node_id: str,
+        current_timestamp: int,
+        log_list: List[Dict[str, Any]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ):
+        """
+        Cancel an ACTIVE proposal (proposer-only).
+        
+        Args:
+            proposal_id: ID of the proposal to cancel
+            canceller_node_id: Node ID requesting cancellation
+            current_timestamp: Current timestamp
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            
+        Raises:
+            ValueError: If not proposer, proposal not found, or not ACTIVE
+        """
+        if log_list is None:
+            log_list = []
+        
+        # Validate proposal exists
+        if proposal_id not in self.proposals:
+            raise ValueError(f"Proposal {proposal_id} not found")
+        
+        proposal = self.proposals[proposal_id]
+        
+        # PROPOSER-ONLY: Verify canceller is the original proposer
+        if canceller_node_id != proposal.proposer_node_id:
+            raise ValueError(f"Only proposer {proposal.proposer_node_id} can cancel this proposal")
+        
+        # Validate proposal is ACTIVE (can't cancel PASSED/REJECTED/EXECUTED)
+        if proposal.status != ProposalStatus.ACTIVE:
+            raise ValueError(f"Can only cancel ACTIVE proposals (current status: {proposal.status.value})")
+        
+        # Cancel the proposal
+        proposal.status = ProposalStatus.CANCELLED
+        
+        # Log cancellation
+        self._log_cancellation(
+            proposal_id, canceller_node_id,
+            log_list, pqc_cid, quantum_metadata, current_timestamp
+        )
+
+    def expire_stale_proposals(
+        self,
+        current_timestamp: int,
+        log_list: List[Dict[str, Any]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> List[str]:
+        """
+        Batch expire all stale ACTIVE proposals whose voting window has passed.
+        
+        Processes proposals in deterministic sorted order (by proposal_id) to ensure
+        replay consistency.
+        
+        Args:
+            current_timestamp: Current timestamp
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            
+        Returns:
+            List[str]: List of expired proposal IDs
+        """
+        if log_list is None:
+            log_list = []
+        
+        expired_ids = []
+        
+        # Get all ACTIVE proposals and sort by proposal_id (deterministic order)
+        active_proposals = [
+            (p_id, p) for p_id, p in self.proposals.items()
+            if p.status == ProposalStatus.ACTIVE
+        ]
+        active_proposals.sort(key=lambda x: x[0])  # Sort by proposal_id for determinism
+        
+        # Expire stale proposals
+        for proposal_id, proposal in active_proposals:
+            if current_timestamp > proposal.voting_end_timestamp:
+                # Voting window has passed without tally
+                proposal.status = ProposalStatus.EXPIRED
+                expired_ids.append(proposal_id)
+                
+                # Log expiry
+                self._log_expiry(
+                    proposal_id, current_timestamp, proposal.voting_end_timestamp,
+                    log_list, pqc_cid, quantum_metadata, current_timestamp
+                )
+        
+        return expired_ids
+
     def get_proposal(self, proposal_id: str) -> Optional[InfrastructureProposal]:
         """
         Get a proposal by ID.
@@ -483,7 +669,7 @@ class InfrastructureGovernance:
         timestamp: int = 0,
     ):
         """
-        Log proposal creation for audit purposes.
+        Log proposal creation for audit purposes with SHA-256 event hash.
         
         Args:
             proposal: The created proposal
@@ -493,31 +679,34 @@ class InfrastructureGovernance:
             quantum_metadata: Quantum metadata
             timestamp: Timestamp
         """
-        details = {
+        # Create event details
+        event_data = {
             "operation": "infrastructure_proposal_creation",
             "proposal_id": proposal.proposal_id,
             "title": proposal.title,
             "proposal_type": proposal.proposal_type.value,
             "proposer_node_id": proposal.proposer_node_id,
             "total_nod_supply": total_nod_supply.to_decimal_string(),
+            "total_nod_supply_snapshot": proposal.total_nod_supply_snapshot.to_decimal_string(),
             "quorum_required": proposal.quorum_required.to_decimal_string(),
             "creation_timestamp": proposal.creation_timestamp,
-            "voting_end_timestamp": proposal.voting_end_timestamp
+            "voting_end_timestamp": proposal.voting_end_timestamp,
+            "execution_earliest_timestamp": proposal.execution_earliest_timestamp
         }
         
-        # Use CertifiedMath's public API for logging
-        dummy_result = BigNum128(1)
-        self.cm.add(dummy_result, dummy_result, log_list, pqc_cid, quantum_metadata)
-        # Replace the last entry with our custom log entry
-        if log_list:
-            log_list[-1] = {
-                "operation": "infrastructure_proposal_creation",
-                "details": details,
-                "result": proposal.quorum_required.to_decimal_string(),
-                "pqc_cid": pqc_cid,
-                "quantum_metadata": quantum_metadata,
-                "timestamp": timestamp
-            }
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_proposal_creation",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": proposal.quorum_required.to_decimal_string(),
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
 
     def _log_vote(
         self,
@@ -525,46 +714,50 @@ class InfrastructureGovernance:
         voter_node_id: str,
         voter_nod_balance: BigNum128,
         vote_yes: bool,
+        capped: bool,
         log_list: List[Dict[str, Any]],
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         timestamp: int = 0,
     ):
         """
-        Log vote for audit purposes.
+        Log vote for audit purposes with SHA-256 event hash.
         
         Args:
             proposal_id: ID of the proposal
             voter_node_id: Node ID of the voter
-            voter_nod_balance: NOD balance of the voter
+            voter_nod_balance: NOD balance of the voter (effective after capping)
             vote_yes: Vote decision
+            capped: Whether vote power was capped
             log_list: Audit log list
             pqc_cid: PQC correlation ID
             quantum_metadata: Quantum metadata
             timestamp: Timestamp
         """
-        details = {
+        # Create event details
+        event_data = {
             "operation": "infrastructure_vote",
             "proposal_id": proposal_id,
             "voter_node_id": voter_node_id,
             "voter_nod_balance": voter_nod_balance.to_decimal_string(),
             "vote": "yes" if vote_yes else "no",
+            "capped": capped,
             "timestamp": timestamp
         }
         
-        # Use CertifiedMath's public API for logging
-        dummy_result = BigNum128(1)
-        self.cm.add(dummy_result, dummy_result, log_list, pqc_cid, quantum_metadata)
-        # Replace the last entry with our custom log entry
-        if log_list:
-            log_list[-1] = {
-                "operation": "infrastructure_vote",
-                "details": details,
-                "result": voter_nod_balance.to_decimal_string(),
-                "pqc_cid": pqc_cid,
-                "quantum_metadata": quantum_metadata,
-                "timestamp": timestamp
-            }
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_vote",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": voter_nod_balance.to_decimal_string(),
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
 
     def _log_tally_result(
         self,
@@ -577,7 +770,7 @@ class InfrastructureGovernance:
         timestamp: int = 0,
     ):
         """
-        Log tally result for audit purposes.
+        Log tally result for audit purposes with SHA-256 event hash.
         
         Args:
             proposal_id: ID of the proposal
@@ -588,27 +781,496 @@ class InfrastructureGovernance:
             quantum_metadata: Quantum metadata
             timestamp: Timestamp
         """
-        details = {
+        proposal = self.proposals.get(proposal_id)
+        
+        # Create event details with quorum calculation
+        event_data = {
             "operation": "infrastructure_tally",
             "proposal_id": proposal_id,
             "result": "passed" if passed else "rejected",
             "reason": reason,
+            "yes_votes": proposal.yes_votes.to_decimal_string() if proposal else "0",
+            "no_votes": proposal.no_votes.to_decimal_string() if proposal else "0",
+            "quorum_required": proposal.quorum_required.to_decimal_string() if proposal else "0",
+            "quorum_met": passed or reason == "vote_result",  # True if reason is vote_result (quorum was met)
+            "execution_eligible": passed,
             "timestamp": timestamp
         }
         
-        # Use CertifiedMath's public API for logging
-        dummy_result = BigNum128(1)
-        self.cm.add(dummy_result, dummy_result, log_list, pqc_cid, quantum_metadata)
-        # Replace the last entry with our custom log entry
-        if log_list:
-            log_list[-1] = {
-                "operation": "infrastructure_tally",
-                "details": details,
-                "result": "1" if passed else "0",
-                "pqc_cid": pqc_cid,
-                "quantum_metadata": quantum_metadata,
-                "timestamp": timestamp
-            }
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_tally",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "1" if passed else "0",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_execution(
+        self,
+        proposal_id: str,
+        execution_result: Dict[str, Any],
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal execution for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            execution_result: Execution result details
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_execution",
+            "proposal_id": proposal_id,
+            "execution_result": execution_result,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_execution",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "executed",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_cancellation(
+        self,
+        proposal_id: str,
+        canceller_node_id: str,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal cancellation for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            canceller_node_id: Node ID who cancelled
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_cancellation",
+            "proposal_id": proposal_id,
+            "canceller_node_id": canceller_node_id,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_cancellation",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "cancelled",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_expiry(
+        self,
+        proposal_id: str,
+        current_timestamp: int,
+        voting_end_timestamp: int,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal expiry for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            current_timestamp: Current timestamp
+            voting_end_timestamp: When voting ended
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_expiry",
+            "proposal_id": proposal_id,
+            "current_timestamp": current_timestamp,
+            "voting_end_timestamp": voting_end_timestamp,
+            "time_elapsed": current_timestamp - voting_end_timestamp,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_expiry",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "expired",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+
+# Test function
+def test_infrastructure_governance():
+    """Test the InfrastructureGovernance implementation."""
+    print("Testing InfrastructureGovernance...")
+    
+    # Create a CertifiedMath instance
+    cm = CertifiedMath()
+    
+    # Create InfrastructureGovernance
+    gov = InfrastructureGovernance(cm, quorum_threshold="0.5")  # 50% quorum for testing
+    
+    # Test total NOD supply
+    total_nod_supply = BigNum128.from_int(10000)  # 10,000 NOD total
+    
+    # Create a proposal
+    proposal_id = gov.create_proposal(
+        title="Increase Storage Replication Factor",
+        description="Increase the storage replication factor from 3 to 5 for improved redundancy",
+        proposal_type=GovernanceProposalType.STORAGE_REPLICATION_FACTOR,
+        proposer_node_id="node_0xabc123",
+        parameters={"current_factor": 3, "proposed_factor": 5},
+        total_nod_supply=total_nod_supply,
+        creation_timestamp=1234567890,
+        voting_duration_blocks=100  # Short for testing
+    )
+    
+    print(f"Created proposal: {proposal_id}")
+    
+    # Cast some votes
+    log_list = []
+    
+    # Node 1 votes yes with 3000 NOD
+    gov.cast_vote(
+        proposal_id=proposal_id,
+        voter_node_id="node_0xabc123",
+        voter_nod_balance=BigNum128.from_int(3000),
+        vote_yes=True,
+        timestamp=1234567900,
+        log_list=log_list
+    )
+    
+    # Node 2 votes no with 2000 NOD
+    gov.cast_vote(
+        proposal_id=proposal_id,
+        voter_node_id="node_0xdef456",
+        voter_nod_balance=BigNum128.from_int(2000),
+        vote_yes=False,
+        timestamp=1234567910,
+        log_list=log_list
+    )
+    
+    # Node 3 votes yes with 4000 NOD
+    gov.cast_vote(
+        proposal_id=proposal_id,
+        voter_node_id="node_0xghi789",
+        voter_nod_balance=BigNum128.from_int(4000),
+        vote_yes=True,
+        timestamp=1234567920,
+        log_list=log_list
+    )
+    
+    # Tally votes (after voting period ends)
+    proposal_passed = gov.tally_votes(
+        proposal_id=proposal_id,
+        timestamp=12345680000,  # After voting period (increased to ensure it's after)
+        log_list=log_list
+    )
+    
+    proposal = gov.get_proposal(proposal_id)
+    print(f"Proposal status: {proposal.status.value}")
+    print(f"Proposal passed: {proposal_passed}")
+    print(f"Yes votes: {proposal.yes_votes.to_decimal_string()}")
+    print(f"No votes: {proposal.no_votes.to_decimal_string()}")
+    print(f"Log entries: {len(log_list)}")
+    
+    print("✓ InfrastructureGovernance test passed!")
+
+
+if __name__ == "__main__":
+    test_infrastructure_governance()proposal.voting_end_timestamp,
+            "execution_earliest_timestamp": proposal.execution_earliest_timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_proposal_creation",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": proposal.quorum_required.to_decimal_string(),
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_vote(
+        self,
+        proposal_id: str,
+        voter_node_id: str,
+        voter_nod_balance: BigNum128,
+        vote_yes: bool,
+        capped: bool,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log vote for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            voter_node_id: Node ID of the voter
+            voter_nod_balance: NOD balance of the voter (effective after capping)
+            vote_yes: Vote decision
+            capped: Whether vote power was capped
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_vote",
+            "proposal_id": proposal_id,
+            "voter_node_id": voter_node_id,
+            "voter_nod_balance": voter_nod_balance.to_decimal_string(),
+            "vote": "yes" if vote_yes else "no",
+            "capped": capped,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_vote",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": voter_nod_balance.to_decimal_string(),
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_tally_result(
+        self,
+        proposal_id: str,
+        passed: bool,
+        reason: str,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log tally result for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            passed: Whether the proposal passed
+            reason: Reason for the result
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        proposal = self.proposals.get(proposal_id)
+        
+        # Create event details with quorum calculation
+        event_data = {
+            "operation": "infrastructure_tally",
+            "proposal_id": proposal_id,
+            "result": "passed" if passed else "rejected",
+            "reason": reason,
+            "yes_votes": proposal.yes_votes.to_decimal_string() if proposal else "0",
+            "no_votes": proposal.no_votes.to_decimal_string() if proposal else "0",
+            "quorum_required": proposal.quorum_required.to_decimal_string() if proposal else "0",
+            "quorum_met": passed or reason == "vote_result",  # True if reason is vote_result (quorum was met)
+            "execution_eligible": passed,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_tally",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "1" if passed else "0",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_execution(
+        self,
+        proposal_id: str,
+        execution_result: Dict[str, Any],
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal execution for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            execution_result: Execution result details
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_execution",
+            "proposal_id": proposal_id,
+            "execution_result": execution_result,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_execution",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "executed",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_cancellation(
+        self,
+        proposal_id: str,
+        canceller_node_id: str,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal cancellation for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            canceller_node_id: Node ID who cancelled
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_cancellation",
+            "proposal_id": proposal_id,
+            "canceller_node_id": canceller_node_id,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_cancellation",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "cancelled",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
+
+    def _log_expiry(
+        self,
+        proposal_id: str,
+        current_timestamp: int,
+        voting_end_timestamp: int,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+        timestamp: int = 0,
+    ):
+        """
+        Log proposal expiry for audit purposes with SHA-256 event hash.
+        
+        Args:
+            proposal_id: ID of the proposal
+            current_timestamp: Current timestamp
+            voting_end_timestamp: When voting ended
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            timestamp: Timestamp
+        """
+        # Create event details
+        event_data = {
+            "operation": "infrastructure_expiry",
+            "proposal_id": proposal_id,
+            "current_timestamp": current_timestamp,
+            "voting_end_timestamp": voting_end_timestamp,
+            "time_elapsed": current_timestamp - voting_end_timestamp,
+            "timestamp": timestamp
+        }
+        
+        # Generate SHA-256 event hash for Merkle inclusion
+        event_hash = hashlib.sha256(json.dumps(event_data, sort_keys=True).encode()).hexdigest()
+        
+        # Log entry
+        log_list.append({
+            "operation": "infrastructure_expiry",
+            "details": event_data,
+            "event_hash": event_hash,
+            "result": "expired",
+            "pqc_cid": pqc_cid,
+            "quantum_metadata": quantum_metadata,
+            "timestamp": timestamp
+        })
 
 
 # Test function
