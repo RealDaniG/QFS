@@ -201,13 +201,13 @@ class DeterministicReplayTest:
         for i, result in enumerate(results[1:], start=2):
             if result["log_hash"] != reference["log_hash"]:
                 all_identical = False
-                print(f"  ❌ FAIL: Run {i} log hash mismatch")
+                print(f"  [FAIL] Run {i} log hash mismatch")
             if result['nod_allocated'] != reference['nod_allocated']:
                 all_identical = False
-                print(f"  ❌ FAIL: Run {i} NOD allocation mismatch")
+                print(f"  [FAIL] Run {i} NOD allocation mismatch")
         
         if all_identical:
-            print(f"  ✅ PASS: All {runs} runs produced identical results")
+            print(f"  [PASS] All {runs} runs produced identical results")
         
         return {
             "test": "nod_allocation_replay",
@@ -305,13 +305,13 @@ class DeterministicReplayTest:
         for i, result in enumerate(results[1:], start=2):
             if result["log_hash"] != reference["log_hash"]:
                 all_identical = False
-                print(f"  ❌ FAIL: Run {i} log hash mismatch")
+                print(f"  [FAIL] Run {i} log hash mismatch")
             if result["proposal_status"] != reference["proposal_status"]:
                 all_identical = False
-                print(f"  ❌ FAIL: Run {i} proposal status mismatch")
+                print(f"  [FAIL] Run {i} proposal status mismatch")
         
         if all_identical:
-            print(f"  ✅ PASS: All {runs} runs produced identical results")
+            print(f"  [PASS] All {runs} runs produced identical results")
         
         return {
             "test": "governance_replay",
@@ -365,7 +365,7 @@ class DeterministicReplayTest:
         with open("evidence/v13.6/nod_replay_determinism.json", "w") as f:
             json.dump(evidence, f, indent=2, sort_keys=True)
         
-        print(f"\n✅ Evidence saved: evidence/v13.6/nod_replay_determinism.json")
+        print(f"\n[PASS] Evidence saved: evidence/v13.6/nod_replay_determinism.json")
         
         return evidence
 
