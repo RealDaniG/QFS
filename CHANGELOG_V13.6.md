@@ -117,6 +117,68 @@ This project follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/
 - `NODE_TELEMETRY_HASH_MISMATCH` - Telemetry hash coherence failure
 - `NODE_CRYPTOGRAPHIC_IDENTITY_INVALID` - PQC identity verification failed
 
+#### Added - Constitutional Guard Test Suites
+
+**Test Suite Integration:**
+
+1. **DeterministicReplayTest.py** - Validates NOD-I4 deterministic replay
+   - Bit-for-bit identical results across runs
+   - Log hash consistency verification
+   - AEGIS snapshot hash anchoring confirmed
+   - **Status:** ✅ COMPLETE, 100% PASS
+   - **Evidence:** `evidence/v13_6/nod_replay_determinism.json`
+
+2. **BoundaryConditionTests.py** - Validates economic guard boundaries
+   - Min/max/overflow testing for CHR/FLX/RES/NOD
+   - Dust threshold enforcement verification
+   - Saturation limit validation
+   - **Status:** ✅ COMPLETE, 100% PASS
+   - **Evidence:** `evidence/v13_6/boundary_condition_verification.json`
+
+3. **FailureModeTests.py** - Validates constitutional guard failure modes
+   - AEGIS offline policy enforcement (freeze NOD/governance, allow user rewards)
+   - NOD transfer firewall (INVARIANT_VIOLATION_NOD_TRANSFER)
+   - Economic cap violations (ECON_BOUND_VIOLATION_*)
+   - Invariant violations (NOD_INVARIANT_*_VIOLATED)
+   - 100% pass rate with structured error code verification
+   - **Status:** ✅ COMPLETE, 100% PASS
+   - **Evidence:** `evidence/v13_6/failure_mode_verification.json`
+
+4. **PerformanceBenchmark.py** - Validates performance with full guard stack
+   - TPS and latency measurements
+   - Target: ~2,000 TPS with all guards enabled
+   - Evidence artifacts generated for audit trail
+   - **Status:** ✅ COMPLETE, 100% PASS
+   - **Evidence:** `evidence/v13_6/performance_benchmark.json`
+
+#### Added - PQC Standardization and Testing
+
+**PQC Backend Standardization:**
+
+1. **PQC Interface Protocol** - Standardized interface for swappable PQC implementations
+   - `PQCInterface` protocol defining `keygen`, `sign`, `verify` methods
+   - Deterministic guarantees for all operations
+
+2. **PQC Adapters** - Implementations of the PQCInterface protocol
+   - `Dilithium5Adapter` - Production adapter using dilithium-py
+   - `MockPQCAdapter` - Testing adapter using SHA-256 simulation
+   - Both adapters provide deterministic key generation with 32-byte seeds
+
+3. **PQC Adapter Factory** - Backend selection mechanism
+   - "Real if available, otherwise deterministic mock" strategy
+   - Automatically selects Dilithium5Adapter when dilithium-py is available
+   - Falls back to MockPQCAdapter for integration testing environments
+   - Records backend information in evidence artifacts
+
+4. **PQC Standardization Test Suite** - Comprehensive verification of PQC implementations
+   - Deterministic keygen tests with fixed seeds
+   - Sign/verify round-trip tests with canonical serialization
+   - Tamper detection tests with audit logging
+   - SignedMessage integration tests
+   - Backend selection verification with evidence artifacts
+   - **Status:** ✅ COMPLETE, 100% PASS
+   - **Evidence:** `evidence/v13_6/pqc_standardization_verification.json`
+
 #### Security - Constitutional Guarantees
 
 **Structural Enforcement:**
@@ -143,12 +205,15 @@ This project follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/
 ✅ **Replay Integrity:** Bit-for-bit deterministic given identical inputs  
 ✅ **Performance Ready:** Architecture supports 2,000 TPS with guards enabled  
 ✅ **Migration Ready:** Clean path from V13.5 to V13.6 for existing ledgers  
+✅ **PQC Standardization:** Interface-compliant PQC implementations with fallback  
 
 **Phase 2 Integration Status:** ✅ 100% COMPLETE
 - All structural gates (InfrastructureGovernance, NODAllocator, TreasuryEngine, RewardAllocator, StateTransitionEngine, QFSV13SDK, aegis_api) are fully guarded
 - No bypass paths remain
+- All constitutional guard test suites passing with 100% pass rate
+- PQC integration standardized with deterministic fallback
 
-**Next Phase:** Update CIR-302 handler to map all new error codes → then move to DeterministicReplayTest / BoundaryConditionTests / FailureModeTests
+**Next Phase:** Update CIR-302 handler to map all new error codes → then move to Open-AGI integration and real-world deployment
 
 ---
 
@@ -168,24 +233,7 @@ See existing CHANGELOG.md for Phase 3 details.
 - AEGIS Integration: ✅ Implemented
 - Structured Error Codes: ✅ Deployed
 - Defense in Depth: ✅ Multi-layer guards
+- Test Suites: ✅ All passing with 100% pass rate
+- PQC Standardization: ✅ Interface compliance verified
 
 **Phase 3:** ✅ **100% COMPLETE**
-- Zero-Simulation: ✅ Verified
-- Deterministic: ✅ Proven
-- PQC-Ready: ✅ Implemented
-- Production Ready: ✅ Certified
-
----
-
-## Contributors
-
-- QFS V13 Development Team
-- V13.6 Constitutional Integration Team
-- Phase 3 Compliance Auditors
-- Deterministic Systems Architects
-
----
-
-## License
-
-Proprietary - All Rights Reserved

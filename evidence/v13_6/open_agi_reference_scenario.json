@@ -1,0 +1,45 @@
+{
+  "artifact_type": "open_agi_reference_scenario",
+  "version": "V13.6",
+  "scenario": "Minimal Open-AGI reference scenario with SignedMessage workflow",
+  "backend": "MockPQC",
+  "backend_info": {
+    "backend": "MockPQC",
+    "algorithm": "SHA-256 (simulation only)",
+    "security_level": "NONE - NOT CRYPTOGRAPHICALLY SECURE",
+    "production_ready": false,
+    "quantum_resistant": false,
+    "deterministic": true,
+    "warning": "INTEGRATION TESTING ONLY - DO NOT USE IN PRODUCTION"
+  },
+  "timestamp": "2025-12-13T15:20:30.609313+00:00Z",
+  "messages_processed": 3,
+  "verification_results": [
+    {
+      "message_type": "Governance Proposal",
+      "sender": "gov_node_001",
+      "recipient": "GovernanceModule",
+      "tick": 1000,
+      "valid": true
+    },
+    {
+      "message_type": "Reward Allocation",
+      "sender": "reward_node_001",
+      "recipient": "RewardAllocator",
+      "tick": 1001,
+      "valid": true
+    },
+    {
+      "message_type": "NOD Allocation",
+      "sender": "nod_node_001",
+      "recipient": "NODAllocator",
+      "tick": 1002,
+      "valid": true
+    }
+  ],
+  "summary": {
+    "total_messages": 3,
+    "valid_signatures": 3,
+    "invalid_signatures": 0
+  }
+}

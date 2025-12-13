@@ -13,6 +13,7 @@ from dataclasses import dataclass
 # Install: pip install dilithium-py
 try:
     from dilithium import Dilithium as DilithiumBase
+    import dilithium
     
     class Dilithium5Impl:
         """Adapter for dilithium-py Dilithium implementation (Dilithium5 parameters)"""
@@ -24,7 +25,9 @@ try:
                 raise ValueError(f"Seed must be 32 bytes, got {len(seed)}")
             
             # dilithium-py uses deterministic keygen with seed
-            d = DilithiumBase(seed=seed)
+            # First set the DRBG seed for deterministic key generation
+            d = DilithiumBase(dilithium.DEFAULT_PARAMETERS['dilithium5'])
+            d.set_drbg_seed(seed)
             public_key, private_key = d.keygen()
             
             return private_key, public_key
@@ -32,13 +35,13 @@ try:
         @staticmethod
         def sign(private_key: bytes, message: bytes):
             """Sign message with Dilithium private key"""
-            d = DilithiumBase()
+            d = DilithiumBase(dilithium.DEFAULT_PARAMETERS['dilithium5'])
             return d.sign(private_key, message)
         
         @staticmethod
         def verify(public_key: bytes, message: bytes, signature: bytes):
             """Verify Dilithium signature"""
-            d = DilithiumBase()
+            d = DilithiumBase(dilithium.DEFAULT_PARAMETERS['dilithium5'])
             return d.verify(public_key, message, signature)
     
 except ImportError as e:

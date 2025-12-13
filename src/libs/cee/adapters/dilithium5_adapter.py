@@ -13,7 +13,7 @@ from ..interfaces.pqc_interface import PQCInterface
 from typing import Tuple
 
 
-class Dilithium5Adapter:
+class Dilithium5Adapter(PQCInterface):
     """
     Production PQC adapter using dilithium-py.
     Wraps Phase-3 PQC_Core Dilithium5Impl for CEE use.

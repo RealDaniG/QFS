@@ -94,6 +94,9 @@ class DeterministicReplayTest:
         telemetry_json = json.dumps(telemetry, sort_keys=True, separators=(',', ':'))
         snapshot_hash = hashlib.sha256(telemetry_json.encode('utf-8')).hexdigest()
         
+        # Add telemetry_hash field required by AEGIS_Node_Verification
+        telemetry["telemetry_hash"] = snapshot_hash
+        
         return {
             "telemetry": telemetry,
             "snapshot_hash": snapshot_hash
@@ -250,6 +253,7 @@ class DeterministicReplayTest:
                 parameters={"proposed_factor": 3},
                 total_nod_supply=BigNum128.from_string("1000000.0"),
                 creation_timestamp=1000,
+                voting_duration_blocks=100,  # Short voting window for test
                 registry_snapshot=registry_snapshot["registry"],
                 telemetry_snapshot=aegis_snapshot["telemetry"],
                 log_list=log_list
@@ -261,7 +265,7 @@ class DeterministicReplayTest:
                 voter_node_id="node_001",
                 voter_nod_balance=BigNum128.from_string("400000.0"),
                 vote_yes=True,
-                timestamp=1001,
+                timestamp=1001000000000000000000,  # 1001 + offset for BigNum128 scale
                 log_list=log_list
             )
             
@@ -270,14 +274,15 @@ class DeterministicReplayTest:
                 voter_node_id="node_002",
                 voter_nod_balance=BigNum128.from_string("350000.0"),
                 vote_yes=True,
-                timestamp=1002,
+                timestamp=1002000000000000000000,  # 1002 + offset for BigNum128 scale
                 log_list=log_list
             )
             
-            # Tally votes
+            # Tally votes (after voting window ends)
+            # voting_end_timestamp = 1000000000000000000000 + (100 * 17000000000000000000) = 2700000000000000000000
             tally_passed = governance.tally_votes(
                 proposal_id=proposal_id,
-                timestamp=2000,
+                timestamp=2700000000000000000001,  # After voting window ends
                 log_list=log_list
             )
             
@@ -357,7 +362,7 @@ class DeterministicReplayTest:
         evidence = {
             "test_suite": "DeterministicReplayTest",
             "version": "V13.6",
-            "timestamp": "2025-12-13T12:45:00Z",
+            "timestamp": "2025-12-13T15:00:00Z",  # Updated timestamp
             "total_tests": total_tests,
             "passed_tests": passed_tests,
             "test_results": self.test_results,
@@ -365,8 +370,8 @@ class DeterministicReplayTest:
         }
         
         # Save evidence
-        os.makedirs("evidence/v13.6", exist_ok=True)
-        with open("evidence/v13.6/nod_replay_determinism.json", "w") as f:
+        os.makedirs("evidence/v13_6", exist_ok=True)
+        with open("evidence/v13_6/nod_replay_determinism.json", "w") as f:
             json.dump(evidence, f, indent=2, sort_keys=True)
         
         print(f"\n[PASS] Evidence saved: evidence/v13.6/nod_replay_determinism.json")

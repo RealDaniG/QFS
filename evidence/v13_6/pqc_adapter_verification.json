@@ -1,0 +1,58 @@
+{
+  "artifact_type": "pqc_adapter_verification",
+  "version": "V13.6",
+  "test_suite": "TestPQCAdapters.py",
+  "backend": "MockPQC",
+  "backend_info": {
+    "backend": "MockPQC",
+    "algorithm": "SHA-256 (simulation only)",
+    "security_level": "NONE - NOT CRYPTOGRAPHICALLY SECURE",
+    "production_ready": false,
+    "quantum_resistant": false,
+    "deterministic": true,
+    "warning": "INTEGRATION TESTING ONLY - DO NOT USE IN PRODUCTION"
+  },
+  "timestamp": "2025-12-13T15:02:20.784089Z",
+  "summary": {
+    "total_tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "pass_rate_percent": 100.0
+  },
+  "test_results": [
+    {
+      "test_name": "Deterministic Keygen",
+      "status": "PASS",
+      "description": "Deterministic keygen produces identical keypairs",
+      "seed_length": 32,
+      "private_key_length": 32,
+      "public_key_length": 32,
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "Sign/Verify Round-Trip",
+      "status": "PASS",
+      "description": "Sign/verify round-trip successful",
+      "payload_hash": "a0be7df7062f435ef3e8319493965615aa468566da1f145b18c4858319cbbe04",
+      "signature_length": 32,
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "Tamper Detection",
+      "status": "PASS",
+      "description": "Tamper detection working - invalid signature rejected",
+      "original_hash": "373e061079338e38d64ab8dc79e59ddc7db18c58a65ba28baaf41279ea28a381",
+      "tampered_hash": "47c3391acad2465342f01db624b3ad330c46afec55f8589069c4193bf060d71f",
+      "backend": "MockPQC"
+    },
+    {
+      "test_name": "SignedMessage Integration",
+      "status": "PASS",
+      "description": "SignedMessage creation and verification successful",
+      "sender": "test_node_001",
+      "recipient": "RewardAllocator",
+      "tick": 100,
+      "backend": "MockPQC"
+    }
+  ]
+}
