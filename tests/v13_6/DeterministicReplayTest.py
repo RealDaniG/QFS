@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 from src.libs.BigNum128 import BigNum128
 from src.libs.CertifiedMath import CertifiedMath
 from src.libs.governance.NODAllocator import NODAllocator
-from src.libs.governance.InfrastructureGovernance import InfrastructureGovernance
+from src.libs.governance.InfrastructureGovernance import InfrastructureGovernance, GovernanceProposalType
 
 
 class DeterministicReplayTest:
@@ -37,7 +37,7 @@ class DeterministicReplayTest:
     """
     
     def __init__(self):
-        self.cm = CertifiedMath
+        self.cm = CertifiedMath()
         self.test_results = []
         
     def create_deterministic_aegis_snapshot(self, scenario: str = "baseline") -> Dict[str, Any]:
@@ -52,47 +52,41 @@ class DeterministicReplayTest:
         """
         if scenario == "baseline":
             telemetry = {
-                "schema_version": "1.0",
+                "schema_version": "v1.0",
                 "block_height": 1000,
                 "nodes": {
                     "node_001": {
-                        "uptime_blocks": 1000,
-                        "bandwidth_gb": 500,
-                        "storage_tb": 10,
-                        "health_score": 95
+                        "uptime_ratio": 0.95,
+                        "health_score": 0.95
                     },
                     "node_002": {
-                        "uptime_blocks": 950,
-                        "bandwidth_gb": 450,
-                        "storage_tb": 8,
-                        "health_score": 90
+                        "uptime_ratio": 0.93,
+                        "health_score": 0.90
                     },
                     "node_003": {
-                        "uptime_blocks": 980,
-                        "bandwidth_gb": 480,
-                        "storage_tb": 9,
-                        "health_score": 92
+                        "uptime_ratio": 0.94,
+                        "health_score": 0.92
                     }
                 }
             }
         elif scenario == "high_load":
             telemetry = {
-                "schema_version": "1.0",
+                "schema_version": "v1.0",
                 "block_height": 2000,
                 "nodes": {
-                    "node_001": {"uptime_blocks": 2000, "bandwidth_gb": 1000, "storage_tb": 20, "health_score": 98},
-                    "node_002": {"uptime_blocks": 1950, "bandwidth_gb": 950, "storage_tb": 18, "health_score": 96},
-                    "node_003": {"uptime_blocks": 1980, "bandwidth_gb": 980, "storage_tb": 19, "health_score": 97},
-                    "node_004": {"uptime_blocks": 1900, "bandwidth_gb": 900, "storage_tb": 17, "health_score": 94}
+                    "node_001": {"uptime_ratio": 0.98, "health_score": 0.98},
+                    "node_002": {"uptime_ratio": 0.96, "health_score": 0.96},
+                    "node_003": {"uptime_ratio": 0.97, "health_score": 0.97},
+                    "node_004": {"uptime_ratio": 0.94, "health_score": 0.94}
                 }
             }
         else:  # degraded
             telemetry = {
-                "schema_version": "1.0",
+                "schema_version": "v1.0",
                 "block_height": 500,
                 "nodes": {
-                    "node_001": {"uptime_blocks": 400, "bandwidth_gb": 200, "storage_tb": 5, "health_score": 75},
-                    "node_002": {"uptime_blocks": 350, "bandwidth_gb": 150, "storage_tb": 4, "health_score": 70}
+                    "node_001": {"uptime_ratio": 0.91, "health_score": 0.81},
+                    "node_002": {"uptime_ratio": 0.90, "health_score": 0.80}
                 }
             }
         
@@ -122,9 +116,11 @@ class DeterministicReplayTest:
         
         for node_id in node_ids:
             registry["nodes"][node_id] = {
-                "public_key": f"pk_{node_id}",
+                "pqc_public_key": f"pk_{node_id}",
+                "pqc_scheme": "Dilithium5",
                 "registered_at": 0,
-                "status": "active"
+                "status": "active",
+                "revoked": False
             }
         
         # Generate deterministic hash
@@ -247,56 +243,60 @@ class DeterministicReplayTest:
             
             # Create proposal
             proposal_id = governance.create_proposal(
+                title="Storage Replication Factor Update",
+                description="Propose updating storage replication factor",
+                proposal_type=GovernanceProposalType.STORAGE_REPLICATION_FACTOR,
                 proposer_node_id="node_001",
-                proposal_type="storage_replication_factor",
-                parameters={"new_value": 3},
+                parameters={"proposed_factor": 3},
                 total_nod_supply=BigNum128.from_string("1000000.0"),
+                creation_timestamp=1000,
                 registry_snapshot=registry_snapshot["registry"],
                 telemetry_snapshot=aegis_snapshot["telemetry"],
-                log_list=log_list,
-                deterministic_timestamp=1000
+                log_list=log_list
             )
             
             # Cast votes
             governance.cast_vote(
                 proposal_id=proposal_id,
                 voter_node_id="node_001",
-                vote=True,
-                voting_power=BigNum128.from_string("400000.0"),
-                log_list=log_list,
-                deterministic_timestamp=1001
+                voter_nod_balance=BigNum128.from_string("400000.0"),
+                vote_yes=True,
+                timestamp=1001,
+                log_list=log_list
             )
             
             governance.cast_vote(
                 proposal_id=proposal_id,
                 voter_node_id="node_002",
-                vote=True,
-                voting_power=BigNum128.from_string("350000.0"),
-                log_list=log_list,
-                deterministic_timestamp=1002
+                voter_nod_balance=BigNum128.from_string("350000.0"),
+                vote_yes=True,
+                timestamp=1002,
+                log_list=log_list
             )
             
             # Tally votes
-            tally_result = governance.tally_votes(
+            tally_passed = governance.tally_votes(
                 proposal_id=proposal_id,
-                total_nod_supply=BigNum128.from_string("1000000.0"),
-                log_list=log_list,
-                deterministic_timestamp=2000
+                timestamp=2000,
+                log_list=log_list
             )
             
             # Generate log hash
             log_json = json.dumps(log_list, sort_keys=True, separators=(',', ':'))
             log_hash = hashlib.sha256(log_json.encode('utf-8')).hexdigest()
             
+            # Get proposal object to extract vote counts
+            proposal = governance.proposals[proposal_id]
             results.append({
                 "run": run + 1,
-                "proposal_status": tally_result["status"],
-                "votes_for": tally_result["votes_for"],
-                "votes_against": tally_result["votes_against"],
+                "proposal_passed": tally_passed,
+                "proposal_status": proposal.status.value,
+                "votes_for": proposal.yes_votes.to_decimal_string(),
+                "votes_against": proposal.no_votes.to_decimal_string(),
                 "log_hash": log_hash
             })
             
-            print(f"  Run {run + 1}: Status = {tally_result['status']}, log_hash = {log_hash[:16]}...")
+            print(f"  Run {run + 1}: Status = {proposal.status.value}, passed = {tally_passed}, log_hash = {log_hash[:16]}...")
         
         # Verify bit-for-bit equality
         reference = results[0]
@@ -309,6 +309,9 @@ class DeterministicReplayTest:
             if result["proposal_status"] != reference["proposal_status"]:
                 all_identical = False
                 print(f"  [FAIL] Run {i} proposal status mismatch")
+            if result["proposal_passed"] != reference["proposal_passed"]:
+                all_identical = False
+                print(f"  [FAIL] Run {i} proposal passed mismatch")
         
         if all_identical:
             print(f"  [PASS] All {runs} runs produced identical results")
@@ -319,6 +322,7 @@ class DeterministicReplayTest:
             "runs": runs,
             "reference_log_hash": reference["log_hash"],
             "reference_status": reference["proposal_status"],
+            "reference_passed": reference["proposal_passed"],
             "results": results
         }
     

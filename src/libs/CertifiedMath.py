@@ -71,95 +71,95 @@ class CertifiedMath:
 
     def add(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_add(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_add(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def sub(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_sub(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_sub(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def mul(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_mul(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_mul(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def div(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def div_floor(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
                   pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
         # div_floor is same as div for fixed point integer arithmetic in this context
-        return self._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_div(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def abs(self, a: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_abs(a, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_abs(a, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def gte(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_gte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_gte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def lte(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_lte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_lte(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def eq(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_eq(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_eq(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def ne(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_ne(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_ne(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def gt(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def lt(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> bool:
-        return self._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata)
     
     def sqrt(self, a: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_fast_sqrt(a, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_fast_sqrt(a, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def exp(self, x: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_exp(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def ln(self, x: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
            pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_ln(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_ln(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def tanh(self, x: BigNum128, iterations: int = 30, log_list: Optional[List[Dict[str, Any]]] = None,
              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_tanh(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_tanh(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def sigmoid(self, x: BigNum128, iterations: int = 30, log_list: Optional[List[Dict[str, Any]]] = None,
                 pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_sigmoid(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_sigmoid(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def sin(self, x: BigNum128, iterations: int = 10, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_sin(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_sin(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def cos(self, x: BigNum128, iterations: int = 10, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_cos(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_cos(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def erf(self, x: BigNum128, iterations: int = 20, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        return self._safe_erf(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_erf(x, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def two_to_the_power(self, exponent: BigNum128, iterations: int = 50, log_list: Optional[List[Dict[str, Any]]] = None,
                          pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
         # 2^x = exp(x * ln(2))
         ln2 = BigNum128(693147180559945309) # ln(2) * 1e18
-        exponent_ln2 = self._safe_mul(exponent, ln2, log_list or self.log_list, pqc_cid, quantum_metadata)
-        return self._safe_exp(exponent_ln2, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
+        exponent_ln2 = CertifiedMath._safe_mul(exponent, ln2, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_exp(exponent_ln2, iterations, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def max(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        if self._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
+        if CertifiedMath._safe_gt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
             return a
         return b
 
@@ -168,13 +168,13 @@ class CertifiedMath:
              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
         """Multiply int * BigNum128 safely."""
         a_bn = BigNum128.from_int(a_int)
-        return self._safe_mul(a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_mul(a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def idiv(self, a: BigNum128, b_int: int, log_list: Optional[List[Dict[str, Any]]] = None,
              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
         """Divide BigNum128 / int safely."""
         b_bn = BigNum128.from_int(b_int)
-        return self._safe_div(a, b_bn, log_list or self.log_list, pqc_cid, quantum_metadata)
+        return CertifiedMath._safe_div(a, b_bn, log_list or self.log_list, pqc_cid, quantum_metadata)
 
     def imax(self, a_int: int, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
              pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
@@ -185,7 +185,7 @@ class CertifiedMath:
 
     def min(self, a: BigNum128, b: BigNum128, log_list: Optional[List[Dict[str, Any]]] = None,
             pqc_cid: Optional[str] = None, quantum_metadata: Optional[Dict[str, Any]] = None) -> BigNum128:
-        if self._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
+        if CertifiedMath._safe_lt(a, b, log_list or self.log_list, pqc_cid, quantum_metadata):
             return a
         return b
 
