@@ -12,9 +12,32 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
 # Import required modules
-from libs.CertifiedMath import CertifiedMath, BigNum128
-from core.TokenStateBundle import TokenStateBundle
-from core.reward_types import RewardBundle
+try:
+    # Try relative imports first (for package usage)
+    from ...libs.CertifiedMath import CertifiedMath, BigNum128
+    from ...core.TokenStateBundle import TokenStateBundle
+    from ...core.reward_types import RewardBundle
+    from ...libs.economics.economic_constants import FLX_REWARD_FRACTION
+    # V13.6: Import EconomicsGuard for structural enforcement
+    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+except ImportError:
+    # Fallback to absolute imports (for direct execution)
+    try:
+        from src.libs.CertifiedMath import CertifiedMath, BigNum128
+        from src.core.TokenStateBundle import TokenStateBundle
+        from src.core.reward_types import RewardBundle
+        from src.libs.economics.economic_constants import FLX_REWARD_FRACTION
+        from src.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+    except ImportError:
+        # Try with sys.path modification
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+        from libs.CertifiedMath import CertifiedMath, BigNum128
+        from core.TokenStateBundle import TokenStateBundle
+        from core.reward_types import RewardBundle
+        from libs.economics.economic_constants import FLX_REWARD_FRACTION
+        from libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
 
 
 class TreasuryEngine:
@@ -28,12 +51,15 @@ class TreasuryEngine:
 
     def __init__(self, cm_instance: CertifiedMath):
         """
-        Initialize the Treasury Engine.
+        Initialize the Treasury Engine with V13.6 constitutional guards.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
         """
         self.cm = cm_instance
+        
+        # === V13.6: ECONOMICS GUARD (STRUCTURAL ENFORCEMENT) ===
+        self.economics_guard = EconomicsGuard(cm_instance)
 
     def calculate_rewards(
         self,
@@ -68,8 +94,9 @@ class TreasuryEngine:
         C_MIN = token_bundle.c_crit  # Using c_crit as C_MIN
         if self.cm.lt(c_holo, C_MIN, log_list, pqc_cid, quantum_metadata):
             # In a real implementation, this would trigger CIR-302 via HSMF
-            # For TreasuryEngine, we just raise an error to indicate invalid state
-            raise RuntimeError("C_holo < C_MIN — System coherence below critical threshold")
+            # For TreasuryEngine, we return a special error code that the SDK/CIR-302 handler can interpret
+            from libs.CertifiedMath import CertifiedMathError
+            raise CertifiedMathError("C_holo < C_MIN — System coherence below critical threshold", error_code="COHERENCE_CRITICAL_FAILURE")
         
         # Get current token states
         # Token balances are stored in the state dictionaries
@@ -91,19 +118,76 @@ class TreasuryEngine:
         psi_sync_reward = self.cm.mul(BigNum128.from_int(1), base_multiplier, log_list, pqc_cid, quantum_metadata)
         atr_reward = self.cm.mul(BigNum128.from_int(1), base_multiplier, log_list, pqc_cid, quantum_metadata)
         
+        # NOD allocation is handled separately by NODAllocator
+        # This is just a placeholder to maintain the reward bundle structure
+        nod_reward = BigNum128(0)
+        
         # Calculate total reward
         total_reward = self.cm.add(
             self.cm.add(chr_reward, flx_reward, log_list, pqc_cid, quantum_metadata),
             self.cm.add(
                 self.cm.add(res_reward, psi_sync_reward, log_list, pqc_cid, quantum_metadata),
-                atr_reward, log_list, pqc_cid, quantum_metadata
+                self.cm.add(atr_reward, nod_reward, log_list, pqc_cid, quantum_metadata),
+                log_list, pqc_cid, quantum_metadata
             ),
             log_list, pqc_cid, quantum_metadata
         )
         
+        # === V13.6 GUARD: Validate economic bounds BEFORE returning ===
+        chr_validation = self.economics_guard.validate_chr_reward(
+            chr_reward=chr_reward,
+            total_supply_delta=chr_reward,  # Reward increases total supply
+            log_list=log_list
+        )
+        
+        if not chr_validation.passed:
+            # Economic guard violation - HALT reward issuance
+            log_list.append({
+                "operation": "treasury_chr_economic_violation",
+                "error_code": chr_validation.error_code,
+                "error_message": chr_validation.error_message,
+                "details": chr_validation.details,
+                "timestamp": deterministic_timestamp
+            })
+            raise ValueError(f"[GUARD] CHR economic bound violation: {chr_validation.error_message} (code: {chr_validation.error_code})")
+        
+        flx_validation = self.economics_guard.validate_flx_reward(
+            flx_reward=flx_reward,
+            total_supply_delta=flx_reward,
+            log_list=log_list
+        )
+        
+        if not flx_validation.passed:
+            # Economic guard violation - HALT reward issuance
+            log_list.append({
+                "operation": "treasury_flx_economic_violation",
+                "error_code": flx_validation.error_code,
+                "error_message": flx_validation.error_message,
+                "details": flx_validation.details,
+                "timestamp": deterministic_timestamp
+            })
+            raise ValueError(f"[GUARD] FLX economic bound violation: {flx_validation.error_message} (code: {flx_validation.error_code})")
+        
+        res_validation = self.economics_guard.validate_res_reward(
+            res_reward=res_reward,
+            total_supply_delta=res_reward,
+            log_list=log_list
+        )
+        
+        if not res_validation.passed:
+            # Economic guard violation - HALT reward issuance
+            log_list.append({
+                "operation": "treasury_res_economic_violation",
+                "error_code": res_validation.error_code,
+                "error_message": res_validation.error_message,
+                "details": res_validation.details,
+                "timestamp": deterministic_timestamp
+            })
+            raise ValueError(f"[GUARD] RES economic bound violation: {res_validation.error_message} (code: {res_validation.error_code})")
+        
         # Log the reward calculation
         self._log_reward_calculation(
-            hsmf_metrics, chr_reward, flx_reward, res_reward, psi_sync_reward, atr_reward, total_reward,
+            hsmf_metrics, chr_reward, flx_reward, res_reward, psi_sync_reward, atr_reward, nod_reward, total_reward,
             log_list, pqc_cid, quantum_metadata, deterministic_timestamp
         )
         
@@ -113,6 +197,7 @@ class TreasuryEngine:
             res_reward=res_reward,
             psi_sync_reward=psi_sync_reward,
             atr_reward=atr_reward,
+            nod_reward=nod_reward,      # ← Placeholder, actual NOD allocation handled by NODAllocator
             total_reward=total_reward
         )
 
@@ -202,9 +287,8 @@ class TreasuryEngine:
         Returns:
             BigNum128: FLX reward amount
         """
-        # FLX reward is 10% of CHR reward
-        ten_percent = BigNum128(100000000000000000)  # 1/10 of SCALE (1e18)
-        flx_reward_base = self.cm.mul(chr_reward, ten_percent, log_list, pqc_cid, quantum_metadata)
+        # FLX reward is a fixed percentage of CHR reward
+        flx_reward_base = self.cm.mul(chr_reward, FLX_REWARD_FRACTION, log_list, pqc_cid, quantum_metadata)
         
         # Apply base multiplier
         flx_reward = self.cm.mul(flx_reward_base, base_multiplier, log_list, pqc_cid, quantum_metadata)
@@ -219,6 +303,7 @@ class TreasuryEngine:
         res_reward: BigNum128,
         psi_sync_reward: BigNum128,
         atr_reward: BigNum128,
+        nod_reward: BigNum128,
         total_reward: BigNum128,
         log_list: List[Dict[str, Any]],
         pqc_cid: Optional[str] = None,
@@ -234,14 +319,15 @@ class TreasuryEngine:
             flx_reward: Calculated FLX reward
             res_reward: Calculated RES reward
             psi_sync_reward: Calculated ΨSync reward
-            atr_reward: Calculated ATR reward
+            atr_reward: Calculated ATR reward (net after NOD allocation)
+            nod_reward: Calculated NOD reward from ATR fees
             total_reward: Total calculated reward
             log_list: Audit log list
             pqc_cid: PQC correlation ID
             quantum_metadata: Quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        # Log the operation using CertifiedMath's logging mechanism
+        # Log the operation using CertifiedMath's public API
         details = {
             "operation": "treasury_reward_calculation",
             "hsmf_metrics": {
@@ -255,19 +341,26 @@ class TreasuryEngine:
                 "RES": res_reward.to_decimal_string(),
                 "PsiSync": psi_sync_reward.to_decimal_string(),
                 "ATR": atr_reward.to_decimal_string(),
+                "NOD": nod_reward.to_decimal_string(),  # ← NEW
                 "Total": total_reward.to_decimal_string()
             }
         }
         
-        # Use CertifiedMath's internal logging (this will be called by the public wrapper)
-        self.cm._log_operation(
-            "treasury_reward_calculation",
-            details,
-            total_reward,
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
+        # Create a dummy result for logging purposes
+        dummy_result = BigNum128(1)
+        
+        # Use CertifiedMath's public API for logging
+        self.cm.add(dummy_result, dummy_result, log_list, pqc_cid, quantum_metadata)
+        # Replace the last entry with our custom log entry
+        if log_list:
+            log_list[-1] = {
+                "operation": "treasury_reward_calculation",
+                "details": details,
+                "result": total_reward.to_decimal_string(),
+                "pqc_cid": pqc_cid,
+                "quantum_metadata": quantum_metadata,
+                "timestamp": deterministic_timestamp
+            }
 
 
 # Test function
@@ -289,7 +382,19 @@ def test_treasury_engine():
     }
     
     # Create a simple token bundle
-    from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
+    try:
+        # Try relative imports first (for package usage)
+        from ...core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
+    except ImportError:
+        # Fallback to absolute imports (for direct execution)
+        try:
+            from src.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
+        except ImportError:
+            # Try with sys.path modification
+            import sys
+            import os
+            sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+            from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
     
     # Create test token states
     chr_state = {"balance": "100.0", "coherence_metric": "5.0"}
@@ -324,6 +429,7 @@ def test_treasury_engine():
     
     print(f"CHR Reward: {rewards.chr_reward.to_decimal_string()}")
     print(f"FLX Reward: {rewards.flx_reward.to_decimal_string()}")
+    print(f"NOD Reward: {rewards.nod_reward.to_decimal_string()}")  # ← NEW
     print(f"Total Reward: {rewards.total_reward.to_decimal_string()}")
     print(f"Log entries: {len(log_list)}")
     
