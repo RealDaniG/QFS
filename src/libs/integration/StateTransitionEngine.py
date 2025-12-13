@@ -16,12 +16,17 @@ try:
     from ...libs.CertifiedMath import CertifiedMath, BigNum128
     from ...core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
     from ...libs.governance.RewardAllocator import AllocatedReward
+    # V13.6: Import constitutional guards for structural enforcement
+    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+    from ...libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
 except ImportError:
     # Fallback to absolute imports (for direct execution)
     try:
         from libs.CertifiedMath import CertifiedMath, BigNum128
         from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
         from libs.governance.RewardAllocator import AllocatedReward
+        from libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
     except ImportError:
         # Try with sys.path modification
         import sys
@@ -30,6 +35,8 @@ except ImportError:
         from libs.CertifiedMath import CertifiedMath, BigNum128
         from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
         from libs.governance.RewardAllocator import AllocatedReward
+        from libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
 
 
 @dataclass
@@ -51,29 +58,41 @@ class StateTransitionEngine:
 
     def __init__(self, cm_instance: CertifiedMath):
         """
-        Initialize the State Transition Engine.
+        Initialize the State Transition Engine with V13.6 constitutional guards.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
         """
         self.cm = cm_instance
+        
+        # === V13.6: CONSTITUTIONAL GUARDS (STRUCTURAL ENFORCEMENT) ===
+        self.economics_guard = EconomicsGuard(cm_instance)
+        self.nod_invariant_checker = NODInvariantChecker(cm_instance)
 
     def apply_state_transition(
         self,
         current_token_bundle: TokenStateBundle,
         allocated_rewards: Dict[str, AllocatedReward],
         log_list: List[Dict[str, Any]],
+        nod_allocations: Optional[Dict[str, BigNum128]] = None,  # V13.6: NOD allocations (if any)
+        call_context: str = "user_rewards",  # V13.6: "user_rewards" | "nod_allocation" | "governance"
+        governance_outcomes: Optional[Dict[str, Any]] = None,  # V13.6: Governance proposal outcomes
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         deterministic_timestamp: int = 0,
     ) -> StateTransitionResult:
         """
-        Atomically apply state changes from validated rewards.
+        Atomically apply state changes from validated rewards with V13.6 constitutional guards.
+        
+        V13.6: Enforces NOD transfer firewall and invariant checking.
         
         Args:
             current_token_bundle: Current token state bundle
             allocated_rewards: Rewards allocated to addresses
             log_list: Audit log list for deterministic operations
+            nod_allocations: NOD allocations (only valid from NODAllocator or governance)
+            call_context: Context of the call ("user_rewards" | "nod_allocation" | "governance")
+            governance_outcomes: Governance proposal execution outcomes
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
             deterministic_timestamp: Deterministic timestamp from DRV_Packet
@@ -82,6 +101,20 @@ class StateTransitionEngine:
             StateTransitionResult: Result of the state transition operation
         """
         try:
+            # === V13.6 GUARD: NOD TRANSFER FIREWALL ===
+            # Reject any NOD delta outside allowed call contexts (NOD-I1 enforcement)
+            if nod_allocations is not None and len(nod_allocations) > 0:
+                if call_context not in ["nod_allocation", "governance"]:
+                    # NOD transfer attempted outside allowed context
+                    log_list.append({
+                        "operation": "nod_transfer_firewall_violation",
+                        "call_context": call_context,
+                        "nod_allocations_count": len(nod_allocations),
+                        "error_code": "INVARIANT_VIOLATION_NOD_TRANSFER",
+                        "timestamp": deterministic_timestamp
+                    })
+                    raise ValueError(f"[GUARD] NOD transfer firewall violation: NOD deltas only allowed from NODAllocator or governance (context: {call_context})")
+            
             # Create new token states by applying rewards
             new_chr_state = self._apply_rewards_to_token_state(
                 current_token_bundle.chr_state, "CHR", allocated_rewards, log_list, pqc_cid, quantum_metadata
@@ -103,6 +136,13 @@ class StateTransitionEngine:
                 current_token_bundle.res_state, "RES", allocated_rewards, log_list, pqc_cid, quantum_metadata
             )
             
+            # V13.6: Apply NOD allocations (if present and context is valid)
+            new_nod_state = current_token_bundle.nod_state.copy() if hasattr(current_token_bundle, 'nod_state') else {'balance': '0'}
+            if nod_allocations is not None and len(nod_allocations) > 0:
+                new_nod_state = self._apply_nod_allocations(
+                    new_nod_state, nod_allocations, log_list, pqc_cid, quantum_metadata
+                )
+            
             # Create new token state bundle
             new_token_bundle = create_token_state_bundle(
                 chr_state=new_chr_state,
@@ -117,6 +157,41 @@ class StateTransitionEngine:
                 timestamp=deterministic_timestamp,
                 quantum_metadata=quantum_metadata or current_token_bundle.quantum_metadata,
                 parameters=current_token_bundle.parameters
+            )
+            
+            # V13.6: Set NOD state if present
+            if nod_allocations is not None:
+                new_token_bundle.nod_state = new_nod_state
+            
+            # === V13.6 GUARD: NOD INVARIANT CHECKER ===
+            # Validate NOD invariants if NOD was touched
+            if nod_allocations is not None and len(nod_allocations) > 0:
+                old_nod_state = current_token_bundle.nod_state if hasattr(current_token_bundle, 'nod_state') else {'balance': '0'}
+                
+                invariant_result = self.nod_invariant_checker.check_allocation_invariants(
+                    pre_state_nod=old_nod_state,
+                    post_state_nod=new_nod_state,
+                    nod_allocations=nod_allocations,
+                    governance_outcomes=governance_outcomes or {},
+                    log_list=log_list
+                )
+                
+                if not invariant_result.passed:
+                    # NOD invariant violation - HALT state transition
+                    log_list.append({
+                        "operation": "nod_invariant_violation",
+                        "error_code": invariant_result.error_code,
+                        "error_message": invariant_result.error_message,
+                        "details": invariant_result.details,
+                        "timestamp": deterministic_timestamp
+                    })
+                    raise ValueError(f"[GUARD] NOD invariant violation: {invariant_result.error_message} (code: {invariant_result.error_code})")
+            
+            # === V13.6 GUARD: OPTIONAL SUPPLY DELTA VALIDATION ===
+            # Validate total supply changes for all tokens
+            self._validate_supply_deltas(
+                current_token_bundle, new_token_bundle, allocated_rewards, nod_allocations,
+                log_list, deterministic_timestamp
             )
             
             # Log the state transition
@@ -198,6 +273,118 @@ class StateTransitionEngine:
         new_state['balance'] = new_balance.to_decimal_string()
         
         return new_state
+
+    def _apply_nod_allocations(
+        self,
+        current_nod_state: Dict[str, Any],
+        nod_allocations: Dict[str, BigNum128],
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Apply NOD allocations to NOD state.
+        
+        V13.6: Only called when call_context is "nod_allocation" or "governance".
+        
+        Args:
+            current_nod_state: Current NOD state dictionary
+            nod_allocations: NOD allocations per address (node_id → amount)
+            log_list: Audit log list
+            pqc_cid: PQC correlation ID
+            quantum_metadata: Quantum metadata
+            
+        Returns:
+            Dict[str, Any]: Updated NOD state
+        """
+        new_nod_state = current_nod_state.copy()
+        
+        # Get current balance
+        current_balance_str = str(current_nod_state.get('balance', '0'))
+        current_balance = BigNum128.from_string(current_balance_str)
+        
+        # Calculate total NOD allocation
+        total_nod = BigNum128(0)
+        for nod_amount in nod_allocations.values():
+            total_nod = self.cm.add(total_nod, nod_amount, log_list, pqc_cid, quantum_metadata)
+        
+        # Apply NOD allocation to balance
+        new_balance = self.cm.add(current_balance, total_nod, log_list, pqc_cid, quantum_metadata)
+        new_nod_state['balance'] = new_balance.to_decimal_string()
+        
+        return new_nod_state
+
+    def _validate_supply_deltas(
+        self,
+        old_bundle: TokenStateBundle,
+        new_bundle: TokenStateBundle,
+        allocated_rewards: Dict[str, AllocatedReward],
+        nod_allocations: Optional[Dict[str, BigNum128]],
+        log_list: List[Dict[str, Any]],
+        deterministic_timestamp: int
+    ):
+        """
+        Validate total supply changes for all tokens using EconomicsGuard.
+        
+        V13.6: Optional last-minute validation to catch any supply violations.
+        
+        Args:
+            old_bundle: Old token state bundle
+            new_bundle: New token state bundle
+            allocated_rewards: Allocated rewards
+            nod_allocations: NOD allocations (if any)
+            log_list: Audit log list
+            deterministic_timestamp: Deterministic timestamp
+            
+        Raises:
+            ValueError: If any supply delta violates economic bounds
+        """
+        # Calculate supply deltas for each token
+        tokens = [
+            ("CHR", old_bundle.chr_state, new_bundle.chr_state),
+            ("FLX", old_bundle.flx_state, new_bundle.flx_state),
+            ("RES", old_bundle.res_state, new_bundle.res_state),
+        ]
+        
+        for token_name, old_state, new_state in tokens:
+            old_balance = BigNum128.from_string(str(old_state.get('balance', '0')))
+            new_balance = BigNum128.from_string(str(new_state.get('balance', '0')))
+            supply_delta = self.cm.sub(new_balance, old_balance, log_list, None, None)
+            
+            # Validate supply change (calls appropriate guard method)
+            if token_name == "CHR":
+                validation = self.economics_guard.validate_chr_reward(
+                    chr_reward=supply_delta,
+                    total_supply_delta=supply_delta,
+                    log_list=log_list
+                )
+            elif token_name == "FLX":
+                validation = self.economics_guard.validate_flx_reward(
+                    flx_reward=supply_delta,
+                    total_supply_delta=supply_delta,
+                    log_list=log_list
+                )
+            elif token_name == "RES":
+                validation = self.economics_guard.validate_res_reward(
+                    res_reward=supply_delta,
+                    total_supply_delta=supply_delta,
+                    log_list=log_list
+                )
+            else:
+                continue  # Skip validation for other tokens
+            
+            if not validation.passed:
+                # Supply delta violation - HALT state transition
+                log_list.append({
+                    "operation": "state_transition_supply_delta_violation",
+                    "token": token_name,
+                    "supply_delta": supply_delta.to_decimal_string(),
+                    "error_code": validation.error_code,
+                    "error_message": validation.error_message,
+                    "details": validation.details,
+                    "timestamp": deterministic_timestamp
+                })
+                raise ValueError(f"[GUARD] {token_name} supply delta violation: {validation.error_message} (code: {validation.error_code})")
 
     def _log_state_transition(
         self,
