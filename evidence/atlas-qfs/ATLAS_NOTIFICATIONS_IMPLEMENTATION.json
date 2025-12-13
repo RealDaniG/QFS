@@ -1,0 +1,56 @@
+{
+  "feature": "Segmented Notifications",
+  "feature_id": "ATLAS-P1-011",
+  "implementation_date": "2025-12-13",
+  "status": "COMPLETE",
+  "implementation_details": {
+    "module": "src/services/notification_service.py",
+    "class": "NotificationService",
+    "categories": ["SOCIAL", "ECONOMIC", "GOVERNANCE"],
+    "integration_points": [
+      "AtlasAPIGateway.post_interaction"
+    ]
+  },
+  "api_endpoints": [
+    {
+      "endpoint": "GET /api/v1/notifications",
+      "status": "IMPLEMENTED",
+      "handler": "AtlasAPIRouter.route_get_notifications",
+      "parameters": ["category", "limit", "cursor"]
+    },
+    {
+      "endpoint": "GET /api/v1/notifications/unread",
+      "status": "IMPLEMENTED",
+      "handler": "AtlasAPIRouter.route_get_unread_notification_counts"
+    }
+  ],
+  "qfs_modules_invoked": [
+    "CertifiedMath",
+    "CoherenceLedger"
+  ],
+  "deterministic_guarantees": {
+    "uses_deterministic_timestamps": true,
+    "generates_pqc_cids": true,
+    "notification_id_generation": "SHA256 hash of event data",
+    "stable_ordering": true,
+    "zero_sim_compliant": true
+  },
+  "test_coverage": {
+    "test_file": "tests/services/test_notification_service.py",
+    "test_classes": ["TestNotificationService"],
+    "key_test_cases": [
+      "test_notification_service_initialization",
+      "test_process_ledger_entry_creates_notification",
+      "test_get_notifications_by_category",
+      "test_get_unread_counts",
+      "test_mark_as_read",
+      "test_deterministic_notification_generation"
+    ]
+  },
+  "serialization_features": {
+    "json_serialization": true,
+    "stable_ordering": true,
+    "cursor_based_pagination": true,
+    "links_to_ledger_events": true
+  }
+}

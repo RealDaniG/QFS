@@ -1,0 +1,228 @@
+{
+  "timestamp": "2025-12-13T17:00:00Z",
+  "snapshot_type": "P1_FEATURES",
+  "status": "IMPLEMENTED_AND_TESTED",
+  "implemented_p1_endpoints": [
+    {
+      "endpoint": "GET /api/v1/notifications",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_notifications",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger",
+        "CertifiedMath"
+      ],
+      "features": [
+        "Segmented notifications by category (Social, Economic, Governance)",
+        "Deterministic pagination with cursors",
+        "Links back to underlying ledger events",
+        "JSON serialization with stable ordering"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INVALID_LIMIT",
+          "INVALID_CATEGORY",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/notifications/unread",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_unread_notification_counts",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+      "qfs_modules_invoked": [
+        "NotificationService"
+      ],
+      "features": [
+        "Per-category unread counts",
+        "Deterministic counting"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/ledger/events",
+      "module": "src/atlas_api/ledger_handler.py",
+      "handler": "LedgerRouter.route_get_events",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_LEDGER_EXPLORER_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger"
+      ],
+      "features": [
+        "Deterministic paginated stream",
+        "Filtering by type, module, user",
+        "Event hashes and prev/next links",
+        "Stable ordering"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INVALID_LIMIT",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/ledger/events/{event_id}",
+      "module": "src/atlas_api/ledger_handler.py",
+      "handler": "LedgerRouter.route_get_event_detail",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_LEDGER_EXPLORER_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger"
+      ],
+      "features": [
+        "Full inputs/outputs/guards/explanations",
+        "Navigation links (prev/next)",
+        "Event hash consistency"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_EVENT_ID",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "POST /api/v1/openagi/authorize",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_authorize_open_agi_action",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_OPEN_AGI_ROLE_V1.md",
+      "qfs_modules_invoked": [
+        "OPENAGIRoleEnforcer"
+      ],
+      "features": [
+        "Role-based authorization (SYSTEM, SIMULATOR, PROPOSER)",
+        "Action type restrictions",
+        "Simulation-only policy enforcement",
+        "Activity logging"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_ROLE",
+          "MISSING_ACTION_TYPE",
+          "INVALID_PARAMETERS",
+          "INTERNAL_ERROR"
+        ]
+      }
+    }
+  ],
+  "p1_components": [
+    {
+      "component": "AEGISGuard",
+      "module": "src/guards/AEGISGuard.py",
+      "status": "IMPLEMENTED_IN_OBSERVATION_ONLY_MODE",
+      "features": [
+        "Meta-guard orchestrator",
+        "SafetyGuard integration (placeholder)",
+        "EconomicsGuard integration (placeholder)",
+        "Observation-only mode",
+        "Ledger event logging"
+      ]
+    },
+    {
+      "component": "NotificationService",
+      "module": "src/services/notification_service.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Segmented notifications (Social, Economic, Governance)",
+        "Ledger event processing",
+        "Deterministic notification generation",
+        "Category-based filtering"
+      ]
+    },
+    {
+      "component": "OPENAGIRoleEnforcer",
+      "module": "src/auth/open_agi_role.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Role-based authorization",
+        "Simulation-only policy",
+        "Proposal submission system",
+        "Activity logging"
+      ]
+    },
+    {
+      "component": "LedgerHandler",
+      "module": "src/atlas_api/ledger_handler.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Event listing with pagination",
+        "Event detail retrieval",
+        "Filtering capabilities",
+        "Navigation links"
+      ]
+    }
+  ],
+  "current_spec_versions": [
+    "specs/ATLAS_API_CONTRACTS_V1.md",
+    "specs/ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+    "specs/ATLAS_LEDGER_EXPLORER_V1.md",
+    "specs/ATLAS_OPEN_AGI_ROLE_V1.md"
+  ],
+  "test_names_validating_presence": [
+    "test_notification_service_initialization",
+    "test_aegis_guard_initialization",
+    "test_open_agi_role_enforcer_initialization",
+    "test_ledger_handler_initialization"
+  ],
+  "test_names_validating_behavior": [
+    "test_process_ledger_entry_creates_notification",
+    "test_get_notifications_by_category",
+    "test_get_unread_counts",
+    "test_mark_as_read",
+    "test_deterministic_notification_generation",
+    "test_observe_event_creates_observation",
+    "test_multiple_observations",
+    "test_deterministic_observations",
+    "test_authorize_action_system_role",
+    "test_authorize_action_simulator_role",
+    "test_authorize_action_proposer_role",
+    "test_submit_proposal",
+    "test_activity_log",
+    "test_deterministic_behavior",
+    "test_get_events",
+    "test_get_event_detail",
+    "test_event_filtering",
+    "test_pagination"
+  ],
+  "git_hash": "placeholder_for_actual_git_hash",
+  "next_steps": [
+    "Implement full guard evaluation logic in AEGISGuard",
+    "Add frontend UI for ledger explorer",
+    "Expand notification categories and types",
+    "Implement proposal review and approval workflow"
+  ]
+}

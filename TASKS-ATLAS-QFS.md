@@ -13,26 +13,28 @@
 - [x] **Unified ATLAS API contracts**
   - [x] Spec doc
   - [x] API/architecture
-  - [ ] Implementation
-  - [ ] Tests
-  - [ ] Evidence
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
   - [x] Stub APIs available
 
 - [x] **Coherence-based feed ranking**
   - [x] Spec doc
   - [x] API/architecture
-  - [ ] Implementation
-  - [ ] Tests
-  - [ ] Evidence
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
   - [x] Stub APIs available
+  - _Feed/Interactions now integrated with QFS and covered by deterministic tests._
 
 - [x] **QFS event bridge for interactions**
   - [x] Spec doc
   - [x] API/architecture
-  - [ ] Implementation
-  - [ ] Tests
-  - [ ] Evidence
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
   - [x] Stub APIs available
+  - _Feed/Interactions now integrated with QFS and covered by deterministic tests._
 
 - [ ] **Direct messaging system**
   - [ ] Spec doc
@@ -62,7 +64,7 @@
   - [ ] Tests
   - [ ] Evidence
 
-- [ ] **QFS onboarding tours**
+- [ ] **QFS Onboarding tours**
   - [ ] Spec doc
   - [ ] API/architecture
   - [ ] Implementation
@@ -71,18 +73,32 @@
 
 ### 🟡 P1 Priority Items
 
-- [ ] **AEGIS guard integration**
-  - [ ] Spec doc
-  - [ ] API/architecture
-  - [ ] Implementation
-  - [ ] Tests
-  - [ ] Evidence
+- [x] **AEGIS guard integration**
+  - [x] Spec doc
+  - [x] API/architecture
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
 
-- [ ] **Event ledger explorer UI**
-  - [ ] Spec doc
-  - [ ] API/architecture
-  - [ ] Implementation
-  - [ ] Tests
-  - [ ] Evidence
+- [x] **Event ledger explorer backend**
+  - [x] Spec doc
+  - [x] API/architecture
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
+
+- [x] **Segmented notifications**
+  - [x] Spec doc
+  - [x] API/architecture
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
+
+- [x] **OPEN-AGI simulation-only role**
+  - [x] Spec doc
+  - [x] API/architecture
+  - [x] Implementation
+  - [x] Tests
+  - [x] Evidence
 
 ---
