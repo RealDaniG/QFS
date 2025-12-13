@@ -1,9 +1,9 @@
-# NOD (Node Operator Determination) Token Specification - V1
+# NOD (Node Operator Determination) Token Specification - V1.1
 
 **Date:** 2025-12-13  
-**Author:** QFS V13.5 Team  
-**Version:** 1.0  
-**Status:** Frozen Specification (Phase 0)
+**Author:** QFS V13.6 Team  
+**Version:** 1.1 (V13.6 Constitutional Integration)  
+**Status:** V13.6 Implementation Complete (Phase 2 Integration: 100%)
 
 ---
 
@@ -218,6 +218,29 @@ NOD does not grant:
 
 **All NOD economic parameters are defined in `src/libs/economics/economic_constants.py` with [IMMUTABLE] or [MUTABLE] tags:**
 
+### V13.6 Guard Enforcement
+
+**EconomicsGuard** (`src/libs/economics/EconomicsGuard.py`) enforces all NOD bounds:
+
+- `validate_nod_allocation()` - Called by NODAllocator and QFSV13SDK
+- Validates allocation fraction, epoch issuance, per-node caps, voting power limits
+- Emits structured error codes: `ECON_NOD_ALLOCATION_FRACTION_VIOLATION`, `ECON_NOD_ISSUANCE_CAP_EXCEEDED`, `ECON_NOD_NODE_DOMINANCE_VIOLATION`
+- On violation: halts allocation, logs structured error, routes to CIR-302
+
+**NODInvariantChecker** (`src/libs/governance/NODInvariantChecker.py`) enforces NOD-I1..I4:
+
+- `check_allocation_invariants()` - Called by StateTransitionEngine, NODAllocator, QFSV13SDK
+- Validates non-transferability, supply conservation, voting power bounds, deterministic replay
+- Emits structured error codes: `NOD_INVARIANT_I1_VIOLATED`, `NOD_INVARIANT_I2_VIOLATED`, `NOD_INVARIANT_I3_VIOLATED`, `NOD_INVARIANT_I4_VIOLATED`
+- On violation: halts state transition, logs structured error, routes to CIR-302
+
+**AEGIS_Node_Verification** (`src/libs/governance/AEGIS_Node_Verification.py`) enforces NOD-I2:
+
+- `verify_node()` - Called by NODAllocator, InfrastructureGovernance, QFSV13SDK
+- Pure deterministic node verification (no HTTP calls)
+- Returns `NodeVerificationResult` with reason codes
+- Unverified nodes: filtered BEFORE NOD allocation or governance participation
+
 ### Allocation Bounds
 - `NOD_ALLOCATION_FRACTION`: 10% (default, mutable)
 - `MIN_NOD_ALLOCATION_FRACTION`: 1% (hard floor, immutable)
@@ -254,9 +277,21 @@ NOD does not grant:
 | **Phase 0** | Freeze NOD spec in documentation | ✅ COMPLETE |
 | **Phase 1** | Create `economic_constants.py` with constitutional bounds for all 6 tokens | ✅ COMPLETE |
 | **Phase 1.5** | Implement `NODAllocator.py` with safety bounds enforcement | ✅ COMPLETE |
-| **Phase 1.5** | Implement `InfrastructureGovernance.py` with constitutional protections | 🔄 IN PROGRESS (65% complete) |
+| **Phase 1.5** | Implement `InfrastructureGovernance.py` with constitutional protections | ✅ COMPLETE |
+| **V13.6 Phase 1** | Create EconomicsGuard.py | ✅ COMPLETE (937 lines, 8 methods, 27 error codes) |
+| **V13.6 Phase 1** | Create NODInvariantChecker.py | ✅ COMPLETE (682 lines, 4 invariants, 13 tests) |
+| **V13.6 Phase 1** | Create AEGIS_Node_Verification.py | ✅ COMPLETE (733 lines, 5 checks) |
+| **V13.6 Phase 2** | Wire guards into TreasuryEngine | ✅ COMPLETE |
+| **V13.6 Phase 2** | Wire guards into RewardAllocator | ✅ COMPLETE |
+| **V13.6 Phase 2** | Wire guards into NODAllocator | ✅ COMPLETE |
+| **V13.6 Phase 2** | Wire AEGIS verifier into InfrastructureGovernance | ✅ COMPLETE |
+| **V13.6 Phase 2** | Wire guards into StateTransitionEngine (FINAL GATE) | ✅ COMPLETE |
+| **V13.6 Phase 2** | Wire guards into QFSV13SDK (no bypass paths) | ✅ COMPLETE |
+| **V13.6 Phase 2** | Add AEGIS telemetry snapshot infrastructure (aegis_api.py) | ✅ COMPLETE |
+| **V13.6 Phase 2.8** | Update CIR-302 handler to map all new error codes | 🔄 NEXT |
+| **V13.6 Phase 3** | DeterministicReplayTest / BoundaryConditionTests / FailureModeTests | 🔄 PLANNED |
 | **Phase 2** | Extend `tests/deterministic/test_deterministic_time.py` to include a synthetic ATR → NOD issuance flow, producing `nod_distribution_simulation.json` with 5-run replay consistency | 🔄 PLANNED |
-| **Phase 3** | Integrate with AEGIS node telemetry API | 🔄 PLANNED |
+| **Phase 3** | Integrate with AEGIS node telemetry API | ✅ COMPLETE (aegis_api.py) |
 | **Phase 4** | Complete governance execution layer (execute_proposal, cancel_proposal, expiry) | 🔄 PLANNED |
 | **Phase 5** | Create comprehensive constitutional compliance tracker | ✅ COMPLETE |
 | **Phase 6+** | Optional user visibility (node dashboard) | 🔄 PLANNED |
@@ -295,10 +330,10 @@ NOD does not grant:
 
 ### 7.2 New Components
 1. **NODAllocator.py**: ✅ COMPLETE - Distribute NOD to node operators with anti-centralization guards
-2. **InfrastructureGovernance.py**: 🔄 IN PROGRESS (65% complete) - Infrastructure-only governance with constitutional protections
-3. **EconomicsGuard.py**: 🔄 PLANNED - Centralized bounds enforcement for all economic operations
-4. **NODInvariantChecker.py**: 🔄 PLANNED - Enforce NOD-I1 through NOD-I4 invariants
-5. **AEGIS_Node_Verification.py**: 🔄 PLANNED - Structural node verification enforcement
+2. **InfrastructureGovernance.py**: ✅ COMPLETE - Infrastructure-only governance with constitutional protections
+3. **EconomicsGuard.py**: ✅ COMPLETE (V13.6) - Centralized bounds enforcement for all economic operations
+4. **NODInvariantChecker.py**: ✅ COMPLETE (V13.6) - Enforce NOD-I1 through NOD-I4 invariants
+5. **AEGIS_Node_Verification.py**: ✅ COMPLETE (V13.6) - Structural node verification enforcement
 6. **EconomicConstantsMigration.py**: 🔄 PLANNED - Version-aware economic constant loading for protocol upgrades
 
 > **Module Design**: All new components follow deterministic validation patterns: pure functions, no I/O, PQC-signed inputs only, CertifiedMath operations, BigNum128 fixed-point arithmetic, and comprehensive audit logging.

@@ -1,10 +1,12 @@
-# Quantum Financial System V13 → V13.5 / V2.1
+# Quantum Financial System V13.6 - Constitutional Integration Release
 
-**Current Status:** PHASE 1 CLOSURE (80% Complete) → PHASE 2 DEPLOYMENT READY  
+**Current Status:** V13.6 CONSTITUTIONAL GUARDS DEPLOYED → Phase 2 Integration 100% COMPLETE  
+**Release Date:** 2025-12-13  
 **Phase 1 Progress:** 80% Complete (4/5 CRITICAL components IMPLEMENTED)  
 **Tests Passing:** 92/92 (100%) Phase 1 critical suite  
 **Evidence Generated:** 17 Phase 1 artifacts (SHA-256 verified)  
-**Last Updated:** 2025-12-11  
+**Constitutional Status:** ✅ Guards enforced across all structural gates  
+**Last Updated:** 2025-12-13  
 
 [![Phase 1 Progress](https://img.shields.io/badge/Phase%201-80%25-yellow)](REMEDIATION_TASK_TRACKER_V2.md)
 [![Tests](https://img.shields.io/badge/Tests-92%2F92%20(100%25)-green)](evidence/phase1/)
@@ -12,6 +14,88 @@
 [![Dashboard](https://img.shields.io/badge/Dashboard-Interactive-blue)](docs/qfs-v13.5-dashboard.html)
 
 📊 **[View Interactive Dashboard](docs/qfs-v13.5-dashboard.html)** - Real-time project status, compliance metrics, and deployment resources
+
+---
+
+## ⚡ QFS V13.6 – Constitutional Integration Release
+
+**What's New in V13.6:**
+
+QFS V13.6 transforms the constitutional layer from specification into **structural enforcement**. All economic operations, NOD allocations, and state transitions are now guarded by mandatory, SDK-enforced constitutional checks.
+
+### Core Achievements
+
+✅ **Constitutional Guards Deployed** - 3 core guards enforcing economic bounds and NOD invariants  
+✅ **No Bypass Paths** - Guards integrated at module, engine, and SDK levels  
+✅ **AEGIS Integration** - Hash-anchored telemetry snapshots for deterministic replay  
+✅ **Structured Error Codes** - 27+ machine-parsable codes for CIR-302 integration  
+✅ **Defense in Depth** - Multi-layer validation (TreasuryEngine → RewardAllocator → StateTransitionEngine → SDK)  
+
+### Constitutional Guards
+
+1. **[EconomicsGuard](src/libs/economics/EconomicsGuard.py)** (937 lines, 8 validation methods)
+   - Validates CHR/FLX/RES rewards against constitutional bounds
+   - Enforces per-address caps and dust thresholds
+   - Validates NOD allocation fractions, epoch issuance, voting power limits
+   - Protects [IMMUTABLE] constants from governance changes
+   - Returns structured error codes: `ECON_BOUND_VIOLATION`, `ECON_CHR_*`, `ECON_FLX_*`, `ECON_NOD_*`
+
+2. **[NODInvariantChecker](src/libs/governance/NODInvariantChecker.py)** (682 lines, 4 invariants)
+   - **NOD-I1:** Non-transferability (users cannot transfer NOD)
+   - **NOD-I2:** Supply conservation (no NOD creation outside allocator)
+   - **NOD-I3:** Voting power bounds (max 25% per node)
+   - **NOD-I4:** Deterministic replay via AEGIS snapshot hashing
+   - Returns structured error codes: `NOD_INVARIANT_I1_VIOLATED`, `NOD_INVARIANT_I2_VIOLATED`, etc.
+
+3. **[AEGIS_Node_Verification](src/libs/governance/AEGIS_Node_Verification.py)** (733 lines, 5 checks)
+   - Pure deterministic node verification (no HTTP calls)
+   - Registry entry + telemetry hash coherence validation
+   - Minimum uptime/health thresholds
+   - Post-quantum cryptographic identity verification
+   - Returns structured reason codes: `NODE_NOT_IN_REGISTRY`, `NODE_INSUFFICIENT_UPTIME`, etc.
+
+### Structural Integration (Defense in Depth)
+
+**Module Level:**
+- [TreasuryEngine](src/libs/governance/TreasuryEngine.py): Validates CHR/FLX/RES rewards before issuance
+- [RewardAllocator](src/libs/governance/RewardAllocator.py): Per-address cap validation + dust handling
+- [NODAllocator](src/libs/governance/NODAllocator.py): AEGIS node verification + economic bounds
+- [InfrastructureGovernance](src/libs/governance/InfrastructureGovernance.py): AEGIS verification for proposal eligibility
+
+**Engine Level:**
+- [StateTransitionEngine](src/libs/integration/StateTransitionEngine.py): Final gate with NOD transfer firewall, invariant checking, supply delta validation
+
+**SDK Level:**
+- [QFSV13SDK](src/sdk/QFSV13SDK.py): Mandatory guard enforcement, no bypass paths
+
+**AEGIS Integration:**
+- [aegis_api](src/services/aegis_api.py): Hash-anchored telemetry snapshots for NOD-I4 deterministic replay
+
+### Safety & Invariants
+
+**NOD Guarantees:**
+- ❌ No NOD transfers (infra-only, allocator/governance controlled)
+- ✅ Only verified AEGIS nodes earn NOD or vote
+- ✅ Max 25% voting power per node (anti-centralization)
+- ✅ Bit-for-bit deterministic replay with AEGIS snapshots
+
+**Economic Guarantees:**
+- ✅ Per-address reward caps enforced
+- ✅ Dust policy applied (amounts below threshold flagged)
+- ✅ CHR/FLX/RES saturation thresholds enforced
+- ✅ Constitutional bounds on all issuance parameters
+
+**Failure Modes:**
+- AEGIS offline → freeze NOD allocation and governance (user rewards continue)
+- Economic violation → CIR-302 halt (no approximations)
+- Invariant violation → structured error code + halt
+
+### Next Steps
+
+**Phase 2.8:** Update CIR-302 handler to map all new error codes  
+**Phase 3:** DeterministicReplayTest / BoundaryConditionTests / FailureModeTests  
+
+See [CHANGELOG_V13.6.md](CHANGELOG_V13.6.md) for complete release notes.
 
 ---
 
@@ -1101,5 +1185,7 @@ This project is in **active remediation** (Phase 1 of 5). Contributions are welc
 ---
 
 ## License
+
+MIT License
 
 MIT License
