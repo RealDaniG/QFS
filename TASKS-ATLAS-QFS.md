@@ -10,26 +10,29 @@
 
 ### 🔴 P0 Priority Items
 
-- [ ] **Unified ATLAS API contracts**
-  - [ ] Spec doc
-  - [ ] API/architecture
+- [x] **Unified ATLAS API contracts**
+  - [x] Spec doc
+  - [x] API/architecture
   - [ ] Implementation
   - [ ] Tests
   - [ ] Evidence
+  - [x] Stub APIs available
 
-- [ ] **Coherence-based feed ranking**
-  - [ ] Spec doc
-  - [ ] API/architecture
+- [x] **Coherence-based feed ranking**
+  - [x] Spec doc
+  - [x] API/architecture
   - [ ] Implementation
   - [ ] Tests
   - [ ] Evidence
+  - [x] Stub APIs available
 
-- [ ] **QFS event bridge for interactions**
-  - [ ] Spec doc
-  - [ ] API/architecture
+- [x] **QFS event bridge for interactions**
+  - [x] Spec doc
+  - [x] API/architecture
   - [ ] Implementation
   - [ ] Tests
   - [ ] Evidence
+  - [x] Stub APIs available
 
 - [ ] **Direct messaging system**
   - [ ] Spec doc

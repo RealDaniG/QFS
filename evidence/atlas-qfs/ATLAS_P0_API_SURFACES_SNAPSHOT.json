@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-12-13T16:52:00Z",
+  "snapshot_type": "P0_API_SURFACES",
+  "status": "STUB_IMPLEMENTATION",
+  "implemented_stub_endpoints": [
+    {
+      "endpoint": "GET /api/v1/feed",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_feed",
+      "status": "DEFINED_BUT_NOT_IMPLEMENTED",
+      "spec_version": "ATLAS_FEED_RANKING_V1.md"
+    },
+    {
+      "endpoint": "POST /api/v1/interactions/{type}",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_post_interaction",
+      "status": "DEFINED_BUT_NOT_IMPLEMENTED",
+      "spec_version": "ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md"
+    }
+  ],
+  "current_spec_versions": [
+    "specs/ATLAS_API_CONTRACTS_V1.md",
+    "specs/ATLAS_FEED_RANKING_V1.md",
+    "specs/ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md"
+  ],
+  "test_names_validating_presence": [
+    "test_feed_endpoint_exists",
+    "test_interaction_endpoint_exists",
+    "test_feed_response_schema",
+    "test_interaction_response_schema",
+    "test_deterministic_responses",
+    "test_request_models_exist"
+  ],
+  "git_hash": "placeholder_for_actual_git_hash",
+  "next_steps": [
+    "Implement actual business logic for feed ranking",
+    "Implement actual business logic for interaction processing",
+    "Integrate with CoherenceEngine for feed ranking",
+    "Integrate with EventEmitter for interaction events",
+    "Add full guard evaluation logic",
+    "Add complete reward calculation logic"
+  ]
+}

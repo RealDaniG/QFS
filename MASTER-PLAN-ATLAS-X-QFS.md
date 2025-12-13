@@ -32,4 +32,12 @@ This master plan outlines the strategic roadmap for integrating the ATLAS social
 ### Reference
 For detailed analysis, see [ATLAS-QFS-GAP-ANALYSIS.md](ATLAS-QFS-GAP-ANALYSIS.md)
 
+## Specs in progress
+
+Implementation-ready specifications are being developed for the top priority items:
+
+- [ATLAS_API_CONTRACTS_V1.md](specs/ATLAS_API_CONTRACTS_V1.md)
+- [ATLAS_FEED_RANKING_V1.md](specs/ATLAS_FEED_RANKING_V1.md)
+- [ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md](specs/ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md)
+
 ---
