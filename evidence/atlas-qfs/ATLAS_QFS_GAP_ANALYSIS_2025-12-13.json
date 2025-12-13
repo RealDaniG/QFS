@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-12-13T00:00:00Z",
+  "source": "Comprehensive Gap Analysis Report (2025-12-13)",
+  "created_updated_docs": [
+    "ATLAS-QFS-GAP-ANALYSIS.md",
+    "MASTER-PLAN-ATLAS-X-QFS.md",
+    "ROADMAP-ATLAS-QFS.md",
+    "TASKS-ATLAS-QFS.md"
+  ],
+  "referenced_docs": [
+    "evidence/diagnostic/QFSV13.5_AUTONOMOUS_AUDIT_REPORT.md"
+  ],
+  "hash": "SHA3-512:placeholder_hash_for_ATLAS-QFS-GAP-ANALYSIS.md"
+}

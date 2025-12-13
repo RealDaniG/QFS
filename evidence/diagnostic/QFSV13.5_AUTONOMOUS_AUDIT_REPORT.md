@@ -376,6 +376,12 @@ _Replace or extend this list after a more detailed comparison with the roadmap a
 4. Add integration tests for DRV_Packet → SDK → HSMF → Treasury → Ledger flows and capture deterministic replay artifacts.
 5. Enhance this script to parse more evidence JSONs (e.g., `QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json`) and include their results directly.
 
+## 8. ATLAS x QFS Integration Gaps
+
+This system has been assessed for integration with the ATLAS social platform. Some gaps are ATLAS-layer only (UX, onboarding, Learn Hub), while others are joint (API contracts, event schemas, appeals, ledger explorer, AEGIS guard).
+
+Non-determinism risks that involve time-based behavior, randomness, external APIs, and concurrency have been explicitly tagged in the [ATLAS-QFS-GAP-ANALYSIS.md](../../ATLAS-QFS-GAP-ANALYSIS.md) report for use as inputs to future Zero-Sim audits.
+
 ---
 
 ### Appendix: Baseline Evidence Snapshot
