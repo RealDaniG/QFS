@@ -59,6 +59,24 @@ except ImportError:
             MAX_NOD_VOTING_POWER_RATIO
         )
 
+# Import V13.6 Constitutional Guards
+try:
+    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+    from ...libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
+    from ...libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
+except ImportError:
+    try:
+        from src.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from src.libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
+        from src.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
+    except ImportError:
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        from economics.EconomicsGuard import EconomicsGuard, ValidationResult
+        from governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult
+        from governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult
+
 
 @dataclass
 class NODAllocation:
@@ -80,13 +98,18 @@ class NODAllocator:
 
     def __init__(self, cm_instance: CertifiedMath, allocation_fraction: BigNum128 = None):
         """
-        Initialize the NOD Allocator.
+        Initialize the NOD Allocator with V13.6 constitutional guards.
         
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
             allocation_fraction: Custom NOD allocation fraction (must be within bounds)
         """
         self.cm = cm_instance
+        
+        # === V13.6 CONSTITUTIONAL GUARDS (MANDATORY) ===
+        self.economics_guard = EconomicsGuard(cm_instance)
+        self.nod_invariant_checker = NODInvariantChecker(cm_instance)
+        self.aegis_node_verifier = AEGIS_Node_Verifier(cm_instance)
         
         # Set allocation fraction with safety bounds enforcement
         if allocation_fraction is None:
@@ -103,6 +126,8 @@ class NODAllocator:
         self,
         atr_total_fees: BigNum128,
         node_contributions: Dict[str, BigNum128],
+        registry_snapshot: Dict[str, Any],
+        telemetry_snapshot: Dict[str, Any],
         log_list: List[Dict[str, Any]],
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
@@ -110,11 +135,13 @@ class NODAllocator:
         epoch_number: int = 0,
     ) -> List[NODAllocation]:
         """
-        Allocate NOD tokens from ATR fees to infrastructure nodes based on contribution metrics.
+        Allocate NOD tokens from ATR fees to infrastructure nodes with V13.6 guard enforcement.
         
         Args:
             atr_total_fees: Total ATR fees collected
             node_contributions: Dictionary mapping node IDs to contribution scores
+            registry_snapshot: AEGIS registry snapshot (hash-anchored, versioned)
+            telemetry_snapshot: AEGIS telemetry snapshot (hash-anchored, versioned)
             log_list: Audit log list for deterministic operations
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
@@ -122,8 +149,59 @@ class NODAllocator:
             epoch_number: Current epoch number for emission controls
             
         Returns:
-            List[NODAllocation]: List of NOD allocations for each node
+            List[NODAllocation]: List of NOD allocations for verified nodes only
         """
+        # === V13.6 GUARD STEP 1: Filter nodes via AEGIS verification ===
+        verified_nodes = {}
+        unverified_nodes = []
+        
+        for node_id in sorted(node_contributions.keys()):
+            verification_result = self.aegis_node_verifier.verify_node(
+                node_id=node_id,
+                registry_snapshot=registry_snapshot,
+                telemetry_snapshot=telemetry_snapshot,
+                log_list=log_list
+            )
+            
+            if verification_result.is_valid:
+                verified_nodes[node_id] = node_contributions[node_id]
+            else:
+                unverified_nodes.append((node_id, verification_result))
+                # Log verification failure
+                if log_list is not None:
+                    log_list.append({
+                        "operation": "nod_node_verification_failed",
+                        "node_id": node_id,
+                        "status": verification_result.status.value,
+                        "reason_code": verification_result.reason_code,
+                        "reason_message": verification_result.reason_message,
+                        "epoch": epoch_number,
+                        "timestamp": deterministic_timestamp
+                    })
+        
+        # If no nodes passed verification, return empty
+        if not verified_nodes:
+            if log_list is not None:
+                log_list.append({
+                    "operation": "nod_no_verified_nodes",
+                    "total_nodes": len(node_contributions),
+                    "verified_count": 0,
+                    "epoch": epoch_number,
+                    "timestamp": deterministic_timestamp
+                })
+            return []
+        
+        # Log verification summary
+        if log_list is not None:
+            log_list.append({
+                "operation": "nod_verification_summary",
+                "total_nodes": len(node_contributions),
+                "verified_count": len(verified_nodes),
+                "unverified_count": len(unverified_nodes),
+                "epoch": epoch_number,
+                "timestamp": deterministic_timestamp
+            })
+        
         # Calculate NOD share from ATR fees (using configured allocation fraction)
         nod_share = self.cm.mul(atr_total_fees, self.allocation_fraction, log_list, pqc_cid, quantum_metadata)
         
@@ -152,10 +230,42 @@ class NODAllocator:
                 })
             return []  # No allocation when idle
         
-        # Allocate the NOD share to nodes
+        # === V13.6 GUARD STEP 2: Validate economic bounds BEFORE allocation ===
+        # Calculate metrics for validation
+        total_verified_contribution = BigNum128(0)
+        for score in verified_nodes.values():
+            total_verified_contribution = self.cm.add(total_verified_contribution, score, log_list, pqc_cid, quantum_metadata)
+        
+        # Validate NOD allocation against economic bounds
+        econ_validation = self.economics_guard.validate_nod_allocation(
+            nod_amount=nod_share,
+            total_fees=atr_total_fees,
+            node_voting_power=BigNum128.from_int(0),  # TODO: Calculate from current state
+            total_voting_power=BigNum128.from_int(1),  # TODO: Calculate from current state
+            node_reward_share=self.allocation_fraction,
+            total_epoch_issuance=nod_share,
+            active_node_count=len(verified_nodes),
+            log_list=log_list
+        )
+        
+        if not econ_validation.passed:
+            # Economic guard violation - HALT allocation
+            if log_list is not None:
+                log_list.append({
+                    "operation": "nod_economic_violation",
+                    "error_code": econ_validation.error_code,
+                    "error_message": econ_validation.error_message,
+                    "details": econ_validation.details,
+                    "epoch": epoch_number,
+                    "timestamp": deterministic_timestamp
+                })
+            # Raise structured error for CIR-302 integration
+            raise ValueError(f"[GUARD] Economic bound violation: {econ_validation.error_message} (code: {econ_validation.error_code})")
+        
+        # Allocate the NOD share to verified nodes only
         return self.allocate_nod(
             nod_reward_pool=nod_share,
-            node_contributions=node_contributions,
+            node_contributions=verified_nodes,  # Only verified nodes
             log_list=log_list,
             pqc_cid=pqc_cid,
             quantum_metadata=quantum_metadata,
