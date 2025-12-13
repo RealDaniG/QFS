@@ -46,24 +46,52 @@ This repository documents the **systematic remediation** of QFS V13 from its bas
 
 QFS V13.5 implements a **deterministic financial-reputation economy** designed for integration into decentralized social media platforms. The system operates as a predictive coherence engine that evaluates user actions through energy-based scoring, token economics, and transparent governance—all while maintaining **zero-simulation compliance** and **post-quantum security**.
 
-### Five-Token Harmonic System
+### Six-Token Economic System (Five Harmonic + One Infrastructure)
 
-QFS manages five interconnected tokens that work together to create a stable, self-regulating economy:
+QFS V13.5 manages six interconnected tokens that work together to create a stable, self-regulating economy:
 
-| Token | Symbol | Purpose | Function |
-|-------|--------|---------|----------|
-| **Coherence** | CHR | System stability | Base measure of network health (S_CHR metric) |
-| **Flexibility** | FLX | Rewards & incentives | Primary token for user rewards and penalties |
-| **Psi-Sync** | ΨSync | Predictive alignment | Measures user action coherence with network state |
-| **Attestation** | ATR | Reputation tracking | Oracle-verified user reputation scores |
-| **Reserve** | RES | Economic buffer | Stabilization reserve for market shocks |
+**Five Harmonic Tokens (User-Facing):**
+
+| Token | Symbol | Purpose | Function | Transferable |
+|-------|--------|---------|----------|-------------|
+| **Coherence** | CHR | System stability | Base measure of network health (S_CHR metric) | ✅ Yes |
+| **Flexibility** | FLX | Rewards & incentives | Primary token for user rewards and penalties | ✅ Yes |
+| **Psi-Sync** | ΨSync | Predictive alignment | Measures user action coherence with network state | ✅ Yes |
+| **Attestation** | ATR | Reputation tracking | Oracle-verified user reputation scores | ✅ Yes |
+| **Reserve** | RES | Economic buffer | Stabilization reserve for market shocks | ✅ Yes |
+
+**Infrastructure Token (Protocol-Internal):**
+
+| Token | Symbol | Purpose | Function | Transferable |
+|-------|--------|---------|----------|-------------|
+| **Node Operator Determination** | NOD | Infrastructure sovereignty | Non-transferable utility for node operators, infrastructure-only governance | ❌ No |
+
+**Critical Distinction:** NOD is **orthogonal to the five-token harmonic system**. It does not participate in harmonic balancing, coherence scoring, or social equilibrium loops. NOD exists solely for infrastructure coordination and cannot affect user-facing parameters, content policy, or token economics.
 
 **Token Interactions:**
-- All tokens are managed through **TokenStateBundle** (immutable snapshots)
+
+*Harmonic Token Layer (User-Facing):*
+- All harmonic tokens (CHR, FLX, ΨSync, ATR, RES) are managed through **TokenStateBundle** (immutable snapshots)
 - State transitions are atomic and PQC-signed
 - HSMF (Harmonic Stability Management Framework) enforces coherence thresholds
 - TreasuryEngine calculates deterministic rewards based on HSMF metrics
 - RewardAllocator distributes FLX tokens to users based on predictive coherence
+
+*Infrastructure Token Layer (Protocol-Internal):*
+- **NOD tokens** are allocated only to verified AEGIS infrastructure nodes
+- NODAllocator distributes NOD based on deterministic contribution metrics (uptime, bandwidth, storage)
+- NOD issuance derived from 10% of ATR fees (configurable via hard fork only, bounded by constitutional limits)
+- InfrastructureGovernance manages infrastructure-only decisions using NOD voting power
+- **Firewall Enforcement:** NOD governance scope is cryptographically limited to infrastructure parameters only
+  - ✅ Allowed: Storage replication factor, AI model versions, network bandwidth parameters
+  - ❌ Forbidden: User rewards, content policy, social governance, token emission rates
+
+**Economic Constitutional Guarantees:**
+- All economic parameters are defined in `src/libs/economics/economic_constants.py`
+- Constants are marked [IMMUTABLE] (hard-coded) or [MUTABLE] (hard fork required)
+- Safety bounds prevent governance capture and economic death spirals
+- Anti-centralization guards limit single-node dominance
+- Full specification: `docs/qfs_v13_plans/NOD_INFRASTRUCTURE_TOKEN_SPEC_V1.md`
 
 ### Integration into ATLAS Social Media Platform
 
@@ -100,15 +128,15 @@ QFS manages five interconnected tokens that work together to create a stable, se
                                │
                                ↓
 ┌────────────────────────────────────────────────────────────────┐
-│              QFS V13.5 - Deterministic Engine                   │
-│                                                                 │
+│              QFS V13.5 - Deterministic Engine                  │
+│                                                                │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │  Predictive Coherence Module (PCM)                       │  │
 │  │  • Analyzes user actions against network state           │  │
 │  │  • Calculates ΨSync alignment scores                     │  │
 │  │  • Predicts future coherence impact                      │  │
 │  └──────────────────────────────────────────────────────────┘  │
-│                              ↓                                  │
+│                              ↓                                 │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │  HSMF v2 (Harmonic Stability Framework)                  │  │
 │  │  • Energy-based action scoring (Action_Cost_QFS)         │  │
@@ -116,36 +144,36 @@ QFS manages five interconnected tokens that work together to create a stable, se
 │  │  • Threshold enforcement (C_MIN, DEZ checks)             │  │
 │  │  • CIR-302 critical failure handling                     │  │
 │  └──────────────────────────────────────────────────────────┘  │
-│                              ↓                                  │
+│                              ↓                                 │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │  Adaptive Token Weighting (ATW)                           │  │
-│  │  • Dynamic FLX reward calculation                         │  │
+│  │  Adaptive Token Weighting (ATW)                          │  │
+│  │  • Dynamic FLX reward calculation                        │  │
 │  │  • Weighted allocation based on coherence                │  │
-│  │  • Penalty distribution for violations                   │  │
+│  │  • Penalty distribution for violations                   │  │ 
 │  │  • Treasury-based economic balancing                     │  │
 │  └──────────────────────────────────────────────────────────┘  │
-│                              ↓                                  │
+│                              ↓                                 │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │  Expanded Quantum Metadata (EQM)                          │  │
-│  │  • Full audit trail generation                            │  │
+│  │  Expanded Quantum Metadata (EQM)                         │  │
+│  │  • Full audit trail generation                           │  │
 │  │  • PQC-signed metadata (Dilithium-5)                     │  │
 │  │  • Deterministic hash chains (SHA3-512)                  │  │
 │  │  • Immutable CoherenceLedger logging                     │  │
 │  └──────────────────────────────────────────────────────────┘  │
-│                              ↓                                  │
+│                              ↓                                 │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │  Integrated Governance Layer (IGL)                        │  │
-│  │  • Deterministic quorum calculations                      │  │
-│  │  • Content visibility decisions                           │  │
-│  │  • Policy update mechanisms                               │  │
-│  │  • Dispute resolution protocols                           │  │
+│  │  Integrated Governance Layer (IGL)                       │  │
+│  │  • Deterministic quorum calculations                     │  │
+│  │  • Content visibility decisions                          │  │
+│  │  • Policy update mechanisms                              │  │
+│  │  • Dispute resolution protocols                          │  │
 │  └──────────────────────────────────────────────────────────┘  │
-│                              ↓                                  │
+│                              ↓                                 │
 │            ╔════════════════════════════════╗                  │
-│            ║  StateTransitionEngine        ║                  │
-│            ║  • Atomic token updates       ║                  │
-│            ║  • PQC-signed state commits   ║                  │
-│            ║  • AEGIS_FINALITY_SEAL        ║                  │
+│            ║  StateTransitionEngine        ║                   │
+│            ║  • Atomic token updates       ║                   │
+│            ║  • PQC-signed state commits   ║                   │
+│            ║  • AEGIS_FINALITY_SEAL        ║                   │
 │            ╚═══════════════╤════════════════╝                  │
 └────────────────────────────┼───────────────────────────────────┘
                              │
@@ -337,6 +365,81 @@ QFS manages five interconnected tokens that work together to create a stable, se
 - HSMF adjusts reward rates to maintain C_holo >= C_MIN
 - Automatic rebalancing without human intervention
 - Outcome: Self-regulating economy resilient to volatility
+
+**5. Infrastructure Sovereignty (NOD Token)**
+- Node operators receive **NOD tokens** based on contribution metrics
+- NOD voting power determines infrastructure parameters only
+- Example: Upgrade storage replication factor from 3 to 5
+- **Firewall guarantee:** NOD governance cannot affect user-facing systems
+- Outcome: Sustainable node operation without altruistic dependency
+
+### NOD Token: Infrastructure Sovereignty Layer
+
+**Purpose:** NOD (Node Operator Determination) is QFS V13.5's sixth token, providing **economic incentivization for infrastructure operators** while maintaining strict separation from social governance.
+
+**Key Characteristics:**
+- **Non-Transferable:** NOD cannot be traded, sold, or transferred between addresses
+- **Infrastructure-Only:** Allocated exclusively to verified AEGIS node operators
+- **Deterministic Issuance:** 10% of ATR fees → NOD pool (bounded by constitutional limits)
+- **Governance-Limited:** Can only vote on infrastructure parameters, not user-facing systems
+
+**Economic Model:**
+```python
+# NOD allocation from ATR fees
+atr_total_fees = sum(all_user_action_costs)
+nod_pool = atr_total_fees * 0.10  # 10% allocation (configurable 1%-15%)
+
+# Distribution based on node contribution metrics
+for node in active_nodes:
+    contribution_score = (
+        uptime_ratio * 0.40 +
+        bandwidth_served * 0.30 +
+        storage_provided * 0.30
+    )
+    node.nod_balance += (nod_pool * contribution_score / total_contributions)
+```
+
+**Governance Scope (Allowed):**
+- ✅ Storage replication factor adjustments
+- ✅ AI model version approvals for content moderation
+- ✅ Network bandwidth/fee parameter tuning
+- ✅ Infrastructure upgrade scheduling
+- ✅ Security patch deployment timing
+
+**Governance Scope (Forbidden - Constitutional Firewall):**
+- ❌ User token emission rates (CHR, FLX, ΨSync, ATR, RES)
+- ❌ Content moderation policy (handled by social governance)
+- ❌ Reward calculation formulas
+- ❌ Identity or reputation scoring
+- ❌ Economic parameters affecting user-facing systems
+
+**Constitutional Guarantees:**
+- **Safety Bounds:** MIN/MAX caps on all mutable parameters (defined in `economic_constants.py`)
+- **Emission Controls:** Maximum issuance per epoch, minimum active nodes requirement
+- **Anti-Centralization:** Per-node voting power capped at 25% of total supply
+- **Timelock Protection:** 240-block execution delay after proposal passes (~1.1 hours)
+- **Deterministic Execution:** All governance outcomes must be cryptographically reproducible
+
+**Lifecycle:**
+1. **Dormant:** No ATR activity → no NOD issuance
+2. **Accrual:** ATR fees accumulate in deterministic pool
+3. **Allocation:** Periodic distribution based on telemetry snapshots
+4. **Governance Usage:** NOD balances weight infrastructure votes
+5. **No Redemption:** NOD never converts back to other tokens (prevents profit-expectation claims)
+
+**Implementation:**
+- `src/libs/governance/NODAllocator.py` - Distribution logic
+- `src/libs/governance/InfrastructureGovernance.py` - Voting system
+- `src/libs/economics/economic_constants.py` - Constitutional parameters
+- `docs/qfs_v13_plans/NOD_INFRASTRUCTURE_TOKEN_SPEC_V1.md` - Full specification
+
+**Legal Positioning:**
+NOD is designed as a **pure utility token** with no investment characteristics:
+- Non-transferable (eliminates secondary markets)
+- Non-redeemable (no profit participation)
+- Infrastructure-scoped (no control over user-facing systems)
+- Deterministic (no discretionary management)
+- This structure minimizes securities law risk while enabling sustainable node incentivization.
 
 ### Technical Advantages
 
