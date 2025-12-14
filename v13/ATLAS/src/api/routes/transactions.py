@@ -7,7 +7,7 @@ from typing import List, Optional
 from datetime import datetime, timezone
 import logging
 
-from ....core.transaction_processor import Transaction, TransactionProcessor
+from ...core.transaction_processor import Transaction, TransactionProcessor
 from ...models.transaction import TransactionCreate, TransactionResponse
 
 # Configure logging

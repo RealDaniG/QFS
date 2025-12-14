@@ -102,6 +102,30 @@ src/
 └── lib/                # Utility functions and configurations
 ```
 
+## 🧠 QFS × ATLAS Alignment (V13.7 / V13.8)
+
+This ATLAS app is wired against the QFS V13.x economic substrate:
+
+- **V13.7 – ATLAS-ready**
+  - RealLedger + QFSClient integration for deterministic transaction and
+    state handling.
+  - Secure-Chat engine + API adapters for encrypted, content-addressed
+    messaging backed by QFS.
+  - SignalAddons (e.g. humor) surfaced via APIs and tests, with all
+    monetary effects still routed through TreasuryEngine + guards.
+
+- **V13.8 – Value Nodes & Content-NFTs**
+  - Spec and tests for users as deterministic value-nodes and content as
+    NFT-style, content-addressed objects.
+  - Replay-focused value-node tests live under `tests/value_node/` and
+    do not modify core economics.
+
+For a full protocol-side description, see:
+
+- `docs/QFS_ATLAS_MISSION_CONSTRAINTS.md`
+- `docs/QFS_V13_7_SCOPE.md`
+- `docs/QFS_V13_8_FULL_ENGINE_OVERVIEW.md`
+
 ## 🎨 Available Features & Components
 
 This scaffold includes a comprehensive set of modern web development tools:

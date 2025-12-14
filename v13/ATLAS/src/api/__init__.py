@@ -42,7 +42,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     return {"username": "demo_user", "id": "user123"}
 
 # Import and include routers
-from .routes import transactions, wallets, quantum
+from .routes import transactions, wallets, quantum, secure_chat, metrics, proofs
 
 # Include API routers
 app.include_router(
@@ -63,6 +63,24 @@ app.include_router(
     quantum.router,
     prefix="/api/v1/quantum",
     tags=["quantum"]
+)
+
+app.include_router(
+    secure_chat.router,
+    prefix="/api/v1",
+    tags=["secure-chat"],
+)
+
+app.include_router(
+    metrics.router,
+    prefix="/api/v1",
+    tags=["metrics"],
+)
+
+app.include_router(
+    proofs.router,
+    prefix="/api/v1",
+    tags=["proofs"],
 )
 
 # Health check endpoint

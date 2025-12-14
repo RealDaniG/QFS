@@ -15,21 +15,24 @@ V13.6 Constitutional Integration:
 import json
 import hashlib
 import sys
+import os
 from typing import Dict, Any, Optional, List, Type
+
+# Add the current directory to the path so we can import modules
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 # Handle imports for both direct execution and package usage
 try:
-    from ..libs.BigNum128 import BigNum128
-    from ..libs.CertifiedMath import CertifiedMath
+    from libs.BigNum128 import BigNum128
+    from libs.CertifiedMath import CertifiedMath
 except ImportError:
-    # Fallback for direct execution
+    # Try with sys.path modification
     try:
-        from v13.libs.BigNum128 import BigNum128
-        from v13.libs.CertifiedMath import CertifiedMath
-    except ImportError:
-        # Try with sys.path modification
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        from libs.BigNum128 import BigNum128
+        from libs.CertifiedMath import CertifiedMath
+    except ImportError:
+        # Last resort: try absolute import
         from v13.libs.BigNum128 import BigNum128
         from v13.libs.CertifiedMath import CertifiedMath
 
@@ -140,7 +143,10 @@ class CIR302_Handler:
                 "error_type": error_type,
                 "error_details": error_details,
                 "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
-                "finality": "CIR302_REGISTERED"
+                "finality": "CIR302_REGISTERED",
+                "tag_incident_id": f"cir302_{deterministic_timestamp}",
+                "tag_incident_type": error_type,
+                "tag_component": "CIR302"
             },
             CIR302_Handler.CIR302_CODE,
             log_list,
@@ -191,15 +197,27 @@ class CIR302_Handler:
             "error_code": error_code,
             "error_message": error_message,
             "halt_reason": halt_reason,
-            "context": context,
             "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
             "finality": "CIR302_CONSTITUTIONAL_HALT"
         }
         
-        # Log the guard violation deterministically
+        # Extract minimal fields needed for math-level tagging
+        incident_id = context.get("incident_id", f"cir302_{deterministic_timestamp}")
+        incident_type = context.get("incident_type", error_code)
+        
+        # Log the guard violation deterministically with flattened tag fields
+        # Rich context is logged separately in CIR-302 events, not in math logs
         self.cm._log_operation(
             "cir302_guard_violation",
-            violation_payload,
+            {
+                "cir": "302",
+                "error_code": error_code,
+                "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
+                "finality": "CIR302_CONSTITUTIONAL_HALT",
+                "tag_incident_id": str(incident_id),
+                "tag_incident_type": str(incident_type),
+                "tag_component": "CIR302"
+            },
             CIR302_Handler.CIR302_CODE,
             log_list,
             pqc_cid,
@@ -291,12 +309,15 @@ class CIR302_Handler:
                 {
                     "error_code": error_code,
                     "error_message": error_message,
-                    "context": context,
                     "halt_reason": self.GUARD_ERROR_MAPPINGS.get(error_code, "Unknown violation")
                 }
             ],
             "quantum_metadata": self.quantum_metadata
         }
+        
+        # Add context fields to seal data (flatten for deterministic serialization)
+        for key, value in context.items():
+            seal_data[f"violation_context_{key}"] = str(value)
         
         # Serialize with sorted keys for deterministic output
         seal_json = json.dumps(seal_data, sort_keys=True, separators=(',', ':'))

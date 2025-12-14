@@ -72,6 +72,24 @@ except ImportError:
 try:
     # Try relative import first (for package usage)
     from ..policy.policy_engine import PolicyEngine
+    
+    # Import signal addons
+    try:
+        # Try relative import first (for package usage)
+        from ..ATLAS.src.signals.humor import HumorSignalAddon
+    except ImportError:
+        # Fallback to absolute import (for direct execution)
+        try:
+            from v13.ATLAS.src.signals.humor import HumorSignalAddon
+        except ImportError:
+            # Try with sys.path modification
+            import sys
+            import os
+            sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+            try:
+                from v13.ATLAS.src.signals.humor import HumorSignalAddon
+            except ImportError:
+                from ATLAS.src.signals.humor import HumorSignalAddon
 except ImportError:
     # Fallback to absolute import (for direct execution)
     try:
@@ -113,6 +131,11 @@ class AtlasAPIGateway:
         
         # Initialize policy engine
         self.policy_engine = PolicyEngine()
+        
+        # Initialize signal addons
+        self.humor_signal_addon = HumorSignalAddon()
+        
+        # Initialize storage integration
         
         # Initialize storage integration
         self.storage_client = None  # Will be set by the system with real storage client
@@ -542,6 +565,21 @@ class AtlasAPIGateway:
                 # Build CoherenceInput from content candidate
                 coherence_input = self._build_coherence_input(candidate)
                 
+                # Process humor signals for the content
+                humor_data = None
+                if "content" in candidate:
+                    # Prepare context with ledger-derived metrics
+                    context = {
+                        "views": int(candidate.get("engagement_signals", {}).get("likes", BigNum128(0))),
+                        "laughs": int(candidate.get("engagement_signals", {}).get("comments", BigNum128(0))),
+                        "saves": int(candidate.get("engagement_signals", {}).get("shares", BigNum128(0))),
+                        "replays": 0,  # Would come from real ledger data
+                        "author_reputation": 0.5  # Would come from real ledger data
+                    }
+                    
+                    # Process humor signals
+                    humor_data = self._process_humor_signals(candidate["content"], context)
+                
                 # Build feature vector from CoherenceInput
                 features = self._build_feature_vector(coherence_input)
                 
@@ -571,6 +609,10 @@ class AtlasAPIGateway:
                     "block_suggested": aegis_observation.block_suggested,
                     "severity": aegis_observation.severity
                 }
+                
+                # Add humor signal data to AEGIS advisory if available
+                if humor_data:
+                    aegis_advisory["humor_signal"] = humor_data
                 
                 # Generate policy hints using the policy engine
                 policy_hints = self.policy_engine.generate_policy_hints(aegis_advisory)
@@ -661,6 +703,21 @@ class AtlasAPIGateway:
                 "timestamp": deterministic_timestamp
             }
             
+            # Process humor signals for the interaction content if it exists
+            humor_data = None
+            if request.content:
+                # Prepare context with ledger-derived metrics (would come from real ledger)
+                context = {
+                    "views": 0,
+                    "laughs": 0,
+                    "saves": 0,
+                    "replays": 0,
+                    "author_reputation": 0.5  # Would come from real ledger data
+                }
+                
+                # Process humor signals
+                humor_data = self._process_humor_signals(request.content, context)
+            
             # Generate deterministic event ID
             event_id = self._generate_event_id(interaction_event)
             
@@ -701,6 +758,10 @@ class AtlasAPIGateway:
                     "explanation": aegis_observation.explanation
                 }
             }
+            
+            # Add humor signal data to AEGIS advisory if available
+            if humor_data:
+                guard_results_for_ledger["aegis_advisory"]["humor_signal"] = humor_data
             
             # Check if AEGIS suggests blocking the interaction
             if aegis_observation.block_suggested:
@@ -827,6 +888,13 @@ class AtlasAPIGateway:
                 "block_suggested": aegis_observation.block_suggested,
                 "severity": aegis_observation.severity
             }
+            
+            # Add humor signal data to AEGIS advisory if available
+            if humor_data:
+                aegis_advisory["humor_signal"] = {
+                    "dimensions": humor_data["dimensions"],
+                    "confidence": humor_data["confidence"]
+                }
             
             # Return response
             # Success is determined by both safety and economics guards passing
@@ -1152,6 +1220,43 @@ class AtlasAPIGateway:
         # Otherwise, use mock token bundle for testing
         # In a real implementation, this would be fetched from storage
         return self.mock_token_bundle
+    
+    def _process_humor_signals(self, content: str, context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Process humor signals for content.
+        
+        Args:
+            content: Content to evaluate
+            context: Context with ledger-derived metrics
+            
+        Returns:
+            Optional[Dict]: Humor signal results or None if processing fails
+        """
+        try:
+            # Evaluate content with humor signal addon
+            humor_result = self.humor_signal_addon.evaluate(content, context)
+            
+            # Extract dimensions and confidence
+            dimensions = humor_result.metadata.get("dimensions", {})
+            confidence = humor_result.confidence
+            
+            # Return structured humor data
+            return {
+                "dimensions": dimensions,
+                "confidence": confidence,
+                "result_hash": humor_result.result_hash,
+                "content_hash": humor_result.content_hash,
+                "context_hash": humor_result.context_hash
+            }
+        except Exception as e:
+            # Log error but don't fail the entire operation
+            # In a real implementation, this would be added to a shared log list
+            log_entry = {
+                "level": "WARNING",
+                "message": f"Humor signal processing failed: {e}",
+                "timestamp": self._get_deterministic_timestamp()
+            }
+            return None
     
     def _fetch_content_candidates(self, user_id: str, limit: int = 20) -> List[Dict[str, Any]]:
         """

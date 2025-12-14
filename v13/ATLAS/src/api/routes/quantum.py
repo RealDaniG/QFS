@@ -8,7 +8,7 @@ import logging
 import hashlib
 import os
 
-from ....core.quantum_engine import QuantumEngine
+from ...core.quantum_engine import QuantumEngine
 from ...models.quantum import (
     QuantumKeyPair,
     QuantumSignature,

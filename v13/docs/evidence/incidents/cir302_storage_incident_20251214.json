@@ -1,0 +1,18 @@
+{
+  "component": "Storage System",
+  "incident_type": "CIR-302 Simulation",
+  "scenario": "test_scenario",
+  "timestamp": "2025-12-14T13:22:24.337818Z",
+  "simulation_details": {
+    "scenario": "test_scenario",
+    "description": "Test incident simulation",
+    "cir302_triggered": true
+  },
+  "verification": {
+    "cir302_response_validated": true,
+    "halt_mechanism_tested": true,
+    "forensic_preservation": "SIMULATED"
+  },
+  "zero_simulation_compliance": "PASS",
+  "audit_readiness": "READY"
+}

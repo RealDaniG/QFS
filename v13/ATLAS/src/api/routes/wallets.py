@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Dict, List, Optional
 import logging
 
-from ....core.transaction_processor import TransactionProcessor
+from ...core.transaction_processor import TransactionProcessor
 from ...models.wallet import WalletBalance, WalletCreate, WalletResponse
 
 # Configure logging
