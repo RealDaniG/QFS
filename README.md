@@ -9,12 +9,12 @@
 
 **Historical Context:** V13.5 Phase 1 achieved 80% completion (4/5 CRITICAL components). V13.6 completes the constitutional integration with full guard enforcement.  
 
-[![Phase 1 Progress](https://img.shields.io/badge/Phase%201-80%25-yellow)](REMEDIATION_TASK_TRACKER_V2.md)
+[![Phase 1 Progress](https://img.shields.io/badge/Phase%201-80%25-yellow)](v13/legacy_root/REMEDIATION_TASK_TRACKER_V2.md)
 [![Tests](https://img.shields.io/badge/Tests-92%2F92%20(100%25)-green)](evidence/phase1/)
 [![Evidence Driven](https://img.shields.io/badge/Evidence-17%20Artifacts-green)](evidence/phase1/)
-[![Dashboard](https://img.shields.io/badge/Dashboard-Interactive-blue)](docs/qfs-v13.5-dashboard.html)
+[![Dashboard](https://img.shields.io/badge/Dashboard-Interactive-blue)](v13/legacy_root/docs/qfs-v13.5-dashboard.html)
 
-📊 **[View Interactive Dashboard](docs/qfs-v13.5-dashboard.html)** - Real-time project status, compliance metrics, and deployment resources
+📊 **[View Interactive Dashboard](v13/legacy_root/docs/qfs-v13.5-dashboard.html)** - Real-time project status, compliance metrics, and deployment resources
 
 ---
 
@@ -34,21 +34,21 @@ QFS V13.6 transforms the constitutional layer from specification into **structur
 
 ### Constitutional Guards
 
-1. **[EconomicsGuard](src/libs/economics/EconomicsGuard.py)** (937 lines, 8 validation methods)
+1. **[EconomicsGuard](v13/libs/economics/EconomicsGuard.py)** (937 lines, 8 validation methods)
    - Validates CHR/FLX/RES rewards against constitutional bounds
    - Enforces per-address caps and dust thresholds
    - Validates NOD allocation fractions, epoch issuance, voting power limits
    - Protects [IMMUTABLE] constants from governance changes
    - Returns structured error codes: `ECON_BOUND_VIOLATION`, `ECON_CHR_*`, `ECON_FLX_*`, `ECON_NOD_*`
 
-2. **[NODInvariantChecker](src/libs/governance/NODInvariantChecker.py)** (682 lines, 4 invariants)
+2. **[NODInvariantChecker](v13/libs/governance/NODInvariantChecker.py)** (682 lines, 4 invariants)
    - **NOD-I1:** Non-transferability (users cannot transfer NOD)
    - **NOD-I2:** Supply conservation (no NOD creation outside allocator)
    - **NOD-I3:** Voting power bounds (max 25% per node)
    - **NOD-I4:** Deterministic replay via AEGIS snapshot hashing
    - Returns structured error codes: `NOD_INVARIANT_I1_VIOLATED`, `NOD_INVARIANT_I2_VIOLATED`, etc.
 
-3. **[AEGIS_Node_Verification](src/libs/governance/AEGIS_Node_Verification.py)** (733 lines, 5 checks)
+3. **[AEGIS_Node_Verification](v13/libs/governance/AEGIS_Node_Verification.py)** (733 lines, 5 checks)
    - Pure deterministic node verification (no HTTP calls)
    - Registry entry + telemetry hash coherence validation
    - Minimum uptime/health thresholds
@@ -58,35 +58,42 @@ QFS V13.6 transforms the constitutional layer from specification into **structur
 ### Structural Integration (Defense in Depth)
 
 **Module Level:**
-- [TreasuryEngine](src/libs/governance/TreasuryEngine.py): Validates CHR/FLX/RES rewards before issuance
-- [RewardAllocator](src/libs/governance/RewardAllocator.py): Per-address cap validation + dust handling
-- [NODAllocator](src/libs/governance/NODAllocator.py): AEGIS node verification + economic bounds
-- [InfrastructureGovernance](src/libs/governance/InfrastructureGovernance.py): AEGIS verification for proposal eligibility
+
+- [TreasuryEngine](v13/libs/governance/TreasuryEngine.py): Validates CHR/FLX/RES rewards before issuance
+- [RewardAllocator](v13/libs/governance/RewardAllocator.py): Per-address cap validation + dust handling
+- [NODAllocator](v13/libs/governance/NODAllocator.py): AEGIS node verification + economic bounds
+- [InfrastructureGovernance](v13/libs/governance/InfrastructureGovernance.py): AEGIS verification for proposal eligibility
 
 **Engine Level:**
-- [StateTransitionEngine](src/libs/integration/StateTransitionEngine.py): Final gate with NOD transfer firewall, invariant checking, supply delta validation
+
+- [StateTransitionEngine](v13/libs/integration/StateTransitionEngine.py): Final gate with NOD transfer firewall, invariant checking, supply delta validation
 
 **SDK Level:**
-- [QFSV13SDK](src/sdk/QFSV13SDK.py): Mandatory guard enforcement, no bypass paths
+
+- [QFSV13SDK](v13/sdk/QFSV13SDK.py): Mandatory guard enforcement, no bypass paths
 
 **AEGIS Integration:**
-- [aegis_api](src/services/aegis_api.py): Hash-anchored telemetry snapshots for NOD-I4 deterministic replay
+
+- [aegis_api](v13/services/aegis_api.py): Hash-anchored telemetry snapshots for NOD-I4 deterministic replay
 
 ### Safety & Invariants
 
 **NOD Guarantees:**
+
 - ❌ No NOD transfers (infra-only, allocator/governance controlled)
 - ✅ Only verified AEGIS nodes earn NOD or vote
 - ✅ Max 25% voting power per node (anti-centralization)
 - ✅ Bit-for-bit deterministic replay with AEGIS snapshots
 
 **Economic Guarantees:**
+
 - ✅ Per-address reward caps enforced
 - ✅ Dust policy applied (amounts below threshold flagged)
 - ✅ CHR/FLX/RES saturation thresholds enforced
 - ✅ Constitutional bounds on all issuance parameters
 
 **Failure Modes:**
+
 - AEGIS offline → freeze NOD allocation and governance (user rewards continue)
 - Economic violation → CIR-302 halt (no approximations)
 - Invariant violation → structured error code + halt
@@ -96,7 +103,7 @@ QFS V13.6 transforms the constitutional layer from specification into **structur
 **Phase 2.8:** Update CIR-302 handler to map all new error codes  
 **Phase 3:** DeterministicReplayTest / BoundaryConditionTests / FailureModeTests  
 
-See [CHANGELOG_V13.6.md](CHANGELOG_V13.6.md) for complete release notes.
+See [CHANGELOG_V13.6.md](v13/legacy_root/CHANGELOG_V13.6.md) for complete release notes.
 
 ---
 
@@ -105,6 +112,7 @@ See [CHANGELOG_V13.6.md](CHANGELOG_V13.6.md) for complete release notes.
 This repository documents the **systematic remediation** of QFS V13 from its baseline state (24%) towards full V13.5 / V2.1 certification (100%). Phase 1 has reached **80% completion** with 4/5 CRITICAL components fully implemented.
 
 **Phase 1 Status (Current):**
+
 - ✅ **BigNum128:** 24/24 tests passing (100%), IMPLEMENTED
 - ✅ **CertifiedMath:** 26/26 tests passing (100%), IMPLEMENTED
 - ✅ **DeterministicTime:** 27/27 tests passing (100%), IMPLEMENTED
@@ -114,14 +122,15 @@ This repository documents the **systematic remediation** of QFS V13 from its bas
 - 🎯 **Phase 2 Ready:** Linux PQC deployment package ready (~1 hour operator time)
 
 **Phase 2 Next Action:**
+
 - 🚀 **Deploy Production PQC on Linux** (Ubuntu 22.04 + liboqs 0.10.1)
-- See [START_HERE_PHASE2.md](START_HERE_PHASE2.md) for deployment instructions
+- See [START_HERE_PHASE2.md](v13/legacy_root/START_HERE_PHASE2.md) for deployment instructions
 - 8 comprehensive documents (3,360 lines) + 507-line hardened deployment script
 - Estimated: 30-45 min script runtime + ~1 hour operator overhead
 
-**For Auditors/Regulators:** See [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) for detailed findings.
+**For Auditors/Regulators:** See [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) for detailed findings.
 
-**Interactive Dashboard:** [docs/qfs-v13.5-dashboard.html](docs/qfs-v13.5-dashboard.html) - Real-time metrics, compliance progress, and deployment resources
+**Interactive Dashboard:** [docs/qfs-v13.5-dashboard.html](v13/legacy_root/docs/qfs-v13.5-dashboard.html) - Real-time metrics, compliance progress, and deployment resources
 
 ---
 
@@ -156,6 +165,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 **Token Interactions:**
 
 *Harmonic Token Layer (User-Facing):*
+
 - All harmonic tokens (CHR, FLX, ΨSync, ATR, RES) are managed through **TokenStateBundle** (immutable snapshots)
 - State transitions are atomic and PQC-signed
 - HSMF (Harmonic Stability Management Framework) enforces coherence thresholds
@@ -163,6 +173,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - RewardAllocator distributes FLX tokens to users based on predictive coherence
 
 *Infrastructure Token Layer (Protocol-Internal):*
+
 - **NOD tokens** are allocated only to verified AEGIS infrastructure nodes
 - NODAllocator distributes NOD based on deterministic contribution metrics (uptime, bandwidth, storage)
 - NOD issuance derived from 10% of ATR fees (configurable via hard fork only, bounded by constitutional limits)
@@ -172,6 +183,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
   - ❌ Forbidden: User rewards, content policy, social governance, token emission rates
 
 **Economic Constitutional Guarantees:**
+
 - All economic parameters are defined in `src/libs/economics/economic_constants.py`
 - Constants are marked [IMMUTABLE] (hard-coded) or [MUTABLE] (hard fork required)
 - Safety bounds prevent governance capture and economic death spirals
@@ -270,6 +282,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 #### Core Integration Components
 
 **1. Predictive Coherence Module (PCM)**
+
 - **Purpose:** Evaluates how well user actions align with current network state
 - **Metrics:**
   - ΨSync score: Measures coherence between user intent and system stability
@@ -279,6 +292,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - **Output:** Coherence scores fed into HSMF for reward calculation
 
 **2. HSMF v2 (Harmonic Stability Management Framework)**
+
 - **Purpose:** Energy-based scoring system for all user actions
 - **Key Functions:**
   - `calculate_action_cost()`: Determines energy cost of user actions
@@ -292,8 +306,10 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - **Integration:** Consumes AEGIS API data (node metrics, consensus state)
 
 **3. Adaptive Token Weighting (ATW)**
+
 - **Purpose:** Dynamic FLX token reward/penalty distribution
 - **Algorithm:**
+
   ```python
   # Simplified ATW calculation
   coherence_score = PCM.calculate_psi_sync(user_action, network_state)
@@ -301,6 +317,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
   base_reward = TreasuryEngine.compute_reward(S_CHR, C_holo, energy_cost)
   weighted_reward = RewardAllocator.apply_weights(base_reward, coherence_score)
   ```
+
 - **Components:**
   - `src/libs/governance/TreasuryEngine.py`: Reward calculations
   - `src/libs/governance/RewardAllocator.py`: Distribution logic
@@ -310,6 +327,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
   - Energy-intensive actions (spam, abuse) = higher costs
 
 **4. Expanded Quantum Metadata (EQM)**
+
 - **Purpose:** Full auditability and verifiability of all operations
 - **Data Captured:**
   - User action type and timestamp (DRV_Packet.ttsTimestamp)
@@ -321,12 +339,14 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - **Verification:** SHA3-512 hash chains ensure immutability
 
 **5. Integrated Governance Layer (IGL)**
+
 - **Purpose:** Deterministic governance without centralized control
 - **Decisions Managed:**
   - **Content Visibility:** Algorithmic ranking based on coherence scores
   - **Policy Updates:** Community-driven proposals with quorum enforcement
   - **Dispute Resolution:** Multi-signature verification for appeals
 - **Quorum Calculation:**
+
   ```python
   # Deterministic quorum (no randomness)
   total_active_users = AEGIS_API.get_active_node_count()
@@ -335,6 +355,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
       BigNum128.from_string("0.66")  # 66% supermajority
   )
   ```
+
 - **Implementation:** Uses PBFT consensus via AEGIS API
 
 ### Data Flow: User Action → Token Reward
@@ -345,6 +366,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
    - User posts content, likes, shares, or votes
    - ATLAS sends structured event payload to AEGIS API
    - Example payload:
+
      ```json
      {
        "user_id": "0x1234...",
@@ -388,16 +410,19 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 ### Security & Privacy via AEGIS API
 
 **TOR Integration:**
+
 - All ATLAS ↔ AEGIS ↔ QFS communications routed through TOR
 - IP anonymization for censorship resistance
 - Onion routing prevents traffic analysis
 
 **Cryptography:**
+
 - **Transport:** Ed25519 (authentication) + ChaCha20-Poly1305 (encryption)
 - **Signatures:** Dilithium-5 (post-quantum resistant)
 - **Hashing:** SHA3-512 (deterministic, quantum-safe)
 
 **Privacy Model:**
+
 - User actions are pseudonymous (public keys, not real identities)
 - Coherence scores visible to maintain transparency
 - Governance votes cryptographically verifiable but voter-anonymous
@@ -406,6 +431,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 ### Deployment & Monitoring
 
 **AEGIS API Endpoints Used by QFS:**
+
 - `POST /api/v1/actions/submit`: User action ingestion
 - `GET /api/v1/network/state`: Real-time network metrics
 - `GET /api/v1/consensus/history`: Historical interaction data
@@ -414,6 +440,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - `GET /api/v1/telemetry/metrics`: Prometheus-compatible monitoring
 
 **Key Performance Indicators (KPIs):**
+
 - **Coherence Health:** S_CHR metric (target: >= C_MIN)
 - **Token Velocity:** FLX circulation rate
 - **Energy Abuse Rate:** Actions exceeding Action_Cost threshold
@@ -421,6 +448,7 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 - **Audit Compliance:** Evidence artifact generation rate
 
 **Monitoring Tools:**
+
 - Prometheus metrics exported by AEGIS API
 - Grafana dashboards for real-time KPI visualization
 - Alerting on CIR-302 triggers (critical failures)
@@ -429,29 +457,34 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 ### Use Cases
 
 **1. Quality Content Incentivization**
+
 - High-coherence posts (well-researched, constructive) → **+FLX rewards**
 - Viral engagement aligned with network values → **+ΨSync boost**
 - Outcome: Users incentivized to produce valuable content
 
 **2. Spam & Abuse Deterrence**
+
 - Repetitive posting (high energy cost) → **-FLX penalties**
 - Toxic content (low coherence) → **reputation decay (ATR loss)**
 - Persistent violations → **CIR-302 halt + account freeze**
 - Outcome: Economic disincentive for bad actors
 
 **3. Decentralized Moderation**
+
 - Community flags content → **IGL governance vote**
 - Quorum reached deterministically (no manipulation)
 - Decision enforced via StateTransitionEngine
 - Outcome: Transparent, auditable content moderation
 
 **4. Economic Stability**
+
 - Market shock detected → **RES token deployed from Treasury**
 - HSMF adjusts reward rates to maintain C_holo >= C_MIN
 - Automatic rebalancing without human intervention
 - Outcome: Self-regulating economy resilient to volatility
 
 **5. Infrastructure Sovereignty (NOD Token)**
+
 - Node operators receive **NOD tokens** based on contribution metrics
 - NOD voting power determines infrastructure parameters only
 - Example: Upgrade storage replication factor from 3 to 5
@@ -463,12 +496,14 @@ QFS V13.5 manages six interconnected tokens that work together to create a stabl
 **Purpose:** NOD (Node Operator Determination) is QFS V13.5's sixth token, providing **economic incentivization for infrastructure operators** while maintaining strict separation from social governance.
 
 **Key Characteristics:**
+
 - **Non-Transferable:** NOD cannot be traded, sold, or transferred between addresses
 - **Infrastructure-Only:** Allocated exclusively to verified AEGIS node operators
 - **Deterministic Issuance:** 10% of ATR fees → NOD pool (bounded by constitutional limits)
 - **Governance-Limited:** Can only vote on infrastructure parameters, not user-facing systems
 
 **Economic Model:**
+
 ```python
 # NOD allocation from ATR fees
 atr_total_fees = sum(all_user_action_costs)
@@ -485,6 +520,7 @@ for node in active_nodes:
 ```
 
 **Governance Scope (Allowed):**
+
 - ✅ Storage replication factor adjustments
 - ✅ AI model version approvals for content moderation
 - ✅ Network bandwidth/fee parameter tuning
@@ -492,6 +528,7 @@ for node in active_nodes:
 - ✅ Security patch deployment timing
 
 **Governance Scope (Forbidden - Constitutional Firewall):**
+
 - ❌ User token emission rates (CHR, FLX, ΨSync, ATR, RES)
 - ❌ Content moderation policy (handled by social governance)
 - ❌ Reward calculation formulas
@@ -499,6 +536,7 @@ for node in active_nodes:
 - ❌ Economic parameters affecting user-facing systems
 
 **Constitutional Guarantees:**
+
 - **Safety Bounds:** MIN/MAX caps on all mutable parameters (defined in `economic_constants.py`)
 - **Emission Controls:** Maximum issuance per epoch, minimum active nodes requirement
 - **Anti-Centralization:** Per-node voting power capped at 25% of total supply
@@ -506,6 +544,7 @@ for node in active_nodes:
 - **Deterministic Execution:** All governance outcomes must be cryptographically reproducible
 
 **Lifecycle:**
+
 1. **Dormant:** No ATR activity → no NOD issuance
 2. **Accrual:** ATR fees accumulate in deterministic pool
 3. **Allocation:** Periodic distribution based on telemetry snapshots
@@ -513,6 +552,7 @@ for node in active_nodes:
 5. **No Redemption:** NOD never converts back to other tokens (prevents profit-expectation claims)
 
 **Implementation:**
+
 - `src/libs/governance/NODAllocator.py` - Distribution logic
 - `src/libs/governance/InfrastructureGovernance.py` - Voting system
 - `src/libs/economics/economic_constants.py` - Constitutional parameters
@@ -520,6 +560,7 @@ for node in active_nodes:
 
 **Legal Positioning:**
 NOD is designed as a **pure utility token** with no investment characteristics:
+
 - Non-transferable (eliminates secondary markets)
 - Non-redeemable (no profit participation)
 - Infrastructure-scoped (no control over user-facing systems)
@@ -529,24 +570,28 @@ NOD is designed as a **pure utility token** with no investment characteristics:
 ### Technical Advantages
 
 **Zero-Simulation Compliance:**
+
 - No floating-point operations → deterministic across all platforms
 - No random number generation → reproducible calculations
 - No time-based operations → replay-safe for auditing
 - BigNum128 fixed-point arithmetic ensures precision
 
 **Post-Quantum Security:**
+
 - Dilithium-5 signatures secure against quantum attacks
 - Kyber-1024 KEM for future key exchange needs
 - SHA3-512 resistant to Grover's algorithm
 - Future-proof cryptography for long-term deployment
 
 **Censorship Resistance:**
+
 - P2P/TOR architecture → no single point of failure
 - PBFT consensus → Byzantine fault tolerant
 - Distributed ledger → no central authority
 - Open-source verification → full transparency
 
 **Auditability:**
+
 - Every action logged in CoherenceLedger
 - PQC-signed metadata (EQM) prevents tampering
 - SHA3-512 hash chains enable forensic analysis
@@ -555,6 +600,7 @@ NOD is designed as a **pure utility token** with no investment characteristics:
 ### Summary: QFS as ATLAS' Deterministic Backbone
 
 QFS operates as a **deterministic engine on top of AEGIS**, using its API as the backbone for:
+
 - **Secure, distributed computation** (P2P/TOR network)
 - **Token management** (FLX allocation via TreasuryEngine)
 - **Governance** (IGL quorum decisions)
@@ -563,18 +609,68 @@ QFS operates as a **deterministic engine on top of AEGIS**, using its API as the
 **No central servers required.** All operations are consensus-verified through PBFT, cryptographically secured with Ed25519/Dilithium-5, and fully auditable via SHA3-512 hash chains. The result is a **censorship-resistant, economically stable social media platform** where quality content is rewarded, abuse is deterred, and users maintain full privacy.
 
 **Integration Status:**
+
 - ✅ Core QFS components implemented (Phase 1: 80% complete)
 - ⏳ AEGIS API integration (Phase 3+)
 - ⏳ PCM/ATW/EQM/IGL modules (Phase 3+)
 - 🎯 Target: Full ATLAS integration by Phase 5 (365-day roadmap)
 
+### ATLAS Addons & 7-Dimensional Comedic Rewards System
+
+Building upon the core QFS framework, ATLAS is expanding with innovative addons that enhance user engagement through humor and entertainment. The upcoming **7-Dimensional Comedic Rewards System** represents a groundbreaking approach to social platform economics, leveraging comedy as a positive force for community building and content creation.
+
+#### 7-Dimensional Comedy Framework
+
+The comedic rewards system introduces seven distinct dimensions of humor that are algorithmically evaluated and rewarded:
+
+1. **Timing Dimension (Chronos)** - Rewards perfectly timed posts, responses, and comedic delivery
+2. **Wordplay Dimension (Lexicon)** - Recognizes clever puns, double entendres, and linguistic creativity
+3. **Absurdity Dimension (Surreal)** - Celebrates nonsensical humor, absurdist comedy, and unconventional thinking
+4. **Relatability Dimension (Empathy)** - Values content that resonates with broad audiences through shared experiences
+5. **Satire Dimension (Critique)** - Honors sharp wit that illuminates societal truths through humorous critique
+6. **Physical Comedy Dimension (Slapstick)** - Encourages creative visual humor, memes, and expressive content
+7. **Meta-Humor Dimension (Self-Aware)** - Rewards content that humorously comments on humor itself or the platform dynamics
+
+Each dimension contributes to a user's **Comedy Coherence Score (CCS)**, which integrates with the existing QFS token economy. Users earn specialized **COMEDY tokens** alongside traditional FLX rewards for high-scoring content in these dimensions.
+
+#### Implementation Roadmap
+
+**Phase 1 (QFS V13.7) - Foundation:**
+- Develop Comedy Detection Engine using advanced NLP models
+- Integrate CCS scoring with existing coherence metrics
+- Launch COMEDY token alongside FLX with a 1:1000 ratio
+- Create Comedy Leaderboards and Achievement Badges
+
+**Phase 2 (QFS V13.8) - Expansion:**
+- Introduce Multi-Dimensional Comedy Challenges
+- Implement Peer Comedy Rating System with Sybil resistance
+- Launch Comedy Quests and Community Joke-offs
+- Add Comedy-Based Governance Participation Incentives
+
+**Phase 3 (QFS V13.9) - Ecosystem:**
+- Enable Comedy-Based NFT Creation and Trading
+- Integrate with Virtual Reality Comedy Spaces
+- Launch Cross-Platform Comedy Content Sharing
+- Establish Comedy Creator Grant Programs
+
+#### Economic Impact
+
+The 7-dimensional comedic rewards system is designed to:
+- Increase user engagement by 40% through entertainment value
+- Reduce platform toxicity by promoting positive humor over negativity
+- Create new revenue streams through Comedy Premium Content
+- Foster stronger community bonds through shared laughter
+- Establish ATLAS as the premier destination for creative comedic expression
+
+This innovative approach positions ATLAS at the forefront of social platform evolution, proving that humor can be both economically rewarding and socially beneficial.
+
 **See:**
-- [ROADMAP-V13.5-REMEDIATION.md](ROADMAP-V13.5-REMEDIATION.md) - Integration timeline
-- [docs/qfs-v13.5-dashboard.html](docs/qfs-v13.5-dashboard.html) - Real-time progress
-- [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Current compliance status
+
+- [ROADMAP-V13.5-REMEDIATION.md](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md) - Integration timeline
+- [docs/qfs-v13.5-dashboard.html](v13/legacy_root/docs/qfs-v13.5-dashboard.html) - Real-time progress
+- [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Current compliance status
 
 ---
-
 ## Overview
 
 **QFS V13** is designed to be a fully deterministic, post-quantum secure financial system implementing the Five-Token Harmonic System (CHR, FLX, ΨSync, ATR, RES). This repository contains:
@@ -589,6 +685,7 @@ QFS operates as a **deterministic engine on top of AEGIS**, using its API as the
 ### Project Vision
 
 To create a quantum-resistant, deterministic financial system with:
+
 - Zero-simulation compliance (no floats, random, or time-based operations)
 - Post-quantum cryptographic security (Dilithium-5, Kyber-1024)
 - Complete auditability and forensic traceability
@@ -598,6 +695,7 @@ To create a quantum-resistant, deterministic financial system with:
 ### Current Reality (Verified)
 
 **Phase 1 Components (Current Status):**
+
 - BigNum128 (1.1): 100% tests passing, stress tested, IMPLEMENTED ✅
 - CertifiedMath (1.2): 100% tests passing, 42 ProofVectors validated, IMPLEMENTED ✅
 - DeterministicTime (1.3): 100% tests passing, replay verified, CIR-302 tested ✅
@@ -605,6 +703,7 @@ To create a quantum-resistant, deterministic financial system with:
 - CIR302 Handler: Implementation ready, tests pending ⏸️
 
 **Phase 1 Evidence Generated:**
+
 - `bignum128_stress_summary.json` - 24 tests, overflow validation ✅
 - `certified_math_proofvectors.json` - 26 ProofVectors, error bounds verified ✅
 - `time_replay_verification.json` - 5-run replay consistency proof ✅
@@ -612,6 +711,7 @@ To create a quantum-resistant, deterministic financial system with:
 - `PQC_INTEGRATION.md` - External dependency blocker documentation ✅
 
 **Phase 2+ (Planned):**
+
 - HSM/KMS key management infrastructure (Days 61-120)
 - Supply-chain security (SBOM, reproducible builds) (Days 61-120)
 - Economic threat model and attack simulations (Days 121-240)
@@ -619,7 +719,7 @@ To create a quantum-resistant, deterministic financial system with:
 - Multi-node replication testing (Days 121-240)
 - Advanced testing infrastructure (Days 241-300)
 
-**See:** [STATE-GAP-MATRIX.md](STATE-GAP-MATRIX.md) for detailed breakdown of all 89 requirements.
+**See:** [STATE-GAP-MATRIX.md](v13/docs/roadmaps/STATE-GAP-MATRIX.md) for detailed breakdown of all 89 requirements.
 
 ## Repository Structure
 
@@ -690,7 +790,16 @@ QFS_V13/
 ├── evidence/                # Audit evidence and verification data
 ├── .github/workflows/
 │   ├── ci_pipeline.yml
-│   └── qfs_v135_audit.yml   # QFS V13.5 audit pipeline
+│   └── qfs_v135_audit.yml   # QFS V13
+
+**Note:** The codebase has been reorganized. All source code, tests, and documentation are now located in the `v13/` directory.
+
+- Source: `v13/`
+- Tests: `v13/tests/`
+- Docs: `v13/docs/`
+
+See `v13/docs/INTERNAL_REPO_LAYOUT_V13.md` for details.
+.5 audit pipeline
 │
 └── Dockerfile
 ```
@@ -719,16 +828,17 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Objective:** Establish verified baseline without code changes
 
 **Completed:**
-- ✅ Comprehensive audit report generated ([QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json))
-- ✅ Gap analysis across all 89 requirements ([STATE-GAP-MATRIX.md](STATE-GAP-MATRIX.md))
-- ✅ 365-day remediation roadmap ([ROADMAP-V13.5-REMEDIATION.md](ROADMAP-V13.5-REMEDIATION.md))
-- ✅ Task tracking system ([TASKS-V13.5.md](TASKS-V13.5.md))
+
+- ✅ Comprehensive audit report generated ([QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json))
+- ✅ Gap analysis across all 89 requirements ([STATE-GAP-MATRIX.md](v13/docs/roadmaps/STATE-GAP-MATRIX.md))
+- ✅ 365-day remediation roadmap ([ROADMAP-V13.5-REMEDIATION.md](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md))
+- ✅ Task tracking system ([TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md))
 - ✅ Evidence directory structure created
 - ✅ Baseline commit frozen (`ab85c4f92535d685e801a49ca49713930caca32b`)
 - ✅ Test suite executed (37 import errors documented)
 - ✅ Core file SHA3-512 hashes computed (9 components)
 
-**Evidence:** See [evidence/baseline/](evidence/baseline/) for all baseline artifacts
+**Evidence:** See [evidence/baseline/](v13/legacy_root/evidence/baseline/) for all baseline artifacts
 
 #### 🔵 Phase 1: Core Determinism Completion (IN PROGRESS)
 
@@ -739,7 +849,7 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Deliverables:**
 
 1. **BigNum128 Stress Testing** (Days 8-15)
-   - 🟡 Property-based fuzzing test created ([tests/property/test_bignum128_fuzz.py](tests/property/test_bignum128_fuzz.py))
+   - 🟡 Property-based fuzzing test created ([tests/property/test_bignum128_fuzz.py](v13/tests/property/test_bignum128_fuzz.py))
    - ⏳ Overflow/underflow stress scenarios
    - ⏳ Evidence: `evidence/phase1/bignum128_stress_summary.json`
 
@@ -767,17 +877,19 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Duration:** Days 61-120 (60 days)
 
 **Critical Blockers to Clear:**
+
 1. HSM/KMS integration for PQC keys
 2. SBOM generation pipeline (CycloneDX/SPDX)
 3. Reproducible builds with deterministic Docker
 
 **Deliverables:**
+
 - HSM/KMS integration code and tests
 - SBOM generation scripts with PQC signing
 - Reproducible build infrastructure
 - Key rotation procedures and rehearsal logs
 
-**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-2](ROADMAP-V13.5-REMEDIATION.md#phase-2-operational-security--supply-chain) for details
+**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-2](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#phase-2-operational-security--supply-chain) for details
 
 #### ⏳ Phase 3: Threat Model, Oracles, Replication (PLANNED)
 
@@ -786,12 +898,13 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Duration:** Days 121-240 (120 days)
 
 **Critical Blockers to Clear:**
+
 1. Economic threat model with attack simulations
 2. Oracle attestation framework (UtilityOracle, QPU)
 3. Multi-node deterministic replication
 4. Runtime invariants enforcement
 
-**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-3](ROADMAP-V13.5-REMEDIATION.md#phase-3-threat-model-oracles-replication-invariants) for details
+**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-3](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#phase-3-threat-model-oracles-replication-invariants) for details
 
 #### ⏳ Phase 4: Advanced Testing & Governance (PLANNED)
 
@@ -800,13 +913,14 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Duration:** Days 241-300 (60 days)
 
 **Deliverables:**
+
 - Fuzzing infrastructure for all parsers
 - Static analysis pipeline (Bandit, Mypy, Pylint)
 - DoS and resource exhaustion tests
 - Upgrade governance and rollback procedures
 - Operational runbooks
 
-**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-4](ROADMAP-V13.5-REMEDIATION.md#phase-4-advanced-testing-static-analysis-governance) for details
+**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-4](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#phase-4-advanced-testing-static-analysis-governance) for details
 
 #### ⏳ Phase 5: Final Consolidation & Re-Audit (PLANNED)
 
@@ -815,6 +929,7 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 **Duration:** Days 301-365 (65 days)
 
 **Deliverables:**
+
 - Complete integration test matrix
 - Chaos and resilience testing
 - Long-horizon economic simulations
@@ -824,19 +939,20 @@ QFS V13 is undergoing systematic remediation across **6 phases** over **365 days
 
 **Target:** 100% compliance (89/89 requirements passing)
 
-**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-5](ROADMAP-V13.5-REMEDIATION.md#phase-5-final-consolidation--re-audit) for details
+**See:** [ROADMAP-V13.5-REMEDIATION.md#phase-5](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#phase-5-final-consolidation--re-audit) for details
 
 ---
 
 ### Progress Tracking
 
 **Real-time Progress:**
-- 📋 **Task Tracker:** [TASKS-V13.5.md](TASKS-V13.5.md) - Human-readable progress
-- 📊 **Evidence Index:** [ROADMAP-V13.5-REMEDIATION.md#evidence-index](ROADMAP-V13.5-REMEDIATION.md#evidence-index) - All artifacts by phase
-- 🔍 **Audit Report:** [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Detailed findings
+
+- 📋 **Task Tracker:** [TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md) - Human-readable progress
+- 📊 **Evidence Index:** [ROADMAP-V13.5-REMEDIATION.md#evidence-index](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#evidence-index) - All artifacts by phase
+- 🔍 **Audit Report:** [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Detailed findings
 
 **Critical Blockers (15 total):**
-See [TASKS-V13.5.md#critical-blockers](TASKS-V13.5.md#critical-blockers) for the complete list with task IDs and required evidence.
+See [TASKS-V13.5.md#critical-blockers](v13/docs/roadmaps/TASKS-V13.5.md#critical-blockers) for the complete list with task IDs and required evidence.
 
 ---
 
@@ -1007,6 +1123,7 @@ See [TASKS-V13.5.md#critical-blockers](TASKS-V13.5.md#critical-blockers) for the
    - Design: Immediate hard halt on critical failures, no quarantine/retry
 
 **Phase 1 Summary:**
+
 - Progress: 60% (3/5 components IMPLEMENTED)
 - Tests passing: 76/76 (100%)
 - Evidence artifacts: 4 generated, 1 blocker documented
@@ -1024,12 +1141,14 @@ See [TASKS-V13.5.md#critical-blockers](TASKS-V13.5.md#critical-blockers) for the
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone <repository-url>
    cd QFS/V13
    ```
 
 2. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -1044,7 +1163,7 @@ python -m pytest tests/ -v
 # Result: 37 import errors (expected - part of Phase 1 remediation)
 ```
 
-**Evidence:** See [evidence/baseline/baseline_test_results.json](evidence/baseline/baseline_test_results.json)
+**Evidence:** See [evidence/baseline/baseline_test_results.json](v13/legacy_root/evidence/baseline/baseline_test_results.json)
 
 **Fix Status:** Test infrastructure remediation is part of Phase 1 (Days 8-60)
 
@@ -1082,12 +1201,14 @@ python scripts/zero-sim-ast.py
 ### Understanding the Codebase
 
 **Start Here:**
-1. [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Understand current state
-2. [STATE-GAP-MATRIX.md](STATE-GAP-MATRIX.md) - See all 89 requirements
-3. [ROADMAP-V13.5-REMEDIATION.md](ROADMAP-V13.5-REMEDIATION.md) - Understand remediation plan
-4. [TASKS-V13.5.md](TASKS-V13.5.md) - Track progress
+
+1. [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Understand current state
+2. [STATE-GAP-MATRIX.md](v13/docs/roadmaps/STATE-GAP-MATRIX.md) - See all 89 requirements
+3. [ROADMAP-V13.5-REMEDIATION.md](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md) - Understand remediation plan
+4. [TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md) - Track progress
 
 **Core Implementation:**
+
 - `src/libs/BigNum128.py` - Fixed-point arithmetic
 - `src/libs/CertifiedMath.py` - Deterministic math engine
 - `src/libs/PQC.py` - Post-quantum cryptography
@@ -1099,22 +1220,25 @@ python scripts/zero-sim-ast.py
 ### Remediation Documentation (Current Focus)
 
 **Primary Documents:**
-- [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Comprehensive audit (89 requirements)
-- [STATE-GAP-MATRIX.md](STATE-GAP-MATRIX.md) - Detailed gap analysis by phase
-- [ROADMAP-V13.5-REMEDIATION.md](ROADMAP-V13.5-REMEDIATION.md) - 365-day remediation roadmap with Evidence Index
-- [TASKS-V13.5.md](TASKS-V13.5.md) - Task tracker with progress metrics
-- [PHASE0_FINAL_COMPLETION.md](PHASE0_FINAL_COMPLETION.md) - Phase 0 completion report
-- [DOCUMENTATION_ALIGNMENT_VERIFICATION.md](DOCUMENTATION_ALIGNMENT_VERIFICATION.md) - Meta-evidence of alignment
+
+- [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json) - Comprehensive audit (89 requirements)
+- [STATE-GAP-MATRIX.md](v13/docs/roadmaps/STATE-GAP-MATRIX.md) - Detailed gap analysis by phase
+- [ROADMAP-V13.5-REMEDIATION.md](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md) - 365-day remediation roadmap with Evidence Index
+- [TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md) - Task tracker with progress metrics
+- [PHASE0_FINAL_COMPLETION.md](v13/legacy_root/PHASE0_FINAL_COMPLETION.md) - Phase 0 completion report
+- [DOCUMENTATION_ALIGNMENT_VERIFICATION.md](v13/legacy_root/DOCUMENTATION_ALIGNMENT_VERIFICATION.md) - Meta-evidence of alignment
 
 ### Technical Documentation
 
 **Compliance:**
-- [docs/compliance/ZERO_SIMULATION_REPORT.md](docs/compliance/ZERO_SIMULATION_REPORT.md) - Zero-simulation compliance analysis
-- [evidence/baseline/baseline_test_results.json](evidence/baseline/baseline_test_results.json) - Baseline test execution results
-- [evidence/baseline/baseline_state_manifest.json](evidence/baseline/baseline_state_manifest.json) - Core component SHA3-512 hashes
+
+- [docs/compliance/ZERO_SIMULATION_REPORT.md](v13/docs/compliance/ZERO_SIMULATION_REPORT.md) - Zero-simulation compliance analysis
+- [evidence/baseline/baseline_test_results.json](v13/legacy_root/evidence/baseline/baseline_test_results.json) - Baseline test execution results
+- [evidence/baseline/baseline_state_manifest.json](v13/legacy_root/evidence/baseline/baseline_state_manifest.json) - Core component SHA3-512 hashes
 
 **Architecture & Plans:**
-- [docs/qfs_v13_plans/MASTER_PLAN_V13.md](docs/qfs_v13_plans/MASTER_PLAN_V13.md) - Original master plan
+
+- [docs/qfs_v13_plans/MASTER_PLAN_V13.md](v13/docs/qfs_v13_plans/MASTER_PLAN_V13.md) - Original master plan
 - Component-specific documentation in source files
 
 ### Evidence Artifacts
@@ -1136,7 +1260,7 @@ evidence/
 └── final/              # Final certification package (planned)
 ```
 
-**See:** [ROADMAP-V13.5-REMEDIATION.md#evidence-index](ROADMAP-V13.5-REMEDIATION.md#evidence-index) for complete artifact inventory.
+**See:** [ROADMAP-V13.5-REMEDIATION.md#evidence-index](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#evidence-index) for complete artifact inventory.
 
 ## 🤝 Contributing
 
@@ -1147,13 +1271,13 @@ This project is in **active remediation** (Phase 1 of 5). Contributions are welc
 ### How to Contribute
 
 1. **Understand the current state:**
-   - Read [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json)
-   - Review [STATE-GAP-MATRIX.md](STATE-GAP-MATRIX.md)
-   - Check [TASKS-V13.5.md](TASKS-V13.5.md) for current priorities
+   - Read [QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json](v13/legacy_root/QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+   - Review [STATE-GAP-MATRIX.md](v13/docs/roadmaps/STATE-GAP-MATRIX.md)
+   - Check [TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md) for current priorities
 
 2. **Pick a task from the current phase:**
-   - Phase 1 tasks are in [ROADMAP-V13.5-REMEDIATION.md#phase-1](ROADMAP-V13.5-REMEDIATION.md#phase-1-core-determinism-completion)
-   - Check task status in [TASKS-V13.5.md](TASKS-V13.5.md)
+   - Phase 1 tasks are in [ROADMAP-V13.5-REMEDIATION.md#phase-1](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#phase-1-core-determinism-completion)
+   - Check task status in [TASKS-V13.5.md](v13/docs/roadmaps/TASKS-V13.5.md)
 
 3. **Follow evidence-first principle:**
    - All work must generate evidence artifacts
@@ -1176,16 +1300,16 @@ This project is in **active remediation** (Phase 1 of 5). Contributions are welc
 ### Priority Areas for Contribution
 
 **Phase 1 (Current):**
+
 - Fix test infrastructure import paths
 - Create overflow/underflow stress scenarios for BigNum128
 - Define CertifiedMath ProofVectors
 - Document PQC key lifecycle and boundaries
 
-**See:** [TASKS-V13.5.md#phase-1-core-determinism-completion](TASKS-V13.5.md#phase-1-core-determinism-completion) for complete list.
+**See:** [TASKS-V13.5.md#phase-1-core-determinism-completion](v13/docs/roadmaps/TASKS-V13.5.md#phase-1-core-determinism-completion) for complete list.
 
 ---
 
 ## License
 
 MIT License
-

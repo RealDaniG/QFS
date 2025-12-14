@@ -1,0 +1,172 @@
+# Storage Alerting Configuration for QFS V13.5
+# This configuration defines alert rules for the decentralized storage system
+# Compatible with Prometheus + Alertmanager or equivalent monitoring stack
+
+# Alert Rules for Storage System
+groups:
+- name: storage-alerts
+  rules:
+  
+  # Storage Error Alerts
+  - alert: StorageWriteFailureRateHigh
+    expr: rate(storage_write_failures_total[5m]) > 0.05
+    for: 2m
+    labels:
+      severity: warning
+      owner: SRE/Infra
+    annotations:
+      summary: "High storage write failure rate detected"
+      description: "Storage write failure rate has exceeded 5% for the last 2 minutes. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageWriteFailureRateCritical
+    expr: rate(storage_write_failures_total[5m]) > 0.2
+    for: 1m
+    labels:
+      severity: critical
+      owner: SRE/Infra
+    annotations:
+      summary: "Critical storage write failure rate detected"
+      description: "Storage write failure rate has exceeded 20% for the last 1 minute. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageReadFailureRateHigh
+    expr: rate(storage_read_failures_total[5m]) > 0.05
+    for: 2m
+    labels:
+      severity: warning
+      owner: SRE/Infra
+    annotations:
+      summary: "High storage read failure rate detected"
+      description: "Storage read failure rate has exceeded 5% for the last 2 minutes. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageReadFailureRateCritical
+    expr: rate(storage_read_failures_total[5m]) > 0.2
+    for: 1m
+    labels:
+      severity: critical
+      owner: SRE/Infra
+    annotations:
+      summary: "Critical storage read failure rate detected"
+      description: "Storage read failure rate has exceeded 20% for the last 1 minute. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageShardRepairFailuresHigh
+    expr: rate(storage_shard_repair_failures_total[10m]) > 0.1
+    for: 5m
+    labels:
+      severity: warning
+      owner: SRE/Infra
+    annotations:
+      summary: "High shard repair failure rate detected"
+      description: "Storage shard repair failure rate has exceeded 10% for the last 5 minutes. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  # Proof Failure Alerts
+  - alert: StorageProofFailureRateHigh
+    expr: rate(storage_proof_failures_total[5m]) > 0.01
+    for: 2m
+    labels:
+      severity: warning
+      owner: Backend
+    annotations:
+      summary: "High storage proof failure rate detected"
+      description: "Storage proof failure rate has exceeded 1% for the last 2 minutes. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageProofFailureRateCritical
+    expr: rate(storage_proof_failures_total[5m]) > 0.05
+    for: 1m
+    labels:
+      severity: critical
+      owner: Backend
+    annotations:
+      summary: "Critical storage proof failure rate detected"
+      description: "Storage proof failure rate has exceeded 5% for the last 1 minute. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  # Economic Violation Alerts
+  - alert: EconomicConservationViolation
+    expr: storage_atr_fees_collected < storage_nod_rewards_distributed
+    for: 1m
+    labels:
+      severity: critical
+      owner: Backend
+    annotations:
+      summary: "Economic conservation violation detected"
+      description: "ATR fees collected ({{ $value }}) is less than NOD rewards distributed. Conservation principle violated!"
+      runbook: "docs/runbooks/dual_write_rollback.md"
+
+  - alert: EconomicConservationBufferLow
+    expr: (storage_atr_fees_collected - storage_nod_rewards_distributed) < storage_economic_buffer_threshold
+    for: 5m
+    labels:
+      severity: warning
+      owner: Backend
+    annotations:
+      summary: "Economic conservation buffer running low"
+      description: "Economic conservation buffer is below threshold. ATR fees: {{ $value }}, NOD rewards: {{ $labels.storage_nod_rewards_distributed }}"
+      runbook: "docs/runbooks/dual_write_rollback.md"
+
+  # Node Health Alerts
+  - alert: StorageNodeCountLow
+    expr: storage_active_nodes < storage_minimum_required_nodes
+    for: 1m
+    labels:
+      severity: critical
+      owner: SRE/Infra
+    annotations:
+      summary: "Insufficient active storage nodes"
+      description: "Active storage nodes ({{ $value }}) below minimum required ({{ $labels.storage_minimum_required_nodes }})"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  - alert: StorageNodeVerificationFailureRateHigh
+    expr: rate(storage_node_verification_failures_total[10m]) > 0.1
+    for: 5m
+    labels:
+      severity: warning
+      owner: SRE/Infra
+    annotations:
+      summary: "High node verification failure rate"
+      description: "Node verification failure rate has exceeded 10% for the last 5 minutes. Current rate: {{ $value }}%"
+      runbook: "docs/runbooks/storage_node_failure_recovery.md"
+
+  # Dual-Write Consistency Alerts
+  - alert: DualWriteInconsistencyDetected
+    expr: storage_dual_write_inconsistencies > 0
+    for: 1m
+    labels:
+      severity: critical
+      owner: Ops
+    annotations:
+      summary: "Dual-write inconsistency detected"
+      description: "Inconsistencies detected between PostgreSQL and StorageEngine. Count: {{ $value }}"
+      runbook: "docs/runbooks/dual_write_rollback.md"
+
+  # Replay Capability Alerts
+  - alert: StorageReplayCapabilityDegraded
+    expr: storage_replay_success_rate < 0.95
+    for: 15m
+    labels:
+      severity: warning
+      owner: Backend
+    annotations:
+      summary: "Storage replay capability degraded"
+      description: "Storage replay success rate has fallen below 95%. Current rate: {{ $value }}"
+      runbook: "docs/runbooks/storage_replay_from_logs.md"
+
+# Metric Naming Conventions (Placeholders - to be implemented in StorageEngine metrics export)
+#
+# storage_write_failures_total - Counter of storage write failures
+# storage_read_failures_total - Counter of storage read failures
+# storage_shard_repair_failures_total - Counter of shard repair failures
+# storage_proof_failures_total - Counter of proof verification failures
+# storage_atr_fees_collected - Gauge of total ATR fees collected
+# storage_nod_rewards_distributed - Gauge of total NOD rewards distributed
+# storage_economic_buffer_threshold - Gauge of minimum economic buffer threshold
+# storage_active_nodes - Gauge of currently active storage nodes
+# storage_minimum_required_nodes - Gauge of minimum required active nodes
+# storage_node_verification_failures_total - Counter of node verification failures
+# storage_dual_write_inconsistencies - Gauge of current dual-write inconsistencies
+# storage_replay_success_rate - Gauge of storage replay success rate (0.0-1.0)

@@ -1,3 +1,0 @@
-"""
-ATLAS API Gateway Package
-"""

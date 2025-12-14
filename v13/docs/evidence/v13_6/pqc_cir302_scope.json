@@ -1,0 +1,84 @@
+{
+  "pqc_modules": [
+    {
+      "file": "v13/libs/PQC.py",
+      "public_symbols": ["generate_keypair", "sign_data", "verify_signature", "LogContext"],
+      "has_tests": true,
+      "current_coverage": "Partial - Existing tests cover basic functionality but not 100% line/branch coverage"
+    },
+    {
+      "file": "v13/libs/pqc/PQC_Core.py",
+      "public_symbols": ["Dilithium5Impl", "PQC", "KeyPair", "ValidationResult"],
+      "has_tests": false,
+      "current_coverage": "0% - No dedicated tests"
+    },
+    {
+      "file": "v13/libs/interfaces/pqc_interface.py",
+      "public_symbols": ["PQCInterface", "keygen", "sign", "verify"],
+      "has_tests": false,
+      "current_coverage": "0% - Interface definition only"
+    },
+    {
+      "file": "v13/libs/adapters/dilithium5_adapter.py",
+      "public_symbols": ["Dilithium5Adapter"],
+      "has_tests": false,
+      "current_coverage": "0% - No dedicated tests"
+    },
+    {
+      "file": "v13/libs/adapters/mock_pqc_adapter.py",
+      "public_symbols": ["MockPQCAdapter"],
+      "has_tests": false,
+      "current_coverage": "0% - No dedicated tests"
+    },
+    {
+      "file": "v13/libs/adapters/pqc_adapter_factory.py",
+      "public_symbols": ["PQCAdapterFactory", "create_adapter", "get_backend_info"],
+      "has_tests": true,
+      "current_coverage": "Partial - Covered by TestPQCAdapters.py and TestPQCStandardization.py"
+    }
+  ],
+  "cir302_handler": {
+    "file": "v13/handlers/CIR302_Handler.py",
+    "public_symbols": ["CIR302_Handler", "handle_violation", "handle_guard_violation", "generate_finality_seal", "generate_guard_finality_seal"],
+    "has_tests": true,
+    "current_coverage": "Partial - Existing tests cover basic functionality but not all error code paths"
+  },
+  "references": {
+    "cir_302_codes": [
+      "ECON_BOUND_VIOLATION",
+      "ECON_CHR_MAX_REWARD_EXCEEDED",
+      "ECON_CHR_DAILY_EMISSION_CAP_EXCEEDED",
+      "ECON_CHR_SATURATION_THRESHOLD_EXCEEDED",
+      "ECON_FLX_FRACTION_OUT_OF_BOUNDS",
+      "ECON_FLX_PER_USER_CAP_EXCEEDED",
+      "ECON_FLX_SATURATION_THRESHOLD_EXCEEDED",
+      "ECON_RES_ALLOCATION_OUT_OF_BOUNDS",
+      "ECON_NOD_ALLOCATION_FRACTION_VIOLATION",
+      "ECON_NOD_ISSUANCE_CAP_EXCEEDED",
+      "ECON_NOD_NODE_DOMINANCE_VIOLATION",
+      "ECON_NOD_VOTING_POWER_VIOLATION",
+      "ECON_PER_ADDRESS_CAP",
+      "ECON_DUST_THRESHOLD",
+      "ECON_IMMUTABLE_CONSTANT_MUTATION",
+      "INVARIANT_VIOLATION_NOD_TRANSFER",
+      "NOD_INVARIANT_I1_VIOLATED",
+      "NOD_INVARIANT_I2_VIOLATED",
+      "NOD_INVARIANT_I3_VIOLATED",
+      "NOD_INVARIANT_I4_VIOLATED",
+      "NODE_NOT_IN_REGISTRY",
+      "NODE_INSUFFICIENT_UPTIME",
+      "NODE_TELEMETRY_HASH_MISMATCH",
+      "NODE_CRYPTOGRAPHIC_IDENTITY_INVALID",
+      "NODE_HEALTH_CHECK_FAILED",
+      "AEGIS_OFFLINE",
+      "AEGIS_SNAPSHOT_UNAVAILABLE",
+      "AEGIS_SCHEMA_VERSION_MISMATCH"
+    ],
+    "pqc_references": [
+      "PQC.py",
+      "PQC_Core.py",
+      "Dilithium5Impl",
+      "verify_pqc_signature"
+    ]
+  }
+}

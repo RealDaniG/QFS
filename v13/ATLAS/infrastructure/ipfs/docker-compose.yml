@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: atlas-ipfs
+    ports:
+      - "4001:4001"     # P2P network
+      - "5001:5001"     # API server
+      - "8080:8080"     # Gateway
+    volumes:
+      - ./data/ipfs:/data/ipfs
+      - ./config/ipfs:/config
+    environment:
+      - IPFS_PROFILE=server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - atlas-network
+
+  ipfs-cluster:
+    image: ipfs/ipfs-cluster:latest
+    container_name: atlas-ipfs-cluster
+    depends_on:
+      - ipfs
+    environment:
+      - CLUSTER_PEERNAME=atlas-cluster
+      - CLUSTER_SECRET=${CLUSTER_SECRET:-default-secret-change-me}
+      - CLUSTER_IPFSHTTP_NODEMULTIADDRESS=/dns4/ipfs/tcp/5001
+      - CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS=/ip4/0.0.0.0/tcp/9094
+    ports:
+      - "9094:9094"     # REST API
+      - "9096:9096"     # Cluster swarm
+    volumes:
+      - ./data/ipfs-cluster:/data/ipfs-cluster
+    restart: unless-stopped
+    networks:
+      - atlas-network
+
+networks:
+  atlas-network:
+    driver: bridge

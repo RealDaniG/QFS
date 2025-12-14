@@ -1,0 +1,425 @@
+// ATLAS x QFS Social Dashboard Schema
+// Quantum Financial System with Social Media Layer
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Users with reputation and wallet integration
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  username          String   @unique
+  name              String?
+  avatar            String?
+  bio               String?
+  reputationScore   Float    @default(0.0)
+  coherenceScore    Float    @default(0.0)
+  role              UserRole @default(PUBLIC_USER)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  posts             Post[]
+  comments          Comment[]
+  likes             Like[]
+  reposts           Repost[]
+  sentMessages      Message[]         @relation("SentMessages")
+  receivedMessages  Message[]         @relation("ReceivedMessages")
+  communities       CommunityMember[]
+  wallets           Wallet[]
+  reputationHistory ReputationHistory[]
+  ledgerEvents      LedgerEvent[]
+  notifications     Notification[]
+  moderationActions ModerationAction[] @relation("ModerationActions")
+  moderationTargets ModerationAction[] @relation("ModerationTargets")
+  appeals           Appeal[]
+  simulations       Simulation[]
+}
+
+// Wallet and token management
+model Wallet {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  flxBalance  Float    @default(0.0)
+  otherTokens String   @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+}
+
+// Transaction records for transparency
+model Transaction {
+  id          String   @id @default(cuid())
+  walletId    String
+  type        TransactionType
+  amount      Float
+  token       String   @default("FLX")
+  description String?
+  metadata    String   @default("{}")
+  createdAt   DateTime @default(now())
+
+  wallet      Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+}
+
+// Content posts with QFS integration
+model Post {
+  id              String   @id @default(cuid())
+  authorId        String
+  content         String
+  media           String   @default("[]")
+  tags            String   @default("")
+  visibility      PostVisibility @default(PUBLIC)
+  coherenceScore  Float    @default(0.0)
+  rewardPotential Float    @default(0.0)
+  status          PostStatus @default(DRAFT)
+  scheduledFor    DateTime?
+  publishedAt     DateTime?
+  communityId     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  author          User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  community       Community?       @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+  likes           Like[]
+  reposts         Repost[]
+  ledgerEvents    LedgerEvent[]
+  appliedGuards   AppliedGuard[]
+  economicData    EconomicData[]
+  moderationLog   ModerationAction[]
+}
+
+// Comments with transparency
+model Comment {
+  id             String   @id @default(cuid())
+  postId         String
+  authorId       String
+  content        String
+  coherenceScore Float   @default(0.0)
+  rewardPotential Float  @default(0.0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author         User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes          Like[]
+  ledgerEvents   LedgerEvent[]
+}
+
+// Social interactions
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String?
+  commentId String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+}
+
+model Repost {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  content   String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+// Communities/Spaces
+model Community {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  avatar      String?
+  rules       String   @default("[]")
+  isPrivate   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     CommunityMember[]
+  posts       Post[]
+  messages    Message[]
+  moderationLog ModerationAction[]
+}
+
+model CommunityMember {
+  id          String           @id @default(cuid())
+  communityId String
+  userId      String
+  role        CommunityRole    @default(MEMBER)
+  joinedAt    DateTime         @default(now())
+
+  community   Community        @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Messaging system
+model Message {
+  id          String           @id @default(cuid())
+  senderId    String
+  receiverId  String?
+  communityId String?
+  content     String
+  media       String           @default("[]")
+  messageType MessageType      @default(DIRECT)
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  sender      User             @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User?            @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  community   Community?       @relation(fields: [communityId], references: [id], onDelete: Cascade)
+}
+
+// Event Ledger for full transparency
+model LedgerEvent {
+  id          String       @id @default(cuid())
+  userId      String?
+  objectId    String?
+  objectType  ObjectType?
+  eventType   EventType
+  moduleName  String
+  outcome     EventOutcome
+  inputs      String       @default("{}")
+  guards      String       @default("{}")
+  metadata    String       @default("{}")
+  timestamp   DateTime     @default(now())
+
+  user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post        Post?        @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  comment     Comment?     @relation(fields: [objectId], references: [id], onDelete: Cascade)
+}
+
+// Guard system for transparency
+model AppliedGuard {
+  id          String   @id @default(cuid())
+  postId      String
+  guardType   GuardType
+  result      GuardResult
+  parameters  String   @default("{}")
+  explanation String?
+  createdAt   DateTime @default(now())
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+// Economic data for posts
+model EconomicData {
+  id          String   @id @default(cuid())
+  postId      String   @unique
+  rewards     String   @default("{}")
+  metrics     String   @default("{}")
+  projections String   @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+// Reputation tracking
+model ReputationHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  change      Float
+  reason      String
+  source      String
+  metadata    String   @default("{}")
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Notifications
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  type        NotificationType
+  title       String
+  content     String
+  isRead      Boolean          @default(false)
+  metadata    String           @default("{}")
+  createdAt   DateTime         @default(now())
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Safety and moderation
+model ModerationAction {
+  id          String           @id @default(cuid())
+  moderatorId String
+  targetUserId String?
+  postId      String?
+  communityId String?
+  action      ModerationActionType
+  reason      String
+  evidence    String           @default("{}")
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+
+  moderator   User             @relation("ModerationActions", fields: [moderatorId], references: [id], onDelete: Cascade)
+  targetUser  User?            @relation("ModerationTargets", fields: [targetUserId], references: [id], onDelete: Cascade)
+  post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  community   Community?       @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  appeals     Appeal[]
+}
+
+// Appeal system
+model Appeal {
+  id               String   @id @default(cuid())
+  userId           String
+  moderationActionId String
+  reason           String
+  status           AppealStatus @default(PENDING)
+  response         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moderationAction ModerationAction @relation(fields: [moderationActionId], references: [id], onDelete: Cascade)
+}
+
+// Simulation system
+model Simulation {
+  id          String   @id @default(cuid())
+  userId      String
+  type        SimulationType
+  parameters  String   @default("{}")
+  result      String   @default("{}")
+  isBinding   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Enums for type safety
+enum UserRole {
+  PUBLIC_USER
+  AUDITOR
+  OPERATOR
+  ADMIN
+}
+
+enum PostVisibility {
+  PUBLIC
+  PRIVATE
+  COMMUNITY
+  UNLISTED
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+  MODERATED
+}
+
+enum TransactionType {
+  REWARD
+  TRANSFER
+  STAKE
+  UNSTAKE
+  PENALTY
+  BONUS
+}
+
+enum ObjectType {
+  POST
+  COMMENT
+  USER
+  COMMUNITY
+  MESSAGE
+}
+
+enum EventType {
+  CREATE
+  UPDATE
+  DELETE
+  INTERACT
+  MODERATE
+  REWARD
+  PUNISH
+}
+
+enum EventOutcome {
+  SUCCESS
+  FAILURE
+  PARTIAL
+  PENDING
+}
+
+enum GuardType {
+  ECONOMICS_GUARD
+  AEGIS_GUARD
+  CONTENT_GUARD
+  BEHAVIOR_GUARD
+  REPUTATION_GUARD
+}
+
+enum GuardResult {
+  PASS
+  FAIL
+  WARNING
+  MANUAL_REVIEW
+}
+
+enum MessageType {
+  DIRECT
+  GROUP
+  COMMUNITY
+  SYSTEM
+}
+
+enum CommunityRole {
+  MEMBER
+  MODERATOR
+  ADMIN
+  OWNER
+}
+
+enum NotificationType {
+  SOCIAL
+  ECONOMIC
+  GOVERNANCE
+  SYSTEM
+  SAFETY
+}
+
+enum ModerationActionType {
+  WARNING
+  MUTE
+  SUSPEND
+  BAN
+  CONTENT_REMOVE
+  CONTENT_HIDE
+}
+
+enum AppealStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ESCALATED
+}
+
+enum SimulationType {
+  REWARD_PROJECTION
+  REPUTATION_IMPACT
+  CONTENT_PERFORMANCE
+  GOVERNANCE_CHANGE
+  ECONOMIC_SCENARIO
+}

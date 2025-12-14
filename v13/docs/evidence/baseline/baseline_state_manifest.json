@@ -1,0 +1,116 @@
+{
+  "baseline_metadata": {
+    "commit_hash": "ab85c4f92535d685e801a49ca49713930caca32b",
+    "baseline_date": "2025-12-11",
+    "qfs_version": "V13",
+    "target_standard": "V13.5 / V2.1",
+    "auditor": "QFS V13.5 Remediation & Verification Agent"
+  },
+  
+  "core_file_hashes": {
+    "note": "SHA3-512 hashes of all core deterministic components at baseline",
+    "computed_date": "2025-12-11",
+    "files": [
+      {
+        "path": "src/libs/BigNum128.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "186d55966a6e067e56822beb68a64c45799132f28b1b873c01813b7f03f22b275f91c5e91c3283b639ceb712d06cd27f9eeed787fb866e7d9d33a738bafd2b86",
+        "purpose": "128-bit fixed-point arithmetic"
+      },
+      {
+        "path": "src/libs/CertifiedMath.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "d632c3d00e62b894b583f04cdc4c4c8936120cee0212e721a0e902e6370c138def83f7b8ca7010bb1538173586be6fa057a4b7d3e9642a2b46af849dbdfe74fb",
+        "purpose": "Deterministic math engine with audit trails"
+      },
+      {
+        "path": "src/libs/PQC.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "dc9cc3dce5007d1d249b25a7c0dbc44f2b696280cffc30e0a82db0a9dbe2bbab359aa2664cd898fcb75c083f16ca735643a8decbd7152eb499e30879333393c5",
+        "purpose": "Post-quantum cryptography (Dilithium-5)"
+      },
+      {
+        "path": "src/core/TokenStateBundle.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "2a16b989797f53459bcd8f4547565d0ac7a12ace729421b72c08c7af82fd51231ac7bac2be8654a448b4dccb79adb09a7196fcfac2de3212d9ff39d3e001f3ef",
+        "purpose": "5-token state container"
+      },
+      {
+        "path": "src/core/DRV_Packet.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "6dabb92168930653e199a2644c62b38fab3d93542de00599fdfeea76db0680de32757b52aed737f93dad58f3fde8cebff9c2a1cc54f425b1963d060f468a2669",
+        "purpose": "Deterministic replayable validation packet"
+      },
+      {
+        "path": "src/core/HSMF.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "48224f9c6f4a73587b523c55bf4f162fde2d5d207689e647f7e2be18510a4252855ff0be0d06bfd394105701dc5b450435efb5bf16f7819e537a274e7fff3278",
+        "purpose": "Harmonic stability & action cost framework"
+      },
+      {
+        "path": "src/sdk/QFSV13SDK.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "c5f04d0d57cb7cd88c6400e248b26341e7fcbed000d3daaf4ee57cb9ff4717ab1dceaa0cf1641183cac3009ceb7a8d17a4d664168d6e4d33483d53826a839326",
+        "purpose": "SDK integration layer"
+      },
+      {
+        "path": "src/handlers/CIR302_Handler.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "06787d861b1235524bea8b26d99aa7671924159d9418a3c686884e08abb5d7c96cf18548ae6b37f707a08d3289024e3bfb457093b5490baef03a0aec83787c61",
+        "purpose": "Deterministic halt mechanism"
+      },
+      {
+        "path": "src/libs/DeterministicTime.py",
+        "hash_algorithm": "SHA3-512",
+        "hash": "bf5dfd46ccf6cd6ebe1785b6640ad0325f4da3d18447ca599060ee79722a7a214bc0fa65d3c41eefb10793d0cc143a32932fdc5ec9668a896babfd5a24a89950",
+        "purpose": "Deterministic time enforcement"
+      }
+    ]
+  },
+  
+  "current_test_status": {
+    "test_directories": [
+      "tests/unit/",
+      "tests/integration/",
+      "tests/deterministic/",
+      "tests/property/",
+      "tests/HSMF/",
+      "tests/pqc/",
+      "tests/drv_packet/"
+    ],
+    "test_execution_status": "Tests exist but full baseline run not yet executed",
+    "note": "Baseline test execution to be completed in Phase 0"
+  },
+  
+  "compliance_baseline": {
+    "total_requirements": 89,
+    "passing_requirements": 21,
+    "failing_requirements": 68,
+    "compliance_percentage": 24,
+    "critical_blockers": 15,
+    "high_priority_gaps": 22,
+    "medium_priority_gaps": 31
+  },
+  
+  "existing_evidence": {
+    "phase2": [
+      "deterministic_replay_log.json",
+      "pqc_bundle_signatures.json",
+      "state_convergence_log.json"
+    ],
+    "phase3": [
+      "chr_stress_test_results.json",
+      "coherence_adversarial_results.json",
+      "multi_shard_sync_test.json",
+      "psi_dynamics_verification.json"
+    ]
+  },
+  
+  "next_steps": [
+    "Execute full baseline test suite",
+    "Compute all core file hashes",
+    "Generate baseline test results JSON",
+    "Complete Phase 0 baseline report",
+    "Begin Phase 1 remediation"
+  ]
+}
