@@ -23,5 +23,11 @@
   "known_issues": [],
   "open_todos": [
     "Later: connect humor observatory metrics into the broader Signal/Value Observatories for governance."
-  ]
+  ],
+  "evidence_artifacts": {
+    "detailed_evidence_bundle": "evidence/humor/humor_slice_evidence.json",
+    "zero_simulation_compliance": "docs/ZERO_SIM_HUMOR_STATUS.md",
+    "api_schema_definition": "docs/HUMOR_EXPLANATION_SCHEMA.json",
+    "specification_document": "docs/QFS_V13_7_HUMOR_SIGNAL_ADDON.md"
+  }
 }

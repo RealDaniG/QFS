@@ -17,7 +17,8 @@
       "test_coverage": "../../v13_test_coverage_status.json",
       "storage_invariants": "../docs/STORAGEENGINE_INVARIANTS.md",
       "storage_interface_spec": "../docs/STORAGEENGINE_INTERFACE_SPEC.md",
-      "storage_risk_register": "../docs/STORAGEENGINE_RISK_REGISTER.md"
+      "storage_risk_register": "../docs/STORAGEENGINE_RISK_REGISTER.md",
+      "humor_explanation_schema": "../docs/HUMOR_EXPLANATION_SCHEMA.json"
     },
     "current_code_surfaces": {
       "ui_shell": [
@@ -212,6 +213,19 @@
           "acceptance": [
             "Shows why-above/below neighbor explanations.",
             "No opaque ranking sources; deterministic calculations."
+          ]
+        },
+        {
+          "id": "S5_T3_explain_humor_panel",
+          "title": "Explain humor panel: 7-dimensional breakdown, confidence, bonus components, reason codes",
+          "status": "PLANNED",
+          "priority": "HIGH",
+          "target_files": ["src/components/DiscoveryInterface.tsx", "src/lib/qfs/*"],
+          "acceptance": [
+            "Panel shows 7-dimensional humor vector with individual scores and weights.",
+            "Displays reason codes (HUMOR_DISABLED, RECOGNITION_ONLY, HUMOR_CAP_APPLIED).",
+            "Includes deterministic explanation hash for verification.",
+            "Schema defined in docs/HUMOR_EXPLANATION_SCHEMA.json."
           ]
         }
       ]

@@ -1,0 +1,85 @@
+{
+  "schema": "HumorExplanationPayload",
+  "version": "1.0",
+  "description": "Schema for humor explanation payloads consumed by ATLAS UI",
+  "payload_structure": {
+    "content_id": "string",
+    "user_id": "string",
+    "reward_event_id": "string",
+    "timestamp": "integer",
+    "dimensions": {
+      "chronos": "float [0,1]",
+      "lexicon": "float [0,1]",
+      "surreal": "float [0,1]",
+      "empathy": "float [0,1]",
+      "critique": "float [0,1]",
+      "slapstick": "float [0,1]",
+      "meta": "float [0,1]"
+    },
+    "confidence": "float [0,1]",
+    "ledger_context": {
+      "views": "integer",
+      "laughs": "integer",
+      "saves": "integer",
+      "replays": "integer",
+      "author_reputation": "integer (scaled by 10^18)"
+    },
+    "policy_version": "string",
+    "policy_hash": "string (SHA256)",
+    "dimension_weights": {
+      "chronos": "float",
+      "lexicon": "float",
+      "surreal": "float",
+      "empathy": "float",
+      "critique": "float",
+      "slapstick": "float",
+      "meta": "float"
+    },
+    "weighted_scores": {
+      "chronos": "float",
+      "lexicon": "float",
+      "surreal": "float",
+      "empathy": "float",
+      "critique": "float",
+      "slapstick": "float",
+      "meta": "float"
+    },
+    "weighted_sum": "float",
+    "confidence_factor": "float",
+    "base_bonus": "float",
+    "cap_applied": "optional float",
+    "final_bonus": "float",
+    "reason_codes": [
+      "string (HUMOR_DISABLED|RECOGNITION_ONLY|HUMOR_CAP_APPLIED)"
+    ],
+    "explanation_hash": "string (SHA256)"
+  },
+  "simplified_explanation_structure": {
+    "summary": "string (e.g., 'Received humor bonus of 15%')",
+    "reason": "string (e.g., 'Strong empathy score of 0.9')",
+    "reason_codes": [
+      "string (HUMOR_DISABLED|RECOGNITION_ONLY|HUMOR_CAP_APPLIED)"
+    ],
+    "breakdown": {
+      "dimensions": "object (same as above)",
+      "confidence": "float [0,1]",
+      "final_bonus": "float"
+    },
+    "policy_info": {
+      "version": "string",
+      "hash": "string (first 16 chars + '...')",
+      "was_capped": "boolean",
+      "max_bonus": "string or 'N/A'"
+    },
+    "verification": {
+      "hash": "string (first 16 chars + '...')",
+      "consistent": "boolean"
+    }
+  },
+  "usage_notes": [
+    "All numeric values are deterministic and replayable from ledger events",
+    "No external I/O or network calls are made in generating these explanations",
+    "Reason codes provide context for why specific bonus values were calculated",
+    "Explanation hashes can be used for integrity verification"
+  ]
+}
