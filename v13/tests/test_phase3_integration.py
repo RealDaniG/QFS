@@ -21,7 +21,7 @@ from v13.libs.economics.EconomicAdversarySuite import EconomicAdversarySuite
 from v13.core.TokenStateBundle import create_token_state_bundle
 from v13.core.CoherenceLedger import CoherenceLedger
 
-# Mock PQC class for testing
+
 class MockPQC:
     def __init__(self):
         pass

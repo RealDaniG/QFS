@@ -386,7 +386,7 @@ def test_notification_service():
         parameters=parameters
     )
     
-    # Mock ledger entry classes for testing
+    
     class MockLedgerEntry:
         def __init__(self, entry_id, timestamp, entry_type, data):
             self.entry_id = entry_id

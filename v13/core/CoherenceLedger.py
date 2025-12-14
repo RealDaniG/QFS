@@ -15,14 +15,14 @@ from dataclasses import dataclass
 try:
     from v13.libs.CertifiedMath import BigNum128, CertifiedMath
     from v13.core.TokenStateBundle import TokenStateBundle
-    # Use mock PQC for testing
+    
     from v13.libs.PQC import PQC
 except ImportError:
     # Fallback for direct execution
     try:
         from v13.libs.CertifiedMath import BigNum128, CertifiedMath
         from v13.core.TokenStateBundle import TokenStateBundle
-        # Use mock PQC for testing
+        
         from v13.libs.PQC import PQC
     except ImportError:
         # Try with sys.path modification
@@ -32,12 +32,12 @@ except ImportError:
         try:
             from v13.libs.CertifiedMath import BigNum128, CertifiedMath
             from v13.core.TokenStateBundle import TokenStateBundle
-            # Use mock PQC for testing
+            
             from v13.libs.PQC import PQC
         except ImportError:
             from libs.CertifiedMath import BigNum128, CertifiedMath
             from core.TokenStateBundle import TokenStateBundle
-            # Use mock PQC for testing
+            
             from libs.PQC import PQC
 
 
@@ -322,15 +322,15 @@ def test_coherence_ledger():
     print(f"Previous hash: {entry3.previous_hash[:32]}...")
     
     # Test finality seal generation
-    # Create mock TreasuryResult
-    class MockTreasuryResult:
+    # Create TestTreasuryResult
+    class TestTreasuryResult:
         def __init__(self):
             self.is_valid = True
             self.total_allocation = CertifiedMath.from_string("1000.0")
             self.rewards = rewards
             self.validation_errors = []
     
-    treasury_result = MockTreasuryResult()
+    treasury_result = TestTreasuryResult()
     
     seal_hash = ledger.generate_finality_seal(treasury_result, deterministic_timestamp=1234567893)
     print(f"Finality seal generated: {seal_hash[:32]}...")

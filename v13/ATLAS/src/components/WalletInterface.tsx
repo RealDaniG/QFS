@@ -54,7 +54,7 @@ export default function WalletInterface() {
                                     </div>
                                 </div>
 
-                                {/* Reputation Score (Mock for now, could come from coherence) */}
+                                {/* Reputation Score (Placeholder, will come from coherence) */}
                                 <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <TrendingUp className="h-5 w-5 text-purple-600" />

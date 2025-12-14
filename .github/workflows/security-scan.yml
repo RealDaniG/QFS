@@ -1,0 +1,36 @@
+name: Security Scan
+
+on: [push, pull_request]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Scan for hardcoded secrets
+        run: |
+          pip install detect-secrets
+          detect-secrets scan --all-files --force-use-all-plugins
+      
+      - name: Check for localhost URLs
+        run: |
+          if grep -r "http://localhost" v13/ATLAS/src/ --include="*.ts" --include="*.tsx"; then
+            echo "Error: Hardcoded localhost URL found"
+            exit 1
+          fi
+      
+      - name: Check for __main__ in production
+        run: |
+          if grep -r "if __name__ == \"__main__\":" v13/policy/ v13/core/; then
+             echo "Error: production code contains __main__ block"
+             exit 1
+          fi
+      
+      - name: Check for unauthenticated endpoints
+        run: |
+          # Simple check for missing Depends(get_current_user) in sensitive routes
+          if ! grep -q "get_current_user" v13/ATLAS/src/api/routes/explain.py; then
+             echo "Error: explain.py appears to be missing auth dependency"
+             exit 1
+          fi

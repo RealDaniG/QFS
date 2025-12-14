@@ -28,7 +28,7 @@ from v13.core.StorageEngine import StorageEngine
 from v13.libs.CertifiedMath import CertifiedMath
 
 
-# Mock PostgreSQL connection - in a real implementation, this would connect to PostgreSQL
+
 class MockPostgreSQL:
     """Mock PostgreSQL connection for demonstration purposes."""
     

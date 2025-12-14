@@ -90,9 +90,11 @@ class QuantumEngine:
         """
         # For Zero-Sim compliance, we use a deterministic generation based on valid calls
         # In production this would require an input seed. 
-        # Here we use a fixed mock value for compliance until signature update.
-        shared_state = b'zero_sim_deterministic_entanglement'
-        return (shared_state, shared_state)
+        # We must NOT use fixed simulation values.
+        # This implementation requires a hardware interface or explicit seed injection.
+        # Since we don't have the hardware interface arg here, we raise NotImplementedError for production safety.
+        # Tests should override this method explicitly if needed.
+        raise NotImplementedError("Real quantum entanglement requires hardware interface. Use explicit seed in test overrides.")
     
     def measure_entangled_state(self, state: bytes, basis: int) -> Tuple[bytes, int]:
         """

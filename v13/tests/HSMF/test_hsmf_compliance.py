@@ -7,7 +7,7 @@ from HSMF import HSMF, ValidationResult
 from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
 
-# Mock TokenStateBundle for testing
+
 @dataclass
 class MockTokenStateBundle:
     """Mock implementation of TokenStateBundle for testing purposes"""

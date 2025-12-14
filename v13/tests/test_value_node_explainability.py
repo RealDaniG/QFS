@@ -87,7 +87,7 @@ class TestValueNodeExplainability:
         assert explanation.guards == sample_reward_data["guards"]
         
         # Verify policy information
-        assert explanation.policy_version == "v1.0.0"
+        assert explanation.policy_version == "Humor:v1.0.0"
         assert isinstance(explanation.policy_hash, str)
         
         # Verify reason codes

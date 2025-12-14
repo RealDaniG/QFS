@@ -11,6 +11,7 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 
 from .humor_policy import HumorSignalPolicy
+from .artistic_policy import ArtisticSignalPolicy
 
 
 @dataclass
@@ -69,14 +70,16 @@ class ValueNodeExplainabilityHelper:
     3. Verification capabilities for deterministic explanations
     """
     
-    def __init__(self, humor_policy: HumorSignalPolicy):
+    def __init__(self, humor_policy: HumorSignalPolicy, artistic_policy: Optional[ArtisticSignalPolicy] = None):
         """
         Initialize the value-node explainability helper.
         
         Args:
-            humor_policy: Humor policy instance (used as example of policy integration)
+            humor_policy: Humor policy instance
+            artistic_policy: Artistic policy instance
         """
         self.humor_policy = humor_policy
+        self.artistic_policy = artistic_policy
     
     def explain_value_node_reward(
         self,
@@ -138,9 +141,9 @@ class ValueNodeExplainabilityHelper:
             caps=caps,
             guards=guards,
             
-            # Policy information (using humor policy as example)
-            policy_version=getattr(self.humor_policy, 'policy', None).__dict__.get('version', 'v1.0.0') if hasattr(self.humor_policy, 'policy') else 'v1.0.0',
-            policy_hash=getattr(self.humor_policy, 'policy', None).__dict__.get('hash', '') if hasattr(self.humor_policy, 'policy') else '',
+            # Policy information (aggregated)
+            policy_version=self._aggregate_policy_versions(),
+            policy_hash=self._aggregate_policy_hashes(),
             
             # Calculation breakdown
             total_reward=total_reward,
@@ -186,8 +189,8 @@ class ValueNodeExplainabilityHelper:
             final_rank=final_rank,
             
             # Policy information
-            policy_version=getattr(self.humor_policy, 'policy', None).__dict__.get('version', 'v1.0.0') if hasattr(self.humor_policy, 'policy') else 'v1.0.0',
-            policy_hash=getattr(self.humor_policy, 'policy', None).__dict__.get('hash', '') if hasattr(self.humor_policy, 'policy') else '',
+            policy_version=self._aggregate_policy_versions(),
+            policy_hash=self._aggregate_policy_hashes(),
         )
         
         # Generate hash
@@ -209,6 +212,22 @@ class ValueNodeExplainabilityHelper:
         }
         json_str = json.dumps(hash_data, sort_keys=True, separators=(',', ':'))
         return hashlib.sha256(json_str.encode('utf-8')).hexdigest()
+
+    def _aggregate_policy_versions(self) -> str:
+        versions = []
+        if self.humor_policy and hasattr(self.humor_policy, 'policy'):
+            versions.append(f"Humor:{self.humor_policy.policy.version}")
+        if self.artistic_policy and hasattr(self.artistic_policy, 'policy'):
+             versions.append(f"Artistic:{self.artistic_policy.policy.version}")
+        return "|".join(sorted(versions)) or "v1.0.0"
+
+    def _aggregate_policy_hashes(self) -> str:
+        hashes = []
+        if self.humor_policy and hasattr(self.humor_policy, 'policy'):
+            hashes.append(f"Humor:{self.humor_policy.policy.hash[:8]}")
+        if self.artistic_policy and hasattr(self.artistic_policy, 'policy'):
+             hashes.append(f"Artistic:{self.artistic_policy.policy.hash[:8]}")
+        return "|".join(sorted(hashes))
     
     def _calculate_total_reward(
         self, 
@@ -238,8 +257,8 @@ class ValueNodeExplainabilityHelper:
             value_str = bonus.get("value", "0").replace("+", "").split()[0]
             try:
                 total_bonus += float(value_str)
-            except ValueError:
-                pass  # Skip invalid values
+            except ValueError as e:
+                raise ValueError(f"Invalid numeric value for bonus: {bonus}") from e
         
         # Apply caps
         total_cap_reduction = 0
@@ -248,8 +267,8 @@ class ValueNodeExplainabilityHelper:
             value_str = cap.get("value", "0").replace("-", "").split()[0]
             try:
                 total_cap_reduction += float(value_str)
-            except ValueError:
-                pass  # Skip invalid values
+            except ValueError as e:
+                raise ValueError(f"Invalid numeric value for cap: {cap}") from e
         
         # Apply to total (simplified)
         if "ATR" in total:
@@ -277,6 +296,9 @@ class ValueNodeExplainabilityHelper:
             "epoch": explanation.epoch,
             "timestamp": explanation.timestamp,
             "base_reward": explanation.base_reward,
+            "bonuses": explanation.bonuses,
+            "caps": explanation.caps,
+            "guards": explanation.guards,
             "policy_version": explanation.policy_version,
             "policy_hash": explanation.policy_hash,
             "total_reward": explanation.total_reward,
@@ -294,7 +316,7 @@ class ValueNodeExplainabilityHelper:
         explanation: ValueNodeRewardExplanation
     ) -> bool:
         """
-        Verify that an explanation is consistent with current policy.
+        Verify that an explanation is consistent with its own hash.
         
         Args:
             explanation: Explanation to verify
@@ -302,25 +324,11 @@ class ValueNodeExplainabilityHelper:
         Returns:
             bool: True if explanation is consistent
         """
-        # Recalculate using same inputs
-        recalculated = self.explain_value_node_reward(
-            explanation.wallet_id,
-            explanation.user_id,
-            explanation.reward_event_id,
-            explanation.epoch,
-            explanation.base_reward,
-            explanation.bonuses,
-            explanation.caps,
-            explanation.guards,
-            explanation.timestamp
-        )
+        # Re-generate the hash from the explanation's data
+        expected_hash = self._generate_explanation_hash(explanation)
         
-        # Compare key values
-        return (
-            recalculated.total_reward == explanation.total_reward and
-            recalculated.policy_version == explanation.policy_version and
-            recalculated.explanation_hash == explanation.explanation_hash
-        )
+        # Compare the re-generated hash with the one stored in the explanation
+        return explanation.explanation_hash == expected_hash
     
     def get_simplified_explanation(
         self,
@@ -366,75 +374,3 @@ class ValueNodeExplainabilityHelper:
         
         return simplified
 
-
-# Test function
-def test_value_node_explainability():
-    """Test the value-node explainability helper implementation."""
-    print("Testing ValueNodeExplainabilityHelper...")
-    
-    # Create humor policy (as example) and helper
-    from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-    humor_policy = HumorSignalPolicy(
-        policy=HumorPolicy(
-            enabled=True,
-            mode="rewarding",
-            dimension_weights={
-                "chronos": 0.15,
-                "lexicon": 0.10,
-                "surreal": 0.10,
-                "empathy": 0.20,
-                "critique": 0.15,
-                "slapstick": 0.10,
-                "meta": 0.20
-            },
-            max_bonus_ratio=0.25,
-            per_user_daily_cap_atr=1.0
-        )
-    )
-    explain_helper = ValueNodeExplainabilityHelper(humor_policy)
-    
-    # Test case
-    base_reward = {"ATR": "10.0 ATR"}
-    bonuses = [
-        {"label": "Coherence bonus", "value": "+2.5 ATR", "reason": "Coherence score 0.92 above threshold"},
-        {"label": "Humor bonus", "value": "+1.2 ATR", "reason": "Humor signal 0.88 above threshold"}
-    ]
-    caps = [
-        {"label": "Humor cap", "value": "-0.3 ATR", "reason": "Humor cap applied at 1.0 ATR"},
-        {"label": "Global cap", "value": "-2.0 ATR", "reason": "Global reward cap for epoch"}
-    ]
-    guards = [
-        {"name": "Balance guard", "result": "pass", "reason": "Balance within limits"},
-        {"name": "Rate limit guard", "result": "pass", "reason": "Rate limit not exceeded"}
-    ]
-    
-    # Generate explanation
-    explanation = explain_helper.explain_value_node_reward(
-        wallet_id="wallet_123",
-        user_id="user_456",
-        reward_event_id="reward_789",
-        epoch=1,
-        base_reward=base_reward,
-        bonuses=bonuses,
-        caps=caps,
-        guards=guards,
-        timestamp=1234567890
-    )
-    
-    print(f"Explanation generated for wallet {explanation.wallet_id}")
-    print(f"Total reward: {explanation.total_reward}")
-    print(f"Hash: {explanation.explanation_hash[:16]}...")
-    
-    # Verify consistency
-    is_consistent = explain_helper.verify_explanation_consistency(explanation)
-    print(f"Explanation consistent: {is_consistent}")
-    
-    # Get simplified explanation
-    simplified = explain_helper.get_simplified_explanation(explanation)
-    print(f"Simplified summary: {simplified['summary']}")
-    
-    print("✓ ValueNodeExplainabilityHelper test passed!")
-
-
-if __name__ == "__main__":
-    test_value_node_explainability()

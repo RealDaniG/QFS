@@ -19,11 +19,11 @@ class TestPolicyIntegration(unittest.TestCase):
         """Set up test fixtures"""
         self.gateway = AtlasAPIGateway()
         
-        # Mock the storage client and other dependencies
+        
         self.gateway.storage_client = Mock()
         self.gateway.ledger_economics_service = Mock()
         
-        # Mock content candidates
+        
         self.mock_candidates = [
             {
                 'content_id': 'post_1',
@@ -39,32 +39,32 @@ class TestPolicyIntegration(unittest.TestCase):
             }
         ]
         
-        # Mock the _fetch_content_candidates method
+        
         self.gateway._fetch_content_candidates = Mock(return_value=self.mock_candidates)
         
-        # Mock the _get_user_token_bundle method
+        
         self.gateway._get_user_token_bundle = Mock(return_value={})
         
-        # Mock the _get_deterministic_timestamp method
+        
         self.gateway._get_deterministic_timestamp = Mock(return_value=1234567890)
         
-        # Mock the _validate_request_shape method
+        
         self.gateway._validate_request_shape = Mock(return_value=True)
         
-        # Mock the _build_coherence_input method
+        
         self.gateway._build_coherence_input = Mock(return_value={
             'content_id': 'test_content',
             'features': ['feature1', 'feature2']
         })
         
-        # Mock the _build_feature_vector method
+        
         self.gateway._build_feature_vector = Mock(return_value=['feature1', 'feature2'])
         
-        # Mock the coherence engine methods
+        
         self.gateway.coherence_engine.update_omega = Mock(return_value=[1, 2, 3])
         self.gateway._calculate_coherence_score = Mock(return_value=100)
         
-        # Mock the AEGIS guard observe_event method
+        
         mock_aegis_observation = Mock()
         mock_aegis_observation.block_suggested = False
         mock_aegis_observation.severity = "info"

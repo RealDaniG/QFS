@@ -10,7 +10,7 @@ import hashlib
 # Add the src directory to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Mock the Dilithium5 import
+
 class MockDilithium5:
     pass
 

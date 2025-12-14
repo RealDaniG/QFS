@@ -515,5 +515,39 @@
       "src/api/__init__.py",
       "src/app/page.tsx"
     ]
+  },
+  "p3_aes_signal": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented ArtisticSignalAddon (V13.8) with 5 dimensions and AEGIS reputation weighting.",
+      "Integrated into Explain-This framework for reward transparency."
+    ],
+    "new_files": [
+      "src/signals/artistic.py",
+      "src/policy/artistic_policy.py"
+    ]
+  },
+  "p4_storage_explain": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented deterministic storage placement replay and explanation.",
+      "Added UI panel for storage proofs verification."
+    ],
+    "new_files": [
+      "src/core/storage_explainability.py",
+      "src/components/StorageExplainPanel.tsx"
+    ]
+  },
+  "p5_governance_audit": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented immutable audit logging with integrity hash chaining.",
+      "Added GovernanceAuditDashboard for operational transparency."
+    ],
+    "new_files": [
+      "src/components/GovernanceAuditDashboard.tsx",
+      "src/core/audit_integrity.py",
+      "src/api/routes/governance.py"
+    ]
   }
 }

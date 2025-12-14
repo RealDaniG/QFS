@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-12-14T19:22:29.551115",
+  "suite": "Nightly E2E V13.8",
+  "results": [
+    {
+      "step": "Zero-Mock Scan",
+      "status": "FAIL",
+      "duration": 0.101756,
+      "error": "Traceback (most recent call last):\n  File \"D:\\AI AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\scripts\\scan_zero_mock_compliance.py\", line 226, in <module>\n    print(\"\\U0001f50d Starting Zero-Mock Verification Scan...\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\U0001f50d' in position 0: character maps to <undefined>\n"
+    },
+    {
+      "step": "Audit Integrity",
+      "status": "PASS",
+      "duration": 7.067572,
+      "output": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0\nbenchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: D:\\AI AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\nconfigfile: pytest.ini\nplugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0\nasyncio: mode=Mode.ST..."
+    },
+    {
+      "step": "AES Signal Tests",
+      "status": "FAIL",
+      "duration": 7.825491,
+      "error": ""
+    }
+  ],
+  "overall_status": "FAIL"
+}

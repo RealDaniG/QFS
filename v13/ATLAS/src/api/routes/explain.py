@@ -5,17 +5,29 @@ Provides read-only, deterministic explanations for rewards and rankings
 derived from QFS ledger replay.
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Dict, Any, Optional
 import logging
 
 # Import the value-node explainability helper
 from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
 from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
+from v13.core.QFSReplaySource import QFSReplaySource
+from v13.core.QFSReplaySource import QFSReplaySource
+from ..dependencies import get_replay_source, get_current_user
+import os
 
 logger = logging.getLogger(__name__)
 
+# Enforce Live Sources in Production
+EXPLAIN_THIS_SOURCE = os.getenv("EXPLAIN_THIS_SOURCE", "qfs_ledger")
+if EXPLAIN_THIS_SOURCE != "qfs_ledger":
+    # Fail closed if attempting to use insecure/mock sources in production
+    raise RuntimeError(f"Audit Integrity Violation: EXPLAIN_THIS_SOURCE must be 'qfs_ledger', got '{EXPLAIN_THIS_SOURCE}'.")
+
 router = APIRouter(prefix="/explain", tags=["explain"])
+
+from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy
 
 # Initialize the explainability helper with a humor policy (as example)
 humor_policy = HumorSignalPolicy(
@@ -35,12 +47,31 @@ humor_policy = HumorSignalPolicy(
         per_user_daily_cap_atr=1.0
     )
 )
-explain_helper = ValueNodeExplainabilityHelper(humor_policy)
+
+artistic_policy = ArtisticSignalPolicy(
+    policy=ArtisticPolicy(
+        enabled=True,
+        mode="rewarding",
+        dimension_weights={
+            "composition": 0.20,
+            "originality": 0.25,
+            "emotional_resonance": 0.25,
+            "technical_execution": 0.15,
+            "cultural_context": 0.15
+        },
+        max_bonus_ratio=0.30,
+        per_user_daily_cap_atr=2.0
+    )
+)
+
+explain_helper = ValueNodeExplainabilityHelper(humor_policy, artistic_policy)
 
 @router.get("/reward/{wallet_id}")
 async def explain_reward(
     wallet_id: str,
-    epoch: Optional[int] = None
+    epoch: Optional[int] = None,
+    current_user: dict = Depends(get_current_user),
+    replay_source: QFSReplaySource = Depends(get_replay_source)
 ) -> Dict[str, Any]:
     """
     Explain reward calculation for a wallet in a given epoch.
@@ -52,57 +83,45 @@ async def explain_reward(
     Args:
         wallet_id: Target wallet identifier
         epoch: Optional epoch number; defaults to current epoch
+        replay_source: Injected QFSReplaySource for zero-sim history
         
     Returns:
         Dict with reward explanation components
     """
+    # Authorization check
+    if wallet_id != current_user["wallet_id"]:
+        # Check if user has audit permissions via AEGIS
+        if "audit_all_explanations" not in current_user.get("permissions", []):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Cannot view other users' reward explanations without audit permission"
+            )
+
     try:
         # Initialize Replay Engine with the helper
         from v13.policy.value_node_replay import ValueNodeReplayEngine
         replay_engine = ValueNodeReplayEngine(explain_helper)
         
-        # MOCK LEDGER SOURCE: In a real deployment, this would fetch from QFS Ledger / StorageEngine
-        # For this integration slice, we use a deterministic set of events that matches the "hardcoded" expectations
-        # but proves the pipeline works.
-        mock_events = [
-             {"type": "ContentCreated", "content_id": "c1", "user_id": f"user_{wallet_id}", "timestamp": 1234567000},
-             {
-                "type": "RewardAllocated", 
-                "event_id": f"reward_{wallet_id}_{epoch or 1}", 
-                "user_id": f"user_{wallet_id}", 
-                "wallet_id": wallet_id,
-                "amount_atr": 10.0, 
-                "epoch": epoch or 1,
-                "timestamp": 1234567890,
-                "log_details": {
-                    "base_reward": {"ATR": "10.0 ATR"},
-                    "bonuses": [
-                        {"label": "Coherence bonus", "value": "+2.5 ATR", "reason": "Coherence score 0.92 above threshold"},
-                        {"label": "Humor bonus", "value": "+1.2 ATR", "reason": "Humor signal 0.88 above threshold"},
-                        {"label": "Artistic bonus", "value": "+0.8 ATR", "reason": "Artistic signal 0.75 above threshold"}
-                    ],
-                    "caps": [
-                         {"label": "Humor cap", "value": "-0.3 ATR", "reason": "Humor cap applied at 1.0 ATR"},
-                         {"label": "Global cap", "value": "-2.0 ATR", "reason": "Global reward cap for epoch"}
-                    ],
-                    "guards": [
-                        {"name": "Balance guard", "result": "pass", "reason": "Balance within limits"},
-                        {"name": "Rate limit guard", "result": "pass", "reason": "Rate limit not exceeded"},
-                        {"name": "Policy guard", "result": "pass", "reason": "Policy version 13.7 active"}
-                    ]
-                }
-            }
-        ]
+        # LIVE LEDGER SOURCE: Fetch from QFS Ledger via ReplaySource
+        events = replay_source.get_reward_events(wallet_id, epoch or 1)
+        
+        if not events:
+            raise HTTPException(status_code=404, detail=f"No reward events found for wallet {wallet_id} in epoch {epoch or 1}")
         
         # 1. Replay the events to build state (UserNode, etc.)
-        replay_engine.replay_events(mock_events)
+        replay_engine.replay_events(events)
         
         # 2. Ask the engine to explain the specific reward event
-        reward_event_id = f"reward_{wallet_id}_{epoch or 1}"
-        explanation = replay_engine.explain_specific_reward(reward_event_id, mock_events)
+        # Find the ID of the RewardAllocated event we just fetched
+        reward_event_id = next((e["id"] for e in events if e["type"] == "RewardAllocated"), None)
+        
+        if not reward_event_id:
+             raise HTTPException(status_code=404, detail="RewardAllocated event missing from history context")
+             
+        explanation = replay_engine.explain_specific_reward(reward_event_id, events)
         
         if not explanation:
-            raise HTTPException(status_code=404, detail="Reward event not found in replay history")
+            raise HTTPException(status_code=404, detail="Failed to generate explanation from event")
 
         # 3. Generate simplified explanation for the API response
         simplified = explain_helper.get_simplified_explanation(explanation)
@@ -118,15 +137,23 @@ async def explain_reward(
             "total": simplified["breakdown"]["total_reward"]["ATR"],
             "metadata": {
                 "replay_hash": explanation.explanation_hash,
-                "computed_at": "2025-12-14T16:52:00Z",  # In real app: use explanation.timestamp
-                "source": "qfs_replay_derived"
+                "computed_at": events[-1]["timestamp"], # Use timestamp of last event for determinism
+                "source": "qfs_replay_verified"
             }
         }
+        
+        # Add artistic bonus if policy enabled (Optional Integration)
+        if artistic_policy.policy.enabled:
+            # Note: In a real scenario, we would need the dimensions from the event/replay.
+            # This is a placeholder demonstration as requested by the prompt for integration structure.
+            pass
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error generating reward explanation for {wallet_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to generate reward explanation"
+            detail=f"Failed to generate reward explanation: {str(e)}"
         )
 
 
@@ -192,7 +219,8 @@ def test_ranking_explanation_edge_cases():
 @router.get("/ranking/{content_id}")
 async def explain_ranking(
     content_id: str,
-    epoch: Optional[int] = None
+    epoch: Optional[int] = None,
+    replay_source: QFSReplaySource = Depends(get_replay_source)
 ) -> Dict[str, Any]:
     """
     Explain ranking calculation for a piece of content.
@@ -202,7 +230,8 @@ async def explain_ranking(
     
     Args:
         content_id: Target content identifier
-        epoch: Optional epoch number; defaults to current epoch
+        epoch: Optional epoch number
+        replay_source: Injected QFSReplaySource
         
     Returns:
         Dict with ranking explanation components
@@ -211,16 +240,16 @@ async def explain_ranking(
         from v13.policy.value_node_replay import ValueNodeReplayEngine
         replay_engine = ValueNodeReplayEngine(explain_helper)
         
-        # Mock events for ranking (some interactions)
-        mock_events = [
-            {"type": "ContentCreated", "content_id": content_id, "user_id": "u1", "timestamp": 1234567000},
-            {"type": "InteractionCreated", "user_id": "u2", "content_id": content_id, "interaction_type": "like", "weight": 1.0},
-            {"type": "InteractionCreated", "user_id": "u3", "content_id": content_id, "interaction_type": "reply", "weight": 2.0}
-        ]
+        # LIVE LEDGER SOURCE: Fetch from QFS Ledger
+        events = replay_source.get_ranking_events(content_id)
         
-        replay_engine.replay_events(mock_events)
+        if not events:
+             raise HTTPException(status_code=404, detail=f"No ranking events found for content {content_id}")
         
-        explanation = replay_engine.explain_content_ranking(content_id, mock_events)
+        # Replay
+        replay_engine.replay_events(events)
+        
+        explanation = replay_engine.explain_content_ranking(content_id, events)
         
         if not explanation:
              raise HTTPException(status_code=404, detail="Content ranking not found")
@@ -233,13 +262,61 @@ async def explain_ranking(
             "final_rank": explanation.final_rank,
             "metadata": {
                 "replay_hash": explanation.explanation_hash,
-                "computed_at": "2025-12-14T16:52:00Z",
-                "source": "qfs_replay_derived"
+                "computed_at": events[-1]["timestamp"] if events else 0,
+                "source": "qfs_replay_verified"
             }
         }
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error generating ranking explanation for {content_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to generate ranking explanation"
+            detail=f"Failed to generate ranking explanation: {str(e)}"
+        )
+
+@router.get("/storage/{content_id}")
+async def explain_storage(
+    content_id: str,
+    replay_source: QFSReplaySource = Depends(get_replay_source)
+) -> Dict[str, Any]:
+    """
+    Explain why specific nodes were selected for content storage.
+    
+    Returns deterministic proof of replica assignment logic and
+    verification status of storage proofs.
+    """
+    try:
+    try:
+        from v13.policy.storage_explainability import explain_storage_placement
+        
+        # Fetch storage events
+        events = replay_source.get_storage_events(content_id) 
+        if not events:
+             raise HTTPException(status_code=404, detail=f"No storage history found for {content_id}")
+             
+        # Generate explanation
+        explanation = explain_storage_placement(content_id, events)
+        
+        return {
+            "content_id": explanation.content_id,
+            "replica_count": explanation.replica_count,
+            "assigned_nodes": explanation.storage_nodes,
+            "shards": explanation.shard_ids,
+            "proof_outcomes": explanation.proof_outcomes,
+            "metadata": {
+                "epoch": explanation.epoch_assigned,
+                "integrity_hash": explanation.integrity_hash,
+                "explanation_hash": explanation.explanation_hash,
+                "policy_version": explanation.policy_version,
+                "source": "qfs_replay_verified"
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error explaining storage for {content_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to generate storage explanation: {str(e)}"
         )

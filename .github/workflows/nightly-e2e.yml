@@ -1,0 +1,33 @@
+name: Nightly Zero-Sim E2E
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Run at 2 AM UTC daily
+  workflow_dispatch:
+
+jobs:
+  full-stack-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install Dependencies
+        run: |
+          pip install pytest coverage
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Run Full Stack Determinism Suite
+        run: |
+          python v13/scripts/generate_full_stack_evidence.py
+          
+      - name: Archive Evidence
+        uses: actions/upload-artifact@v3
+        with:
+          name: nightly-evidence
+          path: v13/evidence/nightly/*.json
+          retention-days: 30

@@ -1,5 +1,5 @@
 
-import { MockLedger } from '@/lib/ledger/mock-ledger';
+
 import { getTreasury } from '@/lib/economics/treasury-engine';
 import { getPolicyRegistry } from '@/lib/governance/policy-registry';
 import { getGuardRegistry } from '@/lib/guards/registry';
@@ -14,7 +14,7 @@ async function runVerification() {
     // 1. Setup & Init
     console.log('📦 Initializing core services...');
     // Create new instance for testing
-    const ledger = new MockLedger(true, 100); // Fast mining for test
+    // const ledger = new MockLedger(true, 100); // Fast mining for test
     const treasury = getTreasury();
     const policy = getPolicyRegistry();
     const gov = getGovernanceService();
@@ -89,7 +89,7 @@ async function runVerification() {
         status: 'pending'
     };
 
-    // Inject outcome (mocking what QFS would return to ledger)
+    // Inject outcome (simulating what QFS would return to ledger)
     const ledgerEvent = {
         ...event,
         outcome: { coherence_score: 0.95 }
@@ -97,7 +97,7 @@ async function runVerification() {
 
     // In a real flow, this happens via adapter. Here we manually trigger treasury for test.
     // We need to simulate the Treasury processing a confirmed ledger event.
-    // The Treasury listens to the ledger. In our mock setup, we can call credit directly or simulate the event flow.
+    // The Treasury listens to the ledger. In our local setup, we can call credit directly or simulate the event flow.
     // Let's use the public API of Treasury if possible, or cast to any to access internal processing for verification.
 
     // Simulating "processed" event
@@ -123,7 +123,7 @@ async function runVerification() {
     await gov.castVote(userDID, optimisticId, 'yes');
     console.log(`   - Vote cast by ${userDID}`);
 
-    const proposals = gov.getAllProposals();
+    const proposals = await gov.getAllProposals();
     const prop = proposals.find(p => p.id === optimisticId);
     if (!prop || prop.voteCount.yes !== 1) throw new Error('Vote not counted');
     console.log('✅ Governance verified.\n');

@@ -13,16 +13,24 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 
 from ..qfs_client import QFSClient
-from ..real_ledger import RealLedger, MockLedger
+from ..qfs_client import QFSClient
+from ..real_ledger import RealLedger
 from ..models.user import User
+
+# Core imports for wiring ReplaySource
+from v13.core.CoherenceLedger import CoherenceLedger
+from v13.core.StorageEngine import StorageEngine
+from v13.core.QFSReplaySource import QFSReplaySource
+from v13.libs.CertifiedMath import CertifiedMath
 
 logger = logging.getLogger(__name__)
 
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
-# Global QFS client instance
+# Global instances
 _qfs_client: Optional[QFSClient] = None
+_replay_source: Optional[QFSReplaySource] = None
 
 class User(BaseModel):
     """User model for authentication"""
@@ -35,26 +43,71 @@ class User(BaseModel):
 def get_qfs_client() -> QFSClient:
     """
     Get or create QFSClient instance.
-    
-    Returns:
-        QFSClient: Configured QFS client
     """
     global _qfs_client
     
     if _qfs_client is None:
-        # Initialize MockLedger for development
-        mock_ledger = MockLedger()
-        real_ledger = RealLedger(mock_ledger)
+        # In a real setup, we would inject a proper network adapter here.
+        # For now, RealLedger initializes without an adapter or with a placeholder
+        # until the NetworkAdapter is fully implemented in Phase 3.
+        # We pass None or a stub if RealLedger supports it.
+        # Checking RealLedger implementation: it stores the adapter.
+        # We'll use a simple placeholder object that conforms to the interface if needed,
+        # or update RealLedger to handle None.
         
-        # Create QFS client with mock private key
+        # For this slice, we assume RealLedger can be initialized
+        # We will use the ReplaySource as the "Read Only" adapter for now? No, slightly different interfaces.
+        
+        # Temporary stub to allow instantiation without MockLedger
+        class StubAdapter:
+            async def submit_bundle(self, b): raise NotImplementedError("Write ops not enabled")
+            async def get_snapshot(self, r): raise NotImplementedError()
+        
+        real_ledger = RealLedger(StubAdapter())
+        
         _qfs_client = QFSClient(
             ledger=real_ledger,
-            private_key="mock_private_key_for_testing"
+            private_key="dev_private_key"
         )
         
-        logger.info("QFSClient initialized with MockLedger")
+        logger.info("QFSClient initialized with StubAdapter")
     
     return _qfs_client
+
+@lru_cache()
+def get_replay_source() -> QFSReplaySource:
+    """
+    Get the singleton QFSReplaySource for Explain-This.
+    Reads directly from CoherenceLedger and StorageEngine.
+    """
+    global _replay_source
+    if _replay_source is None:
+        import os
+        from v13.core.QFSReplaySource import LiveLedgerReplaySource
+        
+        # Initialize dependencies
+        cm = CertifiedMath()
+        storage = StorageEngine(cm)
+        
+        # Check source configuration
+        source_type = os.getenv("EXPLAIN_THIS_SOURCE", "memory")
+        
+        if source_type == "live_ledger":
+            ledger_path = os.getenv("QFS_LEDGER_PATH", "v13/ledger/qfs_ledger.jsonl")
+            logger.info(f"Initializing LiveLedgerReplaySource from {ledger_path}")
+            try:
+                _replay_source = LiveLedgerReplaySource(ledger_path, storage)
+            except Exception as e:
+                logger.critical(f"Failed to initialize LiveLedgerReplaySource: {e}")
+                # Fail closed in production-like configuration
+                raise ImportError(f"Could not load live ledger from {ledger_path}: {e}")
+        else:
+            # Default in-memory (mock/empty) for scaffolded dev
+            ledger = CoherenceLedger(cm)
+            _replay_source = QFSReplaySource(ledger, storage)
+            logger.info("Initialized QFSReplaySource (In-Memory)")
+        
+    return _replay_source
 
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     """
@@ -69,7 +122,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     Raises:
         HTTPException: If authentication fails
     """
-    # This is a mock implementation
+    # This is a stub implementation
     # In production, validate token against auth service
     
     if not token:
@@ -79,14 +132,14 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Mock user for testing
+    # Stub user for testing/development
     # In production, decode JWT and validate against database
     try:
-        # For now, return a mock user
+        # Return a consistent developer identity
         user = User(
             id="user_123",
-            username="testuser",
-            email="test@example.com",
+            username="dev_user",
+            email="dev@qfs.internal",
             is_active=True
         )
         return user

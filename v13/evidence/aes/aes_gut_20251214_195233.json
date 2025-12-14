@@ -1,0 +1,36 @@
+{
+  "evidence_type": "AES_GUT_DETERMINISM",
+  "timestamp": "2025-12-14T19:52:33.039527",
+  "status": "VERIFIED",
+  "policy_version": "v13.8.0-GUT",
+  "input_metadata_hash": "87474e8a38300f2239aca5eeb2425bcfa2516de406d52c5b55aef82afea4806f",
+  "output_vector": {
+    "composition": 499983005,
+    "color_harmony": 1000000000,
+    "symmetry": 0,
+    "complexity": 1000000000,
+    "narrative": 500000000,
+    "originality": 970000000,
+    "resonance": 940000000,
+    "content_id": "evidence_content_001",
+    "event_ids": [
+      "e1",
+      "e2",
+      "e3"
+    ],
+    "phi_weights": {
+      "composition": 200000000,
+      "color_harmony": 150000000,
+      "symmetry": 100000000,
+      "complexity": 100000000,
+      "narrative": 150000000,
+      "originality": 200000000,
+      "resonance": 100000000
+    },
+    "reason_codes": [
+      "generated_via_gut_extractors"
+    ],
+    "vector_hash": "a701fd26c36b05215677ca2fc8f2c2ef52296fecc07a4f276c4f5f7c78d60a7b"
+  },
+  "verification_check": "PASS"
+}
