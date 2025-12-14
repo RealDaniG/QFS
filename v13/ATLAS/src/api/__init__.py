@@ -9,6 +9,8 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Optional
 import logging
 
+from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,60 +30,23 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# API dependencies
-def get_current_user(token: str = Depends(oauth2_scheme)):
-    """Dependency to get the current user from the token."""
-    # In a real implementation, validate the token and return user info
-    # This is a simplified version for demonstration
-    if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return {"username": "demo_user", "id": "user123"}
-
-# Import and include routers
-from .routes import transactions, wallets, quantum, secure_chat, metrics, proofs
-
-# Include API routers
-app.include_router(
-    transactions.router,
-    prefix="/api/v1/transactions",
-    tags=["transactions"],
-    dependencies=[Depends(get_current_user)]
-)
-
-app.include_router(
+# API router aggregation
+api_routes = [
     wallets.router,
-    prefix="/api/v1/wallets",
-    tags=["wallets"],
-    dependencies=[Depends(get_current_user)]
-)
-
-app.include_router(
-    quantum.router,
-    prefix="/api/v1/quantum",
-    tags=["quantum"]
-)
-
-app.include_router(
-    secure_chat.router,
-    prefix="/api/v1",
-    tags=["secure-chat"],
-)
-
-app.include_router(
+    transactions.router,
     metrics.router,
-    prefix="/api/v1",
-    tags=["metrics"],
-)
-
-app.include_router(
     proofs.router,
-    prefix="/api/v1",
-    tags=["proofs"],
-)
+    quantum.router,
+    secure_chat.router,
+    explain.router,  # New Explain-This endpoints
+]
+
+# Register all route modules
+for router in api_routes:
+    if router == transactions.router or router == wallets.router:
+        app.include_router(router, dependencies=[Depends(get_current_user)])
+    else:
+        app.include_router(router)
 
 # Health check endpoint
 @app.get("/health")

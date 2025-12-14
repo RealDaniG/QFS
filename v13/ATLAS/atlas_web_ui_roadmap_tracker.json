@@ -420,5 +420,22 @@
     "new_files": [
       "src/governance/templates/storage_policies.md"
     ]
+  },
+  "p0_e2e_explain_reward": {
+    "status": "COMPLETED",
+    "notes": [
+      "Added end-to-end 'Explain This reward' flow using real ATLAS API endpoints and ExplainThisPanel.",
+      "Flow is read-only; API returns deterministic stub data matching ExplainThisPanel schema.",
+      "Added ExplainRewardFlow component to Ledger tab for demo."
+    ],
+    "new_files": [
+      "src/api/routes/explain.py",
+      "src/hooks/useExplainReward.ts",
+      "src/components/ExplainRewardFlow.tsx"
+    ],
+    "updated_files": [
+      "src/api/__init__.py",
+      "src/app/page.tsx"
+    ]
   }
 }
