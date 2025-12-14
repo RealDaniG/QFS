@@ -312,10 +312,11 @@
           "target_files": ["docs/platform_constraints.md"],
           "acceptance": [
             "Constraints are reviewed and updated regularly.",
-            "Constraints are aligned with QFS and ATLAS policies."
+            "Constraints are aligned with QFS and ATLAS policies.",
+            "Constraints are reviewed by the community."
           ]
         }
-      }
+      ]
     },
     {
       "stage_id": "S9",
