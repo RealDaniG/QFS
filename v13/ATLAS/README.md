@@ -61,6 +61,43 @@ This scaffold provides a robust foundation built with:
 - **🚀 Production Ready** - Optimized build and deployment settings
 - **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
 
+## 🧠 ATLAS Production Stack (QFS-Compliant)
+
+**Core positioning**
+- ATLAS Web = Deterministic View + Interaction Router over QFS
+- Read-only projections: ledger, value-nodes, content (StorageEngine)
+- Write actions: submit intent/governed transactions only; never mutate balances/rewards directly
+
+**Frontend stack scope**
+- Next.js 15 (App Router): Server Components for deterministic data reads; Edge rendering for presentation only
+- TypeScript 5: Mirrors QFS policy schemas, ledger event typing
+- Tailwind CSS 4: UI-only
+- shadcn/ui + Radix: Governance/Explain-This/Appeals UIs
+- Framer Motion: UX transitions/visualizations only; never influences ranking/economics
+- React Hook Form + Zod: Client validation ≠ authority; server re-validation before QFS submission
+- Zustand: UI state only (modals, preferences, drafts); never balances/reputation/governance outcomes
+- TanStack Query: Fetch/cache ledger-derived views; cache is ephemeral/non-authoritative
+- Axios: Versioned, deterministic APIs (read-only projections, intent submission, observability)
+
+**Backend & database scope**
+- Prisma + PostgreSQL: Non-authoritative (sessions, auth metadata, UI prefs, drafts, caches only)
+- Balances/rewards/governance outcomes must be replayable from QFS logs, not DB
+- NextAuth.js: Identity/session management, wallet/key association, role flags; auth ≠ authority
+
+**Advanced UI features**
+- TanStack Table: Ledger explorer, governance vote breakdowns, signal distributions
+- Recharts: Reward flow visualization, signal observatory, non-mutating policy simulations
+- DND Kit: UI composition/dashboard customization only; never ranking/priority/ordering
+
+**Media & i18n**
+- Sharp: UI-level image processing only; final content hash from StorageEngine
+- Next Intl: Language never affects hashing/policy logic
+- date-fns: Display-only; never consensus inputs
+
+**AI constraint**
+- AI is advisory only (summarization, suggestion, moderation assist)
+- All effects route: observation → policy → governance → treasury
+
 ## 🚀 Quick Start
 
 ```bash

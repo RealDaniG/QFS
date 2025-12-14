@@ -294,17 +294,28 @@
           ]
         },
         {
-          "id": "S8_T2_policy_simulator",
-          "title": "Policy simulation sliders with diff views (no live mutation)",
+          "id": "S8_T2_platform_constraints",
+          "title": "Platform constraints documentation",
           "status": "MISSING",
-          "priority": "MEDIUM",
-          "target_files": ["src/lib/governance/*", "src/lib/economics/*"],
+          "priority": "LOW",
+          "target_files": ["docs/platform_constraints.md"],
           "acceptance": [
-            "Sim outputs are labeled as simulated and non-binding.",
-            "Sim uses deterministic replay inputs and fixed policy versions."
+            "Constraints are documented in a single source of truth.",
+            "Constraints are versioned and auditable."
+          ]
+        },
+        {
+          "id": "S8_T3_platform_constraints_review",
+          "title": "Review and update platform constraints",
+          "status": "MISSING",
+          "priority": "LOW",
+          "target_files": ["docs/platform_constraints.md"],
+          "acceptance": [
+            "Constraints are reviewed and updated regularly.",
+            "Constraints are aligned with QFS and ATLAS policies."
           ]
         }
-      ]
+      }
     },
     {
       "stage_id": "S9",
