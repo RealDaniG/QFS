@@ -8,7 +8,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
 import logging
 
-from ...core.StorageEngine import StorageEngine
 from ..dependencies import get_qfs_client_dependency
 from ...qfs_client import QFSClient
 
@@ -21,8 +20,14 @@ router = APIRouter(prefix="/metrics", tags=["metrics"])
 def get_storage_engine():
     """Get storage engine instance."""
     # This is a simplified approach - in production, inject the actual StorageEngine
-    from ...core.StorageEngine import StorageEngine
-    from ...libs.CertifiedMath import CertifiedMath
+    # Import lazily so that API module import/collection does not fail when QFS core
+    # is not on the Python path.
+    try:
+        from v13.libs.CertifiedMath import CertifiedMath
+        from v13.core.StorageEngine import StorageEngine
+    except Exception as e:
+        raise RuntimeError(f"StorageEngine not available in this environment: {e}")
+
     cm = CertifiedMath()
     storage_engine = StorageEngine(cm)
     return storage_engine

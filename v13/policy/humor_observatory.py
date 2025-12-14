@@ -36,6 +36,8 @@ class HumorObservabilityReport:
     anomaly_count: int
     top_performing_content: List[Dict[str, Any]]  # Top 10 content by bonus
     policy_settings_summary: Dict[str, Any]
+    policy_version: str
+    policy_hash: str
 
 
 class HumorSignalObservatory:
@@ -63,10 +65,14 @@ class HumorSignalObservatory:
         """
         self.signal_history.append(snapshot)
     
-    def get_observability_report(self) -> HumorObservabilityReport:
+    def get_observability_report(self, policy_version: str = "", policy_hash: str = "") -> HumorObservabilityReport:
         """
         Generate a comprehensive observability report.
         
+        Args:
+            policy_version: Current policy version
+            policy_hash: Current policy hash
+            
         Returns:
             HumorObservabilityReport: Comprehensive report
         """
@@ -79,7 +85,9 @@ class HumorSignalObservatory:
                 bonus_statistics={},
                 anomaly_count=0,
                 top_performing_content=[],
-                policy_settings_summary={}
+                policy_settings_summary={},
+                policy_version=policy_version,
+                policy_hash=policy_hash
             )
         
         # Calculate basic statistics
@@ -134,10 +142,12 @@ class HumorSignalObservatory:
             for signal in sorted_signals[:10]
         ]
         
-        # Policy settings summary (would integrate with actual policy in reality)
+        # Policy settings summary
         policy_settings_summary = {
             "observation_window": f"{total_signals} signals",
-            "data_collection_status": "active"
+            "data_collection_status": "active",
+            "version": policy_version,
+            "hash": policy_hash
         }
         
         return HumorObservabilityReport(
@@ -148,7 +158,9 @@ class HumorSignalObservatory:
             bonus_statistics=bonus_statistics,
             anomaly_count=anomaly_count,
             top_performing_content=top_performing_content,
-            policy_settings_summary=policy_settings_summary
+            policy_settings_summary=policy_settings_summary,
+            policy_version=policy_version,
+            policy_hash=policy_hash
         )
     
     def _calculate_histogram(self, dimension: str) -> Dict[str, float]:
@@ -229,16 +241,19 @@ class HumorSignalObservatory:
                     
                     correlations[dim1][dim2] = correlation
         
-        return correlations
-    
-    def export_observability_data(self) -> Dict[str, Any]:
+        return correlations    
+    def export_observability_data(self, policy_version: str = "", policy_hash: str = "") -> Dict[str, Any]:
         """
         Export observability data in a structured format.
         
+        Args:
+            policy_version: Current policy version
+            policy_hash: Current policy hash
+            
         Returns:
             Dict: Exportable observability data
         """
-        report = self.get_observability_report()
+        report = self.get_observability_report(policy_version, policy_hash)
         
         export_data = {
             "report": {
@@ -246,7 +261,9 @@ class HumorSignalObservatory:
                 "average_confidence": report.average_confidence,
                 "dimension_averages": report.dimension_averages,
                 "bonus_statistics": report.bonus_statistics,
-                "anomaly_count": report.anomaly_count
+                "anomaly_count": report.anomaly_count,
+                "policy_version": report.policy_version,
+                "policy_hash": report.policy_hash
             },
             "dimension_distributions": report.dimension_distributions,
             "top_performing_content": report.top_performing_content,

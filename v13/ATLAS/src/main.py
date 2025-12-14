@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from contextlib import asynccontextmanager
 
-from .api import app as api_router
+from .api import app as api_app
 from .core.quantum_engine import QuantumEngine
 from .core.transaction_processor import TransactionProcessor
 
@@ -111,7 +111,9 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 # Include API routers
-app.include_router(api_router, prefix="/api")
+# The API app already mounts its routers under /api/v1/... so we do not add
+# an extra /api prefix here (would lead to /api/api/v1/...).
+app.include_router(api_app.router)
 
 # Health check endpoint
 @app.get("/health")

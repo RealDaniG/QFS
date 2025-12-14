@@ -28,6 +28,7 @@ class HumorRewardExplanation:
     
     # Policy information
     policy_version: str
+    policy_hash: str
     dimension_weights: Dict[str, float]
     
     # Calculation breakdown
@@ -43,6 +44,9 @@ class HumorRewardExplanation:
     
     # Deterministic hash for verification
     explanation_hash: str = ""
+    
+    # Reason codes
+    reason_codes: List[str] = field(default_factory=list)
 
 
 class HumorExplainabilityHelper:
@@ -92,6 +96,15 @@ class HumorExplainabilityHelper:
         # Get policy explanation
         policy_explanation = self.humor_policy.get_policy_explanation(dimensions, confidence)
         
+        # Determine reason codes
+        reason_codes = []
+        if not self.humor_policy.policy.enabled:
+            reason_codes.append("HUMOR_DISABLED")
+        elif self.humor_policy.policy.mode == "recognition_only":
+            reason_codes.append("RECOGNITION_ONLY")
+        elif policy_explanation.get("cap_applied"):
+            reason_codes.append("HUMOR_CAP_APPLIED")
+        
         # Create explanation object
         explanation = HumorRewardExplanation(
             content_id=content_id,
@@ -106,6 +119,7 @@ class HumorExplainabilityHelper:
             
             # Policy information
             policy_version=policy_explanation["policy_version"],
+            policy_hash=policy_explanation.get("policy_hash", ""),
             dimension_weights=policy_explanation["weights"],
             
             # Calculation breakdown
@@ -117,7 +131,10 @@ class HumorExplainabilityHelper:
             final_bonus=policy_explanation["final_bonus"],
             
             # Policy settings
-            policy_settings=policy_explanation["policy_settings"]
+            policy_settings=policy_explanation["policy_settings"],
+            
+            # Reason codes
+            reason_codes=reason_codes
         )
         
         # Generate deterministic hash
@@ -144,10 +161,12 @@ class HumorExplainabilityHelper:
             "dimensions": explanation.dimensions,
             "confidence": explanation.confidence,
             "policy_version": explanation.policy_version,
+            "policy_hash": explanation.policy_hash,
             "weighted_sum": explanation.weighted_sum,
             "confidence_factor": explanation.confidence_factor,
             "base_bonus": explanation.base_bonus,
-            "final_bonus": explanation.final_bonus
+            "final_bonus": explanation.final_bonus,
+            "reason_codes": explanation.reason_codes
         }
         
         # Serialize to JSON with sorted keys for deterministic representation
@@ -179,7 +198,8 @@ class HumorExplainabilityHelper:
         return (
             abs(recalculated["final_bonus"] - explanation.final_bonus) < 1e-10 and
             recalculated["policy_version"] == explanation.policy_version and
-            recalculated["weights"] == explanation.dimension_weights
+            recalculated["weights"] == explanation.dimension_weights and
+            recalculated.get("policy_hash", "") == explanation.policy_hash
         )
     
     def get_simplified_explanation(
@@ -207,6 +227,7 @@ class HumorExplainabilityHelper:
         simplified = {
             "summary": f"Received humor bonus of {explanation.final_bonus:.2%}",
             "reason": f"Strong {strongest_dimension[0]} score ({strongest_dimension[1]:.2f})",
+            "reason_codes": explanation.reason_codes,
             "breakdown": {
                 "dimensions": explanation.dimensions,
                 "confidence": explanation.confidence,
@@ -214,6 +235,7 @@ class HumorExplainabilityHelper:
             },
             "policy_info": {
                 "version": explanation.policy_version,
+                "hash": explanation.policy_hash[:16] + "...",
                 "was_capped": was_capped,
                 "max_bonus": explanation.cap_applied or "N/A"
             },
@@ -253,8 +275,24 @@ def test_humor_explainability():
     print("Testing HumorExplainabilityHelper...")
     
     # Create humor policy and helper
-    from v13.policy.humor_policy import HumorSignalPolicy
-    humor_policy = HumorSignalPolicy()
+    from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
+    humor_policy = HumorSignalPolicy(
+        policy=HumorPolicy(
+            enabled=True,
+            mode="rewarding",
+            dimension_weights={
+                "chronos": 0.15,
+                "lexicon": 0.10,
+                "surreal": 0.10,
+                "empathy": 0.20,
+                "critique": 0.15,
+                "slapstick": 0.10,
+                "meta": 0.20
+            },
+            max_bonus_ratio=0.25,
+            per_user_daily_cap_atr=1.0
+        )
+    )
     explain_helper = HumorExplainabilityHelper(humor_policy)
     
     # Test case

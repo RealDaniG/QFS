@@ -105,3 +105,121 @@ def test_value_graph_replay_invariance(simple_event_trace: List[Dict[str, Any]])
     assert g1.interactions == g2.interactions
     assert g1.rewards == g2.rewards
     assert g1.governance == g2.governance
+
+
+def test_value_graph_multiple_users_and_contents() -> None:
+    """Graph should support multiple users and multiple content nodes deterministically."""
+    events: List[Dict[str, Any]] = [
+        {"type": "ContentCreated", "block": 1, "user_id": "user_a", "content_id": "c1"},
+        {"type": "ContentCreated", "block": 2, "user_id": "user_b", "content_id": "c2"},
+        {"type": "InteractionCreated", "block": 3, "user_id": "user_b", "content_id": "c1", "interaction_type": "like"},
+        {"type": "InteractionCreated", "block": 4, "user_id": "user_a", "content_id": "c2", "interaction_type": "comment"},
+        {"type": "RewardAllocated", "block": 5, "user_id": "user_a", "token": "ATR", "amount": 7, "content_id": "c1"},
+        {"type": "RewardAllocated", "block": 6, "user_id": "user_b", "token": "ATR", "amount": 3, "content_id": "c2"},
+    ]
+
+    g = ValueGraphRef().build_from_events(events)
+
+    assert set(g.contents.keys()) == {"c1", "c2"}
+    assert set(g.users.keys()) == {"user_a", "user_b"}
+
+    assert len(g.interactions) == 2
+    assert len(g.rewards) == 2
+
+    assert g.users["user_a"].total_interactions == 1
+    assert g.users["user_b"].total_interactions == 1
+
+    assert g.users["user_a"].total_rewards_atr == 7
+    assert g.users["user_b"].total_rewards_atr == 3
+
+
+def test_value_graph_mixed_atr_flx_rewards_atr_only() -> None:
+    """Only ATR rewards should be aggregated and emitted as RewardEdges in the reference graph."""
+    events: List[Dict[str, Any]] = [
+        {"type": "ContentCreated", "block": 1, "user_id": "user_a", "content_id": "c1"},
+        {"type": "RewardAllocated", "block": 2, "user_id": "user_a", "token": "ATR", "amount": 10},
+        {"type": "RewardAllocated", "block": 3, "user_id": "user_a", "token": "FLX", "amount": 999},
+        {"type": "RewardAllocated", "block": 4, "user_id": "user_a", "token": "ATR", "amount": 5},
+    ]
+
+    g = ValueGraphRef().build_from_events(events)
+
+    # Only ATR should be counted
+    assert g.users["user_a"].total_rewards_atr == 15
+
+    # Only ATR RewardEdges are emitted
+    assert len(g.rewards) == 2
+    assert [e.amount_atr for e in g.rewards] == [10, 5]
+
+
+def test_value_graph_governance_edges_and_votes() -> None:
+    """GovernanceVoteCast should create GovernanceEdges and increment per-user vote counters."""
+    events: List[Dict[str, Any]] = [
+        {"type": "GovernanceVoteCast", "block": 1, "user_id": "user_a", "proposal_id": "p1", "vote_type": "yes"},
+        {"type": "GovernanceVoteCast", "block": 2, "user_id": "user_a", "proposal_id": "p2", "vote_type": "no"},
+        {"type": "GovernanceVoteCast", "block": 3, "user_id": "user_b", "proposal_id": "p1", "vote_type": "abstain"},
+        {"type": "GovernanceVoteCast", "block": 4, "user_id": "user_b", "proposal_id": "p3", "vote_type": "yes"},
+        {"type": "GovernanceVoteCast", "block": 5, "user_id": "user_b", "proposal_id": "p3", "vote_type": "yes"},
+    ]
+
+    g = ValueGraphRef().build_from_events(events)
+
+    assert len(g.governance) == 5
+    assert g.users["user_a"].governance_votes == 2
+    assert g.users["user_b"].governance_votes == 3
+
+    # Structural assertions on edge content/order
+    assert g.governance[0].user_id == "user_a"
+    assert g.governance[0].proposal_id == "p1"
+    assert g.governance[0].vote_type == "yes"
+
+    assert g.governance[-1].user_id == "user_b"
+    assert g.governance[-1].proposal_id == "p3"
+    assert g.governance[-1].vote_type == "yes"
+
+
+def test_value_graph_long_trace_stays_deterministic() -> None:
+    """A longer mixed trace should remain fully deterministic and structurally equal across builds."""
+    events: List[Dict[str, Any]] = [
+        # Content nodes
+        {"type": "ContentCreated", "block": 1, "user_id": "alice", "content_id": "cA"},
+        {"type": "ContentCreated", "block": 2, "user_id": "bob", "content_id": "cB"},
+        {"type": "ContentCreated", "block": 3, "user_id": "alice", "content_id": "cC"},
+
+        # Interactions
+        {"type": "InteractionCreated", "block": 4, "user_id": "bob", "content_id": "cA", "interaction_type": "like"},
+        {"type": "InteractionCreated", "block": 5, "user_id": "alice", "content_id": "cB", "interaction_type": "comment"},
+        {"type": "InteractionCreated", "block": 6, "user_id": "carol", "content_id": "cA", "interaction_type": "share"},
+        {"type": "InteractionCreated", "block": 7, "user_id": "carol", "content_id": "cC", "interaction_type": "like"},
+
+        # Rewards (mixed ATR + FLX; reference counts ATR only)
+        {"type": "RewardAllocated", "block": 8, "user_id": "alice", "token": "ATR", "amount": 10, "content_id": "cA"},
+        {"type": "RewardAllocated", "block": 9, "user_id": "alice", "token": "FLX", "amount": 999, "content_id": "cA"},
+        {"type": "RewardAllocated", "block": 10, "user_id": "bob", "token": "ATR", "amount": 3, "content_id": "cB"},
+        {"type": "RewardAllocated", "block": 11, "user_id": "carol", "token": "ATR", "amount": 1, "content_id": "cA"},
+        {"type": "RewardAllocated", "block": 12, "user_id": "carol", "token": "FLX", "amount": 50, "content_id": "cC"},
+
+        # Governance
+        {"type": "GovernanceVoteCast", "block": 13, "user_id": "alice", "proposal_id": "p1", "vote_type": "yes"},
+        {"type": "GovernanceVoteCast", "block": 14, "user_id": "bob", "proposal_id": "p1", "vote_type": "no"},
+        {"type": "GovernanceVoteCast", "block": 15, "user_id": "carol", "proposal_id": "p2", "vote_type": "yes"},
+    ]
+
+    g1 = ValueGraphRef().build_from_events(events)
+    g2 = ValueGraphRef().build_from_events(events)
+
+    assert g1.users == g2.users
+    assert g1.contents == g2.contents
+    assert g1.interactions == g2.interactions
+    assert g1.rewards == g2.rewards
+    assert g1.governance == g2.governance
+
+    # Optional manual cross-checks
+    assert g1.users["alice"].total_rewards_atr == 10
+    assert g1.users["bob"].total_rewards_atr == 3
+    assert g1.users["carol"].total_rewards_atr == 1
+
+    assert g1.users["alice"].total_interactions == 1
+    assert g1.users["bob"].total_interactions == 1
+    assert g1.users["carol"].total_interactions == 2
+

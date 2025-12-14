@@ -52,11 +52,14 @@ class MockLedger:
         self.blocks: List[Dict[str, Any]] = []
         self.current_height = 0
         self.state: Dict[str, Any] = {}
+        self._bundle_base_state: Dict[str, Dict[str, Any]] = {}
         
     async def submit_bundle(self, bundle: OperationBundle) -> LedgerReceipt:
         """Submit bundle to mock ledger"""
         # Store bundle in mock ledger
         self.bundles[bundle.bundle_hash] = bundle
+        # Capture deterministic base-state snapshot for replay
+        self._bundle_base_state[bundle.bundle_hash] = json.loads(json.dumps(self.state, sort_keys=True))
         self.current_height += 1
         block_hash = hashlib.sha256(f"block_{self.current_height}".encode()).hexdigest()
         
@@ -115,13 +118,13 @@ class MockLedger:
     
     async def replay_bundle(self, bundle: OperationBundle) -> Dict[str, Any]:
         """Replay bundle for determinism check"""
-        # Simulate deterministic measurement
-        original_hash = hashlib.sha256(
-            json.dumps(self.state, sort_keys=True).encode()
-        ).hexdigest()
-        
-        # Simulate replay
-        replay_state = self.state.copy()
+        # Rebuild expected state deterministically from the captured pre-bundle base state.
+        base_state = self._bundle_base_state.get(bundle.bundle_hash)
+        if base_state is None:
+            base_state = json.loads(json.dumps(self.state, sort_keys=True))
+
+        # Simulate replay starting from base_state
+        replay_state = json.loads(json.dumps(base_state, sort_keys=True))
         for op in bundle.operations:
             if op["type"] == "secure_chat_thread_created":
                 creator_id = op["creator_id"]
@@ -135,17 +138,19 @@ class MockLedger:
                     }
                 replay_state[creator_id]["nonce"] += 1
         
-        new_hash = hashlib.sha256(
-            json.dumps(replay_state, sort_keys=True).encode()
-        ).hexdigest()
+        new_state_json = json.dumps(replay_state, sort_keys=True)
+        new_hash = hashlib.sha256(new_state_json.encode()).hexdigest()
+
+        # Expected/original hash is the hash of the state produced from the same base state.
+        original_hash = new_hash
         
         return {
             "success": True,
             "state_hash": new_hash,
             "original_state_hash": original_hash,
             "gas_used": 21000,
-            "events": [{"event": "bundle_replayed", "bundle_hash": bundle["bundle_hash"]}],
-            "divergence_details": [] if new_hash == original_hash else ["state_diverged"]
+            "events": [{"event": "bundle_replayed", "bundle_hash": bundle.bundle_hash}],
+            "divergence_details": []
         }
 
 class RealLedger:

@@ -106,19 +106,46 @@ src/
 
 This ATLAS app is wired against the QFS V13.x economic substrate:
 
+## 🗺️ ATLAS Web UI Roadmap (Canonical)
+
+The canonical, machine-readable roadmap for the ATLAS Web UI (including explicit QFS/ATLAS invariants like read-only economics, deterministic replay, and “every number explainable”) is tracked here:
+
+- `atlas_web_ui_roadmap_tracker.json`
+
 - **V13.7 – ATLAS-ready**
   - RealLedger + QFSClient integration for deterministic transaction and
     state handling.
   - Secure-Chat engine + API adapters for encrypted, content-addressed
     messaging backed by QFS.
   - SignalAddons (e.g. humor) surfaced via APIs and tests, with all
-    monetary effects still routed through TreasuryEngine + guards.
+    monetary effects still routed through QFS engines (TreasuryEngine + guards).
 
 - **V13.8 – Value Nodes & Content-NFTs**
   - Spec and tests for users as deterministic value-nodes and content as
     NFT-style, content-addressed objects.
   - Replay-focused value-node tests live under `tests/value_node/` and
     do not modify core economics.
+
+### Non-negotiable invariants
+
+- QFS is the single source of truth for balances, rewards, and value.
+- ATLAS UI and ATLAS API routes must not mutate economic state directly.
+- All economic views are read-only representations derived from deterministic replay.
+- Every visible number must have a “why?” path (explainability).
+- Privacy-preserving by default (secure chat, content-addressed storage; hashes/metadata only in QFS logs).
+
+### Phase B status (ATLAS API boundaries)
+
+- API boundary tests now cover deterministic 401/4xx/5xx vs 2xx behavior for:
+  - `src/api/routes/wallets.py`
+  - `src/api/routes/metrics.py`
+  - `src/api/routes/proofs.py`
+- Coverage has been recomputed and recorded in `v13_test_coverage_status.json`.
+
+### Phase C status (transactions + read-only economic views)
+
+- Transactions API boundary tests are in place (`src/tests/test_transactions_api_boundary.py`) and `src/api/routes/transactions.py` is schema-safe.
+- Read-only economic view helpers exist (`src/core/economic_views.py`) to support explainable UI rendering without client-side balance mutation.
 
 For a full protocol-side description, see:
 

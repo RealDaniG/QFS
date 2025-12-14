@@ -7,7 +7,7 @@ import pytest
 import asyncio
 from datetime import datetime, timezone, timedelta
 
-# Ensure the repository's ATLAS src directory is on sys.path
+# Ensure the repository's ATLAS root directory (parent of 'src') is on sys.path
 _THIS_FILE = Path(__file__).resolve()
 _ATLAS_ROOT = None
 for parent in _THIS_FILE.parents:
@@ -15,12 +15,11 @@ for parent in _THIS_FILE.parents:
         _ATLAS_ROOT = parent
         break
 if _ATLAS_ROOT is not None:
-    _SRC_DIR = _ATLAS_ROOT / "src"
-    if str(_SRC_DIR) not in sys.path:
-        sys.path.insert(0, str(_SRC_DIR))
+    if str(_ATLAS_ROOT) not in sys.path:
+        sys.path.insert(0, str(_ATLAS_ROOT))
 
-from secure_chat.core.engine import SecureChatEngine, ThreadStatus
-from secure_chat.storage.memory_storage import MemoryStorage
+from src.secure_chat.core.engine import SecureChatEngine, ThreadStatus
+from src.secure_chat.storage.memory_storage import MemoryStorage
 
 class MockATREngine:
     def __init__(self):

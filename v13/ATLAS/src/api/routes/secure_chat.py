@@ -12,10 +12,10 @@ from datetime import datetime, timezone
 
 # Import dependencies (these would be implemented in a real app)
 from ..dependencies import get_current_user, get_qfs_client
-from ..models.user import User
-from ..qfs_client import QFSClient
-from ..types import Transaction
-from ..secure_chat.core.engine import SecureChatEngine, ThreadStatus
+from ...models.user import User
+from ...qfs_client import QFSClient
+from ...types import Transaction
+from ...secure_chat.core.engine import SecureChatEngine, ThreadStatus
 
 logger = logging.getLogger(__name__)
 

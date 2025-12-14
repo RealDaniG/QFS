@@ -14,6 +14,35 @@ from enum import Enum
 from .policy_engine import PolicyEngine, PolicyConfiguration, PolicyHints
 
 
+@dataclass
+class HumorPolicy:
+    """Explicit HumorPolicy struct for QFS V13.7 compliance."""
+    enabled: bool
+    mode: str  # "off" | "recognition_only" | "rewarding"
+    dimension_weights: Dict[str, float]  # 7-dimensional weights
+    max_bonus_ratio: float
+    per_user_daily_cap_atr: float
+    version: str = "v1.0.0"
+    hash: str = ""
+    
+    def __post_init__(self):
+        """Initialize hash for policy versioning."""
+        self.hash = self._calculate_hash()
+    
+    def _calculate_hash(self) -> str:
+        """Calculate deterministic hash of policy configuration."""
+        policy_data = {
+            "enabled": self.enabled,
+            "mode": self.mode,
+            "dimension_weights": self.dimension_weights,
+            "max_bonus_ratio": self.max_bonus_ratio,
+            "per_user_daily_cap_atr": self.per_user_daily_cap_atr,
+            "version": self.version
+        }
+        json_str = json.dumps(policy_data, sort_keys=True, separators=(',', ':'))
+        return hashlib.sha256(json_str.encode('utf-8')).hexdigest()
+
+
 class HumorPolicyConfig:
     """Configuration for humor policy rules and reward calculations."""
     
@@ -71,14 +100,30 @@ class HumorSignalPolicy:
     4. Anomaly detection for humor-derived rewards
     """
     
-    def __init__(self, config: Optional[HumorPolicyConfig] = None):
+    def __init__(self, config: Optional[HumorPolicyConfig] = None, policy: Optional[HumorPolicy] = None):
         """
         Initialize the humor signal policy.
         
         Args:
-            config: Humor policy configuration
+            config: Humor policy configuration (legacy)
+            policy: Explicit HumorPolicy struct (preferred)
         """
         self.config = config or HumorPolicyConfig()
+        self.policy = policy or HumorPolicy(
+            enabled=True,
+            mode="rewarding",
+            dimension_weights={
+                "chronos": 0.15,
+                "lexicon": 0.10,
+                "surreal": 0.10,
+                "empathy": 0.20,
+                "critique": 0.15,
+                "slapstick": 0.10,
+                "meta": 0.20
+            },
+            max_bonus_ratio=0.25,
+            per_user_daily_cap_atr=1.0
+        )
         self.observation_stats = HumorObservationStats()
         
         # Initialize dimension distributions
@@ -97,27 +142,27 @@ class HumorSignalPolicy:
             HumorBonusCalculation: Calculated bonus and metadata
         """
         # Check if humor is enabled
-        if not self.config.enabled:
+        if not self.policy.enabled:
             return HumorBonusCalculation(
                 bonus_factor=0.0,
                 dimensions_used=dimensions,
-                weights_applied=self.config.dimension_weights,
-                policy_version="v1.0.0"
+                weights_applied=self.policy.dimension_weights,
+                policy_version=self.policy.version
             )
         
         # Check if humor is recognition-only
-        if self.config.recognition_only:
+        if self.policy.mode == "recognition_only":
             return HumorBonusCalculation(
                 bonus_factor=0.0,  # No economic effect
                 dimensions_used=dimensions,
-                weights_applied=self.config.dimension_weights,
-                policy_version="v1.0.0"
+                weights_applied=self.policy.dimension_weights,
+                policy_version=self.policy.version
             )
         
         # Calculate weighted sum of dimensions
         weighted_sum = 0.0
         for dimension, score in dimensions.items():
-            weight = self.config.dimension_weights.get(dimension, 0.0)
+            weight = self.policy.dimension_weights.get(dimension, 0.0)
             weighted_sum += score * weight
         
         # Apply confidence as a multiplier
@@ -127,7 +172,7 @@ class HumorSignalPolicy:
         base_bonus = weighted_sum * confidence_factor
         
         # Apply cap
-        final_bonus = min(base_bonus, self.config.max_humor_bonus)
+        final_bonus = min(base_bonus, self.policy.max_bonus_ratio)
         
         # Update observability stats
         self._update_observation_stats(dimensions, confidence, final_bonus)
@@ -135,9 +180,9 @@ class HumorSignalPolicy:
         return HumorBonusCalculation(
             bonus_factor=final_bonus,
             dimensions_used=dimensions,
-            weights_applied=self.config.dimension_weights,
-            cap_applied=self.config.max_humor_bonus if base_bonus > self.config.max_humor_bonus else None,
-            policy_version="v1.0.0"
+            weights_applied=self.policy.dimension_weights,
+            cap_applied=self.policy.max_bonus_ratio if base_bonus > self.policy.max_bonus_ratio else None,
+            policy_version=self.policy.version
         )
     
     def _update_observation_stats(self, dimensions: Dict[str, float], confidence: float, bonus: float):
@@ -207,28 +252,30 @@ class HumorSignalPolicy:
         
         explanation = {
             "policy_version": calculation.policy_version,
+            "policy_hash": self.policy.hash,
             "dimensions": dimensions,
             "confidence": confidence,
-            "weights": self.config.dimension_weights,
+            "weights": self.policy.dimension_weights,
             "weighted_scores": {
-                dim: dimensions[dim] * self.config.dimension_weights[dim]
+                dim: dimensions[dim] * self.policy.dimension_weights[dim]
                 for dim in dimensions
             },
             "weighted_sum": sum(
-                dimensions[dim] * self.config.dimension_weights[dim]
+                dimensions[dim] * self.policy.dimension_weights[dim]
                 for dim in dimensions
             ),
             "confidence_factor": confidence,
             "base_bonus": sum(
-                dimensions[dim] * self.config.dimension_weights[dim]
+                dimensions[dim] * self.policy.dimension_weights[dim]
                 for dim in dimensions
             ) * confidence,
-            "cap": self.config.max_humor_bonus,
+            "cap": self.policy.max_bonus_ratio,
+            "cap_applied": calculation.cap_applied,
             "final_bonus": calculation.bonus_factor,
             "policy_settings": {
-                "enabled": self.config.enabled,
-                "recognition_only": self.config.recognition_only,
-                "max_bonus": self.config.max_humor_bonus
+                "enabled": self.policy.enabled,
+                "mode": self.policy.mode,
+                "max_bonus": self.policy.max_bonus_ratio
             }
         }
         
@@ -240,8 +287,24 @@ def test_humor_policy():
     """Test the humor policy implementation."""
     print("Testing HumorSignalPolicy...")
     
-    # Create humor policy
-    humor_policy = HumorSignalPolicy()
+    # Create humor policy with explicit HumorPolicy struct
+    humor_policy = HumorSignalPolicy(
+        policy=HumorPolicy(
+            enabled=True,
+            mode="rewarding",
+            dimension_weights={
+                "chronos": 0.15,
+                "lexicon": 0.10,
+                "surreal": 0.10,
+                "empathy": 0.20,
+                "critique": 0.15,
+                "slapstick": 0.10,
+                "meta": 0.20
+            },
+            max_bonus_ratio=0.25,
+            per_user_daily_cap_atr=1.0
+        )
+    )
     
     # Test case 1: Normal humor signal
     dimensions = {
@@ -268,13 +331,13 @@ def test_humor_policy():
     print(f"Observation stats: {stats.total_signals_processed} signals processed")
     
     # Test with policy disabled
-    humor_policy.config.enabled = False
+    humor_policy.policy.enabled = False
     disabled_bonus = humor_policy.calculate_humor_bonus(dimensions, confidence)
     print(f"Disabled bonus: {disabled_bonus.bonus_factor}")
     
     # Test with recognition-only mode
-    humor_policy.config.enabled = True
-    humor_policy.config.recognition_only = True
+    humor_policy.policy.enabled = True
+    humor_policy.policy.mode = "recognition_only"
     recognition_bonus = humor_policy.calculate_humor_bonus(dimensions, confidence)
     print(f"Recognition-only bonus: {recognition_bonus.bonus_factor}")
     

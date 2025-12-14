@@ -40,11 +40,13 @@ async def create_wallet(
         
         # In a real implementation, we would generate secure keys here
         wallet = {
-            "id": wallet_id,
+            "wallet_id": wallet_id,
             "owner_id": current_user["id"],
             "name": wallet_data.name,
             "description": wallet_data.description,
+            "asset": wallet_data.asset,
             "created_at": "2023-01-01T00:00:00Z",  # Would be datetime.utcnow().isoformat()
+            "updated_at": "2023-01-01T00:00:00Z",  # Would be datetime.utcnow().isoformat()
             "is_active": True,
             "metadata": wallet_data.metadata or {}
         }
@@ -94,8 +96,8 @@ async def get_wallet(
     # Get balances for this wallet
     # In a real implementation, this would query the ledger
     balances = [
-        {"asset": "QFS", "balance": 1000.0},  # Example balance
-        {"asset": "BTC", "balance": 0.5}      # Example balance
+        {"asset": "QFS", "balance": 1000.0, "locked": 0.0, "total": 1000.0},  # Example balance
+        {"asset": "BTC", "balance": 0.5, "locked": 0.0, "total": 0.5}      # Example balance
     ]
     
     return WalletResponse(
@@ -137,8 +139,8 @@ async def get_wallet_balances(
     
     # In a real implementation, this would query the ledger
     all_balances = [
-        {"asset": "QFS", "balance": 1000.0},
-        {"asset": "BTC", "balance": 0.5}
+        {"asset": "QFS", "balance": 1000.0, "locked": 0.0, "total": 1000.0},
+        {"asset": "BTC", "balance": 0.5, "locked": 0.0, "total": 0.5}
     ]
     
     # Filter by asset if specified
@@ -168,8 +170,8 @@ async def list_wallets(
         WalletResponse(
             **wallet,
             balances=[
-                {"asset": "QFS", "balance": 1000.0},
-                {"asset": "BTC", "balance": 0.5}
+                {"asset": "QFS", "balance": 1000.0, "locked": 0.0, "total": 1000.0},
+                {"asset": "BTC", "balance": 0.5, "locked": 0.0, "total": 0.5}
             ]
         )
         for wallet in user_wallets

@@ -54,11 +54,12 @@ async def create_transaction(
             
         # Process pending transactions
         transaction_processor.process_pending_transactions()
-        
-        return TransactionResponse(
-            **tx.to_dict(),
-            status="pending"
-        )
+
+        tx_payload = tx.to_dict()
+        # tx.to_dict() includes the dataclass 'status' field; avoid passing it twice.
+        tx_payload.pop("status", None)
+
+        return TransactionResponse(**tx_payload, status="pending")
         
     except Exception as e:
         logger.error(f"Error creating transaction: {str(e)}")

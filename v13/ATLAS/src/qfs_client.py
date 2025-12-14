@@ -112,21 +112,40 @@ class QFSClient:
         # Submit to RealLedger
         try:
             receipt = await self._ledger.submit_bundle(bundle)
+
+            # RealLedger may return a dataclass-style receipt or a dict-like receipt.
+            # Normalize access deterministically.
+            if isinstance(receipt, dict):
+                _status = receipt.get("status", "submitted")
+                _timestamp = receipt.get("timestamp", bundle.timestamp)
+                _block_hash = receipt.get("block_hash")
+                _block_height = receipt.get("block_height")
+                _gas_used = receipt.get("gas_used")
+                _events = receipt.get("events", [])
+            else:
+                _status = getattr(receipt, "status", "submitted")
+                _timestamp = getattr(receipt, "timestamp", bundle.timestamp)
+                _block_hash = getattr(receipt, "block_hash", None)
+                _block_height = getattr(receipt, "block_height", None)
+                _gas_used = getattr(receipt, "gas_used", None)
+                _events = getattr(receipt, "events", []) or []
             
             # Convert to TransactionReceipt
             tx_receipt = TransactionReceipt(
                 transaction_id=tx.transaction_id or bundle_hash,
                 bundle_hash=bundle_hash,
-                status=receipt.get("status", "submitted"),
-                timestamp=receipt.get("timestamp", bundle.timestamp),
-                block_hash=receipt.get("block_hash"),
-                block_height=receipt.get("block_height"),
-                gas_used=receipt.get("gas_used"),
-                events=receipt.get("events", [])
+                status=_status,
+                timestamp=_timestamp,
+                block_hash=_block_hash,
+                block_height=_block_height,
+                gas_used=_gas_used,
+                events=_events
             )
             
             # Store pending bundle tracking
             self._pending_bundles[bundle_hash] = bundle
+            # Also allow lookup by transaction_id (some callers supply explicit tx ids)
+            self._pending_bundles[tx_receipt.transaction_id] = bundle
             
             return tx_receipt
             
