@@ -1,0 +1,14 @@
+[
+    {
+        "file": "v13/ATLAS/src/core/quantum_engine.py",
+        "violation_type": "CRITICAL",
+        "description": "Removed non-deterministic imports (time, secrets) and random seeding from QuantumEngine.",
+        "fix_applied": "Enforced explicit explicit seed requirement in `generate_quantum_key` and used fixed deterministic stub for `create_entangled_pair`."
+    },
+    {
+        "file": "v13/ATLAS/src/components/ContentComposer.tsx",
+        "violation_type": "CRITICAL",
+        "description": "Removed Math.random() usage in UI simulation logic.",
+        "fix_applied": "Implemented `simpleHash` function to derive deterministic simulation metrics from content + tags."
+    }
+]

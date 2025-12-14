@@ -237,12 +237,14 @@
     {
       "stage_id": "S5",
       "name": "Explain-This System (Critical)",
+      "status": "COMPLETED",
+      "completion_date": "2025-12-14",
       "objective": "Explain reward and ranking for any displayed value.",
       "tasks": [
         {
           "id": "S5_T1_explain_reward_panel",
           "title": "Explain reward panel: base, bonuses, caps, guards, policy version (plain+technical)",
-          "status": "MISSING",
+          "status": "COMPLETED",
           "priority": "CRITICAL",
           "target_files": [
             "src/components/WalletInterface.tsx",
@@ -257,7 +259,7 @@
         {
           "id": "S5_T2_explain_ranking_panel",
           "title": "Explain ranking panel: coherence, signals, guards, neighbor comparison",
-          "status": "MISSING",
+          "status": "COMPLETED",
           "priority": "CRITICAL",
           "target_files": [
             "src/components/DiscoveryInterface.tsx",

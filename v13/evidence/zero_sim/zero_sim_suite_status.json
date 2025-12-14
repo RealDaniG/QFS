@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-12-14T17:45:24.516536",
+  "suites": [
+    {
+      "name": "QFS Core Determinism",
+      "status": "PASS",
+      "duration_seconds": 7.555623,
+      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 3 passed, 1 warning in 0.96s =========================\n"
+    },
+    {
+      "name": "Humor Slice Zero-Sim",
+      "status": "PASS",
+      "duration_seconds": 7.535691,
+      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 5 passed, 1 warning in 0.92s =========================\n"
+    },
+    {
+      "name": "Value-Node Replay & Explainability",
+      "status": "PASS",
+      "duration_seconds": 7.548916,
+      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 3 passed, 1 warning in 0.93s =========================\n"
+    },
+    {
+      "name": "ATLAS Explanation E2E",
+      "status": "PASS",
+      "duration_seconds": 2.692429,
+      "output_tail": "lds.py:1051: PydanticDeprecatedSince20: `max_items` is deprecated and will be removed, use `max_length` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/\n    warn('`max_items` is deprecated and will be removed, use `max_length` instead', DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 2 passed, 10 warnings in 1.55s ========================\n"
+    }
+  ],
+  "overall_status": "PASS"
+}
