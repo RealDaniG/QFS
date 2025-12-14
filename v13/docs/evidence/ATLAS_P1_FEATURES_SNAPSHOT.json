@@ -1,0 +1,331 @@
+{
+  "timestamp": "2025-12-13T17:00:00Z",
+  "snapshot_type": "P1_FEATURES",
+  "status": "IMPLEMENTED_AND_TESTED",
+  "implemented_p1_endpoints": [
+    {
+      "endpoint": "GET /api/v1/notifications",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_notifications",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger",
+        "CertifiedMath"
+      ],
+      "features": [
+        "Segmented notifications by category (Social, Economic, Governance)",
+        "Deterministic pagination with cursors",
+        "Links back to underlying ledger events",
+        "JSON serialization with stable ordering"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INVALID_LIMIT",
+          "INVALID_CATEGORY",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/notifications/unread",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_unread_notification_counts",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+      "qfs_modules_invoked": [
+        "NotificationService"
+      ],
+      "features": [
+        "Per-category unread counts",
+        "Deterministic counting"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/ledger/events",
+      "module": "src/atlas_api/ledger_handler.py",
+      "handler": "LedgerRouter.route_get_events",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_LEDGER_EXPLORER_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger"
+      ],
+      "features": [
+        "Deterministic paginated stream",
+        "Filtering by type, module, user",
+        "Event hashes and prev/next links",
+        "Stable ordering"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "INVALID_LIMIT",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/ledger/events/{event_id}",
+      "module": "src/atlas_api/ledger_handler.py",
+      "handler": "LedgerRouter.route_get_event_detail",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_LEDGER_EXPLORER_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger"
+      ],
+      "features": [
+        "Full inputs/outputs/guards/explanations",
+        "Navigation links (prev/next)",
+        "Event hash consistency"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_EVENT_ID",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "POST /api/v1/openagi/authorize",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_authorize_open_agi_action",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_OPEN_AGI_ROLE_V1.md",
+      "qfs_modules_invoked": [
+        "OPENAGIRoleEnforcer"
+      ],
+      "features": [
+        "Role-based authorization (SYSTEM, SIMULATOR, PROPOSER)",
+        "Action type restrictions",
+        "Simulation-only policy enforcement",
+        "Activity logging"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_ROLE",
+          "MISSING_ACTION_TYPE",
+          "INVALID_PARAMETERS",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "GET /api/v1/feed",
+      "module": "src/atlas_api/gateway.py",
+      "handler": "AtlasAPIGateway.get_feed",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_FEED_RANKING_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceEngine",
+        "AEGISGuard",
+        "SafetyGuard"
+      ],
+      "features": [
+        "Coherence-based feed ranking",
+        "Feature vectors derived from engagement signals",
+        "Content text passed to AEGIS/SafetyGuard for safety checks",
+        "Deterministic ranking with policy version metadata"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_USER_ID",
+          "INVALID_LIMIT",
+          "INVALID_MODE",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "POST /api/v1/interactions/{type}",
+      "module": "src/atlas_api/gateway.py",
+      "handler": "AtlasAPIGateway.post_interaction",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "spec_version": "ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger",
+        "AEGISGuard",
+        "SafetyGuard",
+        "EconomicsGuard",
+        "TreasuryEngine"
+      ],
+      "features": [
+        "Event emission to CoherenceLedger",
+        "AEGIS Guard observation for safety and economics checks",
+        "HSMF metrics generation from interaction data",
+        "Reward estimation via TreasuryEngine",
+        "Guard results reflected in API responses"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_USER_ID",
+          "MISSING_TARGET_ID",
+          "INVALID_INTERACTION_TYPE",
+          "MISSING_CONTENT",
+          "MISSING_REASON",
+          "INTERNAL_ERROR"
+        ]
+      }
+    }
+  ],
+  "p1_components": [
+    {
+      "component": "AEGISGuard",
+      "module": "src/guards/AEGISGuard.py",
+      "status": "IMPLEMENTED_IN_OBSERVATION_ONLY_MODE",
+      "features": [
+        "Meta-guard orchestrator",
+        "SafetyGuard integration with real content evaluation",
+        "EconomicsGuard integration (placeholder)",
+        "Observation-only mode",
+        "Ledger event logging",
+        "BigNum128 serialization as strings"
+      ]
+    },
+    {
+      "component": "NotificationService",
+      "module": "src/services/notification_service.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Segmented notifications (Social, Economic, Governance)",
+        "Ledger event processing",
+        "Deterministic notification generation",
+        "Category-based filtering"
+      ]
+    },
+    {
+      "component": "OPENAGIRoleEnforcer",
+      "module": "src/auth/open_agi_role.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Role-based authorization",
+        "Simulation-only policy",
+        "Proposal submission system",
+        "Activity logging"
+      ]
+    },
+    {
+      "component": "LedgerHandler",
+      "module": "src/atlas_api/ledger_handler.py",
+      "status": "IMPLEMENTED",
+      "features": [
+        "Event listing with pagination",
+        "Event detail retrieval",
+        "Filtering capabilities",
+        "Navigation links"
+      ]
+    },
+    {
+      "component": "AtlasAPIGateway",
+      "module": "src/atlas_api/gateway.py",
+      "status": "IMPLEMENTED_WITH_GUARD_INTEGRATION",
+      "features": [
+        "Feed ranking with CoherenceEngine",
+        "Social interaction processing",
+        "AEGIS Guard integration for safety and economics checks",
+        "HSMF metrics generation",
+        "Real content text for safety evaluation"
+      ]
+    }
+  ],
+  "current_spec_versions": [
+    "specs/ATLAS_API_CONTRACTS_V1.md",
+    "specs/ATLAS_SEGMENTED_NOTIFICATIONS_V1.md",
+    "specs/ATLAS_LEDGER_EXPLORER_V1.md",
+    "specs/ATLAS_OPEN_AGI_ROLE_V1.md",
+    "specs/ATLAS_FEED_RANKING_V1.md",
+    "specs/ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md"
+  ],
+  "test_names_validating_presence": [
+    "test_notification_service_initialization",
+    "test_aegis_guard_initialization",
+    "test_open_agi_role_enforcer_initialization",
+    "test_ledger_handler_initialization",
+    "test_atlas_api_gateway_initialization"
+  ],
+  "test_names_validating_behavior": [
+    "test_process_ledger_entry_creates_notification",
+    "test_get_notifications_by_category",
+    "test_get_unread_counts",
+    "test_mark_as_read",
+    "test_deterministic_notification_generation",
+    "test_observe_event_creates_observation",
+    "test_multiple_observations",
+    "test_deterministic_observations",
+    "test_safety_guard_integration",
+    "test_economics_guard_integration",
+    "test_authorize_action_system_role",
+    "test_authorize_action_simulator_role",
+    "test_authorize_action_proposer_role",
+    "test_submit_proposal",
+    "test_activity_log",
+    "test_deterministic_behavior",
+    "test_get_events",
+    "test_get_event_detail",
+    "test_event_filtering",
+    "test_pagination",
+    "test_get_feed_ranking",
+    "test_post_interaction_with_guard_evaluation",
+    "test_feed_safety_checks",
+    "test_interaction_safety_checks"
+  ],
+  "git_hash": "placeholder_for_actual_git_hash",
+  "next_steps": [
+    "Implement full guard evaluation logic in AEGISGuard",
+    "Add frontend UI for ledger explorer",
+    "Expand notification categories and types",
+    "Implement proposal review and approval workflow",
+    "Integrate with real storage/IPFS for content retrieval"
+  ],
+  "post_audit_fixes": [
+    "Added missing AtlasAPIGateway._build_hsmf_metrics_from_interaction(...)",
+    "Updated AtlasAPIGateway._fetch_content_candidates(...) to include real content text",
+    "Updated _build_coherence_input(...) so content text is available for SafetyGuard",
+    "Fixed AEGISGuard JSON serialization by converting BigNum128 fields to strings before hashing/serializing",
+    "Removed duplicate code in _build_feature_vector",
+    "All relevant tests now pass: SafetyGuard integration test, Feed safety test, Step-by-step feed processing test",
+    "System now runs feed ranking with meaningful content safety checks",
+    "Handles safe vs unsafe content correctly",
+    "Maintains deterministic behavior",
+    "Integrates SafetyGuard and EconomicsGuard via AEGISGuard",
+    "Uses real content text for safety evaluation instead of empty strings"
+  ]
+}

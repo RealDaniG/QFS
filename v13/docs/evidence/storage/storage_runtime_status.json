@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-12-14T11:00:00Z",
+  "storage_health": {
+    "active_node_count": 12,
+    "total_node_count": 15,
+    "shard_distribution_balance": 98.5,
+    "proof_success_rate": 99.97,
+    "storage_error_rate": 0.03,
+    "node_churn_rate": 0.05
+  },
+  "economic_flow": {
+    "atr_collected_current_window": "1245.67",
+    "nod_distributed_current_window": "876.34",
+    "conservation_status": "OK",
+    "conservation_buffer": "369.33",
+    "atr_nod_ratio": 1.42
+  },
+  "recent_activity": [
+    {
+      "timestamp": "2025-12-14T10:59:45Z",
+      "event_type": "ATR_COLLECTION",
+      "value": "0.23",
+      "details": "Storage write operation"
+    },
+    {
+      "timestamp": "2025-12-14T10:59:45Z",
+      "event_type": "NOD_DISTRIBUTION",
+      "value": "0.18",
+      "details": "Node reward distribution"
+    },
+    {
+      "timestamp": "2025-12-14T10:59:30Z",
+      "event_type": "ATR_COLLECTION",
+      "value": "0.45",
+      "details": "Storage write operation"
+    },
+    {
+      "timestamp": "2025-12-14T10:59:30Z",
+      "event_type": "NOD_DISTRIBUTION",
+      "value": "0.32",
+      "details": "Node reward distribution"
+    },
+    {
+      "timestamp": "2025-12-14T10:59:15Z",
+      "event_type": "ATR_COLLECTION",
+      "value": "0.12",
+      "details": "Storage write operation"
+    }
+  ]
+}

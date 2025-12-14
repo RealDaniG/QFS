@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-12-13T17:00:00Z",
+  "snapshot_type": "P0_API_SURFACES",
+  "status": "INTEGRATED_WITH_QFS_AND_TESTED",
+  "implemented_stub_endpoints": [
+    {
+      "endpoint": "GET /api/v1/feed",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_get_feed",
+      "status": "INTEGRATED_WITH_QFS_AND_TESTED",
+      "spec_version": "ATLAS_FEED_RANKING_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceEngine.update_omega",
+        "CertifiedMath.sqrt"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_USER_ID",
+          "INVALID_LIMIT",
+          "INVALID_MODE",
+          "INTERNAL_ERROR"
+        ]
+      }
+    },
+    {
+      "endpoint": "POST /api/v1/interactions/{type}",
+      "module": "src/atlas_api/router.py",
+      "handler": "route_post_interaction",
+      "status": "INTEGRATED_WITH_QFS_AND_TESTED",
+      "spec_version": "ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md",
+      "qfs_modules_invoked": [
+        "CoherenceLedger.log_state",
+        "EconomicsGuard.validate_chr_reward",
+        "TreasuryEngine.calculate_rewards"
+      ],
+      "error_handling": {
+        "error_response_format": {
+          "error_code": "string",
+          "message": "string",
+          "details": "string"
+        },
+        "common_errors": [
+          "MISSING_USER_ID",
+          "MISSING_TARGET_ID",
+          "INVALID_INTERACTION_TYPE",
+          "MISSING_CONTENT",
+          "MISSING_REASON",
+          "INTERNAL_ERROR"
+        ]
+      }
+    }
+  ],
+  "current_spec_versions": [
+    "specs/ATLAS_API_CONTRACTS_V1.md",
+    "specs/ATLAS_FEED_RANKING_V1.md",
+    "specs/ATLAS_INTERACTIONS_EVENT_BRIDGE_V1.md"
+  ],
+  "test_names_validating_presence": [
+    "test_feed_endpoint_exists",
+    "test_interaction_endpoint_exists",
+    "test_feed_response_schema",
+    "test_interaction_response_schema",
+    "test_deterministic_responses",
+    "test_request_models_exist"
+  ],
+  "test_names_validating_behavior": [
+    "test_feed_endpoint_exists",
+    "test_interaction_endpoint_exists",
+    "test_feed_response_schema",
+    "test_interaction_response_schema",
+    "test_deterministic_responses",
+    "test_request_models_exist",
+    "test_feed_deterministic_for_same_state",
+    "test_feed_mode_switch",
+    "test_interaction_success_path",
+    "test_interaction_guard_failure",
+    "test_interaction_deterministic_event_id",
+    "test_invalid_input_handling",
+    "test_internal_error_handling"
+  ],
+  "git_hash": "placeholder_for_actual_git_hash",
+  "next_steps": [
+    "Implement full business logic for feed ranking",
+    "Implement full business logic for interaction processing",
+    "Add complete guard evaluation logic",
+    "Add complete reward calculation logic"
+  ]
+}

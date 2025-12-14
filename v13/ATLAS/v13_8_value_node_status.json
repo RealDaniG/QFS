@@ -1,0 +1,16 @@
+{
+  "phase": "V13.8 – Value Graph Reference",
+  "files_modified": [
+    "src/value_graph_ref.py",
+    "tests/value_node/test_value_graph_ref.py",
+    "specs/QFS_V13_8_VALUE_NODE_MODEL.md"
+  ],
+  "tests_run": [
+    "python -m pytest tests/value_node/test_value_node_replay.py tests/value_node/test_value_graph_ref.py -v"
+  ],
+  "tests_status": "PASS",
+  "known_issues": [],
+  "open_todos": [
+    "Future: bridge reference value graph to real QFS events once V13.7 is fully stabilized."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "feature": "OPEN-AGI Simulation-Only Role",
+  "feature_id": "ATLAS-P1-012",
+  "implementation_date": "2025-12-13",
+  "status": "COMPLETE",
+  "implementation_details": {
+    "module": "src/auth/open_agi_role.py",
+    "classes": ["OPENAGIRoleEnforcer", "OPENAGIRole", "OPENAGIActionType"],
+    "roles": ["SYSTEM", "SIMULATOR", "PROPOSER"],
+    "action_types": ["READ_STATE", "RUN_SIMULATION", "PROPOSE_INTERVENTION"]
+  },
+  "api_endpoints": [
+    {
+      "endpoint": "POST /api/v1/openagi/authorize",
+      "status": "IMPLEMENTED",
+      "handler": "AtlasAPIRouter.route_authorize_open_agi_action",
+      "parameters": ["role", "action_type", "inputs"]
+    }
+  ],
+  "qfs_modules_invoked": [
+    "CertifiedMath"
+  ],
+  "deterministic_guarantees": {
+    "uses_deterministic_timestamps": true,
+    "generates_pqc_cids": true,
+    "proposal_id_generation": "SHA256 hash of proposal data",
+    "log_id_generation": "SHA256 hash of log data",
+    "zero_sim_compliant": true
+  },
+  "test_coverage": {
+    "test_file": "tests/auth/test_open_agi_role.py",
+    "test_classes": ["TestOPENAGIRoleEnforcer"],
+    "key_test_cases": [
+      "test_role_enforcer_initialization",
+      "test_authorize_action_system_role",
+      "test_authorize_action_simulator_role",
+      "test_authorize_action_proposer_role",
+      "test_submit_proposal",
+      "test_activity_log",
+      "test_deterministic_behavior"
+    ]
+  },
+  "role_enforcement": {
+    "simulation_only_policy": true,
+    "role_based_authorization": true,
+    "proposal_submission": true,
+    "activity_logging": true,
+    "segregated_operations": true
+  },
+  "event_types": {
+    "AGI_PROPOSAL": "Implemented as proposal submission mechanism",
+    "AGI_SIMULATION": "Implemented as simulation-only actions"
+  }
+}
