@@ -64,6 +64,7 @@ Each invariant is defined as:
   - Replay does not require external data sources.
 - **Test types**:
   - Replay harness (e.g. `v13/scripts/run_storage_replay_drill.py`), plus golden-hash comparisons.
+  - Unit replay tests: `v13/tests/storage/test_storageengine_replay.py` (live vs replay snapshot + hash).
 
 ### SE-R2 — List operations are deterministically sorted
 - **Statement**: `list_objects(filters)` output ordering must be deterministic.
@@ -80,6 +81,20 @@ Each invariant is defined as:
   - Proof generation contains no wall-clock/random inputs.
 - **Test types**:
   - Unit tests for `_generate_merkle_root` and `_generate_shard_proof`.
+
+### SE-R4 — Proof events are logged and replay-accountable
+- **Statement**: Proof requests must emit deterministic `PROOF_GENERATED`/`PROOF_FAILED` StorageEvents so proof accounting can be reconstructed from logs.
+- **Checkable conditions**:
+  - `get_storage_proof` emits `PROOF_GENERATED` on success with `replica_sets` including assigned nodes.
+  - Missing shard emits `PROOF_FAILED` with a finite `error_code`.
+  - Replay-derived proof counts match live proof calls.
+- **Test types**:
+  - Replay proof accounting tests: `v13/tests/storage/test_storageengine_replay.py`.
+  - Replay-derived metrics tests: `v13/tests/test_storage_economic_views.py`.
+
+## Replay helper (test-only)
+
+- `v13/tests/storage/test_storageengine_replay.py::replay_storage_events` is the current pure replay helper used by tests.
 
 ---
 
