@@ -10,6 +10,7 @@ from typing import Optional
 import logging
 
 from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain
+from .dependencies import get_current_user
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

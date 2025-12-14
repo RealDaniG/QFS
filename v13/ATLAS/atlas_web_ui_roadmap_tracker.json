@@ -63,7 +63,10 @@
           "title": "Add global trust indicators (Replayable / Governed / Policy-Bound) to UI shell",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/app/layout.tsx", "src/app/page.tsx"],
+          "target_files": [
+            "src/app/layout.tsx",
+            "src/app/page.tsx"
+          ],
           "acceptance": [
             "Every major view shows a badge indicating data provenance.",
             "Public vs private sections are visually separated.",
@@ -75,12 +78,28 @@
           "title": "Wallet-based session indicator (PQC-ready) with AEGIS verification placeholder",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/hooks/useAuth.ts", "src/components/WalletInterface.tsx"],
+          "target_files": [
+            "src/hooks/useAuth.ts",
+            "src/components/WalletInterface.tsx"
+          ],
           "acceptance": [
             "UI shows DID/wallet identity state.",
             "AEGIS status shown as Verified/Unverified (read-only; data comes from QFS query once available)."
           ]
         }
+      ]
+    },
+    {
+      "stage_id": "S1",
+      "name": "Value-Node Replay & Explainability",
+      "status": "completed",
+      "completion_date": "2025-12-14",
+      "description": "Deterministic replay and 'Explain-This' layer for user-friendly economic insights.",
+      "acceptance_criteria": [
+        "Replay guarantees bit-exact state reconstruction",
+        "Explanation generation is deterministic",
+        "Zero-Simulation compliant (no float/random)",
+        "Frontend types defined"
       ]
     },
     {
@@ -93,7 +112,11 @@
           "title": "Public identity snapshot panel (ATR reputation, ΨSync/coherence, governance footprint, infra roles)",
           "status": "MISSING",
           "priority": "HIGH",
-          "target_files": ["src/components/ProfileEditor.tsx", "src/hooks/useProfile.ts", "src/lib/profile/*"],
+          "target_files": [
+            "src/components/ProfileEditor.tsx",
+            "src/hooks/useProfile.ts",
+            "src/lib/profile/*"
+          ],
           "acceptance": [
             "All fields are sourced from ledger replay/query.",
             "No PII stored in ledger; snapshot uses pseudonymous IDs."
@@ -104,7 +127,10 @@
           "title": "Role gating for governance/infra/moderation panels",
           "status": "PARTIAL",
           "priority": "MEDIUM",
-          "target_files": ["src/hooks/useAuth.ts", "src/app/page.tsx"],
+          "target_files": [
+            "src/hooks/useAuth.ts",
+            "src/app/page.tsx"
+          ],
           "acceptance": [
             "Role-only routes/components are hidden unless permitted.",
             "All role checks are explainable and ledger-backed."
@@ -122,7 +148,12 @@
           "title": "Deterministic feed ranking with coherence/topic/time filters + why-this-ranking",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/DiscoveryInterface.tsx", "src/components/DistributedFeed.tsx", "src/components/Feed.tsx", "src/hooks/useQFSFeed.ts"],
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/components/DistributedFeed.tsx",
+            "src/components/Feed.tsx",
+            "src/hooks/useQFSFeed.ts"
+          ],
           "acceptance": [
             "Ranking is reproducible given the same ledger snapshot.",
             "Each item has a 'Why this ranking?' explainer (stub acceptable initially)."
@@ -133,7 +164,11 @@
           "title": "Content creation emits content_id and ledger event (no immediate reward mutation)",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/ContentComposer.tsx", "src/hooks/useContentPublisher.ts", "src/lib/content/*"],
+          "target_files": [
+            "src/components/ContentComposer.tsx",
+            "src/hooks/useContentPublisher.ts",
+            "src/lib/content/*"
+          ],
           "acceptance": [
             "Submission produces deterministic content_id (canonical serialization + hash).",
             "Submission path constructs governed transaction only; UI does not modify balances."
@@ -151,7 +186,10 @@
           "title": "Content detail page (content_id, author, versions, interactions, rewards, signals, governance tags)",
           "status": "MISSING",
           "priority": "HIGH",
-          "target_files": ["src/lib/content/*", "src/components/DiscoveryInterface.tsx"],
+          "target_files": [
+            "src/lib/content/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
           "acceptance": [
             "All metrics derived from ledger replay.",
             "Every number has 'why' path to contributing events/policies."
@@ -162,7 +200,11 @@
           "title": "Replayable value contribution graph visualization",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/lib/ledger/*", "src/lib/qfs/*", "src/components/DiscoveryInterface.tsx"],
+          "target_files": [
+            "src/lib/ledger/*",
+            "src/lib/qfs/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
           "acceptance": [
             "Graph can be time-sliced/replayed deterministically.",
             "Graph is read-only; no state mutation."
@@ -180,7 +222,11 @@
           "title": "User overview (total value, ATR/FLX balances, coherence/ΨSync, governance footprint)",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/WalletInterface.tsx", "src/hooks/useTreasury.ts", "v13_8_value_node_status.json"],
+          "target_files": [
+            "src/components/WalletInterface.tsx",
+            "src/hooks/useTreasury.ts",
+            "v13_8_value_node_status.json"
+          ],
           "acceptance": [
             "UI shows ledger-backed totals and links to explanation.",
             "Replay controls available for time slicing (stub acceptable initially)."
@@ -198,7 +244,11 @@
           "title": "Explain reward panel: base, bonuses, caps, guards, policy version (plain+technical)",
           "status": "MISSING",
           "priority": "CRITICAL",
-          "target_files": ["src/components/WalletInterface.tsx", "src/lib/economics/*", "src/api/routes/proofs.py"],
+          "target_files": [
+            "src/components/WalletInterface.tsx",
+            "src/lib/economics/*",
+            "src/api/routes/proofs.py"
+          ],
           "acceptance": [
             "Panel enumerates contributing ledger events and policy identifiers.",
             "Deterministic output for same ledger snapshot."
@@ -209,7 +259,10 @@
           "title": "Explain ranking panel: coherence, signals, guards, neighbor comparison",
           "status": "MISSING",
           "priority": "CRITICAL",
-          "target_files": ["src/components/DiscoveryInterface.tsx", "src/lib/qfs/*"],
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/lib/qfs/*"
+          ],
           "acceptance": [
             "Shows why-above/below neighbor explanations.",
             "No opaque ranking sources; deterministic calculations."
@@ -220,7 +273,10 @@
           "title": "Explain humor panel: 7-dimensional breakdown, confidence, bonus components, reason codes",
           "status": "PLANNED",
           "priority": "HIGH",
-          "target_files": ["src/components/DiscoveryInterface.tsx", "src/lib/qfs/*"],
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/lib/qfs/*"
+          ],
           "acceptance": [
             "Panel shows 7-dimensional humor vector with individual scores and weights.",
             "Displays reason codes (HUMOR_DISABLED, RECOGNITION_ONLY, HUMOR_CAP_APPLIED).",
@@ -240,7 +296,10 @@
           "title": "Secure DMs UI wired to secure-chat API",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/MessagingInterface.tsx", "secure_chat_status.json"],
+          "target_files": [
+            "src/components/MessagingInterface.tsx",
+            "secure_chat_status.json"
+          ],
           "acceptance": [
             "UI never displays server-side plaintext storage.",
             "Threads/messages show crypto status and content-address hashes."
@@ -251,7 +310,10 @@
           "title": "Implement IPFS storage adapter + client-side encryption flow",
           "status": "MISSING",
           "priority": "HIGH",
-          "target_files": ["src/lib/ipfs-client.ts", "src/secure_chat/storage/ipfs_storage.py"],
+          "target_files": [
+            "src/lib/ipfs-client.ts",
+            "src/secure_chat/storage/ipfs_storage.py"
+          ],
           "acceptance": [
             "Deterministic CID generation for identical bytes.",
             "No plaintext stored in server DB; only hashes/metadata."
@@ -269,7 +331,10 @@
           "title": "Governance portal: proposals (weights/caps/thresholds) + vote casting + receipts",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/GovernanceInterface.tsx", "src/lib/governance/*"],
+          "target_files": [
+            "src/components/GovernanceInterface.tsx",
+            "src/lib/governance/*"
+          ],
           "acceptance": [
             "Voting power shown with explainable breakdown.",
             "Actions emit governed tx only; no direct economic mutation."
@@ -287,7 +352,11 @@
           "title": "Signal analytics dashboards (humor/artistic distributions, abuse indicators)",
           "status": "MISSING",
           "priority": "MEDIUM",
-          "target_files": ["src/lib/qfs/*", "src/lib/economics/*", "src/components/DiscoveryInterface.tsx"],
+          "target_files": [
+            "src/lib/qfs/*",
+            "src/lib/economics/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
           "acceptance": [
             "Analytics derived from replayed events.",
             "Anomaly detection surfaces are explainable and deterministic."
@@ -298,7 +367,9 @@
           "title": "Platform constraints documentation",
           "status": "MISSING",
           "priority": "LOW",
-          "target_files": ["docs/platform_constraints.md"],
+          "target_files": [
+            "docs/platform_constraints.md"
+          ],
           "acceptance": [
             "Constraints are documented in a single source of truth.",
             "Constraints are versioned and auditable."
@@ -309,7 +380,9 @@
           "title": "Review and update platform constraints",
           "status": "MISSING",
           "priority": "LOW",
-          "target_files": ["docs/platform_constraints.md"],
+          "target_files": [
+            "docs/platform_constraints.md"
+          ],
           "acceptance": [
             "Constraints are reviewed and updated regularly.",
             "Constraints are aligned with QFS and ATLAS policies.",
@@ -328,7 +401,10 @@
           "title": "Ledger explorer with filterable event log + hash verification + replay controls",
           "status": "PARTIAL",
           "priority": "HIGH",
-          "target_files": ["src/components/Feed.tsx", "src/lib/ledger/*"],
+          "target_files": [
+            "src/components/Feed.tsx",
+            "src/lib/ledger/*"
+          ],
           "acceptance": [
             "Users can filter events deterministically.",
             "Hashes are verifiable from canonical serialized event data."

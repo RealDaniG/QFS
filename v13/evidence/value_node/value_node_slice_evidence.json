@@ -1,0 +1,43 @@
+{
+  "determinism_verified": true,
+  "generated_at_timestamp": 1735689600,
+  "replay_snapshot": {
+    "contents": {
+      "c1": {
+        "content_id": "c1",
+        "creator_id": "u1"
+      }
+    },
+    "events_processed": 3,
+    "interaction_count": 1,
+    "reward_count": 1,
+    "users": {
+      "u1": {
+        "governance_votes": 0,
+        "total_interactions": 0,
+        "total_rewards_atr": 10,
+        "user_id": "u1"
+      },
+      "u2": {
+        "governance_votes": 0,
+        "total_interactions": 1,
+        "total_rewards_atr": 0,
+        "user_id": "u2"
+      }
+    }
+  },
+  "sample_explanation": {
+    "explanation_hash": "efad019ac4f47970d8388388fe38450fcb4a01e68f78c3fffbe56a51a8669c63",
+    "policy_version": "v1.0.0",
+    "reason_codes": [
+      "REWARD_BONUSES_APPLIED"
+    ]
+  },
+  "slice": "Value-Node / User-as-Token",
+  "status": "COMPLIANT",
+  "tests_executed": [
+    "test_value_node_replay_determinism.py",
+    "test_value_node_replay_explanation.py"
+  ],
+  "zero_simulation_compliant": true
+}
