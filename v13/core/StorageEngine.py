@@ -152,6 +152,25 @@ class StorageEngine:
         self.total_nod_rewards_distributed = BigNum128(0)
         self.storage_event_log = []  # For replay testing
 
+    def _emit_storage_event(self, event: Dict[str, Any]) -> None:
+        """Append a canonical StorageEvent entry for deterministic replay.
+
+        This is intentionally a simple in-memory append used by tests and
+        replay drills. It must remain deterministic: event_id is computed from
+        a canonical JSON serialization of the event payload.
+        """
+
+        # Do not include a pre-existing event_id in the hash computation.
+        event_without_id = dict(event)
+        event_without_id.pop("event_id", None)
+
+        canonical_json = json.dumps(event_without_id, sort_keys=True, separators=(",", ":"))
+        event_id = hashlib.sha3_256(canonical_json.encode()).hexdigest()
+
+        event_with_id = dict(event_without_id)
+        event_with_id["event_id"] = event_id
+        self.storage_event_log.append(event_with_id)
+
     def set_aegis_context(
         self, registry_snapshot: Dict[str, Any], telemetry_snapshot: Dict[str, Any]
     ) -> None:
@@ -223,6 +242,25 @@ class StorageEngine:
         # Invalidate eligible nodes cache
         self._invalidate_eligible_nodes_cache()
 
+        # Emit epoch advancement event for replay
+        self._emit_storage_event(
+            {
+                "event_type": "EPOCH_ADVANCEMENT",
+                "epoch": new_epoch,
+                "timestamp_tick": 0,
+                "object_id": None,
+                "version": None,
+                "hash_commit": None,
+                "content_size": 0,
+                "shard_ids": [],
+                "replica_sets": {},
+                "atr_cost": "0",
+                "pqc_signature": None,
+                "error_code": None,
+                "error_detail": None,
+            }
+        )
+
     def register_storage_node(self, node_id: str, host: str, port: int) -> bool:
         """
         Register a storage node in the network.
@@ -249,6 +287,25 @@ class StorageEngine:
 
         self.nodes[node_id] = node
         self._invalidate_eligible_nodes_cache()
+
+        # Emit node registration event for replay
+        self._emit_storage_event(
+            {
+                "event_type": "NODE_REGISTRATION",
+                "epoch": self.current_epoch,
+                "timestamp_tick": 0,
+                "object_id": None,
+                "version": None,
+                "hash_commit": None,
+                "content_size": 0,
+                "shard_ids": [],
+                "replica_sets": {"node_id": node_id, "host": host, "port": port},
+                "atr_cost": "0",
+                "pqc_signature": None,
+                "error_code": None,
+                "error_detail": None,
+            }
+        )
         return True
 
     def unregister_storage_node(self, node_id: str) -> bool:
@@ -349,18 +406,6 @@ class StorageEngine:
             self.total_atr_fees_collected, atr_cost, []  # log_list
         )
 
-        # Log storage event for replay testing
-        self.storage_event_log.append(
-            {
-                "event_type": "STORE",
-                "object_id": object_id,
-                "version": version,
-                "content_size": len(content),
-                "atr_cost": atr_cost.to_decimal_string(),
-                "timestamp": deterministic_timestamp,
-            }
-        )
-
         # Create logical object
         logical_object = LogicalObject(
             object_id=object_id,
@@ -374,6 +419,7 @@ class StorageEngine:
         shard_ids = []
         chunk_size = BLOCK_SIZE_BYTES
         all_assigned_nodes = []
+        replica_sets: Dict[str, List[str]] = {}
 
         # Split content into chunks
         for i in range(0, len(content), chunk_size):
@@ -387,6 +433,7 @@ class StorageEngine:
             # Assign nodes to shard deterministically
             assigned_nodes = self._assign_nodes_to_shard(shard_id)
             all_assigned_nodes.extend(assigned_nodes)
+            replica_sets[shard_id] = assigned_nodes
 
             # Create shard
             shard = Shard(
@@ -415,6 +462,27 @@ class StorageEngine:
 
         # Update node storage metrics
         self._update_node_metrics(all_assigned_nodes, len(content))
+
+        # Emit full StorageEvent schema entry for deterministic replay.
+        # Note: This preserves previous fields (event_type/object_id/version/content_size/atr_cost)
+        # but upgrades to include shard_ids/replica_sets/epoch/timestamp_tick.
+        self._emit_storage_event(
+            {
+                "event_type": "STORE",
+                "epoch": self.current_epoch,
+                "timestamp_tick": deterministic_timestamp,
+                "object_id": object_id,
+                "version": version,
+                "hash_commit": hash_commit,
+                "content_size": len(content),
+                "shard_ids": shard_ids,
+                "replica_sets": replica_sets,
+                "atr_cost": atr_cost.to_decimal_string(),
+                "pqc_signature": None,
+                "error_code": None,
+                "error_detail": None,
+            }
+        )
 
         return {
             "hash_commit": hash_commit,
@@ -477,9 +545,48 @@ class StorageEngine:
             Merkle proof of storage
         """
         if shard_id not in self.shards:
+            # Deterministically log a proof failure event before raising.
+            self._emit_storage_event(
+                {
+                    "event_type": "PROOF_FAILED",
+                    "epoch": self.current_epoch,
+                    "timestamp_tick": 0,
+                    "object_id": object_id,
+                    "version": version,
+                    "hash_commit": None,
+                    "content_size": 0,
+                    "shard_ids": [shard_id],
+                    "replica_sets": {},
+                    "atr_cost": "0",
+                    "pqc_signature": None,
+                    "error_code": "SE_ERR_PROOF_UNAVAILABLE",
+                    "error_detail": "Shard not found",
+                }
+            )
             raise KeyError(f"Shard {shard_id} not found")
 
         shard = self.shards[shard_id]
+
+        # Deterministically log proof generation event.
+        self._emit_storage_event(
+            {
+                "event_type": "PROOF_GENERATED",
+                "epoch": self.current_epoch,
+                "timestamp_tick": 0,
+                "object_id": object_id,
+                "version": version,
+                "hash_commit": self.objects.get(f"{object_id}:{version}").hash_commit
+                if f"{object_id}:{version}" in self.objects
+                else None,
+                "content_size": 0,
+                "shard_ids": [shard_id],
+                "replica_sets": {shard_id: list(shard.assigned_nodes)},
+                "atr_cost": "0",
+                "pqc_signature": None,
+                "error_code": None,
+                "error_detail": None,
+            }
+        )
 
         return {
             "merkle_root": shard.merkle_root,
@@ -906,12 +1013,17 @@ class StorageEngine:
                 self.total_atr_fees_collected, self.total_nod_rewards_distributed, []
             )
 
+        store_event_count = 0
+        for ev in self.storage_event_log:
+            if isinstance(ev, dict) and ev.get("event_type") == "STORE":
+                store_event_count += 1
+
         return {
             "total_atr_fees_collected": self.total_atr_fees_collected.to_decimal_string(),
             "total_nod_rewards_distributed": self.total_nod_rewards_distributed.to_decimal_string(),
             "conservation_difference": conservation_difference.to_decimal_string(),
             "is_conservation_maintained": is_conservation_maintained,
-            "storage_event_count": len(self.storage_event_log),
+            "storage_event_count": store_event_count,
         }
 
 

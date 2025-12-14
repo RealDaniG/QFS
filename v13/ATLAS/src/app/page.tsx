@@ -28,6 +28,7 @@ import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { ExplainRewardFlow } from '@/components/ExplainRewardFlow'
 import ContentComposer from '@/components/ContentComposer'
 import MessagingInterface from '@/components/MessagingInterface'
 import DiscoveryInterface from '@/components/DiscoveryInterface'
@@ -372,18 +373,23 @@ export default function AtlasDashboard() {
                     </CardHeader>
                     <CardContent className="p-0">
                       <MessagingInterface />
+              <TabsContent value="communities" className="mt-0 h-full">
+                <div className="max-w-6xl mx-auto">
+                  <Card className="h-[600px]">
+                    <CardHeader className="pb-3">
+                      <CardTitle>Communities</CardTitle>
+                      <CardDescription>
+                        Explore and join communities with full transparency and encryption
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <DiscoveryInterface />
                     </CardContent>
                   </Card>
                 </div>
               </TabsContent>
 
-              <TabsContent value="communities" className="mt-0 h-full">
-                <DiscoveryInterface activeTab="communities" />
-              </TabsContent>
-
               <TabsContent value="governance" className="mt-0 h-full p-6">
-                <GovernanceInterface />
-              </TabsContent>
 
               <TabsContent value="settings" className="mt-0 h-full p-6">
                 <div className="max-w-2xl mx-auto space-y-8">
@@ -402,6 +408,7 @@ export default function AtlasDashboard() {
               <TabsContent value="ledger" className="mt-0 h-full p-6">
                 <div className="max-w-6xl mx-auto">
                   <div className="space-y-6">
+                    <ExplainRewardFlow />
                     <Card>
                       <CardHeader>
                         <CardTitle>Event Ledger & Explainability</CardTitle>

@@ -1,0 +1,52 @@
+name: ATLAS Platform Constraints Check
+
+on:
+  push:
+    branches: [atlas, master]
+  pull_request:
+    branches: [atlas, master]
+
+jobs:
+  platform-constraints:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect forbidden imports (ATLAS)
+        run: |
+          echo "::group::Check ATLAS Python files for forbidden economic imports"
+          # Fail if ATLAS Python code imports Treasury/TokenState/RewardAllocator directly
+          if rg -l 'from (v13\.core\.TreasuryEngine|v13\.core\.TokenState|v13\.core\.RewardAllocator)' v13/ATLAS/src/ --type py; then
+            echo "::error::ATLAS Python code imports forbidden economic modules."
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Detect forbidden frontend mutations (TypeScript/JavaScript)
+        run: |
+          echo "::group::Check ATLAS frontend for balance/economic state mutations"
+          # Fail if frontend code contains patterns suggesting direct balance mutation
+          if rg -l '\.(balance|reputation|reward|token).*=' v13/ATLAS/src/ --type ts --type js; then
+            echo "::error::Frontend code may be mutating economic state. Use read-only view models only."
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Detect economic fields in Prisma schema
+        run: |
+          echo "::group::Check Prisma schema for economic fields"
+          if rg -l '(balance|reward|reputation|token)' v13/ATLAS/prisma/ --type rust --type prisma; then
+            echo "::error::Prisma schema contains economic fields. PostgreSQL must be non-authoritative."
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Ensure ATLAS API routes do not import Treasury directly
+        run: |
+          echo "::group::Check ATLAS API routes"
+          if rg -l 'from (v13\.core\.TreasuryEngine|v13\.core\.TokenState|v13\.core\.RewardAllocator)' v13/ATLAS/src/api/ --type py; then
+            echo "::error::ATLAS API routes must not import Treasury/TokenState/RewardAllocator directly."
+            exit 1
+          fi
+          echo "::endgroup::"

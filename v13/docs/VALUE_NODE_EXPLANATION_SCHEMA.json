@@ -1,0 +1,72 @@
+{
+  "schema": "ValueNodeExplanationPayload",
+  "version": "1.0",
+  "description": "Schema for value-node explanation payloads consumed by ATLAS UI",
+  "payload_structure": {
+    "wallet_id": "string",
+    "user_id": "string",
+    "reward_event_id": "string",
+    "epoch": "integer",
+    "timestamp": "integer",
+    "base_reward": {
+      "ATR": "string (e.g., '10.0 ATR')"
+    },
+    "bonuses": [
+      {
+        "label": "string (e.g., 'Coherence bonus')",
+        "value": "string (e.g., '+2.5 ATR')",
+        "reason": "string (e.g., 'Coherence score 0.92 above threshold')"
+      }
+    ],
+    "caps": [
+      {
+        "label": "string (e.g., 'Humor cap')",
+        "value": "string (e.g., '-0.3 ATR')",
+        "reason": "string (e.g., 'Humor cap applied at 1.0 ATR')"
+      }
+    ],
+    "guards": [
+      {
+        "name": "string (e.g., 'Balance guard')",
+        "result": "string ('pass' or 'fail')",
+        "reason": "string (e.g., 'Balance within limits')"
+      }
+    ],
+    "total_reward": {
+      "ATR": "string (e.g., '12.2 ATR')"
+    },
+    "reason_codes": [
+      "string (e.g., 'REWARD_BONUSES_APPLIED', 'GUARD_FAILED_BALANCE GUARD')"
+    ],
+    "explanation_hash": "string (SHA256)"
+  },
+  "simplified_explanation_structure": {
+    "summary": "string (e.g., 'Received value-node reward of 12.2 ATR')",
+    "reason": "string (e.g., 'Based on wallet activity in epoch 1')",
+    "reason_codes": [
+      "string (e.g., 'REWARD_BONUSES_APPLIED')"
+    ],
+    "breakdown": {
+      "base_reward": "object (same as above)",
+      "bonuses": "array (same as above)",
+      "caps": "array (same as above)",
+      "guards": "array (same as above)",
+      "total_reward": "object (same as above)"
+    },
+    "policy_info": {
+      "version": "string",
+      "hash": "string (first 16 chars + '...')",
+      "has_guard_failures": "boolean"
+    },
+    "verification": {
+      "hash": "string (first 16 chars + '...')",
+      "consistent": "boolean"
+    }
+  },
+  "usage_notes": [
+    "All numeric values are deterministic and replayable from ledger events",
+    "No external I/O or network calls are made in generating these explanations",
+    "Reason codes provide context for why specific reward values were calculated",
+    "Explanation hashes can be used for integrity verification"
+  ]
+}
