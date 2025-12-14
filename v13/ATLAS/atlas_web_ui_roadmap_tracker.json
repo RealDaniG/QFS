@@ -294,14 +294,26 @@
           ]
         },
         {
-          "id": "S8_T2_policy_simulator",
-          "title": "Policy simulation sliders with diff views (no live mutation)",
+          "id": "S8_T2_platform_constraints",
+          "title": "Platform constraints documentation",
           "status": "MISSING",
-          "priority": "MEDIUM",
-          "target_files": ["src/lib/governance/*", "src/lib/economics/*"],
+          "priority": "LOW",
+          "target_files": ["docs/platform_constraints.md"],
           "acceptance": [
-            "Sim outputs are labeled as simulated and non-binding.",
-            "Sim uses deterministic replay inputs and fixed policy versions."
+            "Constraints are documented in a single source of truth.",
+            "Constraints are versioned and auditable."
+          ]
+        },
+        {
+          "id": "S8_T3_platform_constraints_review",
+          "title": "Review and update platform constraints",
+          "status": "MISSING",
+          "priority": "LOW",
+          "target_files": ["docs/platform_constraints.md"],
+          "acceptance": [
+            "Constraints are reviewed and updated regularly.",
+            "Constraints are aligned with QFS and ATLAS policies.",
+            "Constraints are reviewed by the community."
           ]
         }
       ]
@@ -342,7 +354,7 @@
     ]
   },
   "phase_c_recent_progress": {
-    "status": "IN_PROGRESS",
+    "status": "COMPLETED",
     "notes": [
       "Transactions API boundary tests added (401/4xx/403/2xx) without changing QFS economics or guard semantics.",
       "Read-only economic view helper added as a pure mapping layer for UI view models.",
@@ -357,6 +369,73 @@
     ],
     "updated_modules": [
       "src/api/routes/transactions.py"
+    ]
+  },
+  "p0_ci_constraints": {
+    "status": "COMPLETED",
+    "notes": [
+      "Added CI workflow to prevent ATLAS violations: forbidden economic imports, frontend balance mutations, economic Prisma fields.",
+      "CI enforces platform constraints automatically on pushes/PRs to atlas/master."
+    ],
+    "new_files": [
+      ".github/workflows/ci-constraints.yml"
+    ]
+  },
+  "p0_explain_this": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented read-only ExplainThisPanel component for reward/ranking breakdowns using replay-derived data only.",
+      "Panel is pure UI; no economic state mutation."
+    ],
+    "new_files": [
+      "src/components/ExplainThisPanel.tsx"
+    ]
+  },
+  "p1_storage_dashboard": {
+    "status": "COMPLETED",
+    "notes": [
+      "Built read-only StorageDashboard consuming compute_storage_metrics_from_events: node health, replication visibility, proof reliability.",
+      "All metrics are replay-derived; no economics shown."
+    ],
+    "new_files": [
+      "src/components/StorageDashboard.tsx"
+    ]
+  },
+  "p1_value_node_views": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented ValueNodeView as a pure projection from ledger events, no minting/tokens.",
+      "Component accepts pre-fetched data via props; no side effects."
+    ],
+    "new_files": [
+      "src/components/ValueNodeView.tsx"
+    ]
+  },
+  "p1_draft_storage_policies": {
+    "status": "COMPLETED",
+    "notes": [
+      "Drafted (inactive) storage policy templates for reliability weighting, proof thresholds, and future NOD reward formulas.",
+      "Templates are non-enforced until governance activation."
+    ],
+    "new_files": [
+      "src/governance/templates/storage_policies.md"
+    ]
+  },
+  "p0_e2e_explain_reward": {
+    "status": "COMPLETED",
+    "notes": [
+      "Added end-to-end 'Explain This reward' flow using real ATLAS API endpoints and ExplainThisPanel.",
+      "Flow is read-only; API returns deterministic stub data matching ExplainThisPanel schema.",
+      "Added ExplainRewardFlow component to Ledger tab for demo."
+    ],
+    "new_files": [
+      "src/api/routes/explain.py",
+      "src/hooks/useExplainReward.ts",
+      "src/components/ExplainRewardFlow.tsx"
+    ],
+    "updated_files": [
+      "src/api/__init__.py",
+      "src/app/page.tsx"
     ]
   }
 }

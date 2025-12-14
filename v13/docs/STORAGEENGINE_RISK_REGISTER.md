@@ -69,6 +69,31 @@ This register captures risks for the decentralized storage rollout (Phases 0–5
 - **Required tests / evidence**:
   - API boundary tests for all storage endpoints.
 
+## R9 — Incomplete StorageEvent schema (replay gaps)
+
+- **Risk**: Storage events do not include sufficient fields (epoch, shard_ids, replica sets) to guarantee mechanical replay.
+- **Impact**: Replay drill cannot reconstruct placement/obligations; auditability degraded.
+- **Likelihood**: High (common early integration gap)
+- **Mitigation**:
+  - **MITIGATED for STORE events**: `v13/core/StorageEngine.py` now emits full STORE StorageEvents including `epoch`, `timestamp_tick`, `hash_commit`, `shard_ids`, and `replica_sets` plus deterministic `event_id`.
+  - Replay determinism tests exist: `v13/tests/storage/test_storageengine_replay.py`.
+  - **TODO**: Extend full StorageEvent emission for READ/GET_PROOF/LIST_OBJECTS if those calls are intended to be replay/audit authoritative.
+- **Required tests / evidence**:
+  - Unit replay tests: `v13/tests/storage/test_storageengine_replay.py`.
+
+## R10 — Proof accounting drift (obligations vs proofs)
+
+- **Risk**: Proof success/failure accounting diverges between live execution and replay, breaking NOD obligation observability.
+- **Impact**: Mis-attribution of node health and proof compliance; governance/ops signals become unreliable.
+- **Likelihood**: Medium
+- **Mitigation**:
+  - **MITIGATED (core)**: `get_storage_proof` emits deterministic `PROOF_GENERATED` and `PROOF_FAILED` StorageEvents.
+  - Replay tests assert proof accounting matches live for generated proofs.
+  - Replay-derived metrics helper computes proof counters deterministically from events.
+- **Required tests / evidence**:
+  - `v13/tests/storage/test_storageengine_replay.py::test_storageengine_replay_proof_accounting_matches_live`
+  - `v13/tests/test_storage_economic_views.py`
+
 ## R6 — OpenAGI misconfiguration leaks into consensus
 - **Risk**: OpenAGI scoring becomes non-deterministic or influences placement/reward directly.
 - **Impact**: Violates invariants; may create hidden economic manipulation surface.
