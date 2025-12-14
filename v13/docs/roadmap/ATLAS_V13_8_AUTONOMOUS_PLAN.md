@@ -40,32 +40,6 @@ Integrate ATLAS Explain-This and StorageEngine with the live QFS Ledger to achie
 1. **Storage Audits:** Expose deterministic Merkle proofs for content storage via the API.
 2. **AEGIS Identity:** Verify that all "active" nodes in an explanation were AEGIS-verified at that time.
 3. **Visual Proofs:** Provide frontend data structures for visualizing fragment placement and redundancy.
-
-### Key Tasks
-
-| Component | Task | Type | Description |
-|-----------|------|------|-------------|
-| **Storage** | `StorageEngine.py` | Logic | Ensure `PROOF_GENERATED` events include full verifyable Merkle paths. |
-| **Explain** | `storage_explainability.py` | logic | Implement `verify_placement_policy` to assert compliance with replication rules. |
-| **API** | `explain.py` | API | Enhance `/explain/storage/{id}` with verification status and node signatures. |
-| **Docs** | `STORAGE_AUDIT.md` | Doc | Guide for 3rd-party auditors to verify storage proofs independently. |
-
----
-
-## 🔄 Cycle 3: Operational Hardening & Drift Detection
-
-**Focus:** Ensure system resilience, automated verification, and operator observability.
-
-### Objectives
-
-1. **Drift Detection:** Automated alerts if Replay calculation diverges from Ledger state (Bit-flip detection).
-2. **Performance:** Optimize replay cache to handle high-throughput query loads.
-3. **Operator UX:** Dashboards for system health and verification rates.
-
-### Key Tasks
-
-| Component | Task | Type | Description |
-|-----------|------|------|-------------|
 | **Ops** | `DriftDetector.py` | Service | Background worker comparing Replay outputs vs Ledger checkpoints. |
 | **CI** | `replay-drill.yml` | CI | Nightly workflow replaying entire history to verify zero divergence. |
 | **UI** | `DriftDashboard.tsx` | UI | Frontend view showing divergence metrics (target: 0.00%). |
