@@ -42,7 +42,7 @@ def test_deterministic_iteration():
 
 def test_c_holo_check():
     """Test that C_holo < C_MIN check works"""
-    from v13.libs.CertifiedMath import CertifiedMath, BigNum128
+    from v13.libs.CertifiedMath import CertifiedMath, BigNum128, CertifiedMathError
     from v13.libs.governance.TreasuryEngine import TreasuryEngine
     from v13.core.TokenStateBundle import create_token_state_bundle
     
@@ -75,7 +75,7 @@ def test_c_holo_check():
     
     # This should raise an error
     import pytest
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(CertifiedMathError) as excinfo:
         treasury.calculate_rewards(
             hsmf_metrics=hsmf_metrics,
             token_bundle=token_bundle,
