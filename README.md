@@ -1,12 +1,3 @@
-Given the technical constraints, let me provide you with the complete **improved README** and **Wiki migration checklist** that you can implement:
-
-***
-
-# 📝 **IMPROVED README.md**
-
-Here's the complete improved version with all broken links fixed and Wiki links added:
-
-```markdown
 # Quantum Financial System (QFS) V13.8 – Zero‑Sim Absolute
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
