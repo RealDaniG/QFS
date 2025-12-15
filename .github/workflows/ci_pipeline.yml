@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ main, dev ]
   push:
-    branches: [ feature/*, hotfix/*, phase* ]
+    branches: [ feature/*, hotfix/*, fix/*, phase* ]
 
 jobs:
   build-and-test:
@@ -49,7 +49,7 @@ jobs:
     - name: Step 3 - Run Unit Tests
       run: |
         echo "Running Unit Tests..."
-        python -m pytest tests/unit/ -v --cov=src --cov-report=xml
+        python -m pytest tests/unit/ -v --cov=v13 --cov-report=xml
 
     - name: Step 4 - Run Integration Tests
       run: |
