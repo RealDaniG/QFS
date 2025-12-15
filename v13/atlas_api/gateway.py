@@ -54,9 +54,9 @@ try:
         # Fallback to absolute import (for direct execution)
         try:
             from v13.ATLAS.src.signals.humor import HumorSignalAddon
-            except ImportError:
-                # Final fallback
-                pass
+        except ImportError:
+            # Final fallback
+            pass
 except ImportError:
     # Fallback to absolute import (for direct execution)
     try:

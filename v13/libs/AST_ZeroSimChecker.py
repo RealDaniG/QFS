@@ -328,7 +328,8 @@ class AST_ZeroSimChecker:
         exclude_patterns = exclude_patterns or [
             "__pycache__", "test_*", "*_test.py", "AST_ZeroSimChecker.py", 
             "migrations", "tests", "audit", "*env*", "venv", ".venv",
-            "scripts", "checks_tests", "qfs_v13_project", "api", "ATLAS", "node_modules", "epoch", "economics/simple_violations.py"
+            "scripts", "checks_tests", "qfs_v13_project", "api", "ATLAS", "node_modules", "epoch", "economics/simple_violations.py",
+            "tools_root", "tests_root", "legacy_root"  # Exclude test utilities and legacy code
         ]
         all_violations = []
         for root, dirs, files in os.walk(directory):
