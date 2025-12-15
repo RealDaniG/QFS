@@ -38,7 +38,7 @@ export const ExplanationAuditPanel: React.FC<ExplanationAuditPanelProps> = ({
             // Fetch logic would go here
             // fetch(`/api/v1/audit/explanation/${explanationId}`)...
             setLoading(false);
-            // Mock data for display verification
+            // Stub data for display verification
             setData({
                 summary: "Received value-node reward of 50.0 ATR",
                 breakdown: {

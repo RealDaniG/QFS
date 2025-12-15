@@ -102,7 +102,7 @@ def get_replay_source() -> QFSReplaySource:
                 # Fail closed in production-like configuration
                 raise ImportError(f"Could not load live ledger from {ledger_path}: {e}")
         else:
-            # Default in-memory (mock/empty) for scaffolded dev
+            # Default in-memory (placeholder/empty) for scaffolded dev
             ledger = CoherenceLedger(cm)
             _replay_source = QFSReplaySource(ledger, storage)
             logger.info("Initialized QFSReplaySource (In-Memory)")

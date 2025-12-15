@@ -22,7 +22,13 @@ class IPFSStorage:
     - Fallback to local cache when IPFS is unavailable
     """
     
-    def __init__(self, ipfs_endpoint: str = "http://localhost:5001", pin=True, timeout=30):
+    def __init__(self, ipfs_endpoint: str = "", pin=True, timeout=30):
+        if not ipfs_endpoint:
+            import os
+            ipfs_endpoint = os.getenv("IPFS_API_URL", "")
+        
+        if not ipfs_endpoint:
+            raise ValueError("IPFS endpoint configuration missing (IPFS_API_URL env var or constructor arg required)")
         """
         Initialize IPFS storage adapter.
         

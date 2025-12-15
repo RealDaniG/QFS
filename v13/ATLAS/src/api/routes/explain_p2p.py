@@ -26,7 +26,7 @@ async def explain_p2p_activity(
     if hasattr(replay_source, 'get_p2p_events'):
         p2p_events = replay_source.get_p2p_events(node_id)
     else:
-        # Mock/Stub if method not yet on singleton
+        # Stub if method not yet on singleton
         p2p_events = [] 
 
     # 2. Aggregations

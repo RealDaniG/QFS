@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 # Enforce Live Sources in Production
 EXPLAIN_THIS_SOURCE = os.getenv("EXPLAIN_THIS_SOURCE", "qfs_ledger")
 if EXPLAIN_THIS_SOURCE != "qfs_ledger":
-    # Fail closed if attempting to use insecure/mock sources in production
+    # Fail closed if attempting to use insecure/stub sources in production
     raise RuntimeError(f"Audit Integrity Violation: EXPLAIN_THIS_SOURCE must be 'qfs_ledger', got '{EXPLAIN_THIS_SOURCE}'.")
 
 router = APIRouter(prefix="/explain", tags=["explain"])
@@ -286,7 +286,6 @@ async def explain_storage(
     Returns deterministic proof of replica assignment logic and
     verification status of storage proofs.
     """
-    try:
     try:
         from v13.policy.storage_explainability import explain_storage_placement
         

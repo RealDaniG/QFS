@@ -38,7 +38,7 @@ class AEGISDIDBootstrap:
             # or we are calling a method that checks the current loaded snapshot.
             
             # Since AEGIS_Node_Verifier is snapshot-based, we likely need to fetch the document/snapshot first.
-            # Here we assume a helper exists or we mock the retrieval for now.
+            # Here we assume a helper exists or we stub the retrieval for now.
             
             # Placeholder for retrieving DID doc or registry entry
             # In production, this would be: registry_snapshot = await self.ledger.get_registry_snapshot()
