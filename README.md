@@ -1,10 +1,6 @@
-# Quantum Financial System (QFS) V13.8 - Zero-Sim Absolute Release
+# Quantum Financial System (QFS) V13.8 – Zero‑Sim Absolute
 
-[
-[
-[
-
-> **A deterministic, post-quantum secure economic platform for decentralized social media with constitutional guards and cryptographic auditability.**
+> **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
 
 ***
 
@@ -16,13 +12,15 @@
 | **Deploy to production** | [Production Deployment](#production-deployment) |
 | **Review security** | [Security Compliance](#security-compliance) |
 | **Contribute** | [Contributing](#contributing) |
-| **Check status** | [Interactive Dashboard](https://github.com/RealDaniG/QFS/blob/main/docs/qfs-v13.5-dashboard.html) |
+| **Check status** | [Interactive Dashboard](docs/qfs-v13.8-dashboard.html) |
 
 ***
 
 ## 📊 Current Status
 
-### V13.8 Zero-Sim Absolute ✅ COMPLETE
+### V13.8 “Zero‑Sim Absolute” ✅ COMPLETE
+
+This release locks the full stack into audited, replayable determinism: every ledger write is PQC‑signed, every reward and ranking is explainable via zero‑simulation replay, and all constitutional guards are wired into the production pipeline.
 
 | Component | Status | Tests | Coverage |
 |-----------|--------|-------|----------|
@@ -33,15 +31,17 @@
 | Explanation Audit | ✅ Ready | Backend + UI | Complete |
 | Full-Stack Determinism | ✅ PASS | Nightly E2E green | Verified |
 
-**Release Date:** 2025-12-15  
-**Constitutional Status:** Guards enforced across all structural gates  
-**Performance Target:** 2,000 TPS with full guard stack  
+**Release Date:** 2025‑12‑15  
+**Constitutional Status:** Guards enforced at all economic and governance gates  
+**Performance Target:** 2,000 TPS with full guard stack under AEGIS‑verified nodes
 
-📈 [View Real-Time Dashboard](https://github.com/RealDaniG/QFS/blob/main/docs/qfs-v13.5-dashboard.html) | 📋 [Full Compliance Report](https://github.com/RealDaniG/QFS/blob/main/QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+📈 [View Real-Time Dashboard](docs/qfs-v13.8-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
 
 ***
 
 ## 🏗️ Architecture Overview
+
+QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -50,10 +50,10 @@
 └─────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────┐
-│                   QFS V13.6 Engine                       │
+│                   QFS V13.8 Engine                       │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │ Constitutional│  │   Zero-Sim   │  │   Explain-   │  │
-│  │    Guards     │  │    Replay    │  │     This     │  │
+│  │ Constitutional│  │   Zero-Sim   │  │ ExplainThis  │  │
+│  │    Guards     │  │    Replay    │  │    Audit     │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │  6-Token      │  │    AEGIS     │  │     PQC      │  │
@@ -70,26 +70,28 @@
 
 QFS is a **deterministic economic engine** that:
 
-1. **Never lies** – Every number is explainable via replay
-2. **Never drifts** – Same inputs → same outputs, always
-3. **Never hides** – Full audit trail from day one
-4. **Never centralizes** – AEGIS-gated, governance-driven
-5. **Never breaks security** – PQC-signed, fail-closed
+1. **Never lies** – Every balance, reward, and rank is reproducible by ledger replay.  
+2. **Never drifts** – Same inputs → same outputs, across nodes and over time.  
+3. **Never hides** – All decisions emit hash‑verifiable evidence from day one.  
+4. **Never centralizes** – AEGIS‑gated node set and NOD‑scoped governance.  
+5. **Never breaks security** – PQC‑signed ledger writes, fail‑closed invariants.
 
-### Six-Token Economic System
+### Six‑Token Economic System
+
+QFS models the network with six orthogonal tokens: five user‑visible assets and one infrastructure‑only governance token.
 
 | Token | Symbol | Purpose | Transferable |
 |-------|--------|---------|--------------|
-| Coherence | CHR | System stability baseline | ✅ Yes |
-| Flexibility | FLX | User rewards & penalties | ✅ Yes |
-| Psi-Sync | Sync | Predictive alignment | ✅ Yes |
-| Attestation | ATR | Reputation tracking | ✅ Yes |
-| Reserve | RES | Economic buffer | ✅ Yes |
-| **Node Operator** | **NOD** | **Infrastructure-only governance** | ❌ **No** |
+| Coherence | CHR | System stability and baseline incentives | ✅ Yes |
+| Flexibility | FLX | User rewards, penalties, and elastic incentives | ✅ Yes |
+| Psi‑Sync | SYNC | Predictive alignment and coordination | ✅ Yes |
+| Attestation | ATR | Reputation, proofs, and evidence of behavior | ✅ Yes |
+| Reserve | RES | Safety buffer and macro‑stability | ✅ Yes |
+| **Node Operator** | **NOD** | **Infrastructure‑only governance by operators** | ❌ **No** |
 
-> **🔒 Critical:** NOD is non-transferable and cannot affect user-facing parameters (firewall enforced).
+> **🔒 Critical:** NOD is non‑transferable and firewalled from user‑facing parameters; it can shape infrastructure, never individual outcomes.
 
-📖 [Full Token Specification](https://github.com/RealDaniG/QFS/blob/main/v13/docs/qfs_v13_plans/NOD_INFRASTRUCTURE_TOKEN_SPEC_V1.md)
+📖 [Full Token Specification](docs/qfs_v13_plans/NOD_INFRASTRUCTURE_TOKEN_SPEC_V1.md)
 
 ***
 
@@ -105,7 +107,7 @@ QFS enforces **mathematical determinism** across all layers:
 - ✅ **No External I/O in Consensus** – Pure functions, in-memory only
 - ✅ **PQC Signatures Required** – CRYSTALS-Dilithium on all ledger writes
 
-📜 [Read Full Contract](https://github.com/RealDaniG/QFS/blob/main/v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT_v1.3.md)
+📜 [Read Full Contract](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md)
 
 ### Constitutional Guards
 
@@ -115,7 +117,7 @@ Three layers of enforcement:
 2. **NODInvariantChecker** (682 lines) – Enforces non-transferability, supply conservation, voting limits
 3. **AEGISNodeVerification** (733 lines) – Pure deterministic node verification with PQC identity
 
-🔐 [Guard Implementation](https://github.com/RealDaniG/QFS/tree/main/v13/core/guards)
+🔐 [Guard Implementation](v13/guards)
 
 ### Recent Security Fixes (PR #5)
 
@@ -177,7 +179,7 @@ NEXT_PUBLIC_API_URL=/api
 - [ ] AEGIS production service deployed
 - [ ] Nightly E2E pipeline green
 
-📖 [Full Deployment Guide](https://github.com/RealDaniG/QFS/blob/main/docs/START_HERE_PHASE2.md)
+📖 [Operator Runbook (Production)](v13/docs/OPERATOR_RUNBOOK_V13.8.md)
 
 ***
 
@@ -212,7 +214,7 @@ All verification evidence is in `v13/evidence/`:
 - `storage/` – StorageEngine replay status
 - `nightly/` – Nightly E2E results
 
-🔍 [Browse Evidence](https://github.com/RealDaniG/QFS/tree/main/v13/evidence)
+🔍 [Browse Evidence](v13/evidence)
 
 ***
 
@@ -220,22 +222,22 @@ All verification evidence is in `v13/evidence/`:
 
 ### For Users
 
-- [ATLAS Web UI Guide](https://github.com/RealDaniG/QFS/blob/main/v13/ATLAS/README.md) – Frontend user interface
-- [Explain-This System](https://github.com/RealDaniG/QFS/blob/main/v13/docs/EXPLANATION_AUDIT_SPEC.md) – Reward transparency
-- [Humor Signal Overview](https://github.com/RealDaniG/QFS/blob/main/v13/docs/QFS_V13_7_HUMOR_SIGNAL_ADDON.md) – 7-dimensional comedy rewards
+- [ATLAS Web UI Guide](v13/ATLAS/README.md) – Frontend user interface
+- [Explain-This System](v13/docs/EXPLANATION_AUDIT_SPEC.md) – Reward transparency
+- [Humor Signal Overview](v13/docs/QFS_V13_7_HUMOR_SIGNAL_ADDON.md) – 7-dimensional comedy rewards
 
 ### For Developers
 
-- [Zero-Sim Contract v1.3](https://github.com/RealDaniG/QFS/blob/main/v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT_v1.3.md) – **Start here**
-- [API Reference](https://github.com/RealDaniG/QFS/blob/main/v13/ATLAS/src/api/README.md) – REST endpoints
-- [StorageEngine Spec](https://github.com/RealDaniG/QFS/blob/main/v13/docs/STORAGEENGINE_INTERFACE_SPEC.md) – Decentralized storage
-- [Value Node Replay](https://github.com/RealDaniG/QFS/blob/main/v13/docs/QFS_V13_VALUE_NODE_EXPLAINABILITY.md) – Economic views
+- [Zero-Sim Contract v1.3](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) – **Start here**
+- [API Reference](v13/ATLAS/src/api/README.md) – REST endpoints
+- [StorageEngine Spec](v13/docs/STORAGEENGINE_INTERFACE_SPEC.md) – Decentralized storage
+- [Value Node Replay](v13/docs/QFS_V13_VALUE_NODE_EXPLAINABILITY.md) – Economic views
 
 ### For Auditors
 
-- [Full Compliance Report](https://github.com/RealDaniG/QFS/blob/main/QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json) – 89 requirements
+- [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json) – 89 requirements
 - [Security Audit (PR #5)](https://github.com/RealDaniG/QFS/pull/5) – Recent security fixes
-- [Evidence Index](https://github.com/RealDaniG/QFS/blob/main/ROADMAP-V13.5-REMEDIATION.md#evidence-index) – All verification artifacts
+- [Evidence Index](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#evidence-index) – All verification artifacts
 
 ***
 
@@ -249,15 +251,15 @@ We're moving from verified baseline → live production with:
 2. Governance voting portal
 3. Public audit dashboard
 
-📋 [View Open Tasks](https://github.com/RealDaniG/QFS/blob/main/TASKS-V13.5.md)
+📋 [View Open Tasks](v13/docs/roadmaps/TASKS-V13.5.md)
 
 ### How to Contribute
 
 1. **Understand current state**  
-   Read [`QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json`](https://github.com/RealDaniG/QFS/blob/main/QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+   Read [`QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json`](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
 
 2. **Pick a task**  
-   Check [`TASKS-V13.5.md`](https://github.com/RealDaniG/QFS/blob/main/TASKS-V13.5.md) for current priorities
+   Check [`TASKS-V13.5.md`](v13/docs/roadmaps/TASKS-V13.5.md) for current priorities
 
 3. **Follow evidence-first principle**  
    All work must generate evidence artifacts in `v13/evidence/`
@@ -270,8 +272,6 @@ We're moving from verified baseline → live production with:
 
 5. **Submit PR**  
    Reference specific task ID (e.g., P1-T001), include evidence, update docs
-
-🛠️ [Contributing Guide](https://github.com/RealDaniG/QFS/blob/main/CONTRIBUTING.md)
 
 ***
 
@@ -299,7 +299,7 @@ We're moving from verified baseline → live production with:
 - **Phase 4** : Fuzzing, static analysis, governance procedures
 - **Phase 5** (Days 301-365): Final certification, 100% compliance
 
-📅 [Full Roadmap](https://github.com/RealDaniG/QFS/blob/main/ROADMAP-V13.5-REMEDIATION.md)
+📅 [Full Roadmap](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md)
 
 ***
 
@@ -319,4 +319,3 @@ We're moving from verified baseline → live production with:
 
 - **Issues:** [GitHub Issues](https://github.com/RealDaniG/QFS/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/RealDaniG/QFS/discussions)
-- **Security:** [SECURITY.md](
