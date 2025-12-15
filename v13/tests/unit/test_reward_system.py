@@ -63,6 +63,7 @@ def test_c_holo_check():
         psi_sync_state={"balance": "25.0", "frequency_metric": "1.0"},
         atr_state={"balance": "30.0", "directional_metric": "1.5"},
         res_state={"balance": "40.0", "inertial_metric": "2.5"},
+        nod_state={"balance": "10.0", "reputation_metric": "5.0"},
         lambda1=BigNum128.from_int(1),
         lambda2=BigNum128.from_int(1),
         c_crit=BigNum128.from_int(3),  # Higher than C_holo
