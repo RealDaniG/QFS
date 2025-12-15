@@ -2,6 +2,8 @@
 ReferralLedger: Handles all referral-related Genesis Ledger operations.
 """
 
+
+from typing import Dict, Any, List, Optional
 from v13.events.referral_events import (
     ReferralCreated, ReferralAccepted, ReferralActivated, 
     ReferralFraudBlocked, deterministic_referral_code
@@ -27,7 +29,7 @@ class ReferralLedger:
     def __init__(self, genesis_ledger):
         self.ledger = genesis_ledger
     
-    async def create_link(self, referrer_wallet: str, epoch: int, source: str) -> str:
+    def create_link(self, referrer_wallet: str, epoch: int, source: str) -> str:
         """
         Generate deterministic referral link.
         
@@ -35,7 +37,7 @@ class ReferralLedger:
             ValueError: If referrer exceeds max referrals
         """
         # Check cap
-        count = await self._count_referrals(referrer_wallet)
+        count = self._count_referrals(referrer_wallet)
         if count >= self.MAX_REFERRALS_PER_WALLET:
             raise ValueError(f"REFERRAL_CAP_EXCEEDED: {referrer_wallet} has {count} referrals")
         
@@ -51,12 +53,12 @@ class ReferralLedger:
         )
         
         # Append to ledger
-        await self.ledger.append_event(event)
+        self.ledger.append_event(event)
         
         logging.getLogger(__name__).info(f"Created referral link for {referrer_wallet}: {code}")
         return code
     
-    async def accept(
+    def accept(
         self, 
         referral_code: str, 
         referee_wallet: str, 
@@ -70,7 +72,7 @@ class ReferralLedger:
             ValueError: If fraud detected
         """
         # Resolve referrer from code
-        referrer_wallet = await self._resolve_code(referral_code)
+        referrer_wallet = self._resolve_code(referral_code)
         
         if not referrer_wallet:
             raise ValueError(f"INVALID_REFERRAL_CODE: {referral_code}")
@@ -79,15 +81,15 @@ class ReferralLedger:
         if referrer_wallet == referee_wallet:
             evidence = {"reason": "referrer == referee"}
             # Ensure dict is sorted if needed, but here it's simple
-            await self._log_fraud(
+            self._log_fraud(
                 referrer_wallet, referee_wallet, "SELF_REF", epoch, evidence
             )
             raise ValueError("SELF_REFERRAL_BLOCKED")
         
         # Anti-fraud: Duplicate device
-        if await self._is_duplicate_device(device_hash):
+        if self._is_duplicate_device(device_hash):
             evidence = {"device_hash": device_hash}
-            await self._log_fraud(
+            self._log_fraud(
                 referrer_wallet, referee_wallet, "DUP_DEVICE", epoch, evidence
             )
             raise ValueError("DUPLICATE_DEVICE_BLOCKED")
@@ -101,10 +103,10 @@ class ReferralLedger:
             device_hash=device_hash
         )
         
-        await self.ledger.append_event(event)
+        self.ledger.append_event(event)
         logging.getLogger(__name__).info(f"Referral accepted: {referee_wallet} via {referrer_wallet}")
     
-    async def activate(
+    def activate(
         self,
         referee_wallet: str,
         activation_type: str,
@@ -115,7 +117,7 @@ class ReferralLedger:
         Triggers reward calculation.
         """
         # Find pending referral
-        referral = await self._get_pending_referral(referee_wallet)
+        referral = self._get_pending_referral(referee_wallet)
         
         if not referral:
             logging.getLogger(__name__).warning(f"No pending referral for {referee_wallet}")
@@ -130,15 +132,15 @@ class ReferralLedger:
             activation_type=activation_type
         )
         
-        await self.ledger.append_event(event)
+        self.ledger.append_event(event)
         
         # Calculate and grant reward
-        await self._grant_reward(event)
+        self._grant_reward(event)
     
-    async def _grant_reward(self, activation_event: ReferralActivated):
+    def _grant_reward(self, activation_event: ReferralActivated):
         """Calculate and grant referral reward via CoherenceEngine."""
         referrer = activation_event.referrer_wallet
-        count = await self._count_referrals(referrer)
+        count = self._count_referrals(referrer)
         
         # Determine reward amount based on tier (using current count + 1 as this is the new one? 
         # Actually _count_referrals might include this one if created? 
@@ -167,28 +169,28 @@ class ReferralLedger:
                 guard_cir_code="CIR_PASS" # Placeholder for actual guard validation
             )
             
-            await self.ledger.append_event(reward_event)
+            self.ledger.append_event(reward_event)
             logging.getLogger(__name__).info(f"Granted referral reward {amount} FLX to {referrer}")
         else:
             logging.getLogger(__name__).info(f"No reward for referral {current_referral_index} (outside tiers)")
 
-    async def _count_referrals(self, wallet: str) -> int:
+    def _count_referrals(self, wallet: str) -> int:
         """Count existing referrals for wallet from ledger."""
         # In a real impl, this would query the ledger index
         # For now, return 0 or mock
         return 0
 
-    async def _resolve_code(self, code: str) -> str:
+    def _resolve_code(self, code: str) -> str:
         """Resolve referral code to referrer wallet."""
         # Query ledger index
         # Mock for now
         return "mock_referrer_wallet"
 
-    async def _is_duplicate_device(self, device_hash: str) -> bool:
+    def _is_duplicate_device(self, device_hash: str) -> bool:
         """Check if device hash has been used before."""
         return False
         
-    async def _log_fraud(self, referrer, referee, ftype, epoch, evidence):
+    def _log_fraud(self, referrer, referee, ftype, epoch, evidence):
         """Log fraud event."""
         event = ReferralFraudBlocked(
             referrer_wallet=referrer,
@@ -197,14 +199,14 @@ class ReferralLedger:
             epoch=epoch,
             evidence=evidence
         )
-        await self.ledger.append_event(event)
+        self.ledger.append_event(event)
         
-    async def get_referral_summary(self, wallet: str) -> Dict[str, Any]:
+    def get_referral_summary(self, wallet: str) -> Dict[str, Any]:
         """
         Get referral summary for wallet.
         Return ledger-derived data (mocked for now).
         """
-        count = await self._count_referrals(wallet)
+        count = self._count_referrals(wallet)
         # Calculate current tier
         current_tier = "NONE"
         next_tier_progress = 0
@@ -226,7 +228,7 @@ class ReferralLedger:
             "max_referrals": self.MAX_REFERRALS_PER_WALLET
         }
 
-    async def list_referrals(self, wallet: str, limit: int = 20, offset: int = 0) -> List[Dict[str, Any]]:
+    def list_referrals(self, wallet: str, limit: int = 20, offset: int = 0) -> List[Dict[str, Any]]:
         """
         List successful referrals.
         """
@@ -234,7 +236,7 @@ class ReferralLedger:
         # For now return empty list
         return []
 
-    async def get_system_metrics(self) -> Dict[str, Any]:
+    def get_system_metrics(self) -> Dict[str, Any]:
         """
         Get global referral system metrics for dashboards.
         """
@@ -256,7 +258,7 @@ class ReferralLedger:
              }
         }
 
-    async def _get_pending_referral(self, referee_wallet: str):
+    def _get_pending_referral(self, referee_wallet: str):
         """Get pending referral data for referee."""
         # Mock
         return {"referrer": "mock_referrer", "code": "mock_code"}

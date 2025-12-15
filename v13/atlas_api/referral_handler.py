@@ -18,7 +18,7 @@ class ReferralHandler:
         POST /referral/create
         """
         try:
-            code = await self.ledger.create_link(wallet, epoch, source)
+            code = self.ledger.create_link(wallet, epoch, source)
             return {
                 "success": True,
                 "referral_code": code,
@@ -46,7 +46,7 @@ class ReferralHandler:
         """
         try:
             # We need to add get_referral_summary to ReferralLedger
-            summary = await self.ledger.get_referral_summary(wallet)
+            summary = self.ledger.get_referral_summary(wallet)
             return {
                 "success": True,
                 "data": summary
@@ -65,7 +65,7 @@ class ReferralHandler:
         """
         try:
             # We need to add list_referrals to ReferralLedger
-            referrals = await self.ledger.list_referrals(wallet, limit, offset)
+            referrals = self.ledger.list_referrals(wallet, limit, offset)
             return {
                 "success": True,
                 "data": referrals
