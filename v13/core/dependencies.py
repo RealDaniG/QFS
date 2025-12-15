@@ -20,6 +20,16 @@ class MockCryptoEngine:
         # Mock encryption (identity + tag)
         return b"ENC:" + data
 
+    def sign_data(self, data: bytes) -> bytes:
+        return b"SIG:" + data
+        
+    @property
+    def identity(self):
+        class MockIdentity:
+            def export_public_identity(self):
+                return {'signing_key': b"mock_pub_key"}
+        return MockIdentity()
+
 def get_crypto_engine():
     """
     Initialize mandatory crypto engine for QFS.
