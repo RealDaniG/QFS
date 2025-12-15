@@ -153,3 +153,12 @@ audit/runs/*/
 
 # Local configuration files
 .config
+
+# QFS Sensitive Files - NEVER COMMIT
+*.keystore*.json
+.qfs_keystore*
+genesis_ledger.jsonl
+*_ledger.jsonl
+*.private_key
+*.wallet
+commit_message.txt

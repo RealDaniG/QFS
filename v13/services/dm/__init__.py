@@ -1,0 +1,3 @@
+"""
+QFS Direct Messaging Service
+"""

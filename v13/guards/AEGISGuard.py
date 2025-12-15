@@ -331,4 +331,4 @@ class AEGISGuard:
             "event_types_observed": list(set(obs.event_type for obs in self.observations)),
             "latest_timestamp": self.observations[-1].timestamp if self.observations else 0,
             "observation_mode": "observation_only"  # Indicates we're in observation mode
-    
+        }
