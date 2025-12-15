@@ -596,7 +596,7 @@ class HolonetSync:
             deterministic_timestamp: Deterministic timestamp
         """
         # Hash the public key for logging (to avoid logging raw bytes)
-        public_key_hash = hashlib.sha256(public_key).hexdigest()[:16]
+        public_key_hash = hashlib.sha256(public_key).hexdigest()
         
         details = {
             "operation": "signature_verification",

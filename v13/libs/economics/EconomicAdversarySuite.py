@@ -33,7 +33,7 @@ class TestCIRHandler:
             return
             
         # Use deterministic event ID instead of timestamps
-        event_id = hashlib.sha3_256(f"cir_halt_{reason}_{len(self.halt_events)}".encode()).hexdigest()[:16]
+        event_id = hashlib.sha3_256(f"cir_halt_{reason}_{len(self.halt_events)}".encode()).hexdigest()
         
         event = {
             "event_id": event_id,

@@ -363,11 +363,11 @@ class ValueNodeExplainabilityHelper:
             },
             "policy_info": {
                 "version": explanation.policy_version,
-                "hash": explanation.policy_hash[:16] + "..." if explanation.policy_hash else "",
+                "hash": explanation.policy_hash + "..." if explanation.policy_hash else "",
                 "has_guard_failures": has_guard_failures
             },
             "verification": {
-                "hash": explanation.explanation_hash[:16] + "..." if explanation.explanation_hash else "",
+                "hash": explanation.explanation_hash + "..." if explanation.explanation_hash else "",
                 "consistent": self.verify_explanation_consistency(explanation)
             }
         }

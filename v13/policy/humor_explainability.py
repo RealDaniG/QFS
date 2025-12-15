@@ -235,12 +235,12 @@ class HumorExplainabilityHelper:
             },
             "policy_info": {
                 "version": explanation.policy_version,
-                "hash": explanation.policy_hash[:16] + "...",
+                "hash": explanation.policy_hash + "...",
                 "was_capped": was_capped,
                 "max_bonus": explanation.cap_applied or "N/A"
             },
             "verification": {
-                "hash": explanation.explanation_hash[:16] + "...",
+                "hash": explanation.explanation_hash + "...",
                 "consistent": self.verify_explanation_consistency(explanation)
             }
         }

@@ -103,7 +103,7 @@ class NotificationService:
             is_read=False,
             metadata={
                 "entry_type": ledger_entry.entry_type,
-                "entry_hash": ledger_entry.entry_hash[:16] + "..."
+                "entry_hash": ledger_entry.entry_hash + "..."
             },
             pqc_cid=pqc_cid,
             quantum_metadata=self.quantum_metadata.copy()
