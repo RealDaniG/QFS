@@ -140,14 +140,14 @@ This document tracks the critical path to V1.0 release. It replaces previous tra
 
 **Status:** 🟡 CRITICAL
 
-- [ ] C-001.1: Design "Connect Wallet" button.
-- [ ] C-001.2: Implement MetaMask detection.
+- [x] C-001.1: Design "Connect Wallet" button (UI/UX).
+- [x] C-001.2: Implement MetaMask detection.
 - [ ] C-001.3: Implement WalletConnect modal.
-- [ ] C-001.4: Add "Install MetaMask" prompt.
-- [ ] C-001.5: Show connected wallet access.
-- [ ] C-001.6: Add "Disconnect" functionality.
-- [ ] C-001.7: Handle wallet rejection errors.
-- [ ] C-001.8: Add loading states.
+- [ ] C-001.4: Add "Install MetaMask" prompt for new users.
+- [x] C-001.5: Show connected wallet address (truncated).
+- [x] C-001.6: Add "Disconnect" functionality.
+- [x] C-001.7: Handle wallet rejection errors gracefully.
+- [x] C-001.8: Add loading states during connection.
 
 ### C-002: User Profile System
 

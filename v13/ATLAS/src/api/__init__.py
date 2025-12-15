@@ -10,6 +10,7 @@ from typing import Optional
 import logging
 
 from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain
+from . import auth, users # New Auth and User modules
 from .dependencies import get_current_user
 
 # Configure logging
@@ -40,6 +41,8 @@ api_routes = [
     quantum.router,
     secure_chat.router,
     explain.router,  # New Explain-This endpoints
+    auth.router,     # V1 Auth
+    users.router,    # V1 User Profiles
 ]
 
 # Register all route modules
