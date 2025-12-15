@@ -13,8 +13,10 @@
 - [x] F-001: Core Infrastructure (Repo, CI/CD, Env).
 - [x] F-002: Resolve Empty Core Files.
 - [x] F-003: ATLAS API Contracts.
+- [ ] F-003.5: `POST /v1/events/batch` Endpoint.
 - [x] F-004: Genesis Ledger (JSONL Canonical format).
 - [x] F-005: Event Bridge Architecture.
+- [ ] F-005.X: Redis Streams Partitioning Spec.
 
 ---
 
@@ -24,6 +26,7 @@
 
 - [x] S-001A: SecureMessageV2 (Encryption, Replay Protection).
 - [x] S-002: Wallet Auth Flow (Connect, Challenge-Response).
+- [ ] S-002.X: Deterministic Wallet→UserID Mapper (`user_{hash}`).
 - [x] S-003A: Basic E2E Encryption (No Plaintext).
 - [x] S-004: AEGIS Integration (Staged).
 
