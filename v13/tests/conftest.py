@@ -11,11 +11,12 @@ import pytest
 # Ensure repo-root test runs can import v13 packages and v13/libs modules.
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _V13_ROOT = os.path.abspath(os.path.join(_THIS_DIR, ".."))
+_REPO_ROOT = os.path.abspath(os.path.join(_V13_ROOT, ".."))
 _V13_LIBS = os.path.join(_V13_ROOT, "libs")
 _V13_CORE = os.path.join(_V13_ROOT, "core")
 _V13_UTILS = os.path.join(_V13_ROOT, "utils")
 
-for p in (_V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
+for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
     if p not in sys.path:
         sys.path.insert(0, p)
 
