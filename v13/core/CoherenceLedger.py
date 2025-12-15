@@ -225,4 +225,59 @@ class CoherenceLedger:
         }
 
 
+    def append_event(self, event: Any) -> LedgerEntry:
+        """
+        Append a generic event to the ledger (e.g. Referral events).
+        
+        Args:
+            event: The event object (dataclass) to append
+            
+        Returns:
+            LedgerEntry: The created ledger entry
+        """
+        # Convert event to dict
+        if hasattr(event, '__dict__'):
+            event_data = event.__dict__
+        else:
+            event_data = dict(event)
+            
+        # Determine event type and ID
+        event_type = getattr(event, 'event_type', 'generic_event')
+        # Use existing timestamp or current deterministic fallback
+        # Ideally event has a timestamp or epoch.
+        # For Referral events, they have 'epoch'.
+        timestamp = getattr(event, 'epoch', 0) # Fallback to 0 if not present
+        
+        # Create entry data wrapper
+        entry_data = {
+            "event_data": event_data,
+            "event_type": event_type
+        }
+        
+        # Get previous hash
+        previous_hash = self._get_previous_hash()
+        
+        # Generate entry hash
+        entry_hash = self._generate_entry_hash(entry_data, previous_hash, timestamp)
+        
+        # Generate PQC correlation ID
+        pqc_cid = self._generate_pqc_cid(entry_data, timestamp)
+        
+        # Create ledger entry
+        entry = LedgerEntry(
+            entry_id=entry_hash,
+            timestamp=timestamp,
+            entry_type=event_type,
+            data=entry_data,
+            previous_hash=previous_hash,
+            entry_hash=entry_hash,
+            pqc_cid=pqc_cid,
+            quantum_metadata=self.quantum_metadata.copy()
+        )
+        
+        # Add to ledger
+        self.ledger_entries.append(entry)
+        
+        return entry
+
 # Test function
