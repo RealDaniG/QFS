@@ -17,10 +17,11 @@ interface AuditLogEntry {
 }
 
 const DEMO_LOGS: AuditLogEntry[] = [
-    { id: "evt_1", timestamp: "2025-12-14T18:00:00Z", type: "CONTRACT", severity: "INFO", actor_did: "did:key:zAdmin", action: "Upgraded Contract to V1.3", integrity_hash: "sha256-abc...", verified: true },
-    { id: "evt_2", timestamp: "2025-12-14T18:05:00Z", type: "SIGNAL", severity: "INFO", actor_did: "did:key:zAES", action: "Registered ArtisticSignalAddon", integrity_hash: "sha256-def...", verified: true },
-    { id: "evt_3", timestamp: "2025-12-14T18:10:00Z", type: "REWARD", severity: "WARNING", actor_did: "did:key:zSystem", action: "Cap Applied to Wallet 0x123", integrity_hash: "sha256-ghi...", verified: true },
-    { id: "evt_4", timestamp: "2025-12-14T18:15:00Z", type: "STORAGE", severity: "INFO", actor_did: "did:key:zNode1", action: "Storage Proof Verified", integrity_hash: "sha256-jkl...", verified: true },
+    { id: "evt_1", timestamp: "2025-12-15T09:00:00Z", type: "CONTRACT", severity: "INFO", actor_did: "did:key:zAdmin", action: "Pipeline Compliance Remediation (Phase 14)", integrity_hash: "sha256-fix...", verified: true },
+    { id: "evt_2", timestamp: "2025-12-14T18:00:00Z", type: "CONTRACT", severity: "INFO", actor_did: "did:key:zAdmin", action: "Upgraded Contract to V1.3", integrity_hash: "sha256-abc...", verified: true },
+    { id: "evt_3", timestamp: "2025-12-14T18:05:00Z", type: "SIGNAL", severity: "INFO", actor_did: "did:key:zAES", action: "Registered ArtisticSignalAddon", integrity_hash: "sha256-def...", verified: true },
+    { id: "evt_4", timestamp: "2025-12-14T18:10:00Z", type: "REWARD", severity: "WARNING", actor_did: "did:key:zSystem", action: "Cap Applied to Wallet 0x123", integrity_hash: "sha256-ghi...", verified: true },
+    { id: "evt_5", timestamp: "2025-12-14T18:15:00Z", type: "STORAGE", severity: "INFO", actor_did: "did:key:zNode1", action: "Storage Proof Verified", integrity_hash: "sha256-jkl...", verified: true },
 ];
 
 export const GovernanceAuditDashboard: React.FC = () => {

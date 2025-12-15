@@ -29,6 +29,7 @@ ATLAS V13.8 marks the completion of the "Zero-Simulation" initiative. It integra
 * `v13.ATLAS.src.api.routes.explain`: New endpoints for storage and historical queries.
 * `v13.policy`: Added `storage_explainability` and `PolicyRegistry`.
 * `v13.ops`: Added `DriftDetector`.
+* `v13.core` & `v13.policy`: Removed non-compliant `__main__` blocks for pipeline compliance (Phase 14).
 
 ## 📚 New Documentation
 
