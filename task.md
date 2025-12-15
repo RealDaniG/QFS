@@ -109,3 +109,4 @@
 - [x] CI: Upgrade `upload-artifact` to v4.
 - [x] Security: Remove Hash Truncation.
 - [x] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).
+- [x] Docs: Document PQC backend strategy & production requirements.

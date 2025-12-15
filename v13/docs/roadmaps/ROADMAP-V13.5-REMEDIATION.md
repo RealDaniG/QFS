@@ -164,10 +164,10 @@ evidence/phase1/time_regression_cir302_event.json ✓ DELIVERED (2025-12-11)
 
 **Solution Implemented:** Standardized PQC backend with "real if available, otherwise deterministic mock" approach
 
-- Production backend: dilithium-py (when available)
-- Fallback backend: MockPQC (SHA-256 simulation for integration testing)
-- Standardized interface: PQCInterfaceProtocol for swappable implementations
-- Comprehensive test suite: TestPQCStandardization.py with 100% pass rate
+- ✅ **Development/CI Backend**: `dilithium` (pure Python). Cross-platform compatibility for Phase 1-2.5 validation.
+- ✅ **Fallback Backend**: MockPQC (SHA-256 simulation for integration testing).
+- 🔒 **Production Backend (Phase 3)**: `liboqs` (C Linux), strictly for production signing.
+- Standardized interface: PQCInterfaceProtocol for swappable implementations.
 
 #### Tasks
 

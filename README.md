@@ -26,6 +26,8 @@ This release locks the full stack into audited, replayable determinism: every le
 |-----------|--------|-------|----------|
 | Constitutional Guards | ✅ Deployed | 937 lines | 100% |
 | Zero-Mock Compliance | ✅ Verified | 0 violations | Production |
+| **PQC (Dev Backend)** | ✅ Complete | 7/7 | 100% |
+| **PQC (Prod Backend)** | 🔒 Planned | Phase 3 | Linux Only |
 | Pipeline Compliance | ✅ Verified | 0 violations | Production |
 | AEGIS Integration | ✅ Verified | Test service ready | Staged |
 | Explanation Audit | ✅ Ready | Backend + UI | Complete |
