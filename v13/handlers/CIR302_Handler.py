@@ -345,39 +345,3 @@ class CIR302_Handler:
         return hashlib.sha256(state_json.encode('utf-8')).hexdigest()
 
 
-# Test function - should be in separate test file in production
-def test_cir302_handler():
-    """Test the CIR302_Handler implementation."""
-    print("Testing CIR302_Handler...")
-    
-    # Create CertifiedMath instance (it's a class with static methods)
-    cm = CertifiedMath
-    
-    # Initialize CIR-302 handler
-    handler = CIR302_Handler(cm)
-    
-    # Test system state
-    test_system_state = {
-        "token_states": {
-            "CHR": {"coherence": "0.95"},
-            "FLX": {"flux": "0.15"},
-        },
-        "hsmf_metrics": {
-            "c_holo": "0.95",
-            "s_flx": "0.15",
-        },
-        "error_details": "Test CIR302 scenario"
-    }
-    
-    print("CIR302_Handler initialized successfully")
-    
-    # Test finality seal generation
-    seal = handler.generate_finality_seal(test_system_state)
-    print(f"Finality seal generated: {seal[:32]}...")
-    
-    # Note: We can't actually test handle_violation because it calls sys.exit(CIR302_CODE.value)
-    print("CIR302_Handler is QFS V13 compliant - hard halt mechanism ready")
-
-
-if __name__ == "__main__":
-    test_cir302_handler()
