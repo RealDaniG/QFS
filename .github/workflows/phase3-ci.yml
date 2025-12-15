@@ -35,7 +35,7 @@ jobs:
       
       - name: Run AST Zero-Simulation Checker
         run: |
-          python v13/libs/AST_ZeroSimChecker.py --dir v13/ --fail
+          python v13/libs/AST_ZeroSimChecker.py v13/ --fail
           if [ $? -ne 0 ]; then
             echo "❌ Zero-Simulation violation detected"
             exit 302  # CIR-302: Time regression / non-determinism
