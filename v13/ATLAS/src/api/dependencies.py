@@ -188,3 +188,35 @@ def get_qfs_client_dependency() -> Generator[QFSClient, None, None]:
 def qfs_client() -> QFSClient:
     """Get QFSClient for dependency injection"""
     return get_qfs_client()
+
+from v13.core.dependencies import get_crypto_engine
+import json
+
+async def send_secure_message(peer_id: str, message: dict, crypto=None):
+    """
+    Send encrypted message with fail-closed semantics.
+    
+    Args:
+        peer_id: Target node ID
+        message: Dict payload
+        crypto: CryptoEngine instance (optional dependency injection)
+        
+    Raises:
+        RuntimeError: If secure channel unavailable or encryption fails
+    """
+    if crypto is None:
+        crypto = get_crypto_engine()
+        
+    # Enforce secure channel existence
+    if not crypto.has_ratchet_state(peer_id):
+        raise RuntimeError(f"No secure channel to {peer_id}")
+    
+    # Fail-closed encryption
+    payload = json.dumps(message).encode()
+    encrypted = crypto.encrypt_message(payload, peer_id)
+    
+    if not encrypted:
+        raise RuntimeError(f"Encryption failed for {peer_id}")
+    
+    # In real implementation: await transport.send(peer_id, encrypted)
+    return encrypted
