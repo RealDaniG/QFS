@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qfs-v13"
+version = "13.8.0"
+description = "Quantum Financial System V13 Core"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "AGPL-3.0"}
+authors = [
+  {name = "RealDaniG", email = "dev@qfs.internal"}
+]

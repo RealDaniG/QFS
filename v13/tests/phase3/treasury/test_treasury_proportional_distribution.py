@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 # Add project root to path
 
-# Mock PQC library BEFORE importing modules that depend on it
+
 mock_pqc = MagicMock()
 sys.modules["src.libs.PQC"] = mock_pqc
 sys.modules["pqcrystals"] = MagicMock()

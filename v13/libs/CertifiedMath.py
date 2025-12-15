@@ -34,6 +34,12 @@ class MathValidationError(Exception):
     """Raised when a mathematical validation fails (e.g. division by zero)."""
     pass
 
+class CertifiedMathError(Exception):
+    """Base exception for CertifiedMath errors."""
+    def __init__(self, message, error_code=None):
+        super().__init__(message)
+        self.error_code = error_code
+
 class CertifiedMath:
     MAX_LN_ITERATIONS = 100
     MAX_EXP_ITERATIONS = 100

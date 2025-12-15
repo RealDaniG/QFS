@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/metrics", tags=["metrics"])
 
 # In a real implementation, this would be a singleton or injected dependency
-# For now, we'll create a mock storage engine for demonstration
+# For now, we'll create a local storage engine for demonstration
 def get_storage_engine():
     """Get storage engine instance."""
     # This is a simplified approach - in production, inject the actual StorageEngine

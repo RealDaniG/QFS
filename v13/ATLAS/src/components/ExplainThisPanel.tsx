@@ -5,161 +5,215 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  ValueNodeRewardExplanation,
+  ContentRankingExplanation,
+  SimplifiedExplanation,
+  formatExplanationSummary,
+  getBadgeForReasonCode
+} from "@/lib/qfs/explain-this";
 
+// Define a unified props interface that accepts either raw explanation or simplified view
 interface ExplainThisProps {
   type: "reward" | "ranking";
-  data: {
-    base?: string;
-    bonuses?: Array<{ label: string; value: string; reason: string }>;
-    caps?: Array<{ label: string; value: string; reason: string }>;
-    guards?: Array<{ name: string; result: "pass" | "fail"; reason: string }>;
-    signals?: Array<{ name: string; weight: number; score: number }>;
-    neighbors?: Array<{ metric: string; value: number; rank: number }>;
-  };
+  explanation?: ValueNodeRewardExplanation | ContentRankingExplanation | SimplifiedExplanation;
   onClose?: () => void;
+  isLoading?: boolean;
 }
 
-export function ExplainThisPanel({ type, data, onClose }: ExplainThisProps) {
+export function ExplainThisPanel({ type, explanation, onClose, isLoading }: ExplainThisProps) {
+  if (isLoading) {
+    return (
+      <Card className="w-full max-w-2xl animate-pulse">
+        <CardHeader><div className="h-6 bg-muted rounded w-1/3"></div></CardHeader>
+        <CardContent><div className="h-24 bg-muted rounded"></div></CardContent>
+      </Card>
+    );
+  }
+
+  if (!explanation) {
+    return null;
+  }
+
+  // Helper to safely access common fields whether it's simplified or raw
+  // In a real app we might want strict type guards, but for now we trust the "type" prop
+  const isReward = type === "reward";
+  const isRanking = type === "ranking";
+
+  // Cast to specific types for easier access
+  const rewardData = isReward ? (explanation as any) : null;
+  const rankingData = isRanking ? (explanation as any) : null;
+
+  // Handle simplified structure vs raw structure
+  const base = rewardData?.breakdown?.base_reward?.ATR || rewardData?.base_reward?.ATR;
+  const bonuses = rewardData?.breakdown?.bonuses || rewardData?.bonuses;
+  const caps = rewardData?.breakdown?.caps || rewardData?.caps;
+  const guards = rewardData?.breakdown?.guards || rewardData?.guards;
+
+  const signals = rankingData?.signals;
+  const neighbors = rankingData?.neighbors;
+
+  const hash = (explanation as any).verification?.hash || (explanation as any).explanation_hash || "unknown";
+
   return (
     <TooltipProvider>
-      <Card className="w-full max-w-2xl">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-semibold">
-            Explain This: {type === "reward" ? "Reward" : "Ranking"}
-          </CardTitle>
-          <Badge variant="outline">Read-only</Badge>
+      <Card className="w-full max-w-2xl shadow-lg border-2 border-primary/10">
+        <CardHeader className="flex flex-row items-center justify-between bg-muted/20 pb-4">
+          <div className="flex items-center gap-3">
+            <CardTitle className="text-lg font-semibold flex items-center gap-2">
+              Explain This: {isReward ? "Reward" : "Ranking"}
+            </CardTitle>
+            <Badge variant="outline" className="font-mono text-xs">
+              Hash: {hash.slice(0, 8)}...
+            </Badge>
+          </div>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} className="hover:bg-destructive/10 hover:text-destructive">
               ✕
             </Button>
           )}
         </CardHeader>
-        <CardContent className="space-y-4">
-          {type === "reward" && (
+        <CardContent className="space-y-6 pt-6">
+          {isReward && (
             <>
-              <div>
-                <h4 className="font-medium">Base reward</h4>
-                <p className="text-sm text-muted-foreground">{data.base}</p>
+              {/* Base Reward Section */}
+              <div className="bg-muted/30 p-3 rounded-lg">
+                <h4 className="font-medium text-sm text-muted-foreground mb-1">Base Reward</h4>
+                <div className="text-2xl font-bold font-mono text-primary">{base}</div>
               </div>
-              {data.bonuses && data.bonuses.length > 0 && (
+
+              {/* Bonuses Section */}
+              {bonuses && bonuses.length > 0 && (
                 <div>
-                  <h4 className="font-medium">Bonuses</h4>
-                  <ul className="list-disc list-inside text-sm space-y-1">
-                    {data.bonuses.map((b, i) => (
-                      <li key={i} className="flex justify-between">
-                        <span>{b.label}</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <span className="font-mono">{b.value}</span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{b.reason}</p>
-                          </TooltipContent>
-                        </Tooltip>
+                  <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
+                    Bonuses <Badge variant="secondary" className="text-[10px]">{bonuses.length}</Badge>
+                  </h4>
+                  <ul className="space-y-2">
+                    {bonuses.map((b: any, i: number) => (
+                      <li key={i} className="flex justify-between items-center text-sm p-2 rounded hover:bg-muted/50 transition-colors">
+                        <span className="font-medium">{b.label}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-green-600 font-bold">{b.value}</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span className="text-muted-foreground cursor-help text-xs">Why?</span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{b.reason}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-              {data.caps && data.caps.length > 0 && (
+
+              {/* Caps Section */}
+              {caps && caps.length > 0 && (
                 <div>
-                  <h4 className="font-medium">Caps applied</h4>
-                  <ul className="list-disc list-inside text-sm space-y-1">
-                    {data.caps.map((c, i) => (
-                      <li key={i} className="flex justify-between">
-                        <span>{c.label}</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <span className="font-mono">{c.value}</span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{c.reason}</p>
-                          </TooltipContent>
-                        </Tooltip>
+                  <h4 className="font-medium text-sm mb-2 flex items-center gap-2">Caps Applied</h4>
+                  <ul className="space-y-2">
+                    {caps.map((c: any, i: number) => (
+                      <li key={i} className="flex justify-between items-center text-sm p-2 bg-red-50/50 dark:bg-red-900/10 rounded">
+                        <span className="text-destructive/80">{c.label}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-destructive font-bold">{c.value}</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span className="text-muted-foreground cursor-help text-xs">Why?</span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{c.reason}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-              {data.guards && data.guards.length > 0 && (
+
+              {/* Guards Section */}
+              {guards && guards.length > 0 && (
                 <div>
-                  <h4 className="font-medium">Guard results</h4>
-                  <ul className="list-disc list-inside text-sm space-y-1">
-                    {data.guards.map((g, i) => (
-                      <li key={i} className="flex justify-between">
+                  <h4 className="font-medium text-sm mb-2">Guard Checks</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {guards.map((g: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between p-2 border rounded text-sm">
                         <span>{g.name}</span>
-                        <Badge variant={g.result === "pass" ? "default" : "destructive"}>
-                          {g.result}
-                        </Badge>
                         <Tooltip>
                           <TooltipTrigger>
-                            <span>ℹ️</span>
+                            <Badge variant={g.result === "pass" ? "outline" : "destructive"} className={g.result === "pass" ? "border-green-500 text-green-600" : ""}>
+                              {g.result.toUpperCase()}
+                            </Badge>
                           </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{g.reason}</p>
-                          </TooltipContent>
+                          <TooltipContent><p>{g.reason}</p></TooltipContent>
                         </Tooltip>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
             </>
           )}
 
-          {type === "ranking" && (
+          {isRanking && (
             <>
-              {data.signals && data.signals.length > 0 && (
+              {/* Signals Section */}
+              {signals && signals.length > 0 && (
                 <div>
-                  <h4 className="font-medium">Signal breakdown</h4>
-                  <ul className="list-disc list-inside text-sm space-y-1">
-                    {data.signals.map((s, i) => (
-                      <li key={i} className="flex justify-between">
-                        <span>{s.name}</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <span className="font-mono">
-                              {s.weight.toFixed(2)} × {s.score.toFixed(2)}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Weight × Score</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </li>
+                  <h4 className="font-medium text-sm mb-2">Ranking Signals</h4>
+                  <div className="space-y-3">
+                    {signals.map((s: any, i: number) => (
+                      <div key={i} className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-medium">{s.name}</span>
+                          <span className="font-mono text-xs text-muted-foreground">
+                            W: {s.weight.toFixed(2)} × S: {s.score.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-500 transition-all" style={{ width: `${s.score * 100}%`, opacity: s.weight }}></div>
+                        </div>
+                        <p className="text-xs text-muted-foreground text-right">{s.description}</p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
-              {data.neighbors && data.neighbors.length > 0 && (
-                <div>
-                  <h4 className="font-medium">Neighbor comparison</h4>
-                  <ul className="list-disc list-inside text-sm space-y-1">
-                    {data.neighbors.map((n, i) => (
-                      <li key={i} className="flex justify-between">
+
+              {/* Neighbors Section */}
+              {neighbors && neighbors.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="font-medium text-sm mb-2">Context (Neighbors)</h4>
+                  <div className="rounded-md border divide-y">
+                    {neighbors.map((n: any, i: number) => (
+                      <div key={i} className="p-2 flex justify-between text-sm">
                         <span>{n.metric}</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <span className="font-mono">
-                              {n.value} (rank {n.rank})
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Value vs peer rank</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </li>
+                        <span className="font-mono">Rank #{n.rank} (Val: {n.value})</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
             </>
           )}
 
           <Separator />
-          <div className="text-xs text-muted-foreground">
-            <p>All values are derived from deterministic replay of QFS events.</p>
-            <p>No economic state is mutated by this panel.</p>
+          <div className="text-[10px] text-muted-foreground space-y-1 font-mono">
+            <div className="flex justify-between">
+              <span>Source:</span>
+              <span>Deterministic Replay (Zero-Sim)</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Computed At:</span>
+              <span>{(explanation as any).timestamp || (explanation as any).metadata?.computed_at || "Now"}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Policy Version:</span>
+              <span>{(explanation as any).policy_version || "unknown"}</span>
+            </div>
           </div>
         </CardContent>
       </Card>

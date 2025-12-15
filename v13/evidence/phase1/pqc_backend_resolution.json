@@ -1,0 +1,28 @@
+{
+    "artifact_type": "pqc_backend_resolution",
+    "date": "2025-12-15",
+    "phase": "1",
+    "issue": "CI/CD failure - invalid dependency",
+    "root_cause": "dilithium-py does not exist on PyPI",
+    "resolution": {
+        "incorrect_dependency": "dilithium-py",
+        "correct_dependency": "dilithium>=1.0.0,<2.0.0",
+        "commit": "b0a4b20",
+        "verification": "CI passed after fix"
+    },
+    "architectural_decision": {
+        "phase_1_2_5": "dilithium (Python) + MockPQC fallback",
+        "phase_3_plus": "liboqs (Linux production)",
+        "rationale": "Cross-platform development vs production performance"
+    },
+    "false_recommendations_to_avoid": [
+        "Use dilithium-py (does not exist)",
+        "Use pqcrystals (not on PyPI)",
+        "Production PQC on Windows/macOS (not supported)"
+    ],
+    "evidence_references": [
+        "CI failure logs: 2025-12-15",
+        "PyPI verification: dilithium v1.0.6 exists",
+        "docs/architecture/PQC_BACKENDS.md"
+    ]
+}

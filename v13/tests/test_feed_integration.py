@@ -17,11 +17,11 @@ def test_feed_generation_with_policy_hints():
     # Create gateway instance
     gateway = AtlasAPIGateway()
     
-    # Mock dependencies
+    
     gateway.storage_client = Mock()
     gateway.ledger_economics_service = Mock()
     
-    # Mock content candidates
+    
     mock_candidates = [
         {
             'content_id': 'post_1',
@@ -37,7 +37,7 @@ def test_feed_generation_with_policy_hints():
         }
     ]
     
-    # Mock methods
+    
     gateway._fetch_content_candidates = Mock(return_value=mock_candidates)
     gateway._get_user_token_bundle = Mock(return_value={})
     gateway._get_deterministic_timestamp = Mock(return_value=1234567890)
@@ -50,7 +50,7 @@ def test_feed_generation_with_policy_hints():
     gateway.coherence_engine.update_omega = Mock(return_value=[1, 2, 3])
     gateway._calculate_coherence_score = Mock(return_value=100)
     
-    # Mock AEGIS guard with different advisory types
+    
     def mock_observe_event(*args, **kwargs):
         mock_observation = Mock()
         mock_observation.block_suggested = False

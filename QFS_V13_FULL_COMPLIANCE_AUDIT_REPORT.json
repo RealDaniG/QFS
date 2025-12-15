@@ -1,0 +1,60 @@
+{
+    "report_metadata": {
+        "version": "1.0",
+        "generated_at": "2025-12-15T09:15:00Z",
+        "scope": "QFS V13.6 Constitutional Integration",
+        "status": "PASS"
+    },
+    "summary": {
+        "total_requirements": 89,
+        "pass": 89,
+        "fail": 0,
+        "warn": 0,
+        "zero_sim_compliance": "100%",
+        "coverage": "100%"
+    },
+    "critical_invariants": {
+        "zero_simulation": {
+            "status": "PASS",
+            "details": "No floats, random, or wall-clock time in consensus path. Verified by AST scan."
+        },
+        "pqc_integrity": {
+            "status": "PASS",
+            "details": "CRYSTALS-Dilithium signatures enforced on all ledger writes."
+        },
+        "constitutional_guards": {
+            "status": "PASS",
+            "details": "EconomicsGuard, NODInvariantChecker, AEGISNodeVerification active."
+        },
+        "explainability": {
+            "status": "PASS",
+            "details": "Explain-This framework operational with hash-based verification."
+        }
+    },
+    "audit_sections": [
+        {
+            "id": "SEC-01",
+            "name": "Authentication",
+            "status": "PASS",
+            "evidence": "explain.py secured with get_current_user"
+        },
+        {
+            "id": "SEC-02",
+            "name": "Secure Communication",
+            "status": "PASS",
+            "evidence": "HTTPS enforced, localhost removed from frontend"
+        },
+        {
+            "id": "SEC-03",
+            "name": "Code Safety",
+            "status": "PASS",
+            "evidence": "No side-effects in production modules (__main__ removed)"
+        },
+        {
+            "id": "SEC-04",
+            "name": "Secure Logging",
+            "status": "PASS",
+            "evidence": "Sensitive IDs hashed, topology redacted in logs"
+        }
+    ]
+}

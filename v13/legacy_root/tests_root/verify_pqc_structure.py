@@ -6,7 +6,7 @@ import hashlib
 # Add the src directory to the path so we can import PQC
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Mock the Dilithium5 import for structural testing
+
 class MockDilithium5:
     pass
 

@@ -1,0 +1,37 @@
+name: Replay Drill
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run nightly
+  workflow_dispatch:      # Allow manual trigger
+  push:
+    branches: [ "main", "atlas" ]
+
+jobs:
+  drift-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install coverage pytest
+        
+    - name: Generate Reference Ledger
+      run: |
+        # Use the dedicated script to generate a valid ledger artifact for the drill
+        export PYTHONPATH=$PYTHONPATH:.
+        python v13/scripts/generate_drill_ledger.py
+        
+    - name: Run Drift Detector
+      run: |
+        export PYTHONPATH=$PYTHONPATH:.
+        python -m v13.ops.DriftDetector --ledger-path drill_ledger.jsonl

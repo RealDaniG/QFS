@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Progress } from '@/components/ui/progress'
 import Feed from '@/components/Feed'
-import DistributedFeed from '@/components/DistributedFeed' // Add import
+import DistributedFeed from '@/components/DistributedFeed'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { useLedgerSimulation } from '@/hooks/useLedgerSimulation'
@@ -27,6 +27,9 @@ import {
   Activity,
   Zap
 } from 'lucide-react'
+import { ExplainThisPanel } from '@/components/ExplainThisPanel';
+import { useExplain } from '@/hooks/useExplain';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface Community {
   id: string
@@ -54,6 +57,7 @@ interface TrendingTopic {
 export default function DiscoveryInterface() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('communities')
+  const { explanation, fetchRankingExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
 
   const communities: Community[] = [
     {
@@ -296,39 +300,60 @@ export default function DiscoveryInterface() {
             <CardContent>
               <div className="space-y-4">
                 {trendingTopics.map((topic, index) => (
-                  <div key={topic.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="text-2xl font-bold text-muted-foreground w-8">
-                        #{index + 1}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-1">{topic.name}</h3>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <MessageSquare className="h-3 w-3" />
-                            <span>{topic.posts.toLocaleString()} posts</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Activity className="h-3 w-3" />
-                            <span>{topic.engagement.toLocaleString()} engagements</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3 text-green-600" />
-                            <span className="text-green-600">+{topic.growth}%</span>
+                  <Dialog key={topic.id} onOpenChange={(open) => {
+                    if (open) {
+                      fetchRankingExplanation(topic.id);
+                    } else {
+                      clearExplanation();
+                    }
+                  }}>
+                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className="text-2xl font-bold text-muted-foreground w-8">
+                          #{index + 1}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-1">{topic.name}</h3>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <MessageSquare className="h-3 w-3" />
+                              <span>{topic.posts.toLocaleString()} posts</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Activity className="h-3 w-3" />
+                              <span>{topic.engagement.toLocaleString()} engagements</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <TrendingUp className="h-3 w-3 text-green-600" />
+                              <span className="text-green-600">+{topic.growth}%</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <div className="text-sm font-medium">Coherence</div>
-                        <div className="text-lg font-bold text-green-600">
-                          {topic.coherenceScore.toFixed(2)}
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <div className="text-sm font-medium">Coherence</div>
+                          <div className="text-lg font-bold text-green-600">
+                            {topic.coherenceScore.toFixed(2)}
+                          </div>
                         </div>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Hash className="h-3 w-3" />
+                            Why?
+                          </Button>
+                        </DialogTrigger>
+                        <Button variant="outline">Explore</Button>
                       </div>
-                      <Button variant="outline">Explore</Button>
                     </div>
-                  </div>
+                    <DialogContent className="max-w-2xl">
+                      <ExplainThisPanel
+                        type="ranking"
+                        explanation={explanation || undefined}
+                        isLoading={isExplaining}
+                      />
+                    </DialogContent>
+                  </Dialog>
                 ))}
               </div>
             </CardContent>

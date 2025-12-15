@@ -17,11 +17,11 @@ def test_policy_hints_for_different_severities():
     # Create gateway instance
     gateway = AtlasAPIGateway()
     
-    # Mock dependencies
+    
     gateway.storage_client = Mock()
     gateway.ledger_economics_service = Mock()
     
-    # Mock content candidates
+    
     mock_candidates = [
         {
             'content_id': 'test_post',
@@ -31,7 +31,7 @@ def test_policy_hints_for_different_severities():
         }
     ]
     
-    # Mock methods
+    
     gateway._fetch_content_candidates = Mock(return_value=mock_candidates)
     gateway._get_user_token_bundle = Mock(return_value={})
     gateway._get_deterministic_timestamp = Mock(return_value=1234567890)
@@ -75,7 +75,7 @@ def test_policy_hints_for_different_severities():
     for test_case in test_cases:
         print(f"\nTesting {test_case['name']}...")
         
-        # Mock AEGIS guard with specific advisory
+        
         def mock_observe_event(*args, **kwargs):
             mock_observation = Mock()
             mock_observation.block_suggested = test_case["block_suggested"]

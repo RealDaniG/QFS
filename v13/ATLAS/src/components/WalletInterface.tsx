@@ -13,9 +13,14 @@ import { Badge } from '@/components/ui/badge';
 import { useTreasury } from '@/hooks/useTreasury';
 import { useAuth } from '@/hooks/useAuth';
 
+import { ExplainThisPanel } from '@/components/ExplainThisPanel';
+import { useExplain } from '@/hooks/useExplain';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
 export default function WalletInterface() {
     const { balance, history, isLoading } = useTreasury();
     const { did } = useAuth();
+    const { explanation, fetchRewardExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
 
     // Fallback if loading or no auth (although auth is likely present)
     const displayBalance = balance?.balance.toFixed(2) || '0.00';
@@ -49,7 +54,7 @@ export default function WalletInterface() {
                                     </div>
                                 </div>
 
-                                {/* Reputation Score (Mock for now, could come from coherence) */}
+                                {/* Reputation Score (Placeholder, will come from coherence) */}
                                 <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <TrendingUp className="h-5 w-5 text-purple-600" />
@@ -73,15 +78,34 @@ export default function WalletInterface() {
                                     <div className="text-center text-muted-foreground py-4">No recent transactions</div>
                                 ) : (
                                     history.map((tx) => (
-                                        <div key={tx.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                                            <div>
-                                                <div className="font-medium">{tx.reason}</div>
-                                                <div className="text-sm text-muted-foreground">
-                                                    {new Date(tx.timestamp).toLocaleTimeString()} • {tx.id.split('_')[2]}
+                                        <Dialog key={tx.id} onOpenChange={(open) => {
+                                            if (open) {
+                                                // Assuming wallet_id is effectively the DID here, and mocking epoch
+                                                fetchRewardExplanation(did || "wallet_123", 10);
+                                            } else {
+                                                clearExplanation();
+                                            }
+                                        }}>
+                                            <DialogTrigger asChild>
+                                                <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
+                                                    <div>
+                                                        <div className="font-medium">{tx.reason}</div>
+                                                        <div className="text-sm text-muted-foreground">
+                                                            {new Date(tx.timestamp).toLocaleTimeString()} • {tx.id.split('_')[2]}
+                                                            <Badge variant="outline" className="ml-2 text-[10px] h-5">Explain</Badge>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-green-600 font-bold">+{tx.amount.toFixed(2)} FLX</div>
                                                 </div>
-                                            </div>
-                                            <div className="text-green-600 font-bold">+{tx.amount.toFixed(2)} FLX</div>
-                                        </div>
+                                            </DialogTrigger>
+                                            <DialogContent className="max-w-2xl">
+                                                <ExplainThisPanel
+                                                    type="reward"
+                                                    explanation={explanation || undefined}
+                                                    isLoading={isExplaining}
+                                                />
+                                            </DialogContent>
+                                        </Dialog>
                                     ))
                                 )}
                             </div>

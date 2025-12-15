@@ -158,7 +158,37 @@ class ValueGraphRef:
             return
 
         if etype == "RewardAllocated":
-            user_id = event["user_id"]
+            # Handle QFS V13.8 format: {"rewards": {"wallet_id": {...}}}
+            if "rewards" in event:
+                for wallet_id, reward_data in event["rewards"].items():
+                    user_id = wallet_id
+                    # Process each reward entry
+                    # Note: ValueGraphRef is a simplified reference, so we'll just extract the total
+                    # In a full impl, we'd parse the breakdown
+                    
+                    # Try to extract amount
+                    amount_atr = 0
+                    if isinstance(reward_data, dict):
+                         val = reward_data.get("final_reward", "0")
+                         # safe int conversion from likely string float
+                         try:
+                             amount_atr = int(float(val)) 
+                         except:
+                             amount_atr = 0
+                    
+                    try:
+                        amount_atr = int(float(val)) 
+                    except:
+                        amount_atr = 0
+                    
+                    user_node = self._ensure_user(user_id)
+                    user_node.total_rewards_atr += amount_atr
+                return
+
+            # Legacy Format Fallback
+            user_id = event.get("user_id")
+            if not user_id: return # Skip if no user_id and not new format
+            
             content_id = event.get("content_id")
 
             # Prefer explicit amount_atr if present; otherwise derive it

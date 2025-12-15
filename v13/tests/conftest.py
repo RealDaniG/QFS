@@ -11,11 +11,12 @@ import pytest
 # Ensure repo-root test runs can import v13 packages and v13/libs modules.
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _V13_ROOT = os.path.abspath(os.path.join(_THIS_DIR, ".."))
+_REPO_ROOT = os.path.abspath(os.path.join(_V13_ROOT, ".."))
 _V13_LIBS = os.path.join(_V13_ROOT, "libs")
 _V13_CORE = os.path.join(_V13_ROOT, "core")
 _V13_UTILS = os.path.join(_V13_ROOT, "utils")
 
-for p in (_V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
+for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
     if p not in sys.path:
         sys.path.insert(0, p)
 
@@ -40,10 +41,36 @@ except Exception:
 # pytest fixtures can be defined here
 
 def pytest_configure(config):
+    """Initialize QFS logger for test session and register markers."""
     config.addinivalue_line("markers", "pqc_backend: tests requiring production PQC backend (pqcrystals/liboqs)")
     config.addinivalue_line("markers", "legacy: legacy/non-portable test suites")
+    
+    # Initialize Global Test Logger
+    try:
+        from v13.libs.logging.qfs_logger import QFSLogger, LogLevel, LogCategory
+        global test_logger
+        test_logger = QFSLogger('pytest_session', context={'env': 'test'})
+        test_logger.info(LogCategory.TESTING, "Pytest session configuring")
+    except ImportError:
+        pass  # Logging might not be available during bootstrap
 
-def pytest_ignore_collect(path, config):
+def pytest_runtest_logreport(report):
+    """Log test result to QFSLogger."""
+    global test_logger
+    if 'test_logger' in globals() and test_logger:
+        from v13.libs.logging.qfs_logger import LogLevel, LogCategory
+        
+        if report.when == 'call':
+            if report.failed:
+                test_logger.error(LogCategory.TESTING, f"Test Failed: {report.nodeid}", 
+                                 details={'duration': report.duration, 'error': str(report.longrepr)})
+            elif report.passed:
+                # Optional: Don't log every pass to avoid noise, or log summary
+                pass
+            elif report.skipped:
+                test_logger.info(LogCategory.TESTING, f"Test Skipped: {report.nodeid}")
+
+def pytest_ignore_collect(collection_path, config):
     """Skip non-portable/unstable suites at *collection time*.
 
     Important: marker-based skipping happens after modules are imported.
@@ -52,7 +79,7 @@ def pytest_ignore_collect(path, config):
     runnable and can be iteratively stabilized.
     """
 
-    p = str(path).replace("\\", "/")
+    p = str(collection_path).replace("\\", "/")
 
     # Quarantine legacy tree
     if "/v13/tests/old/" in p:

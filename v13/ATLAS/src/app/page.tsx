@@ -39,7 +39,6 @@ import GuardsList from '@/components/GuardsList'
 import { useInteraction } from '@/hooks/useInteraction'
 
 // Atlas & QFS Imports
-// import { MockLedger } from '@/lib/ledger/mock-ledger'; // DEPRECATED: ZERO-SIM MIGRATION
 import { RealLedger } from '@/lib/ledger/real-ledger';
 import { getTreasury } from '@/lib/economics/treasury-engine';
 import { GovernanceService } from '@/lib/governance/service';
@@ -47,7 +46,6 @@ import { PendingEventStore } from '@/lib/ledger/pending-store';
 import { LedgerSyncService } from '@/lib/ledger/sync-service';
 
 // Services
-// const ledger = new MockLedger(true, 3000); // Old Mock
 const ledger = new RealLedger(); // New Zero-Sim Client
 const treasury = getTreasury();
 // Zero-Sim: GovernanceService fetches directly from QFS
@@ -373,6 +371,10 @@ export default function AtlasDashboard() {
                     </CardHeader>
                     <CardContent className="p-0">
                       <MessagingInterface />
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
               <TabsContent value="communities" className="mt-0 h-full">
                 <div className="max-w-6xl mx-auto">
                   <Card className="h-[600px]">
@@ -390,6 +392,8 @@ export default function AtlasDashboard() {
               </TabsContent>
 
               <TabsContent value="governance" className="mt-0 h-full p-6">
+                <GovernanceInterface />
+              </TabsContent>
 
               <TabsContent value="settings" className="mt-0 h-full p-6">
                 <div className="max-w-2xl mx-auto space-y-8">

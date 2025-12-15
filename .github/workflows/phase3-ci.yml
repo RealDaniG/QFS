@@ -35,7 +35,7 @@ jobs:
       
       - name: Run AST Zero-Simulation Checker
         run: |
-          python src/libs/AST_ZeroSimChecker.py --dir src/ --fail
+          python v13/libs/AST_ZeroSimChecker.py v13/ --fail
           if [ $? -ne 0 ]; then
             echo "❌ Zero-Simulation violation detected"
             exit 302  # CIR-302: Time regression / non-determinism
@@ -43,16 +43,16 @@ jobs:
       
       - name: Lint Check
         run: |
-          pylint src/ --rcfile=pyproject.toml || exit 1
+          pylint v13/ --rcfile=pyproject.toml || exit 1
       
       - name: Style Check
         run: |
-          black --check --line-length=100 src/ || exit 1
-          isort --check-only src/ || exit 1
+          black --check --line-length=100 v13/ || exit 1
+          isort --check-only v13/ || exit 1
       
       - name: Type Check
         run: |
-          mypy src/ --strict || exit 1
+          mypy v13/ --strict || exit 1
 
   # ============================================================================
   # Stage 2: Unit Tests

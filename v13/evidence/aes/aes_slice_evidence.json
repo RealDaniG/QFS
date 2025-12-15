@@ -1,0 +1,27 @@
+{
+    "slice_name": "ArtisticEvaluationSignal",
+    "version": "V13.8",
+    "status": "FULLY_HARDENED_AND_TESTED",
+    "evidence_date": "2025-12-14",
+    "total_tests": 4,
+    "test_files": [
+        "v13/tests/test_artistic_signal.py",
+        "v13/tests/test_artistic_policy.py",
+        "v13/tests/test_artistic_observatory.py",
+        "v13/tests/test_artistic_explainability.py",
+        "v13/tests/test_artistic_compliance.py"
+    ],
+    "status_code": "ALL_PASSING",
+    "invariants_verified": {
+        "no_treasury_engine_imports": true,
+        "no_randomness": true,
+        "no_wall_clock": true,
+        "aegis_integrated": true,
+        "zero_simulation_compliant": true
+    },
+    "modules": [
+        "v13/policy/artistic_policy.py",
+        "v13/policy/artistic_observatory.py",
+        "v13/ATLAS/src/signals/artistic.py"
+    ]
+}

@@ -42,17 +42,8 @@ except ImportError:
             )
             from v13.core.TokenStateBundle import TokenStateBundle
         except ImportError:
-            from libs.CertifiedMath import BigNum128, CertifiedMath
-            # Create mock classes for AEGIS verification if not available
-            class AEGIS_Node_Verifier:
-                def __init__(self, cm_instance):
-                    pass
-                
-                def verify_node(self, node_id, registry_snapshot, telemetry_snapshot):
-                    # Mock verification that always passes
-                    class MockResult:
-                        is_valid = True
-                    return MockResult()
+            # Zero-Sim Contract v1.3: Fail closed if dependencies missing.
+            raise ImportError("Critical Dependency Missing: AEGIS_Node_Verifier or TokenStateBundle. System cannot start securely.")
             
             class NodeVerificationResult:
                 def __init__(self):
@@ -151,6 +142,12 @@ class StorageEngine:
         self.total_atr_fees_collected = BigNum128(0)
         self.total_nod_rewards_distributed = BigNum128(0)
         self.storage_event_log = []  # For replay testing
+
+    def _hash_sensitive_id(self, identifier: str) -> str:
+        """Hash sensitive identifiers in logs"""
+        if identifier is None:
+            return None
+        return hashlib.sha256(str(identifier).encode()).hexdigest()[:16]
 
     def _emit_storage_event(self, event: Dict[str, Any]) -> None:
         """Append a canonical StorageEvent entry for deterministic replay.
@@ -546,41 +543,45 @@ class StorageEngine:
         """
         if shard_id not in self.shards:
             # Deterministically log a proof failure event before raising.
+            # SECURE LOGGING: Redact topology and hash ID
             self._emit_storage_event(
                 {
                     "event_type": "PROOF_FAILED",
                     "epoch": self.current_epoch,
                     "timestamp_tick": 0,
-                    "object_id": object_id,
+                    "object_id": self._hash_sensitive_id(object_id),
                     "version": version,
                     "hash_commit": None,
                     "content_size": 0,
-                    "shard_ids": [shard_id],
-                    "replica_sets": {},
+                    "shard_ids": [], # Redacted
+                    "replica_sets": {}, # Redacted
                     "atr_cost": "0",
                     "pqc_signature": None,
                     "error_code": "SE_ERR_PROOF_UNAVAILABLE",
-                    "error_detail": "Shard not found",
+                    "error_detail": "Proof generation failed",
                 }
             )
-            raise KeyError(f"Shard {shard_id} not found")
+            raise ValueError("Proof unavailable for request")
 
         shard = self.shards[shard_id]
 
         # Deterministically log proof generation event.
+        # AUDIT: Full topology exposed for verification.
         self._emit_storage_event(
             {
                 "event_type": "PROOF_GENERATED",
                 "epoch": self.current_epoch,
                 "timestamp_tick": 0,
-                "object_id": object_id,
+                "object_id": self._hash_sensitive_id(object_id),
                 "version": version,
                 "hash_commit": self.objects.get(f"{object_id}:{version}").hash_commit
                 if f"{object_id}:{version}" in self.objects
                 else None,
                 "content_size": 0,
-                "shard_ids": [shard_id],
-                "replica_sets": {shard_id: list(shard.assigned_nodes)},
+                "shard_ids": self.objects.get(f"{object_id}:{version}").shard_ids
+                if f"{object_id}:{version}" in self.objects
+                else [], 
+                "replica_sets": {shard.shard_id: list(shard.assigned_nodes)},
                 "atr_cost": "0",
                 "pqc_signature": None,
                 "error_code": None,
@@ -855,39 +856,60 @@ class StorageEngine:
         for i in range(REPLICATION_FACTOR):
             node_index = (start_index + i) % len(eligible_nodes)
             assigned_nodes.append(eligible_nodes[node_index])
-
         return assigned_nodes
 
     def _generate_merkle_root(self, content_chunk: bytes) -> str:
         """
-        Generate Merkle root for a content chunk.
-
+        Generate Merkle root for a content chunk by splitting into 4KB blocks.
+        
         Args:
             content_chunk: Content chunk bytes
-
+            
         Returns:
             Merkle root as hex string
         """
-        # Simple implementation - in a real system this would be a proper Merkle tree
-        hash_obj = hashlib.sha3_256()
-        hash_obj.update(content_chunk)
-        return hash_obj.hexdigest()
+        BLOCK_SIZE = 4096
+        leaves = []
+        
+        # Split into blocks and hash leaves
+        for i in range(0, len(content_chunk), BLOCK_SIZE):
+            block = content_chunk[i:i+BLOCK_SIZE]
+            leaves.append(hashlib.sha3_256(block).hexdigest())
+            
+        if not leaves:
+            return hashlib.sha3_256(b"").hexdigest()
+            
+        # Build tree
+        tree_level = leaves
+        while len(tree_level) > 1:
+            next_level = []
+            for i in range(0, len(tree_level), 2):
+                left = tree_level[i]
+                right = tree_level[i+1] if i+1 < len(tree_level) else left
+                combined = (left + right).encode()
+                next_level.append(hashlib.sha3_256(combined).hexdigest())
+            tree_level = next_level
+            
+        return tree_level[0]
 
     def _generate_shard_proof(self, shard: Shard) -> str:
         """
-        Generate proof for a shard.
-
+        Generate a static integrity proof for the shard.
+        Contains the Merkle Root and size, serialized.
+        
         Args:
             shard: Shard object
-
+            
         Returns:
-            Proof as hex string
+            JSON string of the proof structure
         """
-        # Simple implementation - in a real system this would be a proper proof
-        data_to_hash = f"{shard.shard_id}:{shard.merkle_root}".encode()
-        hash_obj = hashlib.sha3_256()
-        hash_obj.update(data_to_hash)
-        return hash_obj.hexdigest()
+        proof_data = {
+            "shard_id": shard.shard_id,
+            "merkle_root": shard.merkle_root,
+            "size": len(shard.content_chunk),
+            "algo": "SHA3-256-Merkle-4KB"
+        }
+        return json.dumps(proof_data, sort_keys=True)
 
     def _update_node_metrics(self, node_ids: List[str], content_size: int) -> None:
         """
@@ -1028,54 +1050,4 @@ class StorageEngine:
 
 
 # Test function
-def test_storage_engine():
-    """Test the StorageEngine implementation."""
-    print("Testing StorageEngine...")
 
-    # Create CertifiedMath instance
-    cm = CertifiedMath()
-
-    # Initialize storage engine
-    storage_engine = StorageEngine(cm)
-
-    # Register some nodes
-    storage_engine.register_storage_node("node1", "192.168.1.1", 8080)
-    storage_engine.register_storage_node("node2", "192.168.1.2", 8080)
-    storage_engine.register_storage_node("node3", "192.168.1.3", 8080)
-    storage_engine.register_storage_node("node4", "192.168.1.4", 8080)
-
-    print(f"Registered {len(storage_engine.nodes)} nodes")
-
-    # Test putting content
-    object_id = "test_object_1"
-    version = 1
-    content = b"This is test content for the decentralized storage system."
-    metadata = {
-        "author": "test_user",
-        "tags": ["test", "decentralized"],
-        "created_at": "2025-12-14",
-    }
-
-    result = storage_engine.put_content(
-        object_id, version, content, metadata, 1234567890
-    )
-    print(f"Put content result: {result}")
-
-    # Test getting content
-    retrieved = storage_engine.get_content(object_id, version)
-    print(f"Retrieved content length: {len(retrieved['content_chunk'])}")
-    print(f"Content matches: {retrieved['content_chunk'] == content}")
-
-    # Test listing objects
-    objects = storage_engine.list_objects()
-    print(f"Listed {len(objects)} objects")
-
-    # Test getting storage proof
-    if result["shard_ids"]:
-        shard_id = result["shard_ids"][0]
-        proof = storage_engine.get_storage_proof(object_id, version, shard_id)
-        print(f"Storage proof for shard {shard_id}: {proof}")
-
-
-if __name__ == "__main__":
-    test_storage_engine()

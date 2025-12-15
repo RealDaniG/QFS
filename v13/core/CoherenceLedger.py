@@ -15,14 +15,14 @@ from dataclasses import dataclass
 try:
     from v13.libs.CertifiedMath import BigNum128, CertifiedMath
     from v13.core.TokenStateBundle import TokenStateBundle
-    # Use mock PQC for testing
+    
     from v13.libs.PQC import PQC
 except ImportError:
     # Fallback for direct execution
     try:
         from v13.libs.CertifiedMath import BigNum128, CertifiedMath
         from v13.core.TokenStateBundle import TokenStateBundle
-        # Use mock PQC for testing
+        
         from v13.libs.PQC import PQC
     except ImportError:
         # Try with sys.path modification
@@ -32,12 +32,12 @@ except ImportError:
         try:
             from v13.libs.CertifiedMath import BigNum128, CertifiedMath
             from v13.core.TokenStateBundle import TokenStateBundle
-            # Use mock PQC for testing
+            
             from v13.libs.PQC import PQC
         except ImportError:
             from libs.CertifiedMath import BigNum128, CertifiedMath
             from core.TokenStateBundle import TokenStateBundle
-            # Use mock PQC for testing
+            
             from libs.PQC import PQC
 
 
@@ -235,110 +235,3 @@ class CoherenceLedger:
 
 
 # Test function
-def test_coherence_ledger():
-    """Test the CoherenceLedger implementation."""
-    print("Testing CoherenceLedger...")
-    
-    # Create test log list and CertifiedMath instance
-    log_list = []
-    # Use the LogContext to create a proper log list
-    with CertifiedMath.LogContext() as log_list:
-        cm = CertifiedMath()
-    
-    # Create test PQC key pair
-    from ..libs.PQC import PQC
-    with PQC.LogContext() as pqc_log:
-        keypair = PQC.generate_keypair(pqc_log)
-        pqc_keypair = (keypair.private_key, keypair.public_key)
-    
-    # Initialize coherence ledger
-    ledger = CoherenceLedger(cm, pqc_keypair)
-    
-    # Create test token bundle
-    chr_state = {
-        "coherence_metric": "0.98",
-        "c_holo_proxy": "0.99",
-        "resonance_metric": "0.05",
-        "flux_metric": "0.15",
-        "psi_sync_metric": "0.08",
-        "atr_metric": "0.85"
-    }
-    
-    parameters = {
-        "beta_penalty": CertifiedMath.from_string("100000000.0"),
-        "phi": CertifiedMath.from_string("1.618033988749894848")
-    }
-    
-    token_bundle = TokenStateBundle(
-        chr_state=chr_state,
-        flx_state={"flux_metric": "0.15"},
-        psi_sync_state={"psi_sync_metric": "0.08"},
-        atr_state={"atr_metric": "0.85"},
-        res_state={"resonance_metric": "0.05"},
-        signature="test_signature",
-        timestamp=1234567890,  # Deterministic timestamp
-        bundle_id="test_bundle_id",
-        pqc_cid="test_pqc_cid",
-        quantum_metadata={"test": "data"},
-        lambda1=CertifiedMath.from_string("0.3"),
-        lambda2=CertifiedMath.from_string("0.2"),
-        c_crit=CertifiedMath.from_string("0.9"),
-        parameters=parameters
-    )
-    
-    # Test logging token state
-    entry1 = ledger.log_state(token_bundle, deterministic_timestamp=1234567890)
-    print(f"Logged token state entry: {entry1.entry_id}")
-    print(f"Entry hash: {entry1.entry_hash[:32]}...")
-    print(f"Previous hash: {entry1.previous_hash[:32]}...")
-    
-    # Test logging with HSMF metrics
-    hsmf_metrics = {
-        "c_holo": "0.95",
-        "s_flx": "0.15",
-        "s_psi_sync": "0.08",
-        "f_atr": "0.85"
-    }
-    
-    entry2 = ledger.log_state(token_bundle, hsmf_metrics, deterministic_timestamp=1234567891)
-    print(f"Logged HSMF metrics entry: {entry2.entry_id}")
-    print(f"Entry hash: {entry2.entry_hash[:32]}...")
-    print(f"Previous hash: {entry2.previous_hash[:32]}...")
-    
-    # Test logging with rewards
-    rewards = {
-        "CHR": {
-            "token_name": "CHR",
-            "amount": "100.0",
-            "eligibility": True,
-            "coherence_gate_passed": True,
-            "survival_gate_passed": True
-        }
-    }
-    
-    entry3 = ledger.log_state(token_bundle, hsmf_metrics, rewards, deterministic_timestamp=1234567892)
-    print(f"Logged rewards entry: {entry3.entry_id}")
-    print(f"Entry hash: {entry3.entry_hash[:32]}...")
-    print(f"Previous hash: {entry3.previous_hash[:32]}...")
-    
-    # Test finality seal generation
-    # Create mock TreasuryResult
-    class MockTreasuryResult:
-        def __init__(self):
-            self.is_valid = True
-            self.total_allocation = CertifiedMath.from_string("1000.0")
-            self.rewards = rewards
-            self.validation_errors = []
-    
-    treasury_result = MockTreasuryResult()
-    
-    seal_hash = ledger.generate_finality_seal(treasury_result, deterministic_timestamp=1234567893)
-    print(f"Finality seal generated: {seal_hash[:32]}...")
-    
-    # Test ledger summary
-    summary = ledger.get_ledger_summary()
-    print(f"Ledger summary: {summary}")
-
-
-if __name__ == "__main__":
-    test_coherence_ledger()

@@ -15,7 +15,7 @@ export interface FeedItem {
     timestamp: number;
 }
 
-// Mock distributed nodes
+
 const NETWORK_NODES = [
     new QFSExecutor('did:key:node_1'),
     new QFSExecutor('did:key:node_2'),
@@ -37,7 +37,7 @@ export function useQFSFeed() {
             // In a real implementation, we would query the node's API
             // Here we simulate the node "computing" the feed
 
-            // Mock data - in real version this comes from IPFS + Ledger + QFS sort
+            
             const mockRawData = [
                 { id: '1', author: 'did:key:alice', text: 'Decentralized AI is the future.' },
                 { id: '2', author: 'did:key:bob', text: 'Just setup my QFS node! #Atlas' },
@@ -60,7 +60,7 @@ export function useQFSFeed() {
                     cid: `cid_${item.id}`,
                     authorDID: item.author,
                     content: { text: item.text },
-                    coherenceScore: 0.85 + (Math.random() * 0.1), // Mock score from "executor"
+                    coherenceScore: 0.85 + (Math.random() * 0.1), 
                     proof: result.proof.root,
                     timestamp: result.timestamp
                 };

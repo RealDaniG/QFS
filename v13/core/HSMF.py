@@ -491,16 +491,4 @@ class HSMF:
             raw_metrics=raw_metrics
         )
 
-if __name__ == "__main__":
-    # To run build-time validation:
-    #   python -c "from core.HSMF import HSMF; HSMF.self_test()"
-    pass
 
-# Test function for the new atomic transition functionality
-def test_hsmf_atomic_transition():
-    """Test the HSMF atomic transition functionality."""
-    print("Testing HSMF atomic transition functionality...")
-    
-    # This would normally be run with proper setup, but we'll just verify
-    # the method exists and has the correct signature
-    print("✓ HSMF atomic transition functionality added successfully!")

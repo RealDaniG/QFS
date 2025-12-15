@@ -223,7 +223,7 @@ def test_generate_mock_evidence():
     print(f"\n✅ Evidence generated: {evidence_path}")
     print(json.dumps(evidence, indent=2))
     
-    assert backend_info["production_ready"] is False  # Mock is not production-ready
+    assert backend_info["production_ready"] is False  
 
 
 if __name__ == "__main__":

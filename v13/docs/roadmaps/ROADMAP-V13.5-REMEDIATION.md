@@ -17,6 +17,7 @@
 This roadmap guides QFS V13 from its **current conditionally compliant state** (24% compliance) to full V13.5 / V2.1 certification (100% compliance) through a systematic, evidence-based, phase-driven remediation process.
 
 **Current State (Verified):**
+
 - Core deterministic math components: OPERATIONAL and well-implemented
 - PQC integration: OPERATIONAL with real Dilithium-5
 - Integration architecture: WELL-STRUCTURED
@@ -26,6 +27,7 @@ This roadmap guides QFS V13 from its **current conditionally compliant state** (
 - Advanced testing: PARTIALLY IMPLEMENTED
 
 **Key Metrics:**
+
 - **Total Requirements:** 89
 - **Currently Passing:** 89
 - **To Be Implemented:** 0
@@ -48,6 +50,7 @@ This roadmap guides QFS V13 from its **current conditionally compliant state** (
 **Purpose:** This phase freezes the current system state, executes all existing tests, captures evidence, and establishes the factual baseline from which remediation begins. All claims in subsequent phases must be traceable to evidence generated here or in later verification steps.
 
 ### Deliverables (Pure Verification - No Code Changes)
+
 - [x] Generate compliance audit report → `QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json`
 - [x] Generate state gap matrix → `STATE-GAP-MATRIX.md`
 - [x] Create task tracking system → `TASKS-V13.5.json`, `TASKS-V13.5.md`
@@ -58,6 +61,7 @@ This roadmap guides QFS V13 from its **current conditionally compliant state** (
 - [x] Create baseline verification report → `PHASE0_BASELINE_REPORT.md`
 
 **Evidence Requirements for Phase 0 Completion:**
+
 - Baseline commit hash frozen and recorded
 - All existing tests executed with results captured
 - SHA3-512 hashes computed for all core components
@@ -65,6 +69,7 @@ This roadmap guides QFS V13 from its **current conditionally compliant state** (
 - Baseline state manifest complete with actual hashes (not placeholders)
 
 ### Output Files
+
 ```
 QFSV13_FULL_COMPLIANCE_AUDIT_REPORT.json
 STATE-GAP-MATRIX.md
@@ -90,12 +95,14 @@ evidence/baseline_state_manifest.json
 **Priority:** HIGH
 
 #### Tasks
+
 - [x] Create property-based fuzzing test suite → **COMPLETE** (24/24 tests passing)
 - [x] Implement overflow/underflow stress scenarios → **COMPLETE** (integrated into comprehensive suite)
 - [x] Test near-boundary edge cases (MIN_VALUE, MAX_VALUE) → **COMPLETE**
 - [x] Generate stress summary evidence → **COMPLETE**
 
 #### Deliverables
+
 ```
 tests/property/test_bignum128_fuzz.py ✓ DELIVERED
 tests/test_bignum128_comprehensive.py ✓ DELIVERED
@@ -110,6 +117,7 @@ docs/compliance/BigNum128_Stress_Testing_Report.md (integrated into evidence art
 **Priority:** HIGH
 
 #### Tasks
+
 - [x] Define canonical ProofVectors for all transcendental functions → **COMPLETE** (42 vectors defined)
 - [x] Document error bounds and convergence criteria → **COMPLETE**
 - [x] Create ProofVectors test suite with hash verification → **COMPLETE** (26/26 tests passing)
@@ -117,6 +125,7 @@ docs/compliance/BigNum128_Stress_Testing_Report.md (integrated into evidence art
 - [x] Export ProofVectors evidence → **COMPLETE**
 
 #### Deliverables
+
 ```
 docs/compliance/CertifiedMath_PROOFVECTORS.md ✓ DELIVERED (2025-12-11)
 tests/unit/test_certified_math_proofvectors.py ✓ DELIVERED (2025-12-11)
@@ -130,12 +139,14 @@ evidence/certified_math_error_surface_maps.pdf ✓ DELIVERED (2025-12-11)
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [x] Create replay test suite with identical timestamp reproduction → **COMPLETE** (9/9 tests passing)
 - [x] Implement time regression detection tests → **COMPLETE** (17/17 tests passing)
 - [x] Test time regression → CIR-302 trigger → **COMPLETE** (3 scenarios verified)
 - [x] Generate time regression evidence → **COMPLETE**
 
 #### Deliverables
+
 ```
 tests/deterministic/test_deterministic_time_replay.py ✓ DELIVERED (2025-12-11)
 tests/deterministic/test_deterministic_time_regression_cir302.py ✓ DELIVERED (2025-12-11)
@@ -150,13 +161,16 @@ evidence/phase1/time_regression_cir302_event.json ✓ DELIVERED (2025-12-11)
 **Status:** ✅ COMPLETED
 
 #### Resolution
+
 **Solution Implemented:** Standardized PQC backend with "real if available, otherwise deterministic mock" approach
-- Production backend: dilithium-py (when available)
-- Fallback backend: MockPQC (SHA-256 simulation for integration testing)
-- Standardized interface: PQCInterfaceProtocol for swappable implementations
-- Comprehensive test suite: TestPQCStandardization.py with 100% pass rate
+
+- ✅ **Development/CI Backend**: `dilithium` (pure Python). Cross-platform compatibility for Phase 1-2.5 validation.
+- ✅ **Fallback Backend**: MockPQC (SHA-256 simulation for integration testing).
+- 🔒 **Production Backend (Phase 3)**: `liboqs` (C Linux), strictly for production signing.
+- Standardized interface: PQCInterfaceProtocol for swappable implementations.
 
 #### Tasks
+
 - [x] Document PQC key lifecycle and boundaries → **COMPLETED**
 - [x] Document HSM/KMS key management strategy → **DEFERRED** (moved to Phase 2)
 - [x] Create PQC load test suite (sign/verify performance) → **COMPLETED**
@@ -165,6 +179,7 @@ evidence/phase1/time_regression_cir302_event.json ✓ DELIVERED (2025-12-11)
 - [x] Document side-channel considerations → **COMPLETED**
 
 #### Deliverables
+
 ```
 docs/compliance/PQC_INTEGRATION.md ✓ UPDATED (2025-12-13)
 docs/compliance/SideChannel_Analysis_Notes.md ✓ DELIVERED (2025-12-13)
@@ -188,6 +203,7 @@ evidence/v13_6/pqc_performance_report.json ✓ DELIVERED (2025-12-13)
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [ ] Design HSM/KMS integration architecture
 - [ ] Implement HSM key generation interface
 - [ ] Implement HSM signing interface (no key export)
@@ -197,6 +213,7 @@ evidence/v13_6/pqc_performance_report.json ✓ DELIVERED (2025-12-13)
 - [ ] Generate HSM integration evidence
 
 #### Deliverables
+
 ```
 docs/architecture/HSM_KMS_Integration_Architecture.md
 src/security/hsm_interface.py
@@ -219,6 +236,7 @@ evidence/hsm_kms_integration_verification.json
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [x] Implement EconomicsGuard with all 8 validation methods → **COMPLETED**
 - [x] Implement NODInvariantChecker with all 4 invariants → **COMPLETED**
 - [x] Implement AEGIS_Node_Verification with pure deterministic checks → **COMPLETED**
@@ -226,6 +244,7 @@ evidence/hsm_kms_integration_verification.json
 - [x] Generate guard implementation evidence → **COMPLETED**
 
 #### Deliverables
+
 ```
 src/libs/economics/EconomicsGuard.py ✓ DELIVERED
 src/libs/governance/NODInvariantChecker.py ✓ DELIVERED
@@ -240,6 +259,7 @@ evidence/phase3/constitutional_guard_implementation.json ✓ DELIVERED
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [x] Integrate EconomicsGuard into TreasuryEngine → **COMPLETED**
 - [x] Integrate EconomicsGuard into RewardAllocator → **COMPLETED**
 - [x] Integrate AEGIS verification into NODAllocator → **COMPLETED**
@@ -249,6 +269,7 @@ evidence/phase3/constitutional_guard_implementation.json ✓ DELIVERED
 - [x] Generate integration evidence → **COMPLETED**
 
 #### Deliverables
+
 ```
 src/core/TreasuryEngine.py ✓ UPDATED
 src/core/RewardAllocator.py ✓ UPDATED
@@ -273,6 +294,7 @@ evidence/phase3/constitutional_guard_integration.json ✓ DELIVERED
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [x] Create DeterministicReplayTest.py → **COMPLETED**
 - [x] Create BoundaryConditionTests.py → **COMPLETED**
 - [x] Create FailureModeTests.py → **COMPLETED**
@@ -281,6 +303,7 @@ evidence/phase3/constitutional_guard_integration.json ✓ DELIVERED
 - [x] Generate test evidence artifacts → **COMPLETED**
 
 #### Deliverables
+
 ```
 tests/v13_6/DeterministicReplayTest.py ✓ DELIVERED
 tests/v13_6/BoundaryConditionTests.py ✓ DELIVERED
@@ -298,17 +321,38 @@ evidence/v13_6/performance_benchmark.json ✓ DELIVERED
 **Priority:** MEDIUM
 
 #### Tasks
+
 - [x] Mark "V13.6 constitutional guard testing" as Completed → **COMPLETED**
 - [x] Mark "PQC integration for Open‑AGI and module interfaces" as In Progress → **COMPLETED**
 - [x] Explicitly call out remaining TODOs → **COMPLETED**
 
 #### Deliverables
+
 ```
 ROADMAP-V13.5-REMEDIATION.md ✓ UPDATED
 CONSTITUTIONAL_V13.5_TASK_TRACKER.md ✓ UPDATED
 CHANGELOG_V13.6.md ✓ UPDATED
 docs/qfs-v13.5-dashboard.html ✓ UPDATED
 docs/compliance/ZERO_SIMULATION_REPORT.md ✓ UPDATED
+```
+
+### 4.3 V13.8 Explainability & Replay Verification (Days 241-250)
+
+**Gap:** User-facing verification of deterministic state  
+**Priority:** HIGH (Resolved)
+
+#### Tasks
+
+- [x] Implement Value-Node Replay Engine -> **COMPLETED**
+- [x] Verify Hash Stability (SHA-256) of explanation paths -> **COMPLETED**
+- [x] Integrate "Explain-This" API with frontend -> **COMPLETED**
+
+#### Deliverables
+
+```
+spec/QFS_V13_8_VALUE_NODE_ECONOMICS.md ✓ DELIVERED
+evidence/value_node/value_node_slice_evidence.json ✓ DELIVERED
+v13/ATLAS/README.md ✓ UPDATED
 ```
 
 ---
@@ -325,12 +369,14 @@ docs/compliance/ZERO_SIMULATION_REPORT.md ✓ UPDATED
 **Priority:** HIGH
 
 #### Tasks
+
 - [ ] Define exact interface from AEGIS into modules (telemetry, registry, offline status)
 - [ ] Implement mock AEGIS adapter
 - [ ] Flip the "AEGIS offline freezes NOD/Governance" test from SKIPPED to active
 - [ ] Generate AEGIS adapter evidence
 
 #### Deliverables
+
 ```
 src/adapters/AEGISAdapter.py
 tests/integration/test_aegis_adapter.py
@@ -343,6 +389,7 @@ evidence/aegis_adapter_verification.json
 **Priority:** HIGH
 
 #### Tasks
+
 - [ ] Design reference Open-AGI orchestrator scenario
 - [ ] Implement scripted flow for DRV packets
 - [ ] Implement oracle guidance integration
@@ -350,6 +397,7 @@ evidence/aegis_adapter_verification.json
 - [ ] Generate Open-AGI scenario evidence
 
 #### Deliverables
+
 ```
 examples/OpenAGI_Orchestrator_Scenario.py
 docs/guides/OpenAGI_Integration_Guide.md
@@ -370,12 +418,14 @@ evidence/open_agi_orchestrator_verification.json
 **Priority:** CRITICAL
 
 #### Tasks
+
 - [ ] Embed AST_ZeroSimChecker in CI pipeline as blocking gate
 - [ ] Embed unit tests for math/PQC in CI pipeline as blocking gate
 - [ ] Embed integration suites in CI pipeline as blocking gates
 - [ ] Generate CI/CD hardening evidence
 
 #### Deliverables
+
 ```
 .github/workflows/ci_hardening.yml
 docs/deployment/CI_CD_Pipeline_Configuration.md
@@ -388,11 +438,13 @@ evidence/ci_cd_pipeline_hardening.json
 **Priority:** HIGH
 
 #### Tasks
+
 - [ ] Implement periodic replay spot-checks in staging environment
 - [ ] Implement automated verification of evidence artifact regeneration
 - [ ] Generate runtime health evidence
 
 #### Deliverables
+
 ```
 scripts/runtime_health_check.py
 scripts/evidence_verification.py
@@ -404,16 +456,19 @@ evidence/runtime_health_and_audit.json
 ## REMAINING TODOs FOR V13.7+
 
 **Per-Address Reward Cap Implementation:**
+
 - Implement `validate_per_address_reward` method in EconomicsGuard
 - Activate corresponding test in FailureModeTests
 - Update evidence artifacts
 
 **Full AEGIS Offline Policy:**
+
 - Implement real AEGIS adapter
 - Activate "AEGIS offline freezes NOD/Governance" test
 - Update evidence artifacts
 
 **Richer Oracle Validation:**
+
 - Implement advanced oracle validation logic
 - Create oracle validation test scenarios
 - Update evidence artifacts

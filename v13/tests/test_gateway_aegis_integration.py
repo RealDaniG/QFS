@@ -20,7 +20,7 @@ class TestGatewayAEGISIntegration:
         # Create gateway instance
         self.gateway = AtlasAPIGateway()
         
-        # Mock the DRV packet to provide deterministic timestamps
+        
         mock_drv_packet = Mock()
         mock_drv_packet.ttsTimestamp = 1234567890
         self.gateway.set_drv_packet(mock_drv_packet)

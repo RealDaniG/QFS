@@ -33,21 +33,16 @@ class QuantumEngine:
         Generate a quantum-resistant cryptographic key.
         
         Args:
-            seed: Optional seed for deterministic key generation
+            seed: Optional seed for deterministic key generation. REQUIRED for Zero-Sim compliance.
             
         Returns:
             bytes: Generated quantum key
+            
+        Raises:
+            ValueError: If seed is None (Zero-Sim enforcement).
         """
         if seed is None:
-            # Use quantum randomness if no seed provided
-            qc = QuantumCircuit(self.qr, self.cr)
-            qc.h(self.qr)  # Apply Hadamard to all qubits
-            qc.measure_all()
-            
-            # In a real implementation, this would run on a quantum computer
-            # For simulation, we'll use a hash of the current time
-            import time
-            seed = str(time.time()).encode()
+            raise ValueError("Zero-Sim Compliance: Explicit seed required for key generation.")
             
         # Use SHA3-512 for post-quantum security
         return hashlib.shake_256(seed).digest(64)
@@ -93,11 +88,13 @@ class QuantumEngine:
         Returns:
             Tuple[bytes, bytes]: Two entangled quantum state identifiers
         """
-        # In a real implementation, this would create actual entangled qubits
-        # For simulation, we'll return random identifiers
-        import secrets
-        shared_state = secrets.token_bytes(32)
-        return (shared_state, shared_state)
+        # For Zero-Sim compliance, we use a deterministic generation based on valid calls
+        # In production this would require an input seed. 
+        # We must NOT use fixed simulation values.
+        # This implementation requires a hardware interface or explicit seed injection.
+        # Since we don't have the hardware interface arg here, we raise NotImplementedError for production safety.
+        # Tests should override this method explicitly if needed.
+        raise NotImplementedError("Real quantum entanglement requires hardware interface. Use explicit seed in test overrides.")
     
     def measure_entangled_state(self, state: bytes, basis: int) -> Tuple[bytes, int]:
         """
