@@ -184,6 +184,11 @@ jobs:
         run: |
           pytest tests/integration/ -v --tb=short
       
+      - name: Verify Trust Loop (L-002)
+        run: |
+          python v13/scripts/verify_trust_loop.py || exit 1
+          echo "✅ Trust Loop Verified"
+      
       - name: Run Byzantine Simulation
         run: |
           # Simulate 1/3 malicious nodes
