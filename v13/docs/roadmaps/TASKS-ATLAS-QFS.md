@@ -10,14 +10,14 @@
 
 ### 🔴 P0 Priority Items
 
-- [ ] **System Creator Wallet (Bootstrap)**
+- [x] **System Creator Wallet (Bootstrap)**
   - [x] Spec doc (Clarified & Finalized)
   - [x] Deterministic Derivation (`crypto/derivation.py`)
   - [x] Keystore Abstraction (`libs/keystore/`)
   - [x] Ledger Writer (`ledger/writer.py`)
   - [x] Policy Authorization (`policy/authorization.py`)
   - [x] CLI Command (`cli/init_creator.py`)
-  - [x] Tests & Verification
+  - [x] Tests & Verification (7/7 passing)
   - [x] Evidence (`v13/evidence/SYSTEM_CREATOR_WALLET_EVIDENCE.json`)
 
 - [x] **Unified ATLAS API contracts**
@@ -46,40 +46,52 @@
   - [x] Stub APIs available
   - _Feed/Interactions now integrated with QFS and covered by deterministic tests._
 
-- [ ] **Direct messaging system**
+- [x] **Direct messaging system**
   - [x] Spec doc (`v13/docs/DIRECT_MESSAGING_SYSTEM_SPEC.md`)
   - [x] API/architecture (`v13/docs/DIRECT_MESSAGING_API.md`)
   - [x] Implementation (`v13/services/dm/`)
-  - [x] Tests (`v13/tests/unit/test_dm_integration.py`)
-  - [x] Evidence (`v13/evidence/DIRECT_MESSAGING_EVIDENCE.json`)
+  - [x] Open-AGI Integration (`v13/integrations/openagi_dm_adapter.py`)
+  - [x] Tests (13/13 passing: 4 core + 9 Open-AGI)
+  - [x] Evidence (`v13/evidence/DIRECT_MESSAGING_OPENAGI_EVIDENCE.json`)
 
-- [ ] **Community model & tools**
+- [x] **Community model & tools**
   - [x] Spec doc (`v13/docs/COMMUNITY_MODEL_SPEC.md`)
   - [x] API/architecture (`v13/docs/COMMUNITY_MODEL_API.md`)
   - [x] Implementation (`v13/services/community/`)
-  - [x] Tests (`v13/tests/unit/test_community_model.py`)
+  - [x] Tests (2/2 passing)
   - [x] Evidence (`v13/evidence/COMMUNITY_MODEL_EVIDENCE.json`)
 
-- [ ] **Appeals workflow**
+- [x] **Appeals workflow**
   - [x] Spec doc (`v13/docs/APPEALS_WORKFLOW_SPEC.md`)
   - [x] API/architecture (`v13/docs/APPEALS_WORKFLOW_API.md`)
   - [x] Implementation (`v13/services/appeals/`)
-  - [x] Tests (`v13/tests/unit/test_appeals_workflow.py`)
+  - [x] Tests (4/4 passing)
   - [x] Evidence (`v13/evidence/APPEALS_WORKFLOW_EVIDENCE.json`)
 
-- [ ] **Explain-This system**
+- [x] **Explain-This system**
   - [x] Spec doc (`v13/docs/EXPLAIN_THIS_SYSTEM_SPEC.md`)
   - [x] API/architecture (`v13/docs/EXPLAIN_THIS_API.md`)
   - [x] Implementation (`v13/services/explainer/`)
-  - [x] Tests (`v13/tests/unit/test_explain_this_system.py`)
+  - [x] Tests (6/6 passing)
   - [x] Evidence (`v13/evidence/EXPLAIN_THIS_EVIDENCE.json`)
 
-- [ ] **QFS Onboarding tours**
+- [x] **QFS Onboarding tours**
   - [x] Spec doc (`v13/docs/ONBOARDING_TOURS_SPEC.md`)
   - [x] API/architecture (`v13/docs/ONBOARDING_TOURS_API.md`)
   - [x] Implementation (`v13/services/onboarding/`)
-  - [x] Tests (`v13/tests/unit/test_onboarding_tours.py`)
+  - [x] Tests (4/4 passing)
   - [x] Evidence (`v13/evidence/ONBOARDING_TOURS_EVIDENCE.json`)
+
+### 🟢 UI Integration (In Progress)
+
+- [ ] **ATLAS Frontend Integration**
+  - [x] P0 API Client (`v13/ATLAS/src/lib/p0-api-client.ts`)
+  - [x] React Hooks (`v13/ATLAS/src/hooks/useP0Services.ts`)
+  - [x] Integration Plan (`v13/ATLAS/ATLAS_UI_INTEGRATION_PLAN.md`)
+  - [ ] Explain-This UI Components (Week 2)
+  - [ ] Onboarding Tour Overlay (Week 3)
+  - [ ] Guild Dashboard (Week 4)
+  - [ ] Agent Visibility Indicators (Week 5)
 
 ### 🟡 P1 Priority Items
 
