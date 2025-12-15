@@ -172,37 +172,4 @@ class KeyLedger:
 
 
 # Test function
-def test_key_ledger():
-    """Test the KeyLedger implementation."""
-    print("Testing KeyLedger...")
 
-    from ..libs.PQC import PQC
-    with PQC.LogContext() as pqc_log:
-        keypair = PQC.generate_keypair(pqc_log)
-        pqc_keypair = (keypair.private_key, keypair.public_key)
-
-    ledger = KeyLedger(pqc_keypair)
-
-    # Test registration
-    entry1 = ledger.log_key_event("key_001", "key_registration", {"capabilities": ["read", "mint"]}, 1234567890)
-    print(f"Logged key registration: {entry1.entry_id[:32]}... Previous hash: {entry1.previous_hash[:32]}...")
-
-    # Test rotation
-    entry2 = ledger.log_key_event("key_001", "key_rotation", deterministic_timestamp=1234567891)
-    print(f"Logged key rotation: {entry2.entry_id[:32]}... Previous hash: {entry2.previous_hash[:32]}...")
-
-    # Test capability assignment
-    entry3 = ledger.log_key_event("key_002", "capability_assignment", {"capabilities": ["burn"]}, 1234567892)
-    print(f"Logged capability assignment: {entry3.entry_id[:32]}... Previous hash: {entry3.previous_hash[:32]}...")
-
-    # Generate finality seal
-    seal_hash = ledger.generate_finality_seal(deterministic_timestamp=1234567893)
-    print(f"Finality seal hash: {seal_hash[:32]}...")
-
-    # Ledger summary
-    summary = ledger.get_ledger_summary()
-    print(f"Ledger summary: {summary}")
-
-
-if __name__ == "__main__":
-    test_key_ledger()
