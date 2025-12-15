@@ -49,7 +49,23 @@ jobs:
     - name: Step 3 - Run Unit Tests
       run: |
         echo "Running Unit Tests..."
-        python -m pytest v13/tests/unit/ -v --cov=v13 --cov-report=xml
+        python -m pytest v13/tests/unit/ -v --cov=v13 --cov-report=xml --junitxml=test-results.xml
+
+    # ... (other steps)
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: |
+          coverage.xml
+          bandit_report.json
+          semgrep_report.json
+          ZERO_SIM_REPORT.json
+          PQCOps_Verification.json
+          DET_BUILD_REPRODUCIBILITY.json
+          test-results.xml
 
     - name: Step 4 - Run Integration Tests
       run: |
