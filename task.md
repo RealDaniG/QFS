@@ -165,9 +165,11 @@ This document tracks the critical path to V1.0 release. It replaces previous tra
 
 **Status:** 🟡 CRITICAL
 
-- [ ] C-003.1: Design chat UI.
-- [ ] C-003.2: Implement WebSocket connection.
-- [ ] C-003.3: Send encrypted message.
+- [x] C-003.1: Design chat UI (ChatWindow).
+- [x] C-003.2: Implement WebSocket connection (Hook + API).
+- [x] C-003.3: Send encrypted message (SecureMessageV2).
+- [x] C-003.4: Real-time message delivery.
+- [ ] C-003.5: Chat UI window.
 - [ ] C-003.4: Store message (ciphertext only).
 - [ ] C-003.5: Emit message to recipient.
 - [ ] C-003.6: Decrypt message.

@@ -9,6 +9,7 @@ import uuid
 from v13.ATLAS.src.api.auth import verify_signature # Or JWT decode logic
 from v13.ATLAS.src.models.user import UserProfile
 from v13.integrations.event_bridge import get_event_bridge, EventBridge
+from v13.ledger.genesis_ledger import GenesisLedger # Direct ledger access for V1 replay
 
 logger = logging.getLogger(__name__)
 
@@ -126,3 +127,70 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
 
     except WebSocketDisconnect:
         manager.disconnect(websocket, wallet)
+
+@router.get("/threads")
+async deflist_threads(token: str):
+    """
+    List active chat threads by replaying the Genesis Ledger.
+    Returns unique list of peers communicated with.
+    """
+    # 1. Auth (simplification: reuse token logic or dependency)
+    # Ideally use Depends(get_current_user) but we kept it raw in WS example.
+    # We will assume a valid token is passed as query or header.
+    # For V1 MVP, we parse it manually here to match existing style.
+    try:
+        import jwt
+        from v13.ATLAS.src.api.auth import JWT_SECRET, JWT_ALGORITHM
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        current_wallet = payload.get("sub")
+    except:
+        # If token fails, return empty structure or 401
+        return []
+
+    # 2. Replay Ledger
+    # In V2, query a database projection.
+    # In V1 Zero-Sim, we scan the file.
+    ledger = GenesisLedger("genesis_ledger.jsonl")
+    # Optimize: Read backwards or index?
+    # Simple scan:
+    threads = {} # peer_wallet -> {last_ts, last_msg}
+    
+    # We need to expose a generator or list from ledger
+    # Assuming ledger.replay_events() returns iterable
+    # We'll read the file raw if replay_events prints to stdout, 
+    # but let's assume we can access raw storage for this service.
+    # Let's use the public API if possible.
+    # If not exposed, we iterate the file directly here as a service extension.
+    
+    if os.path.exists(ledger.filepath):
+        with open(ledger.filepath, 'r') as f:
+            for line in f:
+                try:
+                    evt = json.loads(line)
+                    if evt.get("type") != "MESSAGE":
+                        continue
+                        
+                    meta = evt.get("metadata", {})
+                    sender = evt.get("wallet") # The one who signed
+                    recipient = meta.get("recipient")
+                    
+                    if sender == current_wallet:
+                        peer = recipient
+                    elif recipient == current_wallet:
+                        peer = sender
+                    else:
+                        continue # Not my message
+                        
+                    if peer:
+                        # Keep latest
+                        ts = evt.get("timestamp")
+                        threads[peer] = {
+                            "peer": peer,
+                            "last_active": ts,
+                            "msg_id": meta.get("msg_id")
+                        }
+                except:
+                    continue
+
+    return list(threads.values())
+
