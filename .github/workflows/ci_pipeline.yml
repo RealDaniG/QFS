@@ -93,7 +93,7 @@ jobs:
         echo '{"build_hash": "'$(sha256sum build_environment.txt | cut -d' ' -f1)'", "status": "reproducible"}' > DET_BUILD_REPRODUCIBILITY.json
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
