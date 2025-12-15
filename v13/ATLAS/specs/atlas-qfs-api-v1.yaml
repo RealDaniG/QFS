@@ -6,7 +6,7 @@ info:
     API contract for the bridge between ATLAS Frontend and QFS Backend/Genesis Ledger.
     Enables wallet authentication, profile management, ledger logging, and coherence queries.
 servers:
-  - url: https://api.atlas.app/v1
+  - url: https://api.replace-with-actual-domain.com/v1 # TODO: Configure actual production domain (F-001)
     description: Production API
   - url: http://localhost:8000/v1
     description: Local Development
