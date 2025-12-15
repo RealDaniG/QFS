@@ -1,0 +1,205 @@
+openapi: 3.1.0
+info:
+  title: ATLAS x QFS Integration API
+  version: 1.0.0
+  description: |
+    API contract for the bridge between ATLAS Frontend and QFS Backend/Genesis Ledger.
+    Enables wallet authentication, profile management, ledger logging, and coherence queries.
+servers:
+  - url: https://api.atlas.app/v1
+    description: Production API
+  - url: http://localhost:8000/v1
+    description: Local Development
+
+paths:
+  /auth/challenge:
+    post:
+      summary: Request authentication challenge
+      operationId: requestChallenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - wallet
+              properties:
+                wallet:
+                  type: string
+                  description: Wallet address (0x...)
+      responses:
+        '200':
+          description: Challenge issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nonce:
+                    type: string
+                    description: Random nonce string to sign
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /auth/connect-wallet:
+    post:
+      summary: Verified wallet login
+      operationId: connectWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - wallet
+                - signature
+                - nonce
+              properties:
+                wallet:
+                  type: string
+                signature:
+                  type: string
+                  description: Ledger/Wallet signature of the nonce
+                nonce:
+                  type: string
+      responses:
+        '200':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT session token
+                  profile_exists:
+                    type: boolean
+
+  /users/{wallet}:
+    get:
+      summary: Get user profile
+      operationId: getUserProfile
+      parameters:
+        - name: wallet
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '404':
+          description: Profile not found
+
+  /genesis/log:
+    post:
+      summary: Log event to Genesis Ledger
+      operationId: logGenesisEvent
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenesisEvent'
+      responses:
+        '201':
+          description: Event logged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  hash:
+                    type: string
+                  committed_at:
+                    type: string
+                    format: date-time
+
+  /coherence/{wallet}:
+    get:
+      summary: Get QFS Coherence Score
+      operationId: getCoherence
+      parameters:
+        - name: wallet
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Coherence metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: number
+                    format: float
+                  trust_level:
+                    type: string
+                    enum: [UNKNOWN, VERIFIED, TRUSTED, AUTHORITY]
+                  last_evaluated:
+                    type: string
+                    format: date-time
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    UserProfile:
+      type: object
+      properties:
+        wallet:
+          type: string
+        display_name:
+          type: string
+        avatar_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        genesis_points:
+          type: integer
+        referral_count:
+          type: integer
+        referral_code:
+          type: string
+    
+    GenesisEvent:
+      type: object
+      required:
+        - event_type
+        - metadata
+        - signature
+      properties:
+        event_type:
+          type: string
+          enum: [REFERRAL, MESSAGE, LOGIN, GROUP_CREATE, CONTENT_ACTION]
+        value:
+          type: integer
+          default: 0
+        metadata:
+          type: object
+        signature:
+          type: string
+          description: Client-side signature of event data
