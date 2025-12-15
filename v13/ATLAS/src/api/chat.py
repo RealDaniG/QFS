@@ -129,7 +129,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
         manager.disconnect(websocket, wallet)
 
 @router.get("/threads")
-async deflist_threads(token: str):
+async def list_threads(token: str):
     """
     List active chat threads by replaying the Genesis Ledger.
     Returns unique list of peers communicated with.

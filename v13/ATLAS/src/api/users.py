@@ -7,7 +7,8 @@ import string
 from fastapi import APIRouter, HTTPException, Depends, status
 
 from v13.ATLAS.src.models.user import UserProfile, UserProfileUpdate
-from v13.ATLAS.src.api.auth import verify_signature # Reuse verification if needed, or depend on JWT
+from v13.ATLAS.src.models.user import UserProfile, UserProfileUpdate
+from v13.ATLAS.src.security.crypto_utils import verify_signature
 
 # Mock Database for V1 (Replace with Postgres/Redis in V2)
 # {wallet: UserProfile}
