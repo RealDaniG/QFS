@@ -108,4 +108,4 @@
 
 - [x] CI: Upgrade `upload-artifact` to v4.
 - [x] Security: Remove Hash Truncation.
-- [ ] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).
+- [x] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).
