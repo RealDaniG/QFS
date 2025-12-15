@@ -80,6 +80,7 @@
   - [x] Alice & Bob chat (Encrypted).
   - [x] Reward triggers (Coherence update).
   - [x] Verify Ledger for all 3 event types (`LOGIN`, `REFERRAL_USE`, `MESSAGE`).
+  - [x] **Verified** (Script passing).
 
 - [ ] **L-002: Coherence Closing Loop**
   - [ ] Ensure Referral actually increments Genesis Points/Coherence in `ValueNode`.
@@ -102,3 +103,9 @@
 - [ ] D-001: Production Env Config.
 - [ ] D-002: Load Testing (Chat Socket).
 - [ ] D-003: Sentry/Monitoring (Post-V1).
+
+## 🛠️ Infrastructure Fixes (Ongoing)
+
+- [x] CI: Upgrade `upload-artifact` to v4.
+- [x] Security: Remove Hash Truncation.
+- [ ] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).

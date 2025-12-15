@@ -39,7 +39,7 @@ jobs:
     - name: Step 2 - Full AST Zero-Sim Scan
       run: |
         echo "Running AST Zero-Simulation Compliance Check..."
-        python src/libs/AST_ZeroSimChecker.py
+        python v13/libs/AST_ZeroSimChecker.py
         if [ $? -ne 0 ]; then
           echo "❌ Zero-Simulation Compliance FAILED"
           exit 1
@@ -79,14 +79,14 @@ jobs:
     - name: Step 9 - Security Static Scan
       run: |
         echo "Running Security Static Analysis..."
-        bandit -r src/ -f json -o bandit_report.json || true
-        semgrep --config=auto src/ --json -o semgrep_report.json || true
+        bandit -r v13/ -f json -o bandit_report.json || true
+        semgrep --config=auto v13/ --json -o semgrep_report.json || true
 
     - name: Step 10 - Generate Compliance Reports
       run: |
         echo "Generating Compliance Reports..."
         # Generate Zero-Simulation report
-        python src/libs/AST_ZeroSimChecker.py --fail-on-violations false > ZERO_SIM_REPORT.json
+        python v13/libs/AST_ZeroSimChecker.py --fail-on-violations false > ZERO_SIM_REPORT.json
         # Generate PQC verification report
         echo '{"status": "PQC verification completed", "timestamp": "'$(date -u)'"}' > PQCOps_Verification.json
         # Generate deterministic build reproducibility report
