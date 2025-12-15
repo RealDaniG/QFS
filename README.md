@@ -65,6 +65,22 @@ QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 
 ***
 
+## 📱 ATLAS Frontend
+
+ATLAS is the user-facing web application that provides wallet-based authentication,
+encrypted chat, and social features powered by the QFS economic engine.
+
+**ATLAS Documentation:** [v13/ATLAS/README.md](v13/ATLAS/README.md)
+
+Key Features:
+
+- Wallet-based identity (MetaMask, WalletConnect)
+- End-to-end encrypted messaging
+- Referral system with Genesis Points
+- Real-time coherence scoring
+
+***
+
 ## 🎓 Core Concepts
 
 ### What is QFS?
