@@ -341,7 +341,7 @@ class TokenStateBundle:
             "res_state": res_state_serializable,
             "nod_state": nod_state_serializable,
             "storage_metrics": storage_metrics_serializable,  # ← NEW
-            'timestamp': 0, # Placeholder for deterministic verification result
+            'timestamp': getattr(self, 'timestamp', 0), # Use bundle timestamp if available
             "bundle_id": self.bundle_id,
             "pqc_cid": self.pqc_cid,
             "quantum_metadata": self.quantum_metadata,

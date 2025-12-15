@@ -31,12 +31,6 @@ except ImportError:
     except ImportError:
         # Zero-Sim Contract v1.3: Fail closed if dependencies missing.
         raise ImportError("Critical Dependency Missing: AEGIS_Node_Verifier or TokenStateBundle. System cannot start securely.")
-            
-        class NodeVerificationResult:
-            def __init__(self):
-                self.is_valid = True
-            
-        from core.TokenStateBundle import TokenStateBundle
 
 
 # Storage constants
