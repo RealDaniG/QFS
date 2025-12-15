@@ -7,8 +7,10 @@ import string
 from fastapi import APIRouter, HTTPException, Depends, status
 
 from v13.ATLAS.src.models.user import UserProfile, UserProfileUpdate
-from v13.ATLAS.src.models.user import UserProfile, UserProfileUpdate
 from v13.ATLAS.src.security.crypto_utils import verify_signature
+from v13.ledger.genesis_ledger import GenesisLedger
+import os
+import json
 
 # Mock Database for V1 (Replace with Postgres/Redis in V2)
 # {wallet: UserProfile}
@@ -74,4 +76,42 @@ async def get_coherence_score(wallet: str):
         "score": user.coherence_score,
         "trust_level": "VERIFIED" if user.coherence_score > 0.5 else "UNKNOWN",
         "last_evaluated": user.last_active.isoformat()
+    }
+
+@router.get("/{wallet}/referrals", response_model=dict)
+async def get_referral_stats(wallet: str):
+    """
+    Get referral statistics from ledger.
+    """
+    wallet = wallet.lower()
+    user = get_or_create_user(wallet)
+    
+    # Replay Ledger to count REFERRAL_USE events for this code
+    count = 0
+    recent = []
+    
+    ledger = GenesisLedger("genesis_ledger.jsonl")
+    if os.path.exists(ledger.filepath):
+        with open(ledger.filepath, 'r') as f:
+            for line in f:
+                try:
+                    evt = json.loads(line)
+                    if evt.get("type") != "REFERRAL_USE":
+                        continue
+                        
+                    meta = evt.get("metadata", {})
+                    # If this event used MY code
+                    if meta.get("referral_code") == user.referral_code:
+                        count += 1
+                        recent.append({
+                            "referee": evt.get("wallet"),
+                            "ts": evt.get("timestamp")
+                        })
+                except:
+                    continue
+    
+    return {
+        "referral_code": user.referral_code,
+        "referral_count": count,
+        "recent_referees": recent[-5:] # Last 5
     }
