@@ -12,7 +12,7 @@ from v13.ledger.genesis_ledger import GenesisLedger
 import os
 import json
 
-# Mock Database for V1 (Replace with Postgres/Redis in V2)
+# Stub Database for V1 (Replace with Postgres/Redis in V2)
 # {wallet: UserProfile}
 _user_db: Dict[str, UserProfile] = {}
 
