@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '0 0 * * *'  # Run nightly
   workflow_dispatch:      # Allow manual trigger
+  push:
+    branches: [ "main", "atlas" ]
 
 jobs:
   drift-check:
