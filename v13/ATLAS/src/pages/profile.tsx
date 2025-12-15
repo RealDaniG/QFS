@@ -13,10 +13,17 @@ interface UserProfile {
     referral_code: string;
 }
 
+interface ReferralStats {
+    referral_code: string;
+    referral_count: number;
+    recent_referees: any[];
+}
+
 export const ProfilePage: React.FC = () => {
     const [token, setToken] = useState<string | null>(localStorage.getItem('atlas_token'));
     const [wallet, setWallet] = useState<string | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [referralStats, setReferralStats] = useState<ReferralStats | null>(null);
     const [loading, setLoading] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [displayName, setDisplayName] = useState('');
@@ -50,6 +57,11 @@ export const ProfilePage: React.FC = () => {
                 const data = await res.json();
                 setProfile(data);
                 setDisplayName(data.display_name || '');
+                // Fetch stats too
+                const statsRes = await fetch(`/v1/users/${walletAddr}/referrals`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (statsRes.ok) setReferralStats(await statsRes.json());
             }
         } finally {
             setLoading(false);
@@ -135,7 +147,14 @@ export const ProfilePage: React.FC = () => {
                             </div>
                             <div className="bg-gray-50 p-4 rounded-lg">
                                 <span className="text-xs text-gray-500 uppercase tracking-wider">Referral Code</span>
-                                <div className="text-xl font-mono text-indigo-600">{profile.referral_code}</div>
+                                <div className="text-xl font-mono text-indigo-600 cursor-pointer"
+                                    onClick={() => navigator.clipboard.writeText(window.location.origin + "?ref=" + profile.referral_code)}
+                                    title="Click to copy invite link">
+                                    {profile.referral_code}
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1">
+                                    {referralStats?.referral_count || 0} Invites Active
+                                </div>
                             </div>
                         </div>
                     </div>
