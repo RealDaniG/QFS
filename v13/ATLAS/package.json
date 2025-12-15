@@ -1,6 +1,7 @@
 {
   "name": "nextjs_tailwind_shadcn_ts",
   "version": "0.1.0",
+  "license": "AGPL-3.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
@@ -57,6 +58,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "ethers": "^6.16.0",
     "framer-motion": "^12.23.2",
     "input-otp": "^1.4.2",
     "ipfs-http-client": "^60.0.1",
