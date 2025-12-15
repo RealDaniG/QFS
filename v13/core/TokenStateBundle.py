@@ -6,6 +6,8 @@ AGI-signed snapshots of all token states that comply with
 Zero-Simulation requirements and Post-Quantum Cryptography.
 """
 
+import json
+import hashlib
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
 

@@ -199,7 +199,66 @@ class ReferralLedger:
         )
         await self.ledger.append_event(event)
         
+    async def get_referral_summary(self, wallet: str) -> Dict[str, Any]:
+        """
+        Get referral summary for wallet.
+        Return ledger-derived data (mocked for now).
+        """
+        count = await self._count_referrals(wallet)
+        # Calculate current tier
+        current_tier = "NONE"
+        next_tier_progress = 0
+        
+        # Use range(len()) for deterministic iteration
+        for i in range(len(self.REWARD_TIERS)):
+            min_c, max_c, reward_amt = self.REWARD_TIERS[i]
+            if min_c <= count <= max_c:
+                current_tier = f"TIER_{i+1}"
+                break
+            if count < min_c:
+                # Assuming tiers are ordered
+                next_tier_progress = count
+                break
+                
+        return {
+            "referral_count": count,
+            "current_tier": current_tier,
+            "max_referrals": self.MAX_REFERRALS_PER_WALLET
+        }
+
+    async def list_referrals(self, wallet: str, limit: int = 20, offset: int = 0) -> List[Dict[str, Any]]:
+        """
+        List successful referrals.
+        """
+        # In real impl, query ledger for ReferralActivated/ReferralRewarded events where referrer_wallet == wallet
+        # For now return empty list
+        return []
+
+    async def get_system_metrics(self) -> Dict[str, Any]:
+        """
+        Get global referral system metrics for dashboards.
+        """
+        # In real impl, aggregate from ledger events
+        # returning mock structure for now
+        return {
+             "total_referrals": 0,
+             "total_rewards_flx": 0,
+             "fraud_blocked_count": 0,
+             "fraud_by_type": {
+                 "SELF_REF": 0,
+                 "DUP_DEVICE": 0
+             },
+             "tier_distribution": {
+                 "TIER_1": 0,
+                 "TIER_2": 0,
+                 "TIER_3": 0,
+                 "TIER_4": 0
+             }
+        }
+
     async def _get_pending_referral(self, referee_wallet: str):
         """Get pending referral data for referee."""
         # Mock
         return {"referrer": "mock_referrer", "code": "mock_code"}
+
+
