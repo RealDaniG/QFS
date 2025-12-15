@@ -43,7 +43,7 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "pqc_backend: tests requiring production PQC backend (pqcrystals/liboqs)")
     config.addinivalue_line("markers", "legacy: legacy/non-portable test suites")
 
-def pytest_ignore_collect(path, config):
+def pytest_ignore_collect(collection_path, config):
     """Skip non-portable/unstable suites at *collection time*.
 
     Important: marker-based skipping happens after modules are imported.
@@ -52,7 +52,7 @@ def pytest_ignore_collect(path, config):
     runnable and can be iteratively stabilized.
     """
 
-    p = str(path).replace("\\", "/")
+    p = str(collection_path).replace("\\", "/")
 
     # Quarantine legacy tree
     if "/v13/tests/old/" in p:
