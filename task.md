@@ -13,10 +13,10 @@
 - [x] F-001: Core Infrastructure (Repo, CI/CD, Env).
 - [x] F-002: Resolve Empty Core Files.
 - [x] F-003: ATLAS API Contracts.
-- [ ] F-003.5: `POST /v1/events/batch` Endpoint.
+- [x] F-003.5: `POST /v1/events/batch` Endpoint.
 - [x] F-004: Genesis Ledger (JSONL Canonical format).
 - [x] F-005: Event Bridge Architecture.
-- [ ] F-005.X: Redis Streams Partitioning Spec.
+- [x] F-005.X: Redis Streams Partitioning Spec.
 
 ---
 
@@ -26,7 +26,7 @@
 
 - [x] S-001A: SecureMessageV2 (Encryption, Replay Protection).
 - [x] S-002: Wallet Auth Flow (Connect, Challenge-Response).
-- [ ] S-002.X: Deterministic Wallet→UserID Mapper (`user_{hash}`).
+- [x] S-002.X: Deterministic Wallet→UserID Mapper (`user_{hash}`).
 - [x] S-003A: Basic E2E Encryption (No Plaintext).
 - [x] S-004: AEGIS Integration (Staged).
 
@@ -73,13 +73,13 @@
 > **Objective:** Prove the "Minimal Trust Loop" works end-to-end.
 > Flow: Wallet → Profile → Chat → Referral → Reward → Coherence.
 
-- [ ] **L-001: End-to-End Walkthrough Script**
-  - [ ] Create `v13/scripts/verify_trust_loop.py` (Automated User Journey).
-  - [ ] Simulate Alice invites Bob.
-  - [ ] Bob connects, system logs Referral.
-  - [ ] Alice & Bob chat (Encrypted).
-  - [ ] Reward triggers (Coherence update).
-  - [ ] Verify Ledger for all 3 event types (`LOGIN`, `REFERRAL_USE`, `MESSAGE`).
+- [x] **L-001: End-to-End Walkthrough Script**
+  - [x] Create `v13/scripts/verify_trust_loop.py` (Automated User Journey).
+  - [x] Simulate Alice invites Bob.
+  - [x] Bob connects, system logs Referral.
+  - [x] Alice & Bob chat (Encrypted).
+  - [x] Reward triggers (Coherence update).
+  - [x] Verify Ledger for all 3 event types (`LOGIN`, `REFERRAL_USE`, `MESSAGE`).
 
 - [ ] **L-002: Coherence Closing Loop**
   - [ ] Ensure Referral actually increments Genesis Points/Coherence in `ValueNode`.

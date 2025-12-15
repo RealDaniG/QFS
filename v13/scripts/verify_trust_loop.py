@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.getcwd()))
 
 from v13.ledger.genesis_ledger import GenesisLedger, GenesisEntry
 from v13.ATLAS.src.security.wallet_id import wallet_to_user_id
-from v13.ATLAS.src.security.secureMessageV2 import SecureMessageClient # If Python counterpart exists? 
+# SecureMessageClient import removed (TypeScript) 
 # Actually we mostly need to simulate the LEDGER EVENTS here, as the script "Verify Trust Loop" 
 # is about verifying the Economic/Trust side.
 
@@ -114,11 +114,11 @@ async def verify_trust_loop():
             
     # Checks
     assert len(events) == 5, f"Expected 5 events, found {len(events)}"
-    assert events[0]['type'] == 'LOGIN' and events[0]['wallet'] == alice_wallet
-    assert events[1]['type'] == 'LOGIN' and events[1]['wallet'] == bob_wallet
-    assert events[2]['type'] == 'REFERRAL_USE'
-    assert events[3]['type'] == 'MESSAGE'
-    assert events[4]['type'] == 'REWARD_PAYOUT' and events[4]['value'] == 10.0
+    assert events[0]['event_type'] == 'LOGIN' and events[0]['wallet'] == alice_wallet
+    assert events[1]['event_type'] == 'LOGIN' and events[1]['wallet'] == bob_wallet
+    assert events[2]['event_type'] == 'REFERRAL_USE'
+    assert events[3]['event_type'] == 'MESSAGE'
+    assert events[4]['event_type'] == 'REWARD_PAYOUT' and events[4]['value'] == 10.0
     
     print("   [Check] Event Sequence: OK")
     print("   [Check] Deterministic IDs: OK (Implicit)")
