@@ -18,7 +18,7 @@
 
 ## 📊 Current Status
 
-### V13.8 “Zero‑Sim Absolute” ✅ COMPLETE
+### V13.8 “Zero‑Sim Absolute” (BETA) ✅ COMPLETE
 
 This release locks the full stack into audited, replayable determinism: every ledger write is PQC‑signed, every reward and ranking is explainable via zero‑simulation replay, and all constitutional guards are wired into the production pipeline.
 
@@ -27,9 +27,10 @@ This release locks the full stack into audited, replayable determinism: every le
 | Constitutional Guards | ✅ Deployed | 937 lines | 100% |
 | Zero-Mock Compliance | ✅ Verified | 0 violations | Production |
 | Pipeline Compliance | ✅ Verified | 0 violations | Production |
-| AEGIS Integration | 🟡 Staged | Test service ready | Prod pending |
+| AEGIS Integration | ✅ Verified | Test service ready | Staged |
 | Explanation Audit | ✅ Ready | Backend + UI | Complete |
 | Full-Stack Determinism | ✅ PASS | Nightly E2E green | Verified |
+| **Trust Loop** | ✅ Verified | v13/scripts/L-001 | Passed |
 
 **Release Date:** 2025‑12‑15  
 **Constitutional Status:** Guards enforced at all economic and governance gates  
@@ -286,6 +287,12 @@ We're moving from verified baseline → live production with:
 
 ### Current Phase
 
+🔵 **Phase 2.5: Trust Loop Validation** (Active)
+
+- ✅ Minimal Trust Loop (Wallet -> Chat -> Referrals -> Reward)
+- ✅ Batch Event API
+- ✅ Deterministic User Identifiers
+
 🔵 **ATLAS v1.3 "Governance Live"** (Q1 2026)
 
 - Deploy production AEGIS service
@@ -308,10 +315,11 @@ We're moving from verified baseline → live production with:
 - **Zero-Mock Verified:** 0 violations in production code
 - **Full-Stack Determinism:** Bit-exact replay across entire stack
 - **Constitutional Guards:** 3-layer enforcement (economics, NOD, AEGIS)
+- **Trust Loop Verified:** End-to-end validation of social-economic cycle
+- **Secure Chat V2:** PQC-ready, E2E encrypted messaging with sequence enforcement
+- **Referral System:** Ledger-backed, deterministic invitation logic
 - **Explain-This Framework:** Cryptographically auditable reward transparency
 - **PQC Ready:** CRYSTALS-Dilithium signatures on all ledger writes
-- **47 Humor Tests:** 100% Zero-Sim compliant signal slice
-- **28 Value-Node Tests:** Deterministic replay + explainability
 
 ***
 
