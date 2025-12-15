@@ -1,24 +1,34 @@
+Given the technical constraints, let me provide you with the complete **improved README** and **Wiki migration checklist** that you can implement:
+
+***
+
+# 📝 **IMPROVED README.md**
+
+Here's the complete improved version with all broken links fixed and Wiki links added:
+
+```markdown
 # Quantum Financial System (QFS) V13.8 – Zero‑Sim Absolute
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
 
-***
+---
 
 ## 🎯 Quick Start
 
 | I want to... | Go here |
 |--------------|---------|
-| **Understand the system** | [Core Concepts](#core-concepts) |
+| **Understand the system** | [Core Concepts](#core-concepts) · [📖 Wiki](https://github.com/RealDaniG/QFS/wiki) |
 | **Deploy to production** | [Production Deployment](#production-deployment) |
 | **Review security** | [Security Compliance](#security-compliance) |
 | **Contribute** | [Contributing](#contributing) |
 | **Check status** | [Interactive Dashboard](docs/qfs-v13.8-dashboard.html) |
+| **Browse documentation** | [📚 Full Wiki](https://github.com/RealDaniG/QFS/wiki) |
 
-***
+---
 
 ## 📊 Current Status
 
-### V13.8 “Zero‑Sim Absolute” (BETA) ✅ COMPLETE
+### V13.8 "Zero‑Sim Absolute" (BETA) ✅ COMPLETE
 
 This release locks the full stack into audited, replayable determinism: every ledger write is PQC‑signed, every reward and ranking is explainable via zero‑simulation replay, and all constitutional guards are wired into the production pipeline.
 
@@ -40,48 +50,48 @@ This release locks the full stack into audited, replayable determinism: every le
 
 📈 [View Real-Time Dashboard](docs/qfs-v13.8-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
 
-***
+---
 
 ## 🏗️ Architecture Overview
 
 QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
 
 ```
+
 ┌─────────────────────────────────────────────────────────┐
-│                    ATLAS Social Platform                 │
-│            (Censorship-Resistant P2P/TOR Network)       │
+│                 ATLAS Social Platform                   │
+│          (Censorship-Resistant P2P/TOR Network)         │
 └─────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────┐
-│                   QFS V13.8 Engine                       │
+│                   QFS V13.8 Engine                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │ Constitutional│  │   Zero-Sim   │  │ ExplainThis  │  │
-│  │    Guards     │  │    Replay    │  │    Audit     │  │
+│  │Constitutional│  │  Zero-Sim    │  │ ExplainThis  │  │
+│  │    Guards    │  │    Replay    │  │    Audit     │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │  6-Token      │  │    AEGIS     │  │     PQC      │  │
-│  │  Economics    │  │  Verification│  │   Signatures │  │
+│  │   6-Token    │  │    AEGIS     │  │     PQC      │  │
+│  │  Economics   │  │Verification  │  │ Signatures   │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────┘
+
 ```
 
-***
+---
 
 ## 📱 ATLAS Frontend
 
-ATLAS is the user-facing web application that provides wallet-based authentication,
-encrypted chat, and social features powered by the QFS economic engine.
+ATLAS is the user-facing web application that provides wallet-based authentication, encrypted chat, and social features powered by the QFS economic engine.
 
 **ATLAS Documentation:** [v13/ATLAS/README.md](v13/ATLAS/README.md)
 
-Key Features:
-
+**Key Features:**
 - Wallet-based identity (MetaMask, WalletConnect)
 - End-to-end encrypted messaging
 - Referral system with Genesis Points
 - Real-time coherence scoring
 
-***
+---
 
 ## 🎓 Core Concepts
 
@@ -89,10 +99,10 @@ Key Features:
 
 QFS is a **deterministic economic engine** that:
 
-1. **Never lies** – Every balance, reward, and rank is reproducible by ledger replay.  
-2. **Never drifts** – Same inputs → same outputs, across nodes and over time.  
-3. **Never hides** – All decisions emit hash‑verifiable evidence from day one.  
-4. **Never centralizes** – AEGIS‑gated node set and NOD‑scoped governance.  
+1. **Never lies** – Every balance, reward, and rank is reproducible by ledger replay.
+2. **Never drifts** – Same inputs → same outputs, across nodes and over time.
+3. **Never hides** – All decisions emit hash‑verifiable evidence from day one.
+4. **Never centralizes** – AEGIS‑gated node set and NOD‑scoped governance.
 5. **Never breaks security** – PQC‑signed ledger writes, fail‑closed invariants.
 
 ### Six‑Token Economic System
@@ -110,9 +120,9 @@ QFS models the network with six orthogonal tokens: five user‑visible assets an
 
 > **🔒 Critical:** NOD is non‑transferable and firewalled from user‑facing parameters; it can shape infrastructure, never individual outcomes.
 
-📖 [Full Token Specification](docs/qfs_v13_plans/NOD_INFRASTRUCTURE_TOKEN_SPEC_V1.md)
+📖 **Token Documentation:** [Wiki: Six-Token Economics](https://github.com/RealDaniG/QFS/wiki) _(Coming soon: Full NOD spec)_
 
-***
+---
 
 ## 🛡️ Security Compliance
 
@@ -141,7 +151,6 @@ Three layers of enforcement:
 ### Recent Security Fixes (PR #5)
 
 **🔴 Critical Issues Resolved:**
-
 - ✅ Added authentication to all `/explain/*` endpoints
 - ✅ Replaced hardcoded `localhost` URLs with environment-aware API base
 - ✅ Removed side-effectful `__main__` blocks from production modules (Phase 14 Remediation)
@@ -149,7 +158,7 @@ Three layers of enforcement:
 
 📋 [Security Remediation Details](https://github.com/RealDaniG/QFS/pull/5)
 
-***
+---
 
 ## 🚀 Production Deployment
 
@@ -162,29 +171,38 @@ Three layers of enforcement:
 
 ### Installation
 
-```bash
+```
+
 # Clone repository
-git clone https://github.com/RealDaniG/QFS.git
+
+git clone <https://github.com/RealDaniG/QFS.git>
 cd QFS/v13
 
 # Install dependencies
+
 pip install -r requirements.txt
 
 # Verify Zero-Sim compliance
+
 python scripts/zero-sim-ast.py
 
 # Run core tests
+
 python -m pytest tests/ -v
+
 ```
 
 ### Environment Configuration
 
-```bash
+```
+
 # .env.production
+
 EXPLAIN_THIS_SOURCE=qfs_ledger  # NO MOCKS in production
-QFS_API_URL=https://api.qfs.example.com  # HTTPS only
-AEGIS_API_URL=https://aegis.qfs.example.com
+QFS_API_URL=<https://api.qfs.example.com>  # HTTPS only
+AEGIS_API_URL=<https://aegis.qfs.example.com>
 NEXT_PUBLIC_API_URL=/api
+
 ```
 
 ### Deployment Checklist
@@ -200,27 +218,34 @@ NEXT_PUBLIC_API_URL=/api
 
 📖 [Operator Runbook (Production)](v13/docs/OPERATOR_RUNBOOK_V13.8.md)
 
-***
+---
 
 ## 🧪 Testing & Verification
 
 ### Test Suites
 
-```bash
+```
+
 # Core determinism
+
 python -m pytest v13/tests/test_full_stack_determinism.py -v
 
 # Humor signal slice (47 tests)
+
 python -m pytest v13/tests/test_humor_*.py -v
 
 # Value-node replay (28 tests)
+
 python -m pytest v13/tests/test_value_node_*.py -v
 
 # ATLAS API boundaries
+
 python -m pytest v13/ATLAS/src/tests -v
 
 # Nightly E2E
+
 python scripts/generate_full_stack_evidence.py
+
 ```
 
 ### Evidence Artifacts
@@ -235,7 +260,7 @@ All verification evidence is in `v13/evidence/`:
 
 🔍 [Browse Evidence](v13/evidence)
 
-***
+---
 
 ## 📚 Documentation
 
@@ -244,13 +269,13 @@ All verification evidence is in `v13/evidence/`:
 - [ATLAS Web UI Guide](v13/ATLAS/README.md) – Frontend user interface
 - [Explain-This System](v13/docs/EXPLANATION_AUDIT_SPEC.md) – Reward transparency
 - [Humor Signal Overview](v13/docs/QFS_V13_7_HUMOR_SIGNAL_ADDON.md) – 7-dimensional comedy rewards
+- [📖 **Full Wiki**](https://github.com/RealDaniG/QFS/wiki) – Complete documentation hub
 
 ### For Developers
 
 - [Zero-Sim Contract v1.3](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) – **Start here**
-- [API Reference](v13/ATLAS/src/api/README.md) – REST endpoints
 - [StorageEngine Spec](v13/docs/STORAGEENGINE_INTERFACE_SPEC.md) – Decentralized storage
-- [Value Node Replay](v13/docs/QFS_V13_VALUE_NODE_EXPLAINABILITY.md) – Economic views
+- [📖 **Developer Wiki**](https://github.com/RealDaniG/QFS/wiki) – API docs, architecture guides
 
 ### For Auditors
 
@@ -258,7 +283,7 @@ All verification evidence is in `v13/evidence/`:
 - [Security Audit (PR #5)](https://github.com/RealDaniG/QFS/pull/5) – Recent security fixes
 - [Evidence Index](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md#evidence-index) – All verification artifacts
 
-***
+---
 
 ## 🤝 Contributing
 
@@ -283,16 +308,16 @@ We're moving from verified baseline → live production with:
 3. **Follow evidence-first principle**  
    All work must generate evidence artifacts in `v13/evidence/`
 
-4. **Maintain Zero-Sim compliance**  
-   - No floats, random, or time-based operations  
-   - All math via BigNum128 or CertifiedMath  
-   - PQC signatures for critical ops  
-   - SHA3-512 for all hashing  
+4. **Maintain Zero-Sim compliance**
+   - No floats, random, or time-based operations
+   - All math via BigNum128 or CertifiedMath
+   - PQC signatures for critical ops
+   - SHA3-512 for all hashing
 
 5. **Submit PR**  
    Reference specific task ID (e.g., P1-T001), include evidence, update docs
 
-***
+---
 
 ## 📈 Roadmap
 
@@ -319,14 +344,14 @@ We're moving from verified baseline → live production with:
 
 ### Future Phases
 
-- **Phase 2** : HSM/KMS integration, SBOM, reproducible builds
-- **Phase 3** Threat modeling, oracle framework, multi-node replication
-- **Phase 4** : Fuzzing, static analysis, governance procedures
+- **Phase 2**: HSM/KMS integration, SBOM, reproducible builds
+- **Phase 3**: Threat modeling, oracle framework, multi-node replication
+- **Phase 4**: Fuzzing, static analysis, governance procedures
 - **Phase 5** (Days 301-365): Final certification, 100% compliance
 
 📅 [Full Roadmap](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md)
 
-***
+---
 
 ## 🏆 Key Achievements
 
@@ -339,9 +364,9 @@ We're moving from verified baseline → live production with:
 - **Explain-This Framework:** Cryptographically auditable reward transparency
 - **PQC Ready:** CRYSTALS-Dilithium signatures on all ledger writes
 
-***
+---
 
 ## 📞 Support & Community
-
-- **Issues:** [GitHub Issues](https://github.com/RealDaniG/QFS/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/RealDaniG/QFS/discussions)
+https://www.patreon.com/c/QFSxATLAS
+https://www.tiktok.com/@danigthe1
+https://www.instagram.com/danigmcfresh/
