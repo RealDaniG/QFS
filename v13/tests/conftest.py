@@ -41,8 +41,34 @@ except Exception:
 # pytest fixtures can be defined here
 
 def pytest_configure(config):
+    """Initialize QFS logger for test session and register markers."""
     config.addinivalue_line("markers", "pqc_backend: tests requiring production PQC backend (pqcrystals/liboqs)")
     config.addinivalue_line("markers", "legacy: legacy/non-portable test suites")
+    
+    # Initialize Global Test Logger
+    try:
+        from v13.libs.logging.qfs_logger import QFSLogger, LogLevel, LogCategory
+        global test_logger
+        test_logger = QFSLogger('pytest_session', context={'env': 'test'})
+        test_logger.info(LogCategory.TESTING, "Pytest session configuring")
+    except ImportError:
+        pass  # Logging might not be available during bootstrap
+
+def pytest_runtest_logreport(report):
+    """Log test result to QFSLogger."""
+    global test_logger
+    if 'test_logger' in globals() and test_logger:
+        from v13.libs.logging.qfs_logger import LogLevel, LogCategory
+        
+        if report.when == 'call':
+            if report.failed:
+                test_logger.error(LogCategory.TESTING, f"Test Failed: {report.nodeid}", 
+                                 details={'duration': report.duration, 'error': str(report.longrepr)})
+            elif report.passed:
+                # Optional: Don't log every pass to avoid noise, or log summary
+                pass
+            elif report.skipped:
+                test_logger.info(LogCategory.TESTING, f"Test Skipped: {report.nodeid}")
 
 def pytest_ignore_collect(collection_path, config):
     """Skip non-portable/unstable suites at *collection time*.
