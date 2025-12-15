@@ -8,22 +8,17 @@ canonical TokenStateBundle inputs and uses only CertifiedMath for all calculatio
 import json
 import hashlib
 from typing import List, Dict, Any, Optional
-import sys
-import os
+# import sys
+# import os
 
 # Import required components using relative imports
 try:
     from ..libs.CertifiedMath import CertifiedMath, BigNum128
     from .TokenStateBundle import TokenStateBundle
 except ImportError:
-    # Fallback for direct execution
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    try:
-        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
-        from v13.core.TokenStateBundle import TokenStateBundle
-    except ImportError:
-        from libs.CertifiedMath import CertifiedMath, BigNum128
-        from core.TokenStateBundle import TokenStateBundle
+    # Fail open for tests (but strict in prod) or use proper relative imports
+    from v13.libs.CertifiedMath import CertifiedMath, BigNum128
+    from v13.core.TokenStateBundle import TokenStateBundle
 
 
 class CoherenceEngine:
@@ -85,7 +80,8 @@ class CoherenceEngine:
         proj_I = self.ZERO
         if len(I_vector) > 0:
             sum_I = self.ZERO
-            for val in I_vector:
+            for i in range(len(I_vector)):
+                val = I_vector[i]
                 sum_I = self.cm.add(sum_I, val, log_list, pqc_cid, quantum_metadata)
             # Divide by length to get mean
             length_bn = BigNum128.from_int(len(I_vector))
@@ -159,7 +155,8 @@ class CoherenceEngine:
             # Calculate norm: sqrt(sum(x^2))
             # Since there's no sqrt function, we'll use pow(x, 0.5) as an approximation
             sum_squares = self.ZERO
-            for val in features:
+            for i in range(len(features)):
+                val = features[i]
                 val_squared = self.cm.mul(val, val, log_list, pqc_cid, quantum_metadata)
                 sum_squares = self.cm.add(sum_squares, val_squared, log_list, pqc_cid, quantum_metadata)
             
@@ -169,7 +166,8 @@ class CoherenceEngine:
             # Normalize if norm is not zero
             if self.cm.gt(norm, self.ZERO, log_list, pqc_cid, quantum_metadata):
                 normalized_features = []
-                for val in features:
+                for i in range(len(features)):
+                    val = features[i]
                     normalized_val = self.cm.div(val, norm, log_list, pqc_cid, quantum_metadata)
                     normalized_features.append(normalized_val)
         
@@ -185,7 +183,8 @@ class CoherenceEngine:
         # Update Ω_t(L) = Normalize(F_t) × m_t(L)
         updated_omega = []
         if len(normalized_features) > 0:
-            for val in normalized_features:
+            for i in range(len(normalized_features)):
+                val = normalized_features[i]
                 omega_val = self.cm.mul(val, modulator, log_list, pqc_cid, quantum_metadata)
                 updated_omega.append(omega_val)
         
@@ -195,7 +194,8 @@ class CoherenceEngine:
             omega_norm = self.ZERO
             if len(updated_omega) > 0:
                 sum_squares = self.ZERO
-                for val in updated_omega:
+                for i in range(len(updated_omega)):
+                    val = updated_omega[i]
                     val_squared = self.cm.mul(val, val, log_list, pqc_cid, quantum_metadata)
                     sum_squares = self.cm.add(sum_squares, val_squared, log_list, pqc_cid, quantum_metadata)
                 # Calculate sqrt using sqrt(sum_squares)

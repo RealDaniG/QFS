@@ -28,14 +28,14 @@ except ImportError:
         from v13.libs.governance.RewardAllocator import AllocatedReward
     except ImportError:
         # Try with sys.path modification
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        # import sys
+        # import os
+        # sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
         from v13.libs.CertifiedMath import BigNum128, CertifiedMath
         from v13.core.TokenStateBundle import TokenStateBundle
         from handlers.CIR302_Handler import CIR302_Handler
         from v13.libs.integration.StateTransitionEngine import StateTransitionEngine
-        from v13.libs.governance.RewardAllocator import AllocatedReward
+        # from v13.libs.governance.RewardAllocator import AllocatedReward # Removed as it's imported locally later
     
 @dataclass
 class ValidationResult:
@@ -47,9 +47,13 @@ class ValidationResult:
     raw_metrics: Dict[str, BigNum128]
     
     @property
-    def metrics_str(self) -> Dict[str, str]:
-        """Get string representation of metrics for deterministic serialization."""
-        return {k: v.to_decimal_string() for k, v in self.raw_metrics.items()}
+    def metrics(self) -> Dict[str, str]:
+        """Return decimal-string representations of metrics"""
+        # Deterministic dictionary creation using sorted items
+        return dict(sorted(
+            (k, v.to_decimal_string()) 
+            for k, v in self.raw_metrics.items()
+        ))
 
 # --- HSMF Core ---
 class HSMF:

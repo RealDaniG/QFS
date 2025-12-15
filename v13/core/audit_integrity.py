@@ -58,7 +58,14 @@ def detect_tampering(record: Dict[str, Any], previous_hash: str) -> Dict[str, An
         
     # Recalculate own hash
     # Exclude 'hash' field from calculation
-    data_to_hash = {k: v for k, v in record.items() if k != "hash"}
+        # Deterministic hashing of record fields (excluding hash itself)
+        # Sort items by key
+        sorted_items = sorted(record.items())
+        data_to_hash = {}
+        for i in range(len(sorted_items)):
+            k, v = sorted_items[i]
+            if k != "hash":
+                data_to_hash[k] = v
     verified = verify_explanation_integrity(data_to_hash, record.get("hash", ""))
     
     if not verified:

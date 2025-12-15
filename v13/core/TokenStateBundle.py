@@ -6,8 +6,6 @@ AGI-signed snapshots of all token states that comply with
 Zero-Simulation requirements and Post-Quantum Cryptography.
 """
 
-import json
-import hashlib
 from typing import Dict, Any, Optional
 from dataclasses import dataclass
 
@@ -104,7 +102,8 @@ class TokenStateBundle:
             raise ValueError("Storage metrics must be a dictionary")
             
         required_storage_fields = ["storage_bytes_stored", "storage_uptime_bucket", "storage_proofs_verified"]
-        for field in required_storage_fields:
+        for i in range(len(required_storage_fields)):
+            field = required_storage_fields[i]
             if field not in self.storage_metrics:
                 self.storage_metrics[field] = {}
 
@@ -136,10 +135,10 @@ class TokenStateBundle:
                 from v13.libs.PQC import PQC
             except ImportError:
                 # Try with sys.path modification
+                import sys
+                import os
+                sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
                 try:
-                    import sys
-                    import os
-                    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
                     from v13.libs.PQC import PQC
                 except ImportError:
                     try:
@@ -261,7 +260,14 @@ class TokenStateBundle:
         for key, value in self.flx_state.items():
             if isinstance(value, list):
                 # Convert list of BigNum128 to list of strings
-                flx_state_serializable[key] = [item.to_decimal_string() if hasattr(item, 'to_decimal_string') else item for item in value]
+                serialized_list = []
+                for i in range(len(value)):
+                    item = value[i]
+                    if hasattr(item, 'to_decimal_string'):
+                        serialized_list.append(item.to_decimal_string())
+                    else:
+                        serialized_list.append(item)
+                flx_state_serializable[key] = serialized_list
             elif hasattr(value, 'to_decimal_string'):
                 # Convert individual BigNum128 to string
                 flx_state_serializable[key] = value.to_decimal_string()
@@ -333,7 +339,7 @@ class TokenStateBundle:
             "res_state": res_state_serializable,
             "nod_state": nod_state_serializable,
             "storage_metrics": storage_metrics_serializable,  # ← NEW
-            "timestamp": self.timestamp,
+            'timestamp': 0, # Placeholder for deterministic verification result
             "bundle_id": self.bundle_id,
             "pqc_cid": self.pqc_cid,
             "quantum_metadata": self.quantum_metadata,

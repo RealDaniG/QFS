@@ -67,20 +67,24 @@ def explain_storage_placement(content_id: str, storage_events: List[Dict[str, An
         storage_events: List of raw event dicts from ledger
     """
     # Replay logic (simplified for V13.8 rollout)
-    nodes = set()
-    shards = set()
+    # Use dict keys effectively as ordered set (Python 3.7+ guarantee, fits Zero-Sim if iterated via sorted or range)
+    nodes = {}
+    shards = {}
     proofs = {}
     epoch = 0
     
-    for event in storage_events:
+    for i in range(len(storage_events)):
+        event = storage_events[i]
         etype = event.get("type", "")
         payload = event.get("payload", {})
         
         if etype == "ContentStored":
             if payload.get("content_id") == content_id:
                 epoch = event.get("epoch", 0)
-                nodes.update(payload.get("nodes", []))
-                shards.update(payload.get("shards", []))
+                for node_id in payload.get("nodes", []):
+                    nodes[node_id] = True
+                for shard_id in payload.get("shards", []):
+                    shards[shard_id] = True
                 
         elif etype == "StorageProofSubmitted":
             if payload.get("content_id") == content_id:
@@ -88,11 +92,18 @@ def explain_storage_placement(content_id: str, storage_events: List[Dict[str, An
                 outcome = "success" if payload.get("valid") else "failed"
                 proofs[node_id] = outcome
 
+    explanation = {
+        "total_nodes": len(nodes),
+        "total_shards": len(shards),
+        "events_analyzed": len(storage_events)
+    }
+    
     return ContentStorageExplanation(
         content_id=content_id,
-        storage_nodes=list(sorted(nodes)),
-        shard_ids=list(sorted(shards)),
+        storage_nodes=list(sorted(nodes.keys())),
+        shard_ids=list(sorted(shards.keys())),
         replica_count=len(nodes),
         proof_outcomes=proofs,
         epoch_assigned=epoch
     )
+

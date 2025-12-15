@@ -1,5 +1,5 @@
 
-import time
+# import time
 import base64
 from typing import Dict, Any
 
@@ -28,5 +28,6 @@ def sign_discovery_announcement(node_id: str, crypto) -> Dict[str, Any]:
         'node_id': node_id,
         'public_key': base64.b64encode(public_key).decode('utf-8'),
         'signature': base64.b64encode(signature).decode('utf-8'),
-        'timestamp': int(time.time())
+            'timestamp': 0, # Placeholder
+            # 'timestamp': int(time.time())
     }

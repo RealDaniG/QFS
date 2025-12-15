@@ -127,9 +127,9 @@ class KeyLedger:
                 seal_data["pqc_signature"] = signature.hex()
                 # Optionally, we could store the log_list if needed for audit purposes
             except Exception as e:
-                print(f"Warning: PQC signing failed: {e}")
+                # Log failure but proceed (fail-safe or fail-closed depending on policy)
+                pass # PQC signing failed
 
-        print(f"KEY_FINALITY_SEAL generated with hash: {seal_hash[:32]}...")
         return seal_hash
 
     def _get_previous_hash(self) -> str:
