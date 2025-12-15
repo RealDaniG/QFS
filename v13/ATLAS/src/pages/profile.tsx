@@ -104,7 +104,7 @@ export const ProfilePage: React.FC = () => {
                     <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                                {profile.avatar_url ? <img src={profile.avatar_url} className="rounded-full" /> : (profile.display_name?.[0] || 'U')}
+                                {profile.avatar_url ? <img src={profile.avatar_url} alt="Profile Avatar" className="rounded-full" /> : (profile.display_name?.[0] || 'U')}
                             </div>
                             <div>
                                 {editMode ? (

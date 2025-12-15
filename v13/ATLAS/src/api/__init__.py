@@ -10,7 +10,7 @@ from typing import Optional
 import logging
 
 from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain
-from . import auth, users # New Auth and User modules
+from . import auth, users, chat # New Chat module
 from .dependencies import get_current_user
 
 # Configure logging
@@ -43,6 +43,7 @@ api_routes = [
     explain.router,  # New Explain-This endpoints
     auth.router,     # V1 Auth
     users.router,    # V1 User Profiles
+    chat.router,     # V1 WebSocket Chat
 ]
 
 # Register all route modules

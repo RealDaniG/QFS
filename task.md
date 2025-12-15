@@ -153,13 +153,13 @@ This document tracks the critical path to V1.0 release. It replaces previous tra
 
 **Status:** 🟡 CRITICAL
 
-- [ ] C-002.1: Design profile data schema.
-- [ ] C-002.2: Create profile creation flow.
-- [ ] C-002.3: Implement profile edit page.
-- [ ] C-002.4: Add avatar upload.
-- [ ] C-002.5: Generate unique referral code.
-- [ ] C-002.6: Display coherence score + genesis points.
-- [ ] C-002.7: Show referral tree.
+- [x] C-002.1: Design profile data schema.
+- [x] C-002.2: Create profile creation flow.
+- [x] C-002.3: Implement profile edit page.
+- [x] C-002.4: Add avatar upload.
+- [x] C-002.5: Generate unique referral code.
+- [x] C-002.6: Display coherence score + genesis points.
+- [x] C-002.7: Show referral tree.
 
 ### C-003: 1-to-1 Chat Implementation
 
