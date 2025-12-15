@@ -144,5 +144,37 @@ def economic_function(deterministic_timestamp, drv_packet_seq):
             os.unlink(econ_file)
 
 
+def test_golden_files():
+    """Test the static golden files for Zero-Sim compliance."""
+    checker = AST_ZeroSimChecker()
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Assuming test is in v13/tests/ and compliance is in v13/compliance/
+    # Go up one level from tests/ to v13/
+    project_root = os.path.dirname(current_dir)
+    
+    pass_file = os.path.join(project_root, "compliance", "golden_pass.py")
+    
+    # Ensure file exists before testing
+    assert os.path.exists(pass_file), f"Golden pass file not found at {pass_file}"
+    
+    violations = checker.scan_file(pass_file)
+    assert len(violations) == 0, f"Golden pass file has violations: {violations}"
+    
+    fail_file = os.path.join(project_root, "compliance", "golden_fail.py")
+             
+    assert os.path.exists(fail_file), f"Golden fail file not found at {fail_file}"
+    
+    violations = checker.scan_file(fail_file)
+    assert len(violations) > 0, f"Golden fail file has no violations (check if it was excluded?). Violations: {violations}"
+    
+    # Check for specific violations we expect
+    import_violations = [v for v in violations if v.violation_type == "FORBIDDEN_IMPORT"]
+    call_violations = [v for v in violations if v.violation_type in ["FORBIDDEN_CALL", "FORBIDDEN_MODULE_CALL"]]
+    
+    assert len(import_violations) > 0, "Golden fail file missing FORBIDDEN_IMPORT violation"
+    assert len(call_violations) > 0, "Golden fail file missing FORBIDDEN_CALL/MODULE_CALL violation"
+
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

@@ -287,7 +287,6 @@ async def explain_storage(
     verification status of storage proofs.
     """
     try:
-    try:
         from v13.policy.storage_explainability import explain_storage_placement
         
         # Fetch storage events

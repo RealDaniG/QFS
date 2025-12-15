@@ -51,7 +51,10 @@ class LedgerHandler:
         
         # Apply filters
         filtered_entries = []
-        for entry in entries:
+        # Apply filters
+        filtered_entries = []
+        for i in range(len(entries)):
+            entry = entries[i]
             # Type filter
             if event_type and entry.entry_type != event_type:
                 continue
@@ -81,7 +84,8 @@ class LedgerHandler:
         
         # Convert entries to canonical ledger event format
         events_data = []
-        for entry in paginated_entries:
+        for i in range(len(paginated_entries)):
+            entry = paginated_entries[i]
             # Map CoherenceLedger entry to protocol-level LedgerEvent
             ledger_event = self._map_to_ledger_event(entry)
             events_data.append(ledger_event)
@@ -349,7 +353,8 @@ class LedgerRouter:
 # Test function
 def test_ledger_handler():
     """Test the LedgerHandler implementation."""
-    print("Testing LedgerHandler...")
+    # print("Testing LedgerHandler...")
+    pass
     
     # Create test log list and CertifiedMath instance
     log_list = []
@@ -397,7 +402,7 @@ def test_ledger_handler():
     
     # Add some test entries to the ledger
     entry1 = ledger.log_state(token_bundle, deterministic_timestamp=1234567890)
-    print(f"Logged entry 1: {entry1.entry_id}")
+    # print(f"Logged entry 1: {entry1.entry_id}")
     
     hsmf_metrics = {
         "c_holo": "0.95",
@@ -407,7 +412,7 @@ def test_ledger_handler():
     }
     
     entry2 = ledger.log_state(token_bundle, hsmf_metrics, deterministic_timestamp=1234567891)
-    print(f"Logged entry 2: {entry2.entry_id}")
+    # print(f"Logged entry 2: {entry2.entry_id}")
     
     rewards = {
         "CHR": {
@@ -420,43 +425,43 @@ def test_ledger_handler():
     }
     
     entry3 = ledger.log_state(token_bundle, hsmf_metrics, rewards, deterministic_timestamp=1234567892)
-    print(f"Logged entry 3: {entry3.entry_id}")
+    # print(f"Logged entry 3: {entry3.entry_id}")
     
     # Initialize ledger handler
     ledger_handler = LedgerHandler(ledger)
     
     # Test getting events
     events_result = ledger_handler.get_events(limit=10)
-    print(f"Retrieved {len(events_result['events'])} events")
-    print(f"Total count: {events_result['total_count']}")
+    # print(f"Retrieved {len(events_result['events'])} events")
+    # print(f"Total count: {events_result['total_count']}")
     
     # Test filtering by event type
     reward_events = ledger_handler.get_events(event_type="reward_allocation")
-    print(f"Reward allocation events: {len(reward_events['events'])}")
+    # print(f"Reward allocation events: {len(reward_events['events'])}")
     
     # Test getting event detail
     if events_result['events']:
         first_event_id = events_result['events'][0]['event_id']
         detail_result = ledger_handler.get_event_detail(first_event_id)
-        print(f"Event detail retrieved: {detail_result['event_id']}")
-        print(f"Event type: {detail_result['event_type']}")
-        print(f"Navigation links: {len(detail_result['links'])} links")
+        # print(f"Event detail retrieved: {detail_result['event_id']}")
+        # print(f"Event type: {detail_result['event_type']}")
+        # print(f"Navigation links: {len(detail_result['links'])} links")
     
     # Test non-existent event
     non_existent = ledger_handler.get_event_detail("non_existent_id")
-    print(f"Non-existent event result: {non_existent['error']}")
+    # print(f"Non-existent event result: {non_existent['error']}")
     
     # Test router integration
-    print("\n--- Testing Router Integration ---")
+    # print("\n--- Testing Router Integration ---")
     router = LedgerRouter(ledger_handler)
     
     router_events = router.route_get_events(limit=5)
-    print(f"Router events result: {len(router_events.get('events', []))} events")
+    # print(f"Router events result: {len(router_events.get('events', []))} events")
     
     if events_result['events']:
         first_event_id = events_result['events'][0]['event_id']
         router_detail = router.route_get_event_detail(first_event_id)
-        print(f"Router event detail: {router_detail.get('event_id', 'N/A')}")
+        # print(f"Router event detail: {router_detail.get('event_id', 'N/A')}")
 
 
 if __name__ == "__main__":

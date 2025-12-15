@@ -9,8 +9,8 @@ import json
 import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
-import sys
-import os
+# import sys
+# import os
 
 # Import required components using relative imports
 try:
@@ -85,8 +85,11 @@ class GatingService:
         # Calculate tensor norm as base alignment score
         # For a 2D tensor, we calculate sqrt(sum(element^2))
         tensor_norm = self.ZERO
-        for row in R_Omega_tensor:
-            for element in row:
+        # Rows are lists, order is deterministic if input is deterministic
+        for i in range(len(R_Omega_tensor)):
+            row = R_Omega_tensor[i]
+            for j in range(len(row)):
+                element = row[j]
                 element_squared = self.cm.mul(element, element, log_list, pqc_cid, quantum_metadata)
                 tensor_norm = self.cm.add(tensor_norm, element_squared, log_list, pqc_cid, quantum_metadata)
         

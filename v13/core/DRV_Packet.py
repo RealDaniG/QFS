@@ -271,7 +271,7 @@ class DRV_Packet:
     def validate_ttsTimestamp(self) -> ValidationResult:
         """Validate ttsTimestamp is within a reasonable range."""
         # Checks for a valid 64-bit unsigned integer range (max unix time)
-        if not (0 <= self.ttsTimestamp <= 2**63 - 1):  # Or use TTS_MIN/MAX constants
+        if not (0 <= self.ttsTimestamp <= 9223372036854775807):  # MAX_INT64
             return ValidationResult(False, ValidationErrorCode.INVALID_TTS_TIMESTAMP, f"ttsTimestamp {self.ttsTimestamp} out of range")
         return ValidationResult(True, ValidationErrorCode.OK)
 

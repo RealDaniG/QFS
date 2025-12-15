@@ -97,7 +97,7 @@ except ImportError:
         Dilithium5Impl = _MockPQC()
         _PQC_BACKEND = "mock"
         print("\n" + "="*80)
-        print("⚠️  WARNING: Using MockPQC (SHA-256 simulation) - NOT CRYPTOGRAPHICALLY SECURE")
+        print("[WARNING]: Using MockPQC (SHA-256 simulation) - NOT CRYPTOGRAPHICALLY SECURE")
         print("="*80)
         print("This is ONLY suitable for integration testing.")
         print("DO NOT use in production or for security audits.")

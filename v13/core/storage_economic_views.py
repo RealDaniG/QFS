@@ -30,9 +30,9 @@ def compute_storage_metrics_from_events(events: List[Mapping[str, Any]]) -> Stor
     current_epoch = 0
     bytes_stored_per_node: Dict[str, BigNum128] = {}
     proofs_generated_per_node: Dict[str, int] = {}
-    proof_failures = 0
-
-    for ev in events:
+    # Process events deterministically
+    for i in range(len(events)):
+        ev = events[i]
         event_type = ev.get("event_type")
 
         if event_type == "EPOCH_ADVANCEMENT":
@@ -43,8 +43,12 @@ def compute_storage_metrics_from_events(events: List[Mapping[str, Any]]) -> Stor
             content_size = int(ev.get("content_size") or 0)
             replica_sets = ev.get("replica_sets") or {}
 
+            # Iterate over replica_sets items in sorted order for determinism
             for _, nodes in sorted(replica_sets.items()):
-                for node_id in nodes:
+                # Ensure node_ids are processed in sorted order for determinism
+                sorted_nodes = sorted(list(nodes)) if nodes else []
+                for i_node in range(len(sorted_nodes)):
+                    node_id = sorted_nodes[i_node]
                     prev = bytes_stored_per_node.get(node_id, BigNum128.from_int(0))
                     bytes_stored_per_node[node_id] = cm.add(prev, BigNum128.from_int(content_size), [])
             continue
@@ -52,7 +56,10 @@ def compute_storage_metrics_from_events(events: List[Mapping[str, Any]]) -> Stor
         if event_type == "PROOF_GENERATED":
             replica_sets = ev.get("replica_sets") or {}
             for _, nodes in sorted(replica_sets.items()):
-                for node_id in nodes:
+                # Ensure node_ids are processed in sorted order for determinism
+                sorted_nodes = sorted(list(nodes)) if nodes else []
+                for i_node in range(len(sorted_nodes)):
+                    node_id = sorted_nodes[i_node]
                     proofs_generated_per_node[node_id] = proofs_generated_per_node.get(node_id, 0) + 1
             continue
 

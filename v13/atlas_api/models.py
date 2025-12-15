@@ -10,9 +10,7 @@ except ImportError:
         from v13.libs.BigNum128 import BigNum128
     except ImportError:
         # Try with sys.path modification
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        # sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
         try:
             from v13.libs.BigNum128 import BigNum128
         except ImportError:

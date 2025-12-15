@@ -29,27 +29,8 @@ except ImportError:
         )
         from v13.core.TokenStateBundle import TokenStateBundle
     except ImportError:
-        # Try with sys.path modification
-        import os
-        import sys
-
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-        try:
-            from v13.libs.CertifiedMath import BigNum128, CertifiedMath
-            from v13.libs.governance.AEGIS_Node_Verification import (
-                AEGIS_Node_Verifier,
-                NodeVerificationResult,
-            )
-            from v13.core.TokenStateBundle import TokenStateBundle
-        except ImportError:
-            # Zero-Sim Contract v1.3: Fail closed if dependencies missing.
-            raise ImportError("Critical Dependency Missing: AEGIS_Node_Verifier or TokenStateBundle. System cannot start securely.")
-            
-            class NodeVerificationResult:
-                def __init__(self):
-                    self.is_valid = True
-            
-            from core.TokenStateBundle import TokenStateBundle
+        # Zero-Sim Contract v1.3: Fail closed if dependencies missing.
+        raise ImportError("Critical Dependency Missing: AEGIS_Node_Verifier or TokenStateBundle. System cannot start securely.")
 
 
 # Storage constants
@@ -349,18 +330,19 @@ class StorageEngine:
             eligible_nodes = []
 
             # Filter nodes that are active and AEGIS verified (if AEGIS is configured)
-            for node_id, node in sorted(self.nodes.items()):
-                if node.status == "active":
-                    if self.aegis_verifier is not None:
-                        # If AEGIS is configured, only include AEGIS-verified nodes
-                        if (
-                            node.is_aegis_verified
-                            and node.aegis_verification_epoch == self.current_epoch
-                        ):
+            if self.nodes:
+                for node_id, node in sorted(self.nodes.items()):
+                    if node.status == "active":
+                        if self.aegis_verifier is not None:
+                            # If AEGIS is configured, only include AEGIS-verified nodes
+                            if (
+                                node.is_aegis_verified
+                                and node.aegis_verification_epoch == self.current_epoch
+                            ):
+                                eligible_nodes.append(node_id)
+                        else:
+                            # If AEGIS is not configured, include all active nodes
                             eligible_nodes.append(node_id)
-                    else:
-                        # If AEGIS is not configured, include all active nodes
-                        eligible_nodes.append(node_id)
 
             # Sort deterministically by node_id
             self.eligible_nodes_cache = sorted(eligible_nodes)
