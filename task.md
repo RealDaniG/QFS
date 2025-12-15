@@ -90,11 +90,11 @@
 
 ## 🧠 Phase 6: Explain-This System (Transparency)
 
-**Status:** ⚪ PENDING
+**Status:** 🟡 IN PROGRESS
 
-- [ ] E-001: `GET /explain/reward/{tx_id}` endpoint.
+- [x] E-001: `GET /explain/reward/{tx_id}` endpoint.
 - [ ] E-002: Frontend "Why did I get this?" tooltip.
-- [ ] E-003: Cryptographic Proof extraction.
+- [x] E-003: Cryptographic Proof extraction (CLI Tool).
 
 ---
 

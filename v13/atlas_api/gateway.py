@@ -266,6 +266,102 @@ class AtlasAPIGateway:
                 "details": str(e)
             }
 
+    def get_reward_explanation(self, transaction_id: str) -> Dict[str, Any]:
+        """
+        Get canonical explanation for a reward transaction (E-001).
+        
+        Args:
+            transaction_id: The transaction ID (ledger entry hash) to explain
+            
+        Returns:
+            Dict: Explanation payload with human-readable reason, linked events, and proofs
+        """
+        # 1. Find the entry in the ledger (O(N) search for now, optimized later)
+        target_entry = None
+        for entry in self.coherence_ledger.ledger_entries:
+            if entry.entry_id == transaction_id:
+                target_entry = entry
+                break
+        
+        if not target_entry:
+            return {
+                "success": False,
+                "error_code": "NOT_FOUND",
+                "message": "Transaction ID not found in ledger",
+                "tx_id": transaction_id
+            }
+            
+        # 2. Extract Data from the immutable entry
+        data = target_entry.data
+        rewards = data.get("rewards", {})
+        hsmf = data.get("hsmf_metrics", {})
+        token_bundle = data.get("token_bundle", {})
+        guards = data.get("guards", {})
+        
+        # 3. Build Narrative & Breakdown
+        # Check if it was blocked
+        if guards.get("economics", {}).get("passed") is False:
+             return {
+                 "success": True,
+                 "tx_id": transaction_id,
+                 "status": "BLOCKED",
+                 "narrative": "Reward was blocked by Economics Guard.",
+                 "reason": guards.get("economics", {}).get("explanation", "Unknown"),
+                 "proof": {
+                     "entry_hash": target_entry.entry_hash,
+                     "pqc_cid": target_entry.pqc_cid
+                 }
+             }
+
+        reason = rewards.get("reason", "unknown_reason")
+        amount_str = "0"
+        
+        # Try to find amount in rewards or derive from bundle delta (if we had prev)
+        # For now, rely on explicit reward log if available
+        if "amount" in rewards:
+            amount_str = str(rewards["amount"])
+        
+        narrative = f"Reward granted for {reason}."
+        if amount_str != "0":
+            narrative = f"You earned {amount_str} for {reason}."
+            
+        # 4. Construct Zero-Sim Proof
+        # Merkle inclusion proof logic would go here. 
+        # For V1, we return the Hash Chain links.
+        proof = {
+            "input_state_hash": target_entry.previous_hash,
+            "output_state_hash": target_entry.entry_hash,
+            "logic_version": self.coherence_ledger.quantum_metadata.get("version", "unknown"), 
+            "pqc_cid": target_entry.pqc_cid,
+            "timestamp": target_entry.timestamp,
+            "entry_data_snapshot": target_entry.data
+        }
+        
+        return {
+            "success": True,
+            "tx_id": transaction_id,
+            "timestamp": target_entry.timestamp,
+            "narrative": narrative,
+            "explanation": {
+                "summary": narrative,
+                "breakdown": {
+                    "base": amount_str, 
+                    "bonuses": [], # Populate if we track specific multipliers
+                    "caps": []
+                },
+                "policy_context": {
+                    "version": "v13_beta",
+                    "reason_code": reason
+                },
+                "zero_sim_proof": proof
+            },
+            "linked_events": rewards.get("source_events", []),
+            "raw_ledger_entry": {
+                 "type": target_entry.entry_type,
+                 "hash": target_entry.entry_hash
+            }
+        }
+
     def get_correlated_observations(self, content_id: Optional[str] = None, event_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Get correlated AEGIS and AGI observations for a given content or event ID.
