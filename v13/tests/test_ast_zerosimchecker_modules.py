@@ -173,6 +173,13 @@ def test_golden_files():
     
     assert len(import_violations) > 0, "Golden fail file missing FORBIDDEN_IMPORT violation"
     assert len(call_violations) > 0, "Golden fail file missing FORBIDDEN_CALL/MODULE_CALL violation"
+    
+    # Assert additional violations as per Zero-Sim contract
+    float_violations = [v for v in violations if v.violation_type == "NONDETERMINISTIC_FLOAT"]
+    iter_violations = [v for v in violations if v.violation_type in ["NONDETERMINISTIC_ITERATION", "NONDETERMINISTIC_COMP"]]
+    
+    assert len(float_violations) > 0, "Golden fail file missing NONDETERMINISTIC_FLOAT violation"
+    assert len(iter_violations) > 0, "Golden fail file missing NONDETERMINISTIC_ITERATION/COMP violation"
 
 
 

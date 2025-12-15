@@ -337,8 +337,8 @@ class AST_ZeroSimChecker:
             # Debug exclusion logic
             excluded = [d for d in dirs if any(fnmatch.fnmatch(d, p) for p in exclude_patterns)]
             if excluded:
-                print(f"[DEBUG] excluding directories in {root}: {excluded}")
-                # pass
+                # print(f"[DEBUG] excluding directories in {root}: {excluded}")
+                pass
             
             dirs[:] = [d for d in dirs if not any(fnmatch.fnmatch(d, p) for p in exclude_patterns)]
             for file in files:

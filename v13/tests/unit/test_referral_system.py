@@ -122,3 +122,54 @@ class TestReferralSystem:
         assert isinstance(reward_arg, ReferralRewarded)
         assert reward_arg.amount_scaled == 10_000_000_000 # 100 FLX (Tier 1)
         assert reward_arg.referrer_wallet == "0xReferrer"
+
+    def test_referral_acceptance_invalid_code(self):
+        """Test acceptance with an invalid/non-existent code."""
+        mock_ledger = Mock()
+        ref_ledger = ReferralLedger(mock_ledger)
+        
+        ref_ledger._resolve_code = Mock(return_value=None)
+        
+        with pytest.raises(ValueError, match="INVALID_REFERRAL_CODE"):
+            ref_ledger.accept("invalid_code", "0xReferee", 101, "hash_xyz")
+            
+    def test_referral_tiers(self):
+        """Test reward tiers are correctly applied."""
+        mock_ledger = Mock()
+        ref_ledger = ReferralLedger(mock_ledger)
+        
+        # Helper to test a tier
+        def check_tier(referral_count, expected_reward):
+            ref_ledger._count_referrals = Mock(return_value=referral_count)
+            ref_ledger._get_pending_referral = Mock(return_value={"referrer": "0xRef", "code": "c"})
+            
+            # Reset mocks
+            mock_ledger.reset_mock()
+            
+            ref_ledger.activate("0xUser", "QUEST", 100)
+            
+            # Find Reward Event
+            # Activated is first, Rewarded is second
+            assert mock_ledger.append_event.call_count >= 2
+            reward_arg = mock_ledger.append_event.call_args_list[1][0][0]
+            assert isinstance(reward_arg, ReferralRewarded)
+            assert reward_arg.amount_scaled == expected_reward
+            
+        # Tier 1: < 5 refs -> 100 FLX
+        check_tier(0, 10_000_000_000)
+        
+        # Tier 2: 5 <= refs < 20 -> 50 FLX
+        check_tier(5, 5_000_000_000)
+        
+        # Tier 3: >= 20 refs -> 10 FLX
+        check_tier(20, 1_000_000_000)
+        
+    def test_referral_link_creation_below_cap(self):
+        """Explicit test for success path below cap."""
+        mock_ledger = Mock()
+        ref_ledger = ReferralLedger(mock_ledger)
+        ref_ledger._count_referrals = Mock(return_value=99) # Below max 100
+        
+        code = ref_ledger.create_link("0xWallet", 100, "source")
+        assert code is not None
+        assert mock_ledger.append_event.called

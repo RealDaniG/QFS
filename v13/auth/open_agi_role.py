@@ -245,13 +245,13 @@ class OPENAGIRoleEnforcer:
             Dict: Log entries and pagination info
         """
         # Filter log entries
-        source_logs = self.log_entries
+        source_logs = list(self.log_entries)  # Create a copy to prevent in-place modification
         filtered_logs = source_logs
         if role:
             filtered_logs = []
-            for i in range(len(source_logs)):
-                if source_logs[i].role == role:
-                    filtered_logs.append(source_logs[i])
+            for entry in source_logs:
+                if entry.role == role:
+                    filtered_logs.append(entry)
         if action_type:
             new_filtered = []
             for i in range(len(filtered_logs)):

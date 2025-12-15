@@ -66,6 +66,11 @@ class NodeVerificationResult:
     reason_message: Optional[str] = None
     metrics: Optional[Dict[str, Any]] = None
     
+    @property
+    def metrics_str(self) -> str:
+        """Backward compatibility: Return deterministic JSON string of metrics."""
+        return json.dumps(self.metrics or {}, sort_keys=True)
+    
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for logging."""
         return {
