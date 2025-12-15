@@ -49,32 +49,32 @@ jobs:
     - name: Step 3 - Run Unit Tests
       run: |
         echo "Running Unit Tests..."
-        python -m pytest tests/unit/ -v --cov=v13 --cov-report=xml
+        python -m pytest v13/tests/unit/ -v --cov=v13 --cov-report=xml
 
     - name: Step 4 - Run Integration Tests
       run: |
         echo "Running Integration Tests..."
-        python -m pytest tests/integration/ -v
+        python -m pytest v13/tests/integration/ -v
 
     - name: Step 5 - PQC Verification
       run: |
         echo "Running PQC Verification..."
-        python -m pytest tests/unit/test_pqc.py -v
+        python -m pytest v13/tests/test_pqc.py -v
 
     - name: Step 6 - Deterministic Replay Test
       run: |
         echo "Running Deterministic Replay Test..."
-        python tests/deterministic/test_deterministic_replay.py
+        python v13/tests/test_deterministic_replay.py
 
     - name: Step 7 - Performance Baseline
       run: |
         echo "Running Performance Tests..."
-        python -m pytest tests/unit/test_performance.py -v
+        python -m pytest v13/tests/performance_test_suite.py -v
 
     - name: Step 8 - CIR-302 Fault Injection Test
       run: |
         echo "Running CIR-302 Fault Injection Test..."
-        python -m pytest tests/unit/test_cir302.py -v
+        python -m pytest v13/tests/cir302/ -v
 
     - name: Step 9 - Security Static Scan
       run: |
