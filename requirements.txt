@@ -1,0 +1,6 @@
+numpy>=1.24.0
+qiskit>=0.44.0
+pytest>=7.4.0
+coverage>=7.3.0
+psycopg2-binary>=2.9.9
+cryptography>=41.0.0
