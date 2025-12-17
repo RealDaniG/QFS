@@ -129,49 +129,209 @@
 
 ---
 
-## 🎯 AEGIS UX Integration - Phase 1 Preparation
+## 🎯 QFS × Open-A.G.I × ATLAS Strategic Integration
 
-**Status:** [/] IN PROGRESS (Week 1 - Foundation Specs)
+**Status:** [/] Phase 0 - Zero-Simulation Foundation (Blocking Dependency)
 
-### Analysis & Planning (COMPLETE)
+**Architecture:** Layered authority model with clear trust boundaries
 
-- [x] Repository analysis (documentation, implementation, gaps)
-- [x] Gap analysis report (3-phase roadmap)
-- [x] Documentation update plan (37 new docs prioritized)
-- [x] Next steps guide (Week 1-4 action plan)
+```text
+Open-A.G.I (Advisory, Read-Only) → signals, insights
+    ↓
+ATLAS (Social UX) → user actions, display
+    ↓
+QFS (Economic Authority) → value decisions, state mutations
+```
 
-### P0 Critical Documentation (Week 1-2)
+**Strategic Document:** [QFS × Open-A.G.I × ATLAS Integration Architecture](docs/QFS_OPEN_AGI_ATLAS_INTEGRATION.md)
 
-- [x] AEGIS UX Architecture Overview (`v13/docs/architecture/AEGIS_UX_ARCHITECTURE.md`)
-- [x] AEGIS Advisory Boundaries Contract (`v13/docs/compliance/AEGIS_ADVISORY_CONTRACT.md`)
-- [x] AEGIS Boundary Verification Script (`v13/scripts/verify_aegis_boundaries.py`)
-- [ ] Governance Consequence Map Specification
-- [ ] Governance API Specification
-- [ ] Economic Action Reflection Specification
+### Phase 0: Zero-Simulation Foundation (BLOCKING DEPENDENCY)
 
-### P1 High Priority Documentation (Week 2-4)
+**Objective:** Lock QFS determinism guarantees before integration
 
-- [ ] Symbolic Token/Guard Map Specification
-- [ ] Sandbox Architecture Specification
-- [ ] AEGIS Service Integration Guide
-- [ ] Governance Explanation Schema (JSON)
-- [ ] What-If Simulation API Specification
+**Why First:** Cannot claim "deterministic economic core" while violations exist. All subsequent phases require provable determinism.
 
-### Infrastructure Setup (Week 1)
+- [/] Complete Zero-Sim reduction: 2,506 → 0 violations
+  - [x] Batch 1-4 executed (lessons learned documented)
+  - [/] Batch 5+ in progress (GLOBAL_MUTATION target)
+  - [ ] All violation categories addressed
+- [ ] Deploy prevention gate (CI/CD enforcement)
+- [ ] Verify full replayability across all economic scenarios
+- [ ] Document all sanctioned exceptions (7 currently approved)
+- [ ] Tag release: `v13-zero-sim-complete`
 
-- [ ] Feature branch: `feature/aegis-ux-phase1`
-- [ ] AEGIS API contract meeting (external team coordination)
-- [ ] Development environment setup
-- [ ] Phase 1 sprint breakdown (2-week sprints)
+**Outcome:** QFS certified as audit-ready, deterministic substrate.
 
-### Phase 1 Implementation (Months 1-4) - TBD
+**Blocking:** Phase I cannot begin until Phase 0 is complete.
 
-- [ ] Governance Consequence Map API
-- [ ] Economic Action Reflection Panel
-- [ ] Symbolic Token/Guard Map
-- [ ] Frontend UI components
-- [ ] Integration tests
-- [ ] Evidence artifacts
+---
+
+### Phase I: Canonical Alignment
+
+**Objective:** Establish shared data models and API contracts
+
+**Prerequisites:**
+
+- ✅ Phase 0 complete (Zero-Sim violations = 0)
+- ✅ QFS v13+ deployed
+- ✅ Open-A.G.I v0.9.0+ available
+
+**Deliverables:**
+
+- [ ] Shared Type Definitions
+  - [ ] Canonical user identity schema (QFS ↔ ATLAS ↔ Open-A.G.I)
+  - [ ] Content metadata schema (posts, comments, reactions)
+  - [ ] Economic event schema (rewards, penalties, state changes)
+  - [ ] Advisory signal schema (Open-A.G.I → ATLAS)
+
+- [ ] API Contract Specification
+  - [ ] Document QFS read-only endpoints for Open-A.G.I
+  - [ ] Document ATLAS → QFS request format
+  - [ ] Document Open-A.G.I → ATLAS signal format
+  - [ ] Define PQC signature requirements
+
+- [ ] Integration Testing Framework
+  - [ ] Create mock Open-A.G.I service for QFS testing
+  - [ ] Create mock QFS service for ATLAS testing
+  - [ ] Define contract validation test suite
+  - [ ] Establish CI/CD gates for contract compliance
+
+**Outcome:** All three systems can communicate via well-defined, versioned contracts.
+
+---
+
+### Phase II: Open-A.G.I Advisory Integration
+
+**Objective:** Enable Open-A.G.I to provide read-only insights while maintaining strict trust boundaries
+
+**Prerequisites:**
+
+- ✅ Phase I complete (canonical alignment)
+- ✅ Open-A.G.I trust boundary specification approved
+
+**Deliverables:**
+
+- [ ] Read-Only API Surface
+  - [ ] API gateway blocks write access by Open-A.G.I API keys
+  - [ ] Integration tests verify read-only constraint
+  - [ ] CI fails if Open-A.G.I endpoints expand beyond spec
+  - [ ] Allowed: GET /api/v1/explain-this, /feed, /metrics
+  - [ ] Forbidden: POST/PUT/DELETE/PATCH (returns 403)
+
+- [ ] Signal Format Specification
+  - [ ] JSON-formatted with versioned schema
+  - [ ] PQC-signed (CRYSTALS-Dilithium)
+  - [ ] Logged to immutable audit trail
+  - [ ] Schema validation on ingestion
+
+- [ ] ATLAS Display Integration
+  - [ ] UX clearly labels: "AI suggestion" vs "QFS outcome"
+  - [ ] Users can toggle AI visibility (optional)
+  - [ ] Signals displayed in advisory panel (separate from economic outcomes)
+  - [ ] Clear attribution for all displayed information
+
+- [ ] Governance Override Mechanism
+  - [ ] QFS guards can ignore Open-A.G.I signals without penalty
+  - [ ] No penalty for disagreement with AI recommendations
+  - [ ] Open-A.G.I cannot appeal guard decisions
+  - [ ] Override events logged for analysis
+
+**Outcome:** Open-A.G.I provides valuable insights while QFS maintains full economic authority.
+
+---
+
+### Phase III: ATLAS Monetization & Explainability
+
+**Objective:** Enable ATLAS to display transparent economic outcomes with full explainability
+
+**Prerequisites:**
+
+- ✅ Phase II complete (Open-A.G.I integration)
+- ✅ QFS Explain-This API operational
+- ✅ Zero-Simulation verified (replay tests pass)
+- ✅ Open-A.G.I advisory signals PQC-signed
+- ✅ ATLAS UX mockups approved
+
+**Dependency Gate:** If any prerequisite fails, pause Phase III and return to Phase I/II.
+
+**Deliverables:**
+
+- [ ] QFS Explain-This API
+  - [ ] GET /api/v1/explain/reward/{user_id}
+  - [ ] GET /api/v1/explain/ranking/{content_id}
+  - [ ] Both return deterministic, auditable explanations
+  - [ ] Include: economic calculations, guard decisions, AI signals, ledger refs
+
+- [ ] ATLAS "Why You Earned This" Panel
+  - [ ] Earnings breakdown by token type
+  - [ ] Explanation of each reward component
+  - [ ] Link to ledger events for verification
+  - [ ] Display of Open-A.G.I insights (if applicable)
+  - [ ] Clear separation: "QFS decided" vs "AI suggested"
+
+- [ ] User Trust Validation
+  - [ ] User trust survey results positive (>80% satisfaction)
+  - [ ] A/B testing of explanation formats
+  - [ ] Accessibility compliance (WCAG 2.1 AA)
+  - [ ] Mobile responsiveness verified
+
+**Outcome:** Users understand and trust economic outcomes, ATLAS becomes monetization-ready.
+
+---
+
+### Phase IV: Decentralization & Infrastructure Hardening
+
+**Objective:** Scale QFS to multi-node operation with distributed consensus
+
+**Deliverables:**
+
+- [ ] Multi-Node Replication
+  - [ ] Implement distributed ledger consensus protocol
+  - [ ] Add node synchronization mechanisms
+  - [ ] Deploy multi-region architecture
+  - [ ] Verify deterministic replay across all nodes
+
+- [ ] Infrastructure Security
+  - [ ] HSM/KMS integration for key management
+  - [ ] SBOM (Software Bill of Materials) generation
+  - [ ] Reproducible builds for audit verification
+  - [ ] Threat modeling and penetration testing
+
+- [ ] Performance Optimization
+  - [ ] Benchmark current TPS (target: 2,000)
+  - [ ] Optimize hot paths in economic engines
+  - [ ] Implement caching strategies (non-authoritative)
+  - [ ] Load testing under full guard stack
+
+**Outcome:** QFS operates reliably at scale with provable security.
+
+---
+
+### Phase V: Governance Maturity & Contributor Onboarding
+
+**Objective:** Enable community governance and third-party integrations
+
+**Deliverables:**
+
+- [ ] Governance Portal
+  - [ ] Launch public governance voting interface
+  - [ ] Implement NOD token distribution mechanism
+  - [ ] Create governance proposal templates
+  - [ ] Deploy on-chain voting with PQC signatures
+
+- [ ] Developer Ecosystem
+  - [ ] Publish QFS SDK for third-party integrations
+  - [ ] Create developer onboarding program
+  - [ ] Build community governance framework
+  - [ ] Establish contributor guidelines and rewards
+
+- [ ] Open-A.G.I Expansion
+  - [ ] Enable third-party AI advisory services
+  - [ ] Create advisory service registry
+  - [ ] Implement reputation system for advisors
+  - [ ] Maintain strict read-only enforcement
+
+**Outcome:** Thriving ecosystem with community governance and third-party innovation.
 
 ---
 
@@ -182,3 +342,4 @@
 - [x] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).
 - [x] Docs: Document PQC backend strategy & production requirements.
 - [ ] CI: Add AEGIS boundary verification to daily checks
+- [ ] CI: Add Zero-Sim prevention gate enforcement
