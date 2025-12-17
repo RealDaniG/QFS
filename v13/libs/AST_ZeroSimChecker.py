@@ -133,6 +133,36 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         )
 
+    def is_typing_alias(self, node) -> bool:
+        """Check if assignment RHS is a typing construct (type alias)."""
+        TYPING_NAMES = {
+            "Any",
+            "Union",
+            "Optional",
+            "List",
+            "Dict",
+            "Tuple",
+            "Callable",
+            "Type",
+            "TypeVar",
+            "Generic",
+            "Protocol",
+            "Literal",
+            "Final",
+            "ClassVar",
+            "Annotated",
+        }
+
+        if isinstance(node, ast.Name):
+            return node.id in TYPING_NAMES
+        if isinstance(node, ast.Subscript):
+            # e.g., Union[...], List[...], Optional[...]
+            return self.is_typing_alias(node.value)
+        if isinstance(node, ast.Attribute):
+            # e.g., typing.Any
+            return node.attr in TYPING_NAMES
+        return False
+
     def visit_Assign(self, node: ast.Assign):
         if not self.inside_function:
             for target in node.targets:
@@ -151,6 +181,10 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                     }
 
                     if target.id in legitimate_patterns:
+                        continue
+
+                    # Skip type aliases (e.g., ReferralRewarded = Any)
+                    if self.is_typing_alias(node.value):
                         continue
 
                     self.add_violation(
