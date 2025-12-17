@@ -326,8 +326,8 @@ class AST_ZeroSimChecker:
 
     def scan_directory(self, directory: str, exclude_patterns: List[str] = None) -> List[Violation]:
         exclude_patterns = exclude_patterns or [
-            "__pycache__", "test_*", "*_test.py", "AST_ZeroSimChecker.py", 
-            "migrations", "tests", "audit", "*env*", "venv", ".venv",
+            "__pycache__", "AST_ZeroSimChecker.py", 
+            "migrations", "audit", "*env*", "venv", ".venv",
             "scripts", "checks_tests", "qfs_v13_project", "api", "ATLAS", "node_modules", "epoch", "economics/simple_violations.py",
             "tools_root", "tests_root", "legacy_root",  # Exclude test utilities and legacy code
             "atlas_api", "genesis_ledger.py", "CertifiedMath.py"  # Exclude API, genesis, and trusted math base

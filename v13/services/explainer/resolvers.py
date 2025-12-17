@@ -10,7 +10,11 @@ class BaseResolver:
     """Base class for explanation resolvers."""
 
     def resolve(
-        self, entity_id: str, ledger_events: List[Dict[str, Any]], policy_version: str
+        self,
+        entity_id: str,
+        ledger_events: List[Dict[str, Any]],
+        policy_version: str,
+        trace_id: str = "no-trace",
     ) -> Dict[str, Any]:
         raise NotImplementedError
 
@@ -19,7 +23,11 @@ class RewardResolver(BaseResolver):
     """Resolves reward explanations."""
 
     def resolve(
-        self, entity_id: str, ledger_events: List[Dict[str, Any]], policy_version: str
+        self,
+        entity_id: str,
+        ledger_events: List[Dict[str, Any]],
+        policy_version: str,
+        trace_id: str = "no-trace",
     ) -> Dict[str, Any]:
         # Find the reward event
         reward_event = None
@@ -34,6 +42,13 @@ class RewardResolver(BaseResolver):
         # Mock computation - use integers for Zero-Sim compliance
         base_reward = reward_event.get("amount", 100)
         coherence_multiplier_scaled = 120  # 1.2 * 100 (scaled by 100)
+
+        # Pass Trace ID to CertifiedMath via quantum_metadata
+        final_reward = CertifiedMath.idiv_bn(
+            base_reward * coherence_multiplier_scaled,
+            100,
+            quantum_metadata={"trace_id": trace_id},
+        )
 
         return {
             "inputs": [
@@ -51,9 +66,7 @@ class RewardResolver(BaseResolver):
             "computation": {
                 "base_reward": base_reward,
                 "coherence_multiplier_scaled": coherence_multiplier_scaled,
-                "final_reward": CertifiedMath.idiv(
-                    base_reward * coherence_multiplier_scaled, 100
-                ),
+                "final_reward": final_reward,
             },
         }
 
