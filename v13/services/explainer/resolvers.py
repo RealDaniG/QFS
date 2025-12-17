@@ -3,6 +3,7 @@ resolvers.py - Type-specific explanation resolvers
 """
 
 from typing import Dict, Any, List
+from ...libs.CertifiedMath import CertifiedMath
 
 
 class BaseResolver:
@@ -50,7 +51,9 @@ class RewardResolver(BaseResolver):
             "computation": {
                 "base_reward": base_reward,
                 "coherence_multiplier_scaled": coherence_multiplier_scaled,
-                "final_reward": (base_reward * coherence_multiplier_scaled) // 100,
+                "final_reward": CertifiedMath.idiv(
+                    base_reward * coherence_multiplier_scaled, 100
+                ),
             },
         }
 

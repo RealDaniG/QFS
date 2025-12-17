@@ -1,29 +1,29 @@
 {
-  "timestamp": "2025-12-14T17:45:24.516536",
+  "timestamp": "2025-12-17T09:09:30.513184",
   "suites": [
     {
       "name": "QFS Core Determinism",
       "status": "PASS",
-      "duration_seconds": 7.555623,
-      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 3 passed, 1 warning in 0.96s =========================\n"
+      "duration_seconds": 2.076131,
+      "output_tail": "xture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_replay_state_determinism PASSED [ 33%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_explanation_determinism PASSED [ 66%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_missing_event_explanation PASSED [100%]\n\n============================== 3 passed in 1.03s ==============================\n"
     },
     {
       "name": "Humor Slice Zero-Sim",
       "status": "PASS",
-      "duration_seconds": 7.535691,
-      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 5 passed, 1 warning in 0.92s =========================\n"
+      "duration_seconds": 2.178208,
+      "output_tail": "PASSED [ 40%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_observatory_deterministic_replay PASSED [ 60%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_explainability_deterministic_replay PASSED [ 80%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_cross_module_deterministic_consistency PASSED [100%]\n\n============================== 5 passed in 1.09s ==============================\n"
     },
     {
       "name": "Value-Node Replay & Explainability",
       "status": "PASS",
-      "duration_seconds": 7.548916,
-      "output_tail": "AGENT CODERV1\\QUANTUM CURRENCY\\QFS\\V13\\v13\\tests\\conftest.py:46: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)\n  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path\n    def pytest_ignore_collect(path, config):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 3 passed, 1 warning in 0.93s =========================\n"
+      "duration_seconds": 2.154995,
+      "output_tail": "fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_full_fidelity_event PASSED [ 33%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_low_fidelity_event_fallback PASSED [ 66%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_replay_integration_with_explanation PASSED [100%]\n\n============================== 3 passed in 1.02s ==============================\n"
     },
     {
       "name": "ATLAS Explanation E2E",
       "status": "PASS",
-      "duration_seconds": 2.692429,
-      "output_tail": "lds.py:1051: PydanticDeprecatedSince20: `max_items` is deprecated and will be removed, use `max_length` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/\n    warn('`max_items` is deprecated and will be removed, use `max_length` instead', DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 2 passed, 10 warnings in 1.55s ========================\n"
+      "duration_seconds": 2.814048,
+      "output_tail": "lds.py:1051: PydanticDeprecatedSince20: `max_items` is deprecated and will be removed, use `max_length` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/\n    warn('`max_items` is deprecated and will be removed, use `max_length` instead', DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 2 passed, 10 warnings in 1.66s ========================\n"
     }
   ],
   "overall_status": "PASS"

@@ -2,8 +2,7 @@
 manager.py - Appeals Management Service
 """
 
-import uuid
-import time
+import hashlib
 from typing import Dict, Any, Optional, List
 
 
@@ -17,12 +16,21 @@ class AppealManager:
         self._appeals: Dict[str, Dict[str, Any]] = {}
 
     def submit_appeal(
-        self, user_id: str, target_event_id: str, evidence_cid: str, reason: str
+        self,
+        user_id: str,
+        target_event_id: str,
+        evidence_cid: str,
+        reason: str,
+        timestamp: int,
     ) -> Dict[str, Any]:
         """
         Submit a new appeal.
         """
-        appeal_id = f"appeal_{uuid.uuid4().hex[:12]}"
+        # Deterministic ID generation based on content
+        content_hash = hashlib.sha256(
+            f"{user_id}:{target_event_id}:{timestamp}".encode()
+        ).hexdigest()
+        appeal_id = f"appeal_{content_hash[:12]}"
 
         appeal = {
             "id": appeal_id,
@@ -31,7 +39,7 @@ class AppealManager:
             "evidence_cid": evidence_cid,
             "reason": reason,
             "status": "PENDING",
-            "submitted_at": int(time.time()),
+            "submitted_at": timestamp,
             "decision": None,
             "reviewer": None,
         }
@@ -44,7 +52,12 @@ class AppealManager:
         return self._appeals.get(appeal_id)
 
     def resolve_appeal(
-        self, appeal_id: str, decision: str, reviewer: str, explanation_cid: str
+        self,
+        appeal_id: str,
+        decision: str,
+        reviewer: str,
+        explanation_cid: str,
+        timestamp: int,
     ) -> Optional[Dict[str, Any]]:
         """
         Resolve an appeal.
@@ -61,7 +74,7 @@ class AppealManager:
         appeal["decision"] = decision
         appeal["reviewer"] = reviewer
         appeal["explanation_cid"] = explanation_cid
-        appeal["resolved_at"] = int(time.time())
+        appeal["resolved_at"] = timestamp
 
         # Emit APPEAL_RESOLVED event to ledger
         return appeal

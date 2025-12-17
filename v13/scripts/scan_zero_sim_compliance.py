@@ -36,6 +36,8 @@ EXCLUDED_DIRS = [
     "artifacts",
     "legacy_root",
     "archive",
+    "ATLAS",
+    "docs",
 ]
 
 NO_SCAN_FILES = [

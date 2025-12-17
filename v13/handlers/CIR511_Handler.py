@@ -1,7 +1,7 @@
 """
 CIR511_Handler.py - Implement the Quantized Dissonance Detection mechanism
 
-Implements the CIR511_Handler class for detecting micro-deviations or cascading 
+Implements the CIR511_Handler class for detecting micro-deviations or cascading
 discrepancies in arithmetic or state transitions that could indicate instability.
 """
 
@@ -17,6 +17,7 @@ from ..libs.CertifiedMath import CertifiedMath, BigNum128
 @dataclass
 class DissonanceEvent:
     """Container for dissonance detection event"""
+
     metric_name: str
     current_value: BigNum128
     previous_value: BigNum128
@@ -29,15 +30,15 @@ class DissonanceEvent:
 class CIR511_Handler:
     """
     Implement the Quantized Dissonance Detection mechanism (CIR-511).
-    
-    Detects micro-deviations or cascading discrepancies in arithmetic or state 
+
+    Detects micro-deviations or cascading discrepancies in arithmetic or state
     transitions that could indicate instability. Logs the dissonance events.
     """
 
     def __init__(self, cm_instance: CertifiedMath):
         """
         Initialize the CIR-511 Handler.
-        
+
         Args:
             cm_instance: CertifiedMath instance for deterministic calculations
         """
@@ -55,7 +56,7 @@ class CIR511_Handler:
     ) -> bool:
         """
         Detect micro-dissonance in system metrics.
-        
+
         Args:
             current_metrics: Current system metrics
             previous_metrics: Previous system metrics
@@ -64,26 +65,41 @@ class CIR511_Handler:
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
             deterministic_timestamp: Deterministic timestamp from DRV_Packet
-            
+
         Returns:
             bool: True if dissonance detected, False otherwise
         """
         dissonance_detected = False
         dissonance_events = []
-        
+
         # Check each metric for dissonance
-        for metric_name, current_value in current_metrics.items():
+        for metric_name in sorted(current_metrics.keys()):
+            current_value = current_metrics[metric_name]
             if metric_name in previous_metrics:
                 previous_value = previous_metrics[metric_name]
-                
+
                 # Calculate deviation
                 if current_value.value >= previous_value.value:
-                    deviation = self.cm.sub(current_value, previous_value, log_list, pqc_cid, quantum_metadata)
+                    deviation = self.cm.sub(
+                        current_value,
+                        previous_value,
+                        log_list,
+                        pqc_cid,
+                        quantum_metadata,
+                    )
                 else:
-                    deviation = self.cm.sub(previous_value, current_value, log_list, pqc_cid, quantum_metadata)
-                
+                    deviation = self.cm.sub(
+                        previous_value,
+                        current_value,
+                        log_list,
+                        pqc_cid,
+                        quantum_metadata,
+                    )
+
                 # Check if deviation exceeds threshold
-                if self.cm.gt(deviation, threshold, log_list, pqc_cid, quantum_metadata):
+                if self.cm.gt(
+                    deviation, threshold, log_list, pqc_cid, quantum_metadata
+                ):
                     dissonance_detected = True
                     dissonance_event = DissonanceEvent(
                         metric_name=metric_name,
@@ -92,17 +108,17 @@ class CIR511_Handler:
                         deviation=deviation,
                         threshold=threshold,
                         timestamp=deterministic_timestamp,
-                        quantum_metadata=quantum_metadata
+                        quantum_metadata=quantum_metadata,
                     )
                     dissonance_events.append(dissonance_event)
-        
+
         # Log dissonance events if detected
         if dissonance_detected:
             for event in dissonance_events:
                 self.log_micro_discrepancy(
                     event, log_list, pqc_cid, quantum_metadata, deterministic_timestamp
                 )
-        
+
         return dissonance_detected
 
     def log_micro_discrepancy(
@@ -115,7 +131,7 @@ class CIR511_Handler:
     ):
         """
         Log a micro-discrepancy for audit purposes.
-        
+
         Args:
             dissonance_event: Dissonance event to log
             log_list: Audit log list
@@ -131,15 +147,15 @@ class CIR511_Handler:
             "deviation": dissonance_event.deviation.to_decimal_string(),
             "threshold": dissonance_event.threshold.to_decimal_string(),
             "timestamp": dissonance_event.timestamp,
-            "quantum_metadata": dissonance_event.quantum_metadata
+            "quantum_metadata": dissonance_event.quantum_metadata,
         }
-        
+
         details = {
             "operation": "cir511_micro_discrepancy",
             "dissonance_event": event_details,
-            "timestamp": deterministic_timestamp
+            "timestamp": deterministic_timestamp,
         }
-        
+
         # Use CertifiedMath's internal logging
         self.cm._log_operation(
             "cir511_micro_discrepancy",
@@ -147,7 +163,5 @@ class CIR511_Handler:
             dissonance_event.deviation,  # Log the deviation as the result value
             log_list,
             pqc_cid,
-            quantum_metadata
+            quantum_metadata,
         )
-
-

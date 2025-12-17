@@ -1,19 +1,29 @@
 """
 identity.py - Identity Management for Direct Messaging
 """
+
 from typing import Dict, Optional, Any
-import time
+
 
 class IdentityManager:
     """
     Manages user identity bundles for Direct Messaging.
     Acts as a registry for Public Identity Bundles.
     """
+
     def __init__(self):
         # In-memory registry for V1 (would be backed by Redis/Ledger)
         self._registry: Dict[str, Dict[str, Any]] = {}
 
-    def publish_identity(self, user_id: str, public_key: str, proof: str, encryption_algo: str = "Dilithium+Kyber", min_coherence: int = 300):
+    def publish_identity(
+        self,
+        user_id: str,
+        public_key: str,
+        proof: str,
+        timestamp: int,
+        encryption_algo: str = "Dilithium+Kyber",
+        min_coherence: int = 300,
+    ):
         """
         Publish or update an identity bundle.
         """
@@ -22,8 +32,8 @@ class IdentityManager:
             "public_key": public_key,
             "encryption_algo": encryption_algo,
             "min_coherence_required": min_coherence,
-            "updated_at": int(time.time()),
-            "proof": proof # Signature verifying ownership
+            "updated_at": timestamp,
+            "proof": proof,  # Signature verifying ownership
         }
         self._registry[user_id] = bundle
         return bundle

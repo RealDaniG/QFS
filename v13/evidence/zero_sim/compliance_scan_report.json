@@ -1,639 +1,7 @@
 {
-  "timestamp": "2025-12-14T17:45:14.690170",
-  "total_violations": 154,
+  "timestamp": "2025-12-17T08:53:07.976702",
+  "total_violations": 93,
   "violations": [
-    {
-      "file": "v13/ATLAS/.next/static/chunks/polyfills.js",
-      "line": 1,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "!function(){var t=\"undefined\"!=typeof globalThis?globalThis:\"undefined\"!=typeof window?window:\"undef",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/examples/websocket/frontend.tsx",
-      "line": 165,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "{new Date(msg.timestamp).toLocaleTimeString()}",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/examples/websocket/server.ts",
-      "line": 31,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const generateMessageId = () => Math.random().toString(36).substr(2, 9)",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/examples/websocket/server.ts",
-      "line": 37,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: new Date(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/examples/websocket/server.ts",
-      "line": 45,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: new Date(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/examples/websocket/server.ts",
-      "line": 58,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: new Date().toISOString()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/scripts/test-economics.ts",
-      "line": 17,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/scripts/test-economics.ts",
-      "line": 42,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/scripts/verify-e2e.ts",
-      "line": 88,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/qfs_client.py",
-      "line": 95,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/real_ledger.py",
-      "line": 84,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp=datetime.now(timezone.utc).isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/real_ledger.py",
-      "line": 99,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp=datetime.now(timezone.utc).isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/api/routes/secure_chat.py",
-      "line": 76,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/api/routes/secure_chat.py",
-      "line": 93,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/api/routes/secure_chat.py",
-      "line": 351,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/components/DistributedFeed.tsx",
-      "line": 69,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "{new Date(item.timestamp).toLocaleTimeString()}",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/components/WalletInterface.tsx",
-      "line": 94,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "{new Date(tx.timestamp).toLocaleTimeString()} \u2022 {tx.id.split('_')[2]}",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/components/ui/sidebar.tsx",
-      "line": 611,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "return `${Math.floor(Math.random() * 40) + 50}%`",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/core/economic_views.py",
-      "line": 32,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "- It does not call time/random.",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/core/transaction_processor.py",
-      "line": 95,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "f\"{sender}{receiver}{amount}{asset}{datetime.now(timezone.utc).isoformat()}\"",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/core/transaction_processor.py",
-      "line": 105,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp=datetime.now(timezone.utc).isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useInteraction.ts",
-      "line": 33,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const pendingId = crypto.randomUUID();",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useInteraction.ts",
-      "line": 41,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useProfile.ts",
-      "line": 52,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: profile?.createdAtMs || Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useProfile.ts",
-      "line": 53,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "updatedAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useProfileUpdate.ts",
-      "line": 28,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const pendingId = crypto.randomUUID();",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useProfileUpdate.ts",
-      "line": 36,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/hooks/useQFSFeed.ts",
-      "line": 63,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "coherenceScore: 0.85 + (Math.random() * 0.1), // Mock score from \"executor\"",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/ipfs-client.ts",
-      "line": 242,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "pinnedAt: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/ipfs-client.ts",
-      "line": 335,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const jitter = Math.random() * delay * 0.2;",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/ipfs-multi-node-client.ts",
-      "line": 224,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "pinnedAt: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/content/publisher.ts",
-      "line": 61,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "tempId: crypto.randomUUID(),",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/content/publisher.ts",
-      "line": 64,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/content/publisher.ts",
-      "line": 86,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/content/publisher.ts",
-      "line": 112,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "pendingId: crypto.randomUUID(),",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/content/publisher.ts",
-      "line": 117,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/economics/treasury-engine.ts",
-      "line": 44,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "lastUpdated: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/economics/treasury-engine.ts",
-      "line": 48,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "return { balance: 0, staked: 0, rewards: 0, lastUpdated: Date.now() };",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/policy-registry.ts",
-      "line": 40,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "effectiveDate: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/policy-registry.ts",
-      "line": 93,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "effectiveDate: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 34,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 38,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const pendingId = crypto.randomUUID();",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 46,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 60,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 64,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "const pendingId = crypto.randomUUID();",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/governance/service.ts",
-      "line": 72,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/ledger/mock-ledger.ts",
-      "line": 94,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/profile/service.ts",
-      "line": 56,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "pendingId: crypto.randomUUID(),",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/profile/service.ts",
-      "line": 66,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "createdAtMs: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/executor.ts",
-      "line": 51,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/executor.ts",
-      "line": 61,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/executor.ts",
-      "line": 73,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "computationId: crypto.randomUUID(),",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/executor.ts",
-      "line": 77,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "signature: `sig_${this.nodeDID}_${Date.now()}`,",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/executor.ts",
-      "line": 79,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "timestamp: Date.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/humor-addon.ts",
-      "line": 19,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "MEDIUM",
-      "code_snippet": "return `hash_${JSON.stringify(content).length}_${Date.now()}`;",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/qfs/merkle-stub.ts",
-      "line": 36,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "return 'mock_hash_' + Math.random().toString(36).substring(7);",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/lib/__tests__/setup.ts",
-      "line": 9,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "global.crypto.randomUUID = vi.fn(() => '00000000-0000-0000-0000-000000000000') as any;",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/ATLAS/src/secure_chat/core/engine.py",
-      "line": 54,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "self._clock = clock or (lambda tz: datetime.now(tz))",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/tests/test_qfs_client.py",
-      "line": 52,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/tests/test_qfs_client.py",
-      "line": 75,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/tests/test_qfs_client.py",
-      "line": 101,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/ATLAS/src/tests/test_qfs_client.py",
-      "line": 150,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/phase_a_module_audit.py",
-      "line": 57,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.random', 'random.randint', 'time.time', 'datetime.now',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/docs/audit/phase_a_module_audit.py",
-      "line": 57,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "'random.random', 'random.randint', 'time.time', 'datetime.now',",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/phase_a_module_audit.py",
-      "line": 58,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'uuid.uuid4', 'os.urandom', 'sys.stdin.read'",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 76,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "self.audit_start_time: float = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 394,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "execution_start = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 395,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "execution_end = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 866,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 1007,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"audit_duration_seconds\": time.time() - self.audit_start_time,",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 1008,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_autonomous_audit.py",
-      "line": 25,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_technical_test_report.py",
-      "line": 41,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "- Checks for forbidden constructs: native float, random, time.time(), os.urandom",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_technical_test_report.py",
-      "line": 41,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "- Checks for forbidden constructs: native float, random, time.time(), os.urandom",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_technical_test_report.py",
-      "line": 74,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "print(\"   - Checks for forbidden constructs: native float, random, time.time(), os.urandom\")",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/docs/audit/qfs_v13_technical_test_report.py",
-      "line": 74,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "print(\"   - Checks for forbidden constructs: native float, random, time.time(), os.urandom\")",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/run_certified_math_audit.py",
-      "line": 39,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "print(f\"Timestamp: {datetime.now().isoformat()}\")",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/run_certified_math_audit.py",
-      "line": 74,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "print(f\"Timestamp: {datetime.now().isoformat()}\")",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/docs/audit/run_certified_math_audit.py",
-      "line": 112,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now().isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
     {
       "file": "v13/economics/test_economics_violations.py",
       "line": 26,
@@ -683,12 +51,108 @@
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
+      "file": "v13/scripts/generate_aes_gut_evidence.py",
+      "line": 37,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "timestamp = datetime.datetime.now().isoformat()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/generate_aes_gut_evidence.py",
+      "line": 49,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "filename = f\"v13/evidence/aes/aes_gut_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/generate_full_stack_evidence.py",
+      "line": 17,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "start_time = datetime.datetime.now().isoformat()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/generate_full_stack_evidence.py",
+      "line": 19,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "end_time = datetime.datetime.now().isoformat()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/generate_full_stack_evidence.py",
+      "line": 35,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "filename = f\"v13/evidence/nightly/full_stack_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.jso",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/nightly_e2e.py",
+      "line": 21,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "print(f\"[{datetime.datetime.now()}] Running {name}...\")",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/nightly_e2e.py",
+      "line": 22,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "start = datetime.datetime.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/nightly_e2e.py",
+      "line": 32,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "duration = (datetime.datetime.now() - start).total_seconds()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/nightly_e2e.py",
+      "line": 81,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"timestamp\": datetime.datetime.now().isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/nightly_e2e.py",
+      "line": 89,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "filename = f\"evidence/nightly/run_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
       "file": "v13/scripts/run_autonomous_audit.py",
       "line": 302,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
       "code_snippet": "lines.append(\"No obvious non-deterministic patterns (float/math/random/time/uuid/os.urandom) detecte",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/scripts/verify_value_node_zero_sim.py",
+      "line": 37,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "forbidden = [\"TreasuryEngine\", \"random\", \"time.time\", \"datetime.now\"]",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/scripts/verify_value_node_zero_sim.py",
+      "line": 63,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"verification_date\": datetime.now().isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/zero-sim-ast.js",
@@ -795,11 +259,51 @@
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
+      "file": "v13/services/community/manager.py",
+      "line": 30,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "guild_id = f\"did:atlas:guild:{uuid.uuid4().hex[:12]}\"",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/services/community/manager.py",
+      "line": 40,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"created_at\": int(time.time()),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/services/community/manager.py",
+      "line": 5,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/services/community/manager.py",
+      "line": 6,
+      "violation_type": "FORBIDDEN_IMPORT_TIME",
+      "severity": "CRITICAL",
+      "code_snippet": "import time",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
       "file": "v13/tests/performance_test_suite.py",
       "line": 7,
       "violation_type": "FORBIDDEN_IMPORT_TIME",
       "severity": "CRITICAL",
       "code_snippet": "import time",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/tests/test_artistic_compliance.py",
+      "line": 5,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "1. No forbidden imports (random, time, datetime.now) in policy files.",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
@@ -825,6 +329,14 @@
       "severity": "CRITICAL",
       "code_snippet": "value = random.random()",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/tests/test_explain_this_performance.py",
+      "line": 10,
+      "violation_type": "FORBIDDEN_IMPORT_TIME",
+      "severity": "CRITICAL",
+      "code_snippet": "import time",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/test_zero_sim_violations.py",
