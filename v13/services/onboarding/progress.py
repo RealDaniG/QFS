@@ -3,6 +3,7 @@ progress.py - User Tour Progress Tracking
 """
 
 from typing import Dict, List, Any
+from ...libs.CertifiedMath import CertifiedMath
 
 
 class ProgressTracker:
@@ -45,8 +46,12 @@ class ProgressTracker:
             }
 
         completed = self._progress[user_id][tour_id]
-        # Use integer division for Zero-Sim compliance
-        completion_pct = (len(completed) * 100) // total_steps if total_steps > 0 else 0
+        # Use CertifiedMath.idiv() for Zero-Sim compliance
+        completion_pct = (
+            CertifiedMath.idiv(len(completed) * 100, total_steps)
+            if total_steps > 0
+            else 0
+        )
 
         return {
             "tour_id": tour_id,
