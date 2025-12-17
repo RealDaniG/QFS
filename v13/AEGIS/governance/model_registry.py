@@ -68,7 +68,7 @@ def _load_registry() -> Dict[str, AEGISModelConfig]:
         _REGISTRY_CACHE = configs
         return _REGISTRY_CACHE
     except Exception as e:
-        print(f"Error loading AEGIS model registry: {e}")
+        # Error loading registry - return empty dict (bootstrap mode)
         return {}
 
 

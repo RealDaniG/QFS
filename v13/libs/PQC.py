@@ -15,12 +15,7 @@ from .pqc.oqs_adapter import get_adapter
 _adapter = get_adapter()
 _PQC_BACKEND = "liboqs" if _adapter.__name__ == "OQSAdapter" else "mock"
 
-if _PQC_BACKEND == "liboqs":
-    print("[PQC] Using liboqs-python (High Assurance)")
-else:
-    print("\n" + "=" * 80)
-    print("[WARNING]: Using MockPQC (Simulation) - NOT CRYPTOGRAPHICALLY SECURE")
-    print("=" * 80)
+# Backend info available via PQC.get_backend_info()
 
 
 class PQCError(Exception):
