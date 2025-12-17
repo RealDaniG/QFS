@@ -27,13 +27,14 @@ This release locks the full stack into audited, replayable determinism: every le
 |-----------|--------|-------|----------|
 | Constitutional Guards | ✅ Deployed | 937 lines | 100% |
 | Zero-Mock Compliance | ✅ Verified | 0 violations | Production |
-| **PQC (Dev Backend)** | ✅ Complete | 7/7 | 100% |
-| **PQC (Prod Backend)** | 🔒 Planned | Phase 3 | Linux Only |
+| **PQC Provider** | ✅ Integrated | Mock/Real | 100% |
+| **Observability** | ✅ Verified | Trace Analysis | End-to-End |
 | Pipeline Compliance | ✅ Verified | 0 violations | Production |
 | AEGIS Integration | ✅ Verified | Test service ready | Staged |
 | Explanation Audit | ✅ Ready | Backend + UI | Complete |
 | Full-Stack Determinism | ✅ PASS | Nightly E2E green | Verified |
 | **Trust Loop** | ✅ Verified | v13/scripts/L-001 | Passed |
+| **Session Management** | ✅ Integrated | Deterministic | 100% |
 
 **Release Date:** 2025‑12‑15  
 **Constitutional Status:** Guards enforced at all economic and governance gates  
@@ -64,6 +65,10 @@ QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 │  │   6-Token    │  │    AEGIS     │  │     PQC      │  │
 │  │  Economics   │  │Verification  │  │ Signatures   │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
+│  ┌──────────────┐                                     │
+│  │   Sessions   │                                     │
+│  │  Management  │                                     │
+│  └──────────────┘                                     │
 └─────────────────────────────────────────────────────────┘
 
 ```
@@ -77,6 +82,7 @@ ATLAS is the user-facing web application that provides wallet-based authenticati
 **ATLAS Documentation:** [v13/ATLAS/README.md](v13/ATLAS/README.md)
 
 **Key Features:**
+
 - Wallet-based identity (MetaMask, WalletConnect)
 - End-to-end encrypted messaging
 - Referral system with Genesis Points
@@ -137,11 +143,18 @@ Three layers of enforcement:
 2. **NODInvariantChecker** (682 lines) – Enforces non-transferability, supply conservation, voting limits
 3. **AEGISNodeVerification** (733 lines) – Pure deterministic node verification with PQC identity
 
+### Phase 3 Auditing & Observability
+
+- **Structured Logging**: All operations now emit JSON structured logs with `TraceContext` propagation.
+- **Consistency Proofs**: `CertifiedMath` logs are cryptographically bound to the audit trail via `pqc_cid`.
+- **PQC Abstraction**: OS-agnostic `IPQCProvider` ensures deterministic crypto operations across dev/prod environments.
+
 🔐 [Guard Implementation](v13/guards)
 
 ### Recent Security Fixes (PR #5)
 
 **🔴 Critical Issues Resolved:**
+
 - ✅ Added authentication to all `/explain/*` endpoints
 - ✅ Replaced hardcoded `localhost` URLs with environment-aware API base
 - ✅ Removed side-effectful `__main__` blocks from production modules (Phase 14 Remediation)
@@ -229,6 +242,10 @@ python -m pytest v13/tests/test_humor_*.py -v
 
 python -m pytest v13/tests/test_value_node_*.py -v
 
+# Session management (17 tests)
+
+python -m pytest v13/tests/sessions/ -v
+
 # ATLAS API boundaries
 
 python -m pytest v13/ATLAS/src/tests -v
@@ -236,7 +253,7 @@ python -m pytest v13/ATLAS/src/tests -v
 # Nightly E2E
 
 python scripts/generate_full_stack_evidence.py
-
+```
 ```
 
 ### Evidence Artifacts
@@ -247,6 +264,7 @@ All verification evidence is in `v13/evidence/`:
 - `humor/` – Humor signal compliance bundle
 - `value_node/` – Value-node replay evidence
 - `storage/` – StorageEngine replay status
+- `sessions/` – Session management test evidence
 - `nightly/` – Nightly E2E results
 
 🔍 [Browse Evidence](v13/evidence)
@@ -266,6 +284,7 @@ All verification evidence is in `v13/evidence/`:
 
 - [Zero-Sim Contract v1.3](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) – **Start here**
 - [StorageEngine Spec](v13/docs/STORAGEENGINE_INTERFACE_SPEC.md) – Decentralized storage
+- [Session Management System](v13/docs/SESSION_MANAGEMENT_SYSTEM.md) – Deterministic session layer
 - [📖 **Developer Wiki**](https://github.com/RealDaniG/QFS/wiki) – API docs, architecture guides
 
 ### For Auditors
@@ -318,6 +337,7 @@ We're moving from verified baseline → live production with:
 - ✅ **Phase 1** (Days 8-60): Core determinism (80% → 100%)
 - ✅ **V13.6**: Constitutional guards deployed
 - ✅ **V13.8**: Zero-Sim Absolute / Pipeline Compliance (Phase 14)
+- ✅ **Session Management System**: Deterministic session layer with challenge-response authentication
 
 ### Current Phase
 
@@ -354,11 +374,11 @@ We're moving from verified baseline → live production with:
 - **Referral System:** Ledger-backed, deterministic invitation logic
 - **Explain-This Framework:** Cryptographically auditable reward transparency
 - **PQC Ready:** CRYSTALS-Dilithium signatures on all ledger writes
+- **Session Management System:** Deterministic, replayable session layer with challenge-response authentication
 
 ---
 
 ## 📞 Support & Community
-
 
 ### Connect With Us
 

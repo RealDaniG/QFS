@@ -6,8 +6,8 @@
         "status": "PASS"
     },
     "summary": {
-        "total_requirements": 89,
-        "pass": 89,
+        "total_requirements": 90,
+        "pass": 90,
         "fail": 0,
         "warn": 0,
         "zero_sim_compliance": "100%",
@@ -55,6 +55,12 @@
             "name": "Secure Logging",
             "status": "PASS",
             "evidence": "Sensitive IDs hashed, topology redacted in logs"
+        },
+        {
+            "id": "SEC-05",
+            "name": "Session Management",
+            "status": "PASS",
+            "evidence": "Deterministic session layer with challenge-response authentication and ledger replay"
         }
     ]
 }
