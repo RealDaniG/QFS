@@ -4,19 +4,6 @@
 
 ---
 
-## 🎯 Quick Start
-
-| I want to... | Go here |
-|--------------|---------|
-| **Understand the system** | [Core Concepts](#core-concepts) · [📖 Wiki](https://github.com/RealDaniG/QFS/wiki) |
-| **Deploy to production** | [Production Deployment](#production-deployment) |
-| **Review security** | [Security Compliance](#security-compliance) |
-| **Contribute** | [Contributing](#contributing) |
-| **Check status** | [Interactive Dashboard](docs/qfs-v18.9-dashboard.html) |
-| **Browse documentation** | [📚 Full Wiki](https://github.com/RealDaniG/QFS/wiki) |
-
----
-
 ## 📊 Current Status
 
 ### V18.9 "Deterministic Session Management" (RELEASED) ✅ LIVE
