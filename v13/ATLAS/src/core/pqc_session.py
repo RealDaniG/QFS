@@ -30,7 +30,7 @@ class PQCServerSession:
             shared_secret = PQC.kem_decapsulate(
                 PQC.KYBER1024, self.secret_key, ciphertext
             )
-            session_id = str(uuid.uuid4())
+            session_id = str(DeterministicID.next())
             self.sessions[session_id] = shared_secret
             return session_id
         except Exception as e:

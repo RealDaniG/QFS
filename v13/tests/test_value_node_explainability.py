@@ -16,7 +16,7 @@ class TestValueNodeExplainability:
     @pytest.fixture
     def humor_policy(self) -> HumorSignalPolicy:
         """Create a humor policy instance for testing."""
-        return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
 
     @pytest.fixture
     def explain_helper(self, humor_policy: HumorSignalPolicy) -> ValueNodeExplainabilityHelper:
@@ -160,7 +160,7 @@ class TestValueNodeExplainability:
     def test_different_policy_configurations(self, explain_helper: ValueNodeExplainabilityHelper) -> None:
         """Test explainability with different policy configurations."""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        different_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': 0.2, 'lexicon': 0.15, 'surreal': 0.15, 'empathy': 0.1, 'critique': 0.2, 'slapstick': 0.1, 'meta': 0.1}, max_bonus_ratio=0.5, per_user_daily_cap_atr=2.0))
+        different_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': 0.2, 'lexicon': 0.15, 'surreal': 0.15, 'empathy': 0.1, 'critique': 0.2, 'slapstick': 0.1, 'meta': 0.1}, max_bonus_ratio=0.5, per_user_daily_cap_atr=2))
         different_helper = ValueNodeExplainabilityHelper(different_policy)
         reward_data = {'wallet_id': 'wallet_diff_policy', 'user_id': 'user_diff_policy', 'reward_event_id': 'reward_diff_policy', 'epoch': 1, 'base_reward': {'ATR': '10.0 ATR'}, 'bonuses': [{'label': 'Bonus', 'value': '+2.0 ATR', 'reason': 'Bonus reason'}], 'caps': [{'label': 'Cap', 'value': '-1.0 ATR', 'reason': 'Cap reason'}], 'guards': [{'name': 'Test guard', 'result': 'pass', 'reason': 'Test'}], 'timestamp': 1234567890}
         explanation = different_helper.explain_value_node_reward(**reward_data)

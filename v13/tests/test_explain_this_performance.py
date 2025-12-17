@@ -14,8 +14,8 @@ from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
 
 def test_explanation_generation_latency():
     """Ensure explanation generation is within SLA (50ms)."""
-    humor_policy = HumorSignalPolicy(policy=HumorPolicy(True, 'rewarding', {}, 0.25, 1.0))
-    artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(True, 'rewarding', {}, 0.3, 2.0))
+    humor_policy = HumorSignalPolicy(policy=HumorPolicy(True, 'rewarding', {}, 0.25, 1))
+    artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(True, 'rewarding', {}, 0.3, 2))
     helper = ValueNodeExplainabilityHelper(humor_policy, artistic_policy)
     base_reward = {'ATR': '10.0 ATR'}
     bonuses = [{'label': 'Bonus', 'value': '+1.0 ATR'}] * 5
@@ -43,4 +43,4 @@ def test_hash_computation_performance():
         verify_explanation_integrity(data, valid_hash)
     avg_latency_ms = (det_perf_counter() - start) / iterations * 1000
     print(f'Hash Latency: {avg_latency_ms:.4f} ms')
-    assert avg_latency_ms < 1.0, f'Hash verification too slow: {avg_latency_ms}ms'
+    assert avg_latency_ms < 1, f'Hash verification too slow: {avg_latency_ms}ms'

@@ -20,7 +20,7 @@ def replay_engine():
 
 @pytest.fixture
 def sample_events():
-    return [{'type': 'ContentCreated', 'content_id': 'c1', 'user_id': 'u1', 'timestamp': 1000}, {'type': 'InteractionCreated', 'user_id': 'u2', 'content_id': 'c1', 'interaction_type': 'like', 'weight': 1.0, 'timestamp': 1050}, {'type': 'InteractionCreated', 'user_id': 'u3', 'content_id': 'c1', 'interaction_type': 'share', 'weight': 2.0, 'timestamp': 1060}, {'type': 'RewardAllocated', 'user_id': 'u1', 'amount_atr': 10, 'timestamp': 1100}]
+    return [{'type': 'ContentCreated', 'content_id': 'c1', 'user_id': 'u1', 'timestamp': 1000}, {'type': 'InteractionCreated', 'user_id': 'u2', 'content_id': 'c1', 'interaction_type': 'like', 'weight': 1, 'timestamp': 1050}, {'type': 'InteractionCreated', 'user_id': 'u3', 'content_id': 'c1', 'interaction_type': 'share', 'weight': 2, 'timestamp': 1060}, {'type': 'RewardAllocated', 'user_id': 'u1', 'amount_atr': 10, 'timestamp': 1100}]
 
 def test_graph_reconstruction(replay_engine, sample_events):
     replay_engine.replay_events(sample_events)

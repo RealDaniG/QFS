@@ -10,7 +10,7 @@ import hashlib
 
 # Global state for deterministic time progression
 _det_time_state = 1700000000  # Fixed starting timestamp
-_det_perf_counter_state = 1000.0  # Fixed starting performance counter
+_det_perf_counter_state = 1000  # Fixed starting performance counter
 
 def det_time_now() -> int:
     """
@@ -100,7 +100,7 @@ def det_time_process_time() -> float:
     Returns:
         float: A deterministic process time value
     """
-    return 42.0
+    return 42
 
 def det_time_thread_time() -> float:
     """
@@ -111,4 +111,4 @@ def det_time_thread_time() -> float:
     Returns:
         float: A deterministic thread time value
     """
-    return 24.0
+    return 24

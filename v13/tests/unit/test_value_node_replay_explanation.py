@@ -12,7 +12,7 @@ from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 
 @pytest.fixture
 def engine():
-    policy = HumorSignalPolicy(HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+    policy = HumorSignalPolicy(HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
     helper = ValueNodeExplainabilityHelper(policy)
     return ValueNodeReplayEngine(helper)
 

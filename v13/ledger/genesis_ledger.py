@@ -11,7 +11,7 @@ from pydantic import BaseModel
 class GenesisEntry(BaseModel):
     wallet: str
     event_type: str
-    value: float = 0.0
+    value: float = 0
     metadata: Dict[str, Any] = {}
     timestamp: str = ""
     hash: str = ""

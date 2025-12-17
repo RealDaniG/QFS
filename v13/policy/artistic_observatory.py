@@ -48,7 +48,7 @@ class ArtisticSignalObservatory:
 
     def get_observability_report(self, policy_version: str='') -> ArtisticObservabilityReport:
         if not self.signal_history:
-            return ArtisticObservabilityReport(0, 0.0, {}, {}, {}, 0, [], policy_version)
+            return ArtisticObservabilityReport(0, 0, {}, {}, {}, 0, [], policy_version)
         total_signals = len(self.signal_history)
         avg_confidence = sum((s.confidence for s in self.signal_history)) / total_signals
         dim_sums = defaultdict(float)

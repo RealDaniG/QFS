@@ -18,7 +18,7 @@ class TestHumorObservatory:
             self.observatory.record_signal(snapshot)
         report = self.observatory.get_observability_report()
         assert report.total_signals_processed == 5
-        assert report.average_confidence > 0.0
+        assert report.average_confidence > 0
         assert len(report.dimension_averages) == 7
         assert len(report.bonus_statistics) >= 4
         assert isinstance(report.top_performing_content, list)
@@ -27,7 +27,7 @@ class TestHumorObservatory:
         """Test report generation with no data"""
         report = self.observatory.get_observability_report()
         assert report.total_signals_processed == 0
-        assert report.average_confidence == 0.0
+        assert report.average_confidence == 0
         assert report.dimension_averages == {}
         assert report.bonus_statistics == {}
         assert report.top_performing_content == []
@@ -47,7 +47,7 @@ class TestHumorObservatory:
         for i in range(100):
             chronos_score = 0.1 if i < 10 else 0.5 if i < 60 else 0.9
             lexicon_score = 0.3 if i % 3 == 0 else 0.6 if i % 3 == 1 else 0.8
-            surreal_score = min(1.0, max(0.0, 0.5 + (i - 50) * 0.01))
+            surreal_score = min(1, max(0, 0.5 + (i - 50) * 0.01))
             snapshots.append(HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': chronos_score, 'lexicon': lexicon_score, 'surreal': surreal_score}, confidence=0.8, bonus_factor=0.1 + i % 10 * 0.02, policy_version='v1.0.0'))
         for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
@@ -58,9 +58,9 @@ class TestHumorObservatory:
         chronos_sum = sum(report.dimension_distributions['chronos'].values())
         lexicon_sum = sum(report.dimension_distributions['lexicon'].values())
         surreal_sum = sum(report.dimension_distributions['surreal'].values())
-        assert abs(chronos_sum - 1.0) < 0.01
-        assert abs(lexicon_sum - 1.0) < 0.01
-        assert abs(surreal_sum - 1.0) < 0.01
+        assert abs(chronos_sum - 1) < 0.01
+        assert abs(lexicon_sum - 1) < 0.01
+        assert abs(surreal_sum - 1) < 0.01
         print('Chronos buckets:', list(report.dimension_distributions['chronos'].keys()))
         chronos_buckets = report.dimension_distributions['chronos']
         assert len(chronos_buckets) > 0
@@ -166,8 +166,8 @@ class TestHumorObservatory:
         assert 'max' in report.bonus_statistics
         assert 'median' in report.bonus_statistics
         assert 'std_dev' in report.bonus_statistics
-        assert report.bonus_statistics['min'] >= 0.0
-        assert report.bonus_statistics['max'] <= 1.0
+        assert report.bonus_statistics['min'] >= 0
+        assert report.bonus_statistics['max'] <= 1
         assert report.bonus_statistics['min'] <= report.bonus_statistics['max']
 if __name__ == '__main__':
     pytest.main([__file__])

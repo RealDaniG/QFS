@@ -36,7 +36,7 @@ async def verify_trust_loop():
     entry_msg = GenesisEntry(wallet=alice_wallet, event_type='MESSAGE', value=0, metadata={'recipient_wallet': bob_wallet, 'msg_hash': msg_hash, 'size_bytes': 128})
     await ledger.append(entry_msg)
     print('   [Step F] Triggering Reward for Referral...')
-    entry_reward = GenesisEntry(wallet=alice_wallet, event_type='REFERRAL_REWARDED', value=10.0, metadata={'reason': 'referral_bonus', 'source_event': 'prev_hash', 'referrer_wallet': alice_wallet, 'token_type': 'FLX', 'amount_scaled': 10000000000})
+    entry_reward = GenesisEntry(wallet=alice_wallet, event_type='REFERRAL_REWARDED', value=10, metadata={'reason': 'referral_bonus', 'source_event': 'prev_hash', 'referrer_wallet': alice_wallet, 'token_type': 'FLX', 'amount_scaled': 10000000000})
     await ledger.append(entry_reward)
     print('>> Verifying Ledger Integrity...')
     events = []

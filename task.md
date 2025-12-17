@@ -162,8 +162,13 @@ QFS (Economic Authority) → value decisions, state mutations
     - [x] CI/CD Workflow (`.github/workflows/zero-sim-autofix.yml`)
     - [x] Baseline Analysis (v13 clean)
   - [ ] Phase 5: Continuous Reduction (Layers 1-4)
-    - [ ] Layer 1: Prevention Gate & Pre-commit
-    - [ ] Layer 2: Quick Wins (Batches 7-11)
+    - [x] Layer 1: Prevention Gate & Pre-commit (via ci.yml)
+    - [/] Layer 2: Quick Wins (Batches 7-11)
+      - [x] Batch 7: Iteration Fixes
+      - [x] Batch 8: Print Removal
+      - [x] Batch 9: Division Fixes
+      - [/] Batch 10: Float Literals
+      - [x] Batch 11: UUID Fixes
     - [ ] Layer 3: Deep Dives (Categories)
     - [ ] Layer 4: Fine-grain Polish
 - [ ] Deploy prevention gate (CI/CD enforcement)

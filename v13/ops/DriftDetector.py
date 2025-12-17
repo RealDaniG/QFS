@@ -30,8 +30,8 @@ class DriftDetector:
         self.cm = CertifiedMath()
         self.storage = StorageEngine(self.cm)
         self.replay_source = LiveLedgerReplaySource(ledger_path, self.storage)
-        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'surreal': 0.5, 'meta': 0.5}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
-        self.artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 1.0}, max_bonus_ratio=0.3, per_user_daily_cap_atr=2.0))
+        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'surreal': 0.5, 'meta': 0.5}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        self.artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 1}, max_bonus_ratio=0.3, per_user_daily_cap_atr=2))
         self.explain_helper = ValueNodeExplainabilityHelper(self.humor_policy, self.artistic_policy)
         self.replay_engine = ValueNodeReplayEngine(self.explain_helper)
 

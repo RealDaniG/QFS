@@ -67,7 +67,7 @@ class ArtisticSignalPolicy:
         """
         Initialize the artistic signal policy.
         """
-        self.policy = policy or ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 200000000, 'color_harmony': 150000000, 'symmetry': 100000000, 'complexity': 100000000, 'narrative': 150000000, 'originality': 200000000, 'resonance': 100000000}, max_bonus_ratio=300000000, per_user_daily_cap_atr=2.0)
+        self.policy = policy or ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 200000000, 'color_harmony': 150000000, 'symmetry': 100000000, 'complexity': 100000000, 'narrative': 150000000, 'originality': 200000000, 'resonance': 100000000}, max_bonus_ratio=300000000, per_user_daily_cap_atr=2)
         self.observation_stats = ArtisticObservationStats()
         for dimension in ['composition', 'color_harmony', 'symmetry', 'complexity', 'narrative', 'originality', 'resonance']:
             self.observation_stats.dimension_distributions[dimension] = []
@@ -90,7 +90,7 @@ class ArtisticSignalPolicy:
         Calculate artistic bonus factor from vector and AEGIS context.
         """
         if not self.policy.enabled:
-            return ArtisticBonusCalculation(0.0, {}, self.policy.dimension_weights, policy_version=self.policy.version)
+            return ArtisticBonusCalculation(0, {}, self.policy.dimension_weights, policy_version=self.policy.version)
         if hasattr(vector_input, 'to_dict'):
             dimensions = {'composition': vector_input.composition, 'color_harmony': vector_input.color_harmony, 'symmetry': vector_input.symmetry, 'complexity': vector_input.complexity, 'narrative': vector_input.narrative, 'originality': vector_input.originality, 'resonance': vector_input.resonance}
         elif isinstance(vector_input, dict):

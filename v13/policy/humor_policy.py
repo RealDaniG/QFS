@@ -38,10 +38,10 @@ class HumorPolicyConfig:
     def __init__(self):
         self.dimension_weights = {'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}
         self.max_humor_bonus = 0.25
-        self.daily_user_cap = 1.0
+        self.daily_user_cap = 1
         self.enabled = True
         self.recognition_only = False
-        self.anomaly_spike_threshold = 2.0
+        self.anomaly_spike_threshold = 2
         self.anomaly_duration_minutes = 60
 
 @dataclass
@@ -58,7 +58,7 @@ class HumorObservationStats:
     """Statistics for humor signal observability."""
     total_signals_processed: int = 0
     dimension_distributions: Dict[str, List[float]] = field(default_factory=dict)
-    average_confidence: float = 0.0
+    average_confidence: float = 0
     bonus_distribution: List[float] = field(default_factory=list)
     anomaly_count: int = 0
 
@@ -82,7 +82,7 @@ class HumorSignalPolicy:
             policy: Explicit HumorPolicy struct (preferred)
         """
         self.config = config or HumorPolicyConfig()
-        self.policy = policy or HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0)
+        self.policy = policy or HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1)
         self.observation_stats = HumorObservationStats()
         for dimension in ['chronos', 'lexicon', 'surreal', 'empathy', 'critique', 'slapstick', 'meta']:
             self.observation_stats.dimension_distributions[dimension] = []
@@ -99,12 +99,12 @@ class HumorSignalPolicy:
             HumorBonusCalculation: Calculated bonus and metadata
         """
         if not self.policy.enabled:
-            return HumorBonusCalculation(bonus_factor=0.0, dimensions_used=dimensions, weights_applied=self.policy.dimension_weights, policy_version=self.policy.version)
+            return HumorBonusCalculation(bonus_factor=0, dimensions_used=dimensions, weights_applied=self.policy.dimension_weights, policy_version=self.policy.version)
         if self.policy.mode == 'recognition_only':
-            return HumorBonusCalculation(bonus_factor=0.0, dimensions_used=dimensions, weights_applied=self.policy.dimension_weights, policy_version=self.policy.version)
-        weighted_sum = 0.0
+            return HumorBonusCalculation(bonus_factor=0, dimensions_used=dimensions, weights_applied=self.policy.dimension_weights, policy_version=self.policy.version)
+        weighted_sum = 0
         for dimension, score in dimensions.items():
-            weight = self.policy.dimension_weights.get(dimension, 0.0)
+            weight = self.policy.dimension_weights.get(dimension, 0)
             weighted_sum += score * weight
         confidence_factor = confidence
         base_bonus = weighted_sum * confidence_factor

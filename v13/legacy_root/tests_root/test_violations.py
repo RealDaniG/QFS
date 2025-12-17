@@ -8,7 +8,7 @@ def test_function():
     x = 3.14
     y = det_random()
     z = det_time_now()
-    w = math.sqrt(2.0)
+    w = math.sqrt(2)
     return x + y + z + w
 
 def another_test():

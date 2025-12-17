@@ -145,7 +145,7 @@ class TestBigNum128Phase3Audit:
         a = BigNum128.from_string('10.5')
         b = BigNum128.from_string('3.0')
         result = a % b
-        expected_value = 10.5 * BigNum128.SCALE % (3.0 * BigNum128.SCALE)
+        expected_value = 10.5 * BigNum128.SCALE % (3 * BigNum128.SCALE)
         assert result.value == expected_value
         with pytest.raises(ZeroDivisionError):
             _ = a % BigNum128(0)

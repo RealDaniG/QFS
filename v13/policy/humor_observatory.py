@@ -72,7 +72,7 @@ class HumorSignalObservatory:
             HumorObservabilityReport: Comprehensive report
         """
         if not self.signal_history:
-            return HumorObservabilityReport(total_signals_processed=0, average_confidence=0.0, dimension_averages={}, dimension_distributions={}, bonus_statistics={}, anomaly_count=0, top_performing_content=[], policy_settings_summary={}, policy_version=policy_version, policy_hash=policy_hash)
+            return HumorObservabilityReport(total_signals_processed=0, average_confidence=0, dimension_averages={}, dimension_distributions={}, bonus_statistics={}, anomaly_count=0, top_performing_content=[], policy_settings_summary={}, policy_version=policy_version, policy_hash=policy_hash)
         total_signals = len(self.signal_history)
         avg_confidence = sum((s.confidence for s in self.signal_history)) / total_signals
         dimension_sums = defaultdict(float)
@@ -129,12 +129,12 @@ class HumorSignalObservatory:
         for snapshot in sorted(self.signal_history):
             all_dimensions.update(snapshot.dimensions.keys())
         correlations = {}
-        dimension_lists = {dim: [snapshot.dimensions.get(dim, 0.0) for snapshot in self.signal_history] for dim in all_dimensions}
+        dimension_lists = {dim: [snapshot.dimensions.get(dim, 0) for snapshot in self.signal_history] for dim in all_dimensions}
         for dim1 in sorted(all_dimensions):
             correlations[dim1] = {}
             for dim2 in sorted(all_dimensions):
                 if dim1 == dim2:
-                    correlations[dim1][dim2] = 1.0
+                    correlations[dim1][dim2] = 1
                 else:
                     list1 = dimension_lists[dim1]
                     list2 = dimension_lists[dim2]
@@ -144,7 +144,7 @@ class HumorSignalObservatory:
                     denom1 = sum(((a - mean1) ** 2 for a in list1)) ** 0.5
                     denom2 = sum(((b - mean2) ** 2 for b in list2)) ** 0.5
                     if denom1 == 0 or denom2 == 0:
-                        correlation = 0.0
+                        correlation = 0
                     else:
                         correlation = numerator / (denom1 * denom2)
                     correlations[dim1][dim2] = correlation

@@ -104,7 +104,7 @@ class PsiSyncProtocol:
     def _compute_consensus_metrics(self, values: List[int], global_psisync: int, epsilon_sync: int) -> Dict[str, Any]:
         """Compute comprehensive consensus metrics with DIVISION SAFETY and quality metrics."""
         if not values:
-            return {'max_deviation': 0, 'average_deviation': 0, 'consensus_achieved': False, 'consensus_quality': {'shard_agreement_ratio': 0.0, 'consensus_stability': 0, 'byzantine_resistance_score': 0}}
+            return {'max_deviation': 0, 'average_deviation': 0, 'consensus_achieved': False, 'consensus_quality': {'shard_agreement_ratio': 0, 'consensus_stability': 0, 'byzantine_resistance_score': 0}}
         deviations = []
         total_deviation = 0
         for val in sorted(values):

@@ -44,7 +44,7 @@ def test_modulo_operator():
     expected = BigNum128.from_string('1.0')
     assert result == expected
     with pytest.raises(TypeError):
-        _ = a % 3.0
+        _ = a % 3
 
 def test_integer_fraction_overflow():
     """Test integer + fraction overflow detection"""

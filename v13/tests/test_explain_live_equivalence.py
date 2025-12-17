@@ -16,7 +16,7 @@ from v13.policy.artistic_policy import ArtisticSignalPolicy
 @pytest.fixture
 def mock_events():
     """Canonical event stream for verification."""
-    return [{'id': 'evt_1', 'type': 'ContentCreated', 'timestamp': 1000, 'content_id': 'cid_1', 'author_id': 'did:key:zUser1', 'text': 'Hello World'}, {'id': 'evt_2', 'type': 'Interaction', 'timestamp': 1050, 'user_id': 'did:key:zUser2', 'content_id': 'cid_1', 'interaction_type': 'like', 'weight': 1.0}, {'id': 'evt_3', 'type': 'RewardAllocated', 'timestamp': 1100, 'wallet_id': 'wallet_test', 'user_id': 'did:key:zUser1', 'reason': 'engagement', 'amount_atr': 50.0, 'bonuses': [{'source': 'humor', 'amount': 10.0}], 'caps': [], 'guards': []}]
+    return [{'id': 'evt_1', 'type': 'ContentCreated', 'timestamp': 1000, 'content_id': 'cid_1', 'author_id': 'did:key:zUser1', 'text': 'Hello World'}, {'id': 'evt_2', 'type': 'Interaction', 'timestamp': 1050, 'user_id': 'did:key:zUser2', 'content_id': 'cid_1', 'interaction_type': 'like', 'weight': 1}, {'id': 'evt_3', 'type': 'RewardAllocated', 'timestamp': 1100, 'wallet_id': 'wallet_test', 'user_id': 'did:key:zUser1', 'reason': 'engagement', 'amount_atr': 50, 'bonuses': [{'source': 'humor', 'amount': 10}], 'caps': [], 'guards': []}]
 
 @pytest.fixture
 def live_replay_source(mock_events, monkeypatch):

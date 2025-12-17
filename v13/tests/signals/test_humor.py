@@ -81,8 +81,8 @@ class TestHumorSignalAddon(unittest.TestCase):
         for dim in sorted(expected_dimensions):
             self.assertIn(dim, dimensions)
             self.assertIsInstance(dimensions[dim], float)
-            self.assertGreaterEqual(dimensions[dim], 0.0)
-            self.assertLessEqual(dimensions[dim], 1.0)
+            self.assertGreaterEqual(dimensions[dim], 0)
+            self.assertLessEqual(dimensions[dim], 1)
 
     def test_ledger_context(self):
         """Test that ledger context is preserved."""
@@ -122,10 +122,10 @@ class TestHumorSignalAddon(unittest.TestCase):
         low_result = self.addon.evaluate(content, low_context)
         high_result = self.addon.evaluate(content, high_context)
         self.assertGreater(high_result.confidence, low_result.confidence)
-        self.assertGreaterEqual(low_result.confidence, 0.0)
-        self.assertLessEqual(low_result.confidence, 1.0)
-        self.assertGreaterEqual(high_result.confidence, 0.0)
-        self.assertLessEqual(high_result.confidence, 1.0)
+        self.assertGreaterEqual(low_result.confidence, 0)
+        self.assertLessEqual(low_result.confidence, 1)
+        self.assertGreaterEqual(high_result.confidence, 0)
+        self.assertLessEqual(high_result.confidence, 1)
 
     def test_zero_engagement(self):
         """Test behavior with zero engagement metrics."""
@@ -140,13 +140,13 @@ class TestHumorSignalAddon(unittest.TestCase):
         result = self.addon.evaluate(content, context)
         self.assertIsInstance(result.score, float)
         self.assertIsInstance(result.confidence, float)
-        self.assertGreaterEqual(result.confidence, 0.0)
-        self.assertLessEqual(result.confidence, 1.0)
+        self.assertGreaterEqual(result.confidence, 0)
+        self.assertLessEqual(result.confidence, 1)
         dimensions = result.metadata["dimensions"]
         for dim_value in dimensions.values():
             self.assertIsInstance(dim_value, float)
-            self.assertGreaterEqual(dim_value, 0.0)
-            self.assertLessEqual(dim_value, 1.0)
+            self.assertGreaterEqual(dim_value, 0)
+            self.assertLessEqual(dim_value, 1)
 
 
 if __name__ == "__main__":

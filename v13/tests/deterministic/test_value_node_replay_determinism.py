@@ -15,7 +15,7 @@ from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 
 @pytest.fixture
 def mock_humor_policy():
-    return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+    return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
 
 @pytest.fixture
 def replay_engine(mock_humor_policy):

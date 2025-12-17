@@ -364,7 +364,7 @@ class DeterministicMigrationFixer(ast.NodeTransformer):
                     # Found balance assignment, check if it's initialized as 0.0
                     if (isinstance(stmt.value, ast.Constant) and 
                         isinstance(stmt.value.value, float) and 
-                        stmt.value.value == 0.0):
+                        stmt.value.value == 0):
                         # Replace with QAmount(0)
                         stmt.value = ast.Call(
                             func=ast.Name(id="QAmount", ctx=ast.Load()),

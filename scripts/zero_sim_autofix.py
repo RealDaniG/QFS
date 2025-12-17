@@ -7,6 +7,7 @@ preserving code structure, comments, and formatting.
 """
 
 import libcst as cst
+import libcst.matchers as m
 from pathlib import Path
 from typing import Tuple, List, Dict, Any
 import json
@@ -77,9 +78,6 @@ class DivisionFixTransformer(cst.CSTTransformer):
         return updated_node
 
 
-import libcst.matchers as m
-
-
 class UUIDFixTransformer(cst.CSTTransformer):
     """Replace uuid.uuid4() with deterministic ID"""
 
@@ -105,6 +103,35 @@ class UUIDFixTransformer(cst.CSTTransformer):
                     ),
                     args=[],
                 )
+        return updated_node
+
+
+class FloatLiteralFixTransformer(cst.CSTTransformer):
+    """Replace float literals with integers or Fractions"""
+
+    def __init__(self, strategy="category-a-only"):
+        self.strategy = strategy  # 'category-a-only'
+        self.fixed_count = 0
+
+    def leave_Float(
+        self, original_node: cst.Float, updated_node: cst.Float
+    ) -> cst.BaseExpression:
+        """Replace floating point literals"""
+        try:
+            val = float(original_node.value)
+
+            # Category A1: Whole Numbers (e.g., 3.0 -> 3)
+            # Check if it has no fractional part
+            if val.is_integer():
+                self.fixed_count += 1
+                return cst.Integer(value=str(int(val)))
+
+            # Note: Category A2 (Simple Decimals -> Fraction) implementation deferred
+            # to avoid import complexity. Future batch will handle this via AddImports.
+
+        except ValueError:
+            pass
+
         return updated_node
 
 
@@ -182,6 +209,15 @@ def apply_fixes(file_path: str, fixes: List[Tuple[str, dict]], dry_run=True) -> 
                         "count": transformer.fixed_count,
                     }
                 )
+            elif fix_name == "FloatLiteralFix":
+                transformer = FloatLiteralFixTransformer(**config)
+                module = module.visit(transformer)
+                result["fixes_applied"].append(
+                    {
+                        "type": "FloatLiteralFix",
+                        "count": transformer.fixed_count,
+                    }
+                )
             elif fix_name == "IterationFix":
                 transformer = NonDeterministicIterationFix()
                 module = module.visit(transformer)
@@ -230,6 +266,11 @@ def main():
         default=["__pycache__", ".git", ".venv", "node_modules"],
         help="Directories to exclude",
     )
+    parser.add_argument(
+        "--strategy",
+        default="category-a-only",
+        help="Fix strategy needed for FloatLiteralFix",
+    )
     args = parser.parse_args()
 
     # Parse fix configuration
@@ -237,6 +278,7 @@ def main():
         "PrintRemoval": {"mode": "remove"},
         "DivisionFix": {"mode": "floor_div"},
         "UUIDFix": {"strategy": "counter"},
+        "FloatLiteralFix": {"strategy": args.strategy},
         "IterationFix": {},
     }
 
@@ -250,6 +292,7 @@ def main():
     print(f"🔧 Auto-Fix Configuration:")
     print(f"  Directory: {args.dir}")
     print(f"  Fixes: {', '.join(f[0] for f in fixes)}")
+    print(f"  Strategy: {args.strategy}")
     print(f"  Dry Run: {args.dry_run}")
     print()
 

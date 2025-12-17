@@ -153,8 +153,8 @@ class TestDeterministicRandom(unittest.TestCase):
         # Should return deterministic values
         self.assertIsInstance(r1, float)
         self.assertIsInstance(r2, float)
-        self.assertGreaterEqual(r1, 0.0)
-        self.assertLess(r1, 1.0)
+        self.assertGreaterEqual(r1, 0)
+        self.assertLess(r1, 1)
         
         # Reset seed again to get the same sequence
         self.det_seed(12345)

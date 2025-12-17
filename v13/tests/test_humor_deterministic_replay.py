@@ -18,7 +18,7 @@ class TestHumorDeterministicReplay:
         self.fixed_content = "Why don't scientists trust atoms? Because they make up everything!"
         self.fixed_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 800000000000000000}
         self.humor_addon = HumorSignalAddon()
-        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         self.observatory = HumorSignalObservatory()
         self.explainability = HumorExplainabilityHelper(self.humor_policy)
 

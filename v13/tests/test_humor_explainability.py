@@ -24,7 +24,7 @@ class TestHumorExplainability:
         assert explanation.dimensions == dimensions
         assert explanation.confidence == 0.85
         assert explanation.ledger_context == ledger_context
-        assert explanation.final_bonus >= 0.0
+        assert explanation.final_bonus >= 0
         assert len(explanation.explanation_hash) > 0
 
     def test_explanation_deterministic_hash(self):
@@ -59,7 +59,7 @@ class TestHumorExplainability:
     def test_explanation_reason_codes_humor_disabled(self):
         """Test that explanation includes HUMOR_DISABLED reason code when humor is disabled"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         disabled_explain_helper = HumorExplainabilityHelper(disabled_policy)
         dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
         ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
@@ -69,7 +69,7 @@ class TestHumorExplainability:
     def test_explanation_reason_codes_recognition_only(self):
         """Test that explanation includes RECOGNITION_ONLY reason code when in recognition-only mode"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         recognition_explain_helper = HumorExplainabilityHelper(recognition_policy)
         dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
         ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
@@ -79,11 +79,11 @@ class TestHumorExplainability:
     def test_explanation_reason_codes_humor_cap_applied(self):
         """Test that explanation includes HUMOR_CAP_APPLIED reason code when cap is applied"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        capped_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 1.0, 'lexicon': 1.0, 'surreal': 1.0, 'empathy': 1.0, 'critique': 1.0, 'slapstick': 1.0, 'meta': 1.0}, max_bonus_ratio=0.01, per_user_daily_cap_atr=1.0))
+        capped_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 1, 'lexicon': 1, 'surreal': 1, 'empathy': 1, 'critique': 1, 'slapstick': 1, 'meta': 1}, max_bonus_ratio=0.01, per_user_daily_cap_atr=1))
         capped_explain_helper = HumorExplainabilityHelper(capped_policy)
-        dimensions = {'chronos': 1.0, 'lexicon': 1.0, 'surreal': 1.0, 'empathy': 1.0, 'critique': 1.0, 'slapstick': 1.0, 'meta': 1.0}
+        dimensions = {'chronos': 1, 'lexicon': 1, 'surreal': 1, 'empathy': 1, 'critique': 1, 'slapstick': 1, 'meta': 1}
         ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = capped_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=1.0, ledger_context=ledger_context, timestamp=1234567890)
+        explanation = capped_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=1, ledger_context=ledger_context, timestamp=1234567890)
         assert 'HUMOR_CAP_APPLIED' in explanation.reason_codes
 
     def test_batch_explain_rewards(self):
@@ -99,14 +99,14 @@ class TestHumorExplainability:
     def test_reason_code_combinations(self):
         """Test various reason-code combinations (e.g., disabled + recognition, cap + daily limit)"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         disabled_explain_helper = HumorExplainabilityHelper(disabled_policy)
         dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
         ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
         explanation = disabled_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
         assert 'HUMOR_DISABLED' in explanation.reason_codes
         assert len(explanation.reason_codes) == 1
-        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         recognition_explain_helper = HumorExplainabilityHelper(recognition_policy)
         explanation2 = recognition_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
         assert 'RECOGNITION_ONLY' in explanation2.reason_codes

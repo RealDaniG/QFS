@@ -258,6 +258,9 @@ def main():
         default=["__pycache__", ".git", ".venv", "node_modules"],
         help="Directories to exclude",
     )
+    parser.add_argument(
+        "--filter", help="Filter by violation type (e.g., FORBIDDEN_FLOAT_LITERAL)"
+    )
     args = parser.parse_args()
 
     all_violations = []
@@ -280,6 +283,10 @@ def main():
 
                 if violations:
                     print(f"  ⚠️  {path}: {len(violations)} violations")
+
+    if args.filter:
+        print(f"🔍 Filtering for violation type: {args.filter}")
+        all_violations = [v for v in all_violations if v["type"] == args.filter]
 
     report = generate_report(all_violations, args.output)
 

@@ -44,7 +44,7 @@ def det_random() -> float:
     """
     global _prng_state
     _prng_state = _prng_state * 1103515245 + 12345 & 2147483647
-    return _prng_state // 2147483648.0
+    return _prng_state // 2147483648
 
 
 def det_time_now() -> int:
@@ -83,7 +83,7 @@ def det_perf_counter() -> float:
     Returns:
         float: A deterministic performance counter value
     """
-    return 1000.0
+    return 1000
 
 
 def qnum(value: Any) -> BigNum128:

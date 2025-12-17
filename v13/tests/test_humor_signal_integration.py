@@ -37,9 +37,9 @@ class TestHumorSignalIntegration:
         for dim in sorted(expected_dimensions):
             assert dim in dimensions
             assert isinstance(dimensions[dim], float)
-            assert 0.0 <= dimensions[dim] <= 1.0
+            assert 0 <= dimensions[dim] <= 1
         assert isinstance(humor_data['confidence'], float)
-        assert 0.0 <= humor_data['confidence'] <= 1.0
+        assert 0 <= humor_data['confidence'] <= 1
 
     def test_process_humor_signals_empty_content(self):
         """Test processing of humor signals with empty content"""

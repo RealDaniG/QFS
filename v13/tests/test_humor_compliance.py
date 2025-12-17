@@ -15,7 +15,7 @@ class TestHumorCompliance:
     def setup_method(self):
         """Setup test environment"""
         self.humor_addon = HumorSignalAddon()
-        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
+        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
         self.observatory = HumorSignalObservatory()
         self.explainability = HumorExplainabilityHelper(self.humor_policy)
 
@@ -122,10 +122,10 @@ class TestHumorCompliance:
         for dim in sorted(required_dimensions):
             assert dim in dimensions
             assert isinstance(dimensions[dim], float)
-            assert 0.0 <= dimensions[dim] <= 1.0
+            assert 0 <= dimensions[dim] <= 1
         assert hasattr(result, 'confidence')
         assert isinstance(result.confidence, float)
-        assert 0.0 <= result.confidence <= 1.0
+        assert 0 <= result.confidence <= 1
 
     def test_no_network_io_in_humor_modules(self):
         """Test that humor modules don't perform network I/O"""

@@ -29,7 +29,7 @@ def test_dimensions_pure_evaluation(addon):
     assert 'technical_execution' in dims
     assert 'cultural_context' in dims
     for dim, score in dims.items():
-        assert 0.0 <= score <= 1.0, f'Dimension {dim} score {score} out of bounds'
+        assert 0 <= score <= 1, f'Dimension {dim} score {score} out of bounds'
 
 def test_aegis_metadata_integration(addon):
     """Verify AEGIS reputation is passed through metadata."""

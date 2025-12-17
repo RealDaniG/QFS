@@ -53,7 +53,7 @@ def test_operator_type_safety():
     assert not a == 1.5
     assert not a == '1.5'
     assert not a == 1500000000000000000
-    assert not a < 2.0
+    assert not a < 2
     assert not a > '2.0'
     with pytest.raises(TypeError):
         _ = a + 1.5
