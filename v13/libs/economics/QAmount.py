@@ -78,7 +78,7 @@ class QAmount:
         """Divide two QAmounts or a QAmount and a scalar."""
         if not isinstance(other, QAmount):
             other = QAmount(other)
-        result_value = self._value / other._value
+        result_value = self._value // other._value
         return QAmount(result_value)
 
     def __floordiv__(self, other: Union['QAmount', int, str]) -> 'QAmount':
@@ -147,7 +147,7 @@ class QAmount:
         """In-place division."""
         if not isinstance(other, QAmount):
             other = QAmount(other)
-        self._value = self._value / other._value
+        self._value = self._value // other._value
         return self
 
     def __neg__(self) -> 'QAmount':

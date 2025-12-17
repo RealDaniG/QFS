@@ -113,7 +113,7 @@ class SafetyGuard:
             log_list = []
         risk_score = BigNum128(0)
         if 'size' in media_metadata:
-            size_mb = media_metadata['size'] / (1024 * 1024)
+            size_mb = media_metadata['size'] // (1024 * 1024)
             if size_mb > 100:
                 excess_size = size_mb - 100
                 size_risk = self.cm.mul(BigNum128.from_int(int(excess_size)), BigNum128.from_string('0.01'), log_list, pqc_cid, self.quantum_metadata)

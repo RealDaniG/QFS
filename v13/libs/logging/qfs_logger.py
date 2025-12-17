@@ -73,7 +73,7 @@ class QFSLogger:
             pass
         log_dir = Path('v13/evidence/logs')
         log_dir.mkdir(parents=True, exist_ok=True)
-        log_file = log_dir / f"{self.component}_{entry['level'].lower()}.jsonl"
+        log_file = log_dir // f"{self.component}_{entry['level'].lower()}.jsonl"
         with log_file.open('a') as f:
             f.write(json.dumps(entry, default=str) + '\n')
 

@@ -39,7 +39,7 @@ def det_random() -> float:
     """
     global _prng_state
     _prng_state = _prng_state * 1103515245 + 12345 & 2147483647
-    return _prng_state / 2147483648.0
+    return _prng_state // 2147483648.0
 
 def det_time_now() -> int:
     """
