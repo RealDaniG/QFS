@@ -1,6 +1,7 @@
 """
 Test suite for HumorSignalAddon
 """
+from fractions import Fraction
 
 import unittest
 import pytest
@@ -40,7 +41,7 @@ class TestHumorSignalAddon(unittest.TestCase):
             "laughs": 50,
             "saves": 20,
             "replays": 30,
-            "author_reputation": 0.8,
+            "author_reputation": Fraction(4, 5),
         }
         result1 = self.addon.evaluate(content, context)
         result2 = self.addon.evaluate(content, context)
@@ -57,7 +58,7 @@ class TestHumorSignalAddon(unittest.TestCase):
             "laughs": 10,
             "saves": 5,
             "replays": 15,
-            "author_reputation": 0.6,
+            "author_reputation": Fraction(3, 5),
         }
         result = self.addon.evaluate(content, context)
         self.assertIn("signal", result.metadata)
@@ -92,7 +93,7 @@ class TestHumorSignalAddon(unittest.TestCase):
             "laughs": 45,
             "saves": 12,
             "replays": 67,
-            "author_reputation": 0.75,
+            "author_reputation": Fraction(3, 4),
         }
         result = self.addon.evaluate(content, context)
         ledger_context = result.metadata["ledger_context"]
@@ -100,7 +101,7 @@ class TestHumorSignalAddon(unittest.TestCase):
         self.assertEqual(ledger_context["laughs"], 45)
         self.assertEqual(ledger_context["saves"], 12)
         self.assertEqual(ledger_context["replays"], 67)
-        self.assertEqual(ledger_context["author_reputation"], 0.75)
+        self.assertEqual(ledger_context["author_reputation"], Fraction(3, 4))
 
     def test_confidence_calculation(self):
         """Test confidence calculation with different engagement levels."""
@@ -110,14 +111,14 @@ class TestHumorSignalAddon(unittest.TestCase):
             "laughs": 2,
             "saves": 1,
             "replays": 3,
-            "author_reputation": 0.5,
+            "author_reputation": Fraction(1, 2),
         }
         high_context = {
             "views": 1000,
             "laughs": 200,
             "saves": 100,
             "replays": 300,
-            "author_reputation": 0.9,
+            "author_reputation": Fraction(9, 10),
         }
         low_result = self.addon.evaluate(content, low_context)
         high_result = self.addon.evaluate(content, high_context)
@@ -135,7 +136,7 @@ class TestHumorSignalAddon(unittest.TestCase):
             "laughs": 0,
             "saves": 0,
             "replays": 0,
-            "author_reputation": 0.5,
+            "author_reputation": Fraction(1, 2),
         }
         result = self.addon.evaluate(content, context)
         self.assertIsInstance(result.score, float)

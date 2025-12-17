@@ -2,27 +2,94 @@
 Syntax-preserving auto-fix for zero-sim violations.
 Uses libcst to maintain formatting, comments, and structure.
 
-This module provides safe, automated fixes for determinism violations while
-preserving code structure, comments, and formatting.
+This module provides safe, automated fixes for zero-sim violations.
 """
 
 import libcst as cst
 import libcst.matchers as m
 from pathlib import Path
-from typing import Tuple, List, Dict, Any
+from typing import Tuple, List, Dict, Any, Set
 import json
 import logging
+from fractions import Fraction
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+class AddImportsTransformer(cst.CSTTransformer):
+    """Add missing imports to the module"""
+
+    def __init__(self, imports_to_add: Set[str]):
+        self.imports_to_add = imports_to_add  # e.g. {"from fractions import Fraction"}
+        self.added_count = 0
+        self.existing_imports = set()
+
+    def visit_ImportFrom(self, node: cst.ImportFrom):
+        # Track existing imports to avoid duplicates
+        if node.module:
+            module_name = cst.helpers.get_full_name_for_node(node.module)
+            for alias in node.names:
+                if isinstance(alias, cst.ImportAlias):
+                    name = alias.name.value
+                    self.existing_imports.add(f"from {module_name} import {name}")
+        return True
+
+    def leave_Module(
+        self, original_node: cst.Module, updated_node: cst.Module
+    ) -> cst.Module:
+        # Simple insertion at the top (after docstrings if possible, or just start)
+        # This is basic; a full codemod is better but this suffices for "quick wins"
+
+        new_body = list(updated_node.body)
+        insertion_index = 0
+
+        # Skip docstring and future imports
+        for i, stmt in enumerate(new_body):
+            if isinstance(stmt, cst.SimpleStatementLine):
+                if isinstance(stmt.body[0], cst.Expr) and isinstance(
+                    stmt.body[0].value, cst.SimpleString
+                ):
+                    insertion_index = i + 1
+                    continue
+                if (
+                    isinstance(stmt.body[0], cst.ImportFrom)
+                    and stmt.body[0].module
+                    and stmt.body[0].module.value == "__future__"
+                ):
+                    insertion_index = i + 1
+                    continue
+            break
+
+        added_stmts = []
+        for imp_str in self.imports_to_add:
+            if imp_str not in self.existing_imports:
+                if imp_str == "from fractions import Fraction":
+                    added_stmts.append(
+                        cst.SimpleStatementLine(
+                            body=[
+                                cst.ImportFrom(
+                                    module=cst.Name("fractions"),
+                                    names=[cst.ImportAlias(name=cst.Name("Fraction"))],
+                                )
+                            ]
+                        )
+                    )
+                    self.added_count += 1
+
+        if added_stmts:
+            for stmt in reversed(added_stmts):
+                new_body.insert(insertion_index, stmt)
+            return updated_node.with_changes(body=new_body)
+
+        return updated_node
+
+
 class PrintRemovalTransformer(cst.CSTTransformer):
     """Remove or convert print() calls to logging"""
 
-    def __init__(self, mode="remove", use_logging=False):
-        self.mode = mode  # 'remove' or 'convert_to_logging'
-        self.use_logging = use_logging
+    def __init__(self, mode="remove"):
+        self.mode = mode
         self.removed_count = 0
 
     def leave_SimpleStatementLine(
@@ -30,8 +97,6 @@ class PrintRemovalTransformer(cst.CSTTransformer):
         original_node: cst.SimpleStatementLine,
         updated_node: cst.SimpleStatementLine,
     ) -> cst.SimpleStatementLine:
-        """Remove print statements while preserving structure"""
-        # Check if this is a print() call
         if len(updated_node.body) == 1:
             stmt = updated_node.body[0]
             if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.Call):
@@ -39,11 +104,6 @@ class PrintRemovalTransformer(cst.CSTTransformer):
                 if isinstance(call.func, cst.Name) and call.func.value == "print":
                     self.removed_count += 1
                     if self.mode == "remove":
-                        # Return RemovalSentinel to remove the statement
-                        return cst.RemovalSentinel.REMOVE
-                    elif self.mode == "convert_to_logging":
-                        # Convert to logger.info(...) if logging imported
-                        # For now, just remove; full implementation would check imports
                         return cst.RemovalSentinel.REMOVE
         return updated_node
 
@@ -52,29 +112,16 @@ class DivisionFixTransformer(cst.CSTTransformer):
     """Replace / with // or wrap in CertifiedMath.idiv()"""
 
     def __init__(self, mode="floor_div"):
-        self.mode = mode  # 'floor_div' or 'certified_math'
+        self.mode = mode
         self.fixed_count = 0
 
     def leave_BinaryOperation(
         self, original_node: cst.BinaryOperation, updated_node: cst.BinaryOperation
     ) -> cst.BaseExpression:
-        """Replace division operators"""
         if isinstance(updated_node.operator, cst.Divide):
             self.fixed_count += 1
             if self.mode == "floor_div":
                 return updated_node.with_changes(operator=cst.FloorDivide())
-            elif self.mode == "certified_math":
-                # Wrap in CertifiedMath.idiv(left, right)
-                call = cst.Call(
-                    func=cst.Attribute(
-                        value=cst.Name("CertifiedMath"), attr=cst.Name("idiv")
-                    ),
-                    args=[
-                        cst.Arg(value=updated_node.left),
-                        cst.Arg(value=updated_node.right),
-                    ],
-                )
-                return call
         return updated_node
 
 
@@ -82,21 +129,18 @@ class UUIDFixTransformer(cst.CSTTransformer):
     """Replace uuid.uuid4() with deterministic ID"""
 
     def __init__(self, strategy="counter"):
-        self.strategy = strategy  # 'counter', 'hash', or 'derived'
+        self.strategy = strategy
         self.fixed_count = 0
 
     def leave_Call(
         self, original_node: cst.Call, updated_node: cst.Call
     ) -> cst.BaseExpression:
-        """Replace uuid.uuid4() calls"""
-        # Match uuid.uuid4()
         if m.matches(
             updated_node,
             m.Call(func=m.Attribute(value=m.Name("uuid"), attr=m.Name("uuid4"))),
         ):
             self.fixed_count += 1
             if self.strategy == "counter":
-                # Replace with DeterministicID.next()
                 return cst.Call(
                     func=cst.Attribute(
                         value=cst.Name("DeterministicID"), attr=cst.Name("next")
@@ -110,24 +154,49 @@ class FloatLiteralFixTransformer(cst.CSTTransformer):
     """Replace float literals with integers or Fractions"""
 
     def __init__(self, strategy="category-a-only"):
-        self.strategy = strategy  # 'category-a-only'
+        self.strategy = strategy
         self.fixed_count = 0
+        self.needs_fraction_import = False
 
     def leave_Float(
         self, original_node: cst.Float, updated_node: cst.Float
     ) -> cst.BaseExpression:
-        """Replace floating point literals"""
         try:
             val = float(original_node.value)
 
             # Category A1: Whole Numbers (e.g., 3.0 -> 3)
-            # Check if it has no fractional part
             if val.is_integer():
                 self.fixed_count += 1
                 return cst.Integer(value=str(int(val)))
 
-            # Note: Category A2 (Simple Decimals -> Fraction) implementation deferred
-            # to avoid import complexity. Future batch will handle this via AddImports.
+            # Category A2: Simple Decimals (e.g. 0.5 -> Fraction(1, 2))
+            if self.strategy in ("category-a-only", "aggressive"):
+                # Safety check: simplistic conversion for now
+                # Use standard library Fraction to find rational representation
+                # Limit denominator to reasonable size to avoid crazy fractions for floating point errors
+                f = Fraction(val).limit_denominator(100)
+
+                # Check if exact match (or very close) and simple denominator
+                if abs(float(f) - val) < 1e-9 and f.denominator in (
+                    2,
+                    4,
+                    5,
+                    8,
+                    10,
+                    20,
+                    25,
+                    50,
+                    100,
+                ):
+                    self.fixed_count += 1
+                    self.needs_fraction_import = True
+                    return cst.Call(
+                        func=cst.Name("Fraction"),
+                        args=[
+                            cst.Arg(cst.Integer(str(f.numerator))),
+                            cst.Arg(cst.Integer(str(f.denominator))),
+                        ],
+                    )
 
         except ValueError:
             pass
@@ -142,12 +211,7 @@ class NonDeterministicIterationFix(cst.CSTTransformer):
         self.fixed_count = 0
 
     def leave_For(self, original_node: cst.For, updated_node: cst.For) -> cst.For:
-        """Wrap iteration targets with sorted() if needed"""
-        # Simplified: wrap all iterations with sorted()
-        # Full implementation would check if iterating over dict/set
         if not isinstance(updated_node.iter, cst.Call):
-            # Not already a function call, potentially needs wrapping
-            # Check if it's a simple name or attribute (could be dict/set)
             if isinstance(updated_node.iter, (cst.Name, cst.Attribute)):
                 self.fixed_count += 1
                 wrapped = cst.Call(
@@ -158,17 +222,6 @@ class NonDeterministicIterationFix(cst.CSTTransformer):
 
 
 def apply_fixes(file_path: str, fixes: List[Tuple[str, dict]], dry_run=True) -> dict:
-    """
-    Apply a series of fixes to a file.
-
-    Args:
-        file_path: Path to Python file
-        fixes: List of (transformer_class_name, config_dict)
-        dry_run: If True, don't write changes
-
-    Returns:
-        dict with counts and status
-    """
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             source_code = f.read()
@@ -181,52 +234,43 @@ def apply_fixes(file_path: str, fixes: List[Tuple[str, dict]], dry_run=True) -> 
             "error": None,
         }
 
+        # Track imports explicitly needed
+        needed_imports = set()
+
         for fix_name, config in fixes:
             if fix_name == "PrintRemoval":
                 transformer = PrintRemovalTransformer(**config)
                 module = module.visit(transformer)
-                result["fixes_applied"].append(
-                    {
-                        "type": "PrintRemoval",
-                        "count": transformer.removed_count,
-                    }
-                )
+                count = transformer.removed_count
             elif fix_name == "DivisionFix":
                 transformer = DivisionFixTransformer(**config)
                 module = module.visit(transformer)
-                result["fixes_applied"].append(
-                    {
-                        "type": "DivisionFix",
-                        "count": transformer.fixed_count,
-                    }
-                )
+                count = transformer.fixed_count
             elif fix_name == "UUIDFix":
                 transformer = UUIDFixTransformer(**config)
                 module = module.visit(transformer)
-                result["fixes_applied"].append(
-                    {
-                        "type": "UUIDFix",
-                        "count": transformer.fixed_count,
-                    }
-                )
+                count = transformer.fixed_count
             elif fix_name == "FloatLiteralFix":
                 transformer = FloatLiteralFixTransformer(**config)
                 module = module.visit(transformer)
-                result["fixes_applied"].append(
-                    {
-                        "type": "FloatLiteralFix",
-                        "count": transformer.fixed_count,
-                    }
-                )
+                count = transformer.fixed_count
+                if transformer.needs_fraction_import:
+                    needed_imports.add("from fractions import Fraction")
             elif fix_name == "IterationFix":
                 transformer = NonDeterministicIterationFix()
                 module = module.visit(transformer)
-                result["fixes_applied"].append(
-                    {
-                        "type": "IterationFix",
-                        "count": transformer.fixed_count,
-                    }
-                )
+                count = transformer.fixed_count
+            else:
+                count = 0
+
+            if count > 0:
+                result["fixes_applied"].append({"type": fix_name, "count": count})
+
+        # Apply imports if needed
+        if needed_imports:
+            import_transformer = AddImportsTransformer(needed_imports)
+            module = module.visit(import_transformer)
+            # Don't strictly count imports as "fixes" but they are changes
 
         new_code = module.code
         result["new_length"] = len(new_code)
@@ -266,14 +310,9 @@ def main():
         default=["__pycache__", ".git", ".venv", "node_modules"],
         help="Directories to exclude",
     )
-    parser.add_argument(
-        "--strategy",
-        default="category-a-only",
-        help="Fix strategy needed for FloatLiteralFix",
-    )
+    parser.add_argument("--strategy", default="category-a-only", help="Fix strategy")
     args = parser.parse_args()
 
-    # Parse fix configuration
     fix_configs = {
         "PrintRemoval": {"mode": "remove"},
         "DivisionFix": {"mode": "floor_div"},
@@ -301,7 +340,6 @@ def main():
     files_changed = 0
 
     for py_file in Path(args.dir).rglob("*.py"):
-        # Skip excluded directories
         if any(excl in str(py_file) for excl in args.exclude):
             continue
 
@@ -324,7 +362,7 @@ def main():
     print("=" * 60)
     print(f"Files processed: {files_processed}")
     print(f"Files changed: {files_changed}")
-    print(f"Mode: {'DRY RUN (no changes written)' if args.dry_run else 'APPLIED'}")
+    print(f"Mode: {'DRY RUN' if args.dry_run else 'APPLIED'}")
     print(f"Report saved to: {args.output}")
     print("=" * 60)
 

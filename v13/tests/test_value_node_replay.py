@@ -7,6 +7,7 @@ Verifies:
 3. Interaction edge creation.
 4. Deterministic snapshotting.
 """
+from fractions import Fraction
 import pytest
 from v13.policy.value_node_replay import ValueNodeReplayEngine
 from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
@@ -46,4 +47,4 @@ def test_explain_ranking_from_replay(replay_engine, sample_events):
     assert explanation is not None
     assert explanation.content_id == 'c1'
     vol_signal = next((s for s in explanation.signals if s['name'] == 'Interaction Volume'))
-    assert vol_signal['score'] == 0.2
+    assert vol_signal['score'] == Fraction(1, 5)

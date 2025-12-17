@@ -13,6 +13,7 @@ Requirements Addressed:
 Evidence Generated:
 - evidence/phase1/bignum128_stress_summary.json
 """
+from fractions import Fraction
 from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
@@ -132,7 +133,7 @@ def test_subtraction_properties_fuzz():
 def test_multiplication_properties_fuzz():
     """Fuzz test: Multiplication properties (commutativity, distributivity)"""
     result = BigNum128FuzzResult('multiplication_properties_fuzz')
-    test_values = [BigNum128(0), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE // 2), BigNum128(BigNum128.SCALE * 2), BigNum128(BigNum128.SCALE * 1000), BigNum128(int(BigNum128.MAX_VALUE ** 0.5))]
+    test_values = [BigNum128(0), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE // 2), BigNum128(BigNum128.SCALE * 2), BigNum128(BigNum128.SCALE * 1000), BigNum128(int(BigNum128.MAX_VALUE ** Fraction(1, 2)))]
     for a in sorted(test_values):
         for b in sorted(test_values):
             try:

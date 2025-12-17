@@ -17,6 +17,7 @@ TEST STRATEGY:
 5. Compute hash of timestamp vector for additional verification
 6. Generate evidence artifact with results
 """
+from fractions import Fraction
 import hashlib
 import json
 from typing import List, Dict, Any
@@ -157,7 +158,7 @@ class TestDeterministicTimeReplay:
 
         class FloatPacket:
             sequence = 0
-            ttsTimestamp = 1000.5
+            ttsTimestamp = Fraction(2001, 2)
             previous_hash = '0' * 64
         packet = FloatPacket()
         with pytest.raises(TypeError, match='ttsTimestamp must be int'):

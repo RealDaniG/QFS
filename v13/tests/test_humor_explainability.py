@@ -1,6 +1,7 @@
 """
 Tests for the humor explainability module
 """
+from fractions import Fraction
 import pytest
 from v13.policy.humor_policy import HumorSignalPolicy
 from v13.policy.humor_explainability import HumorExplainabilityHelper
@@ -15,39 +16,39 @@ class TestHumorExplainability:
 
     def test_explain_humor_reward(self):
         """Test generating explanation for humor reward"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert explanation.content_id == 'content_123'
         assert explanation.user_id == 'user_456'
         assert explanation.reward_event_id == 'reward_789'
         assert explanation.dimensions == dimensions
-        assert explanation.confidence == 0.85
+        assert explanation.confidence == Fraction(17, 20)
         assert explanation.ledger_context == ledger_context
         assert explanation.final_bonus >= 0
         assert len(explanation.explanation_hash) > 0
 
     def test_explanation_deterministic_hash(self):
         """Test that explanations generate deterministic hashes"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation1 = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
-        explanation2 = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation1 = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
+        explanation2 = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert explanation1.explanation_hash == explanation2.explanation_hash
 
     def test_explanation_consistency_verification(self):
         """Test explanation consistency verification"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         is_consistent = self.explain_helper.verify_explanation_consistency(explanation)
         assert is_consistent
 
     def test_simplified_explanation(self):
         """Test generating simplified explanation"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         simplified = self.explain_helper.get_simplified_explanation(explanation)
         assert 'summary' in simplified
         assert 'reason' in simplified
@@ -59,36 +60,36 @@ class TestHumorExplainability:
     def test_explanation_reason_codes_humor_disabled(self):
         """Test that explanation includes HUMOR_DISABLED reason code when humor is disabled"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='rewarding', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
         disabled_explain_helper = HumorExplainabilityHelper(disabled_policy)
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = disabled_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = disabled_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert 'HUMOR_DISABLED' in explanation.reason_codes
 
     def test_explanation_reason_codes_recognition_only(self):
         """Test that explanation includes RECOGNITION_ONLY reason code when in recognition-only mode"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
         recognition_explain_helper = HumorExplainabilityHelper(recognition_policy)
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = recognition_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = recognition_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert 'RECOGNITION_ONLY' in explanation.reason_codes
 
     def test_explanation_reason_codes_humor_cap_applied(self):
         """Test that explanation includes HUMOR_CAP_APPLIED reason code when cap is applied"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        capped_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 1, 'lexicon': 1, 'surreal': 1, 'empathy': 1, 'critique': 1, 'slapstick': 1, 'meta': 1}, max_bonus_ratio=0.01, per_user_daily_cap_atr=1))
+        capped_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 1, 'lexicon': 1, 'surreal': 1, 'empathy': 1, 'critique': 1, 'slapstick': 1, 'meta': 1}, max_bonus_ratio=Fraction(1, 100), per_user_daily_cap_atr=1))
         capped_explain_helper = HumorExplainabilityHelper(capped_policy)
         dimensions = {'chronos': 1, 'lexicon': 1, 'surreal': 1, 'empathy': 1, 'critique': 1, 'slapstick': 1, 'meta': 1}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
         explanation = capped_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=1, ledger_context=ledger_context, timestamp=1234567890)
         assert 'HUMOR_CAP_APPLIED' in explanation.reason_codes
 
     def test_batch_explain_rewards(self):
         """Test batch explanation generation"""
-        batch_data = [{'content_id': f'content_{i}', 'user_id': f'user_{i}', 'reward_event_id': f'reward_{i}', 'dimensions': {'chronos': 0.5 + i * 0.1, 'lexicon': 0.5, 'surreal': 0.5, 'empathy': 0.5, 'critique': 0.5, 'slapstick': 0.5, 'meta': 0.5}, 'confidence': 0.85 - i * 0.05, 'ledger_context': {'views': 100 + i * 10, 'laughs': 50 + i * 5, 'saves': 20 + i * 2, 'replays': 30 + i * 3, 'author_reputation': 0.5 + i * 0.1}, 'timestamp': 1234567890 + i} for i in range(3)]
+        batch_data = [{'content_id': f'content_{i}', 'user_id': f'user_{i}', 'reward_event_id': f'reward_{i}', 'dimensions': {'chronos': Fraction(1, 2) + i * Fraction(1, 10), 'lexicon': Fraction(1, 2), 'surreal': Fraction(1, 2), 'empathy': Fraction(1, 2), 'critique': Fraction(1, 2), 'slapstick': Fraction(1, 2), 'meta': Fraction(1, 2)}, 'confidence': Fraction(17, 20) - i * Fraction(1, 20), 'ledger_context': {'views': 100 + i * 10, 'laughs': 50 + i * 5, 'saves': 20 + i * 2, 'replays': 30 + i * 3, 'author_reputation': Fraction(1, 2) + i * Fraction(1, 10)}, 'timestamp': 1234567890 + i} for i in range(3)]
         explanations = self.explain_helper.batch_explain_rewards(batch_data)
         assert len(explanations) == 3
         for i, explanation in enumerate(explanations):
@@ -99,26 +100,26 @@ class TestHumorExplainability:
     def test_reason_code_combinations(self):
         """Test various reason-code combinations (e.g., disabled + recognition, cap + daily limit)"""
         from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
-        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        disabled_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=False, mode='recognition_only', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
         disabled_explain_helper = HumorExplainabilityHelper(disabled_policy)
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = disabled_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = disabled_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert 'HUMOR_DISABLED' in explanation.reason_codes
         assert len(explanation.reason_codes) == 1
-        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        recognition_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='recognition_only', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
         recognition_explain_helper = HumorExplainabilityHelper(recognition_policy)
-        explanation2 = recognition_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        explanation2 = recognition_explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert 'RECOGNITION_ONLY' in explanation2.reason_codes
         assert len(explanation2.reason_codes) == 1
 
     def test_explanation_hash_stability(self):
         """Test stability of explanation hashes under replay"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
         hashes = []
         for i in range(5):
-            explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+            explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
             hashes.append(explanation.explanation_hash)
         assert len(set(hashes)) == 1
         assert len(hashes[0]) == 64
@@ -126,9 +127,9 @@ class TestHumorExplainability:
 
     def test_api_response_shapes(self):
         """Test API response shapes for humor-explanation endpoints"""
-        dimensions = {'chronos': 0.8, 'lexicon': 0.6, 'surreal': 0.4, 'empathy': 0.9, 'critique': 0.7, 'slapstick': 0.3, 'meta': 0.5}
-        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
-        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=0.85, ledger_context=ledger_context, timestamp=1234567890)
+        dimensions = {'chronos': Fraction(4, 5), 'lexicon': Fraction(3, 5), 'surreal': Fraction(2, 5), 'empathy': Fraction(9, 10), 'critique': Fraction(7, 10), 'slapstick': Fraction(3, 10), 'meta': Fraction(1, 2)}
+        ledger_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
+        explanation = self.explain_helper.explain_humor_reward(content_id='content_123', user_id='user_456', reward_event_id='reward_789', dimensions=dimensions, confidence=Fraction(17, 20), ledger_context=ledger_context, timestamp=1234567890)
         assert hasattr(explanation, 'content_id')
         assert hasattr(explanation, 'user_id')
         assert hasattr(explanation, 'reward_event_id')

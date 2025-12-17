@@ -17,6 +17,7 @@ TEST STRATEGY:
 5. Document CIR-302 trigger metadata
 6. Generate evidence artifact
 """
+from fractions import Fraction
 import hashlib
 import json
 from typing import List, Dict, Any, Optional
@@ -133,7 +134,7 @@ class TestDeterministicTimeMonotonicity:
     def test_require_timestamp_rejects_non_integer(self):
         """Test require_timestamp rejects non-integer values"""
         with pytest.raises(ValueError, match='Invalid deterministic timestamp'):
-            DeterministicTime.require_timestamp(100.5)
+            DeterministicTime.require_timestamp(Fraction(201, 2))
         with pytest.raises(ValueError, match='Invalid deterministic timestamp'):
             DeterministicTime.require_timestamp('1000')
         with pytest.raises(ValueError, match='Invalid deterministic timestamp'):

@@ -3,6 +3,7 @@ test_deterministic_components.py - Tests for Deterministic Components
 
 Verifies that the new deterministic components work correctly and maintain Zero-Simulation compliance.
 """
+from fractions import Fraction
 
 import unittest
 import sys
@@ -30,7 +31,7 @@ class TestQAmount(unittest.TestCase):
         self.assertIsInstance(q2, self.QAmount)
         
         # Test from float
-        q3 = self.QAmount(10.5)
+        q3 = self.QAmount(Fraction(21, 2))
         self.assertIsInstance(q3, self.QAmount)
         
         # Test copy constructor

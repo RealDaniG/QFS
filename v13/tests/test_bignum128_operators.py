@@ -2,6 +2,7 @@
 Test cases for BigNum128 operator overloads.
 These tests verify that all comparison and arithmetic operators work correctly.
 """
+from fractions import Fraction
 import pytest
 from v13.libs.BigNum128 import BigNum128
 
@@ -50,13 +51,13 @@ def test_arithmetic_operators():
 def test_operator_type_safety():
     """Test that operators properly handle type mismatches"""
     a = BigNum128.from_string('1.5')
-    assert not a == 1.5
+    assert not a == Fraction(3, 2)
     assert not a == '1.5'
     assert not a == 1500000000000000000
     assert not a < 2
     assert not a > '2.0'
     with pytest.raises(TypeError):
-        _ = a + 1.5
+        _ = a + Fraction(3, 2)
     with pytest.raises(TypeError):
         _ = a - '1.5'
     with pytest.raises(TypeError):

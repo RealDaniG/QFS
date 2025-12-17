@@ -4,6 +4,7 @@ CLI tool for humor signal observability
 This tool provides a command-line interface for operators to inspect
 humor signal statistics, distributions, and anomalies.
 """
+from fractions import Fraction
 from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import argparse
@@ -22,7 +23,7 @@ class HumorObservatoryCLI:
 
     def load_sample_data(self):
         """Load sample data for demonstration."""
-        sample_snapshots = [HumorSignalSnapshot(timestamp=1000 + i * 100, content_id=f'sample_content_{i}', dimensions={'chronos': 0.5 + i % 3 * 0.2, 'lexicon': 0.4 + i % 4 * 0.15, 'surreal': 0.3 + i % 5 * 0.1, 'empathy': 0.6 + i % 2 * 0.2, 'critique': 0.5 + i % 3 * 0.15, 'slapstick': 0.2 + i % 4 * 0.2, 'meta': 0.4 + i % 6 * 0.1}, confidence=0.7 + i % 4 * 0.05, bonus_factor=0.1 + i % 5 * 0.03, policy_version='v1.0.0') for i in range(20)]
+        sample_snapshots = [HumorSignalSnapshot(timestamp=1000 + i * 100, content_id=f'sample_content_{i}', dimensions={'chronos': Fraction(1, 2) + i % 3 * Fraction(1, 5), 'lexicon': Fraction(2, 5) + i % 4 * Fraction(3, 20), 'surreal': Fraction(3, 10) + i % 5 * Fraction(1, 10), 'empathy': Fraction(3, 5) + i % 2 * Fraction(1, 5), 'critique': Fraction(1, 2) + i % 3 * Fraction(3, 20), 'slapstick': Fraction(1, 5) + i % 4 * Fraction(1, 5), 'meta': Fraction(2, 5) + i % 6 * Fraction(1, 10)}, confidence=Fraction(7, 10) + i % 4 * Fraction(1, 20), bonus_factor=Fraction(1, 10) + i % 5 * Fraction(3, 100), policy_version='v1.0.0') for i in range(20)]
         for snapshot in sorted(sample_snapshots):
             self.observatory.record_signal(snapshot)
         print(f'Loaded {len(sample_snapshots)} sample humor signal snapshots')

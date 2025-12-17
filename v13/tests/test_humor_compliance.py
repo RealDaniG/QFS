@@ -2,6 +2,7 @@
 Compliance tests for the humor signal addon to ensure it doesn't directly
 access TreasuryEngine or token balances.
 """
+from fractions import Fraction
 import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from v13.ATLAS.src.signals.humor import HumorSignalAddon
@@ -15,7 +16,7 @@ class TestHumorCompliance:
     def setup_method(self):
         """Setup test environment"""
         self.humor_addon = HumorSignalAddon()
-        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
         self.observatory = HumorSignalObservatory()
         self.explainability = HumorExplainabilityHelper(self.humor_policy)
 
@@ -48,7 +49,7 @@ class TestHumorCompliance:
     def test_humor_signal_addon_no_direct_economic_effects(self):
         """Test that HumorSignalAddon doesn't directly affect token balances"""
         content = "Why don't scientists trust atoms? Because they make up everything!"
-        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': 0.8}
+        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': Fraction(4, 5)}
         result = self.humor_addon.evaluate(content, context)
         assert result is not None
         assert hasattr(result, 'confidence')
@@ -113,7 +114,7 @@ class TestHumorCompliance:
     def test_humor_signal_pure_functionality(self):
         """Test that humor signal provides pure 7-dimensional vector output"""
         content = 'This is a funny joke about quantum physics!'
-        context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
+        context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
         result = self.humor_addon.evaluate(content, context)
         dimensions = result.metadata.get('dimensions', {})
         assert isinstance(dimensions, dict)

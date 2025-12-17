@@ -10,6 +10,7 @@ Verifies deterministic interaction of:
 This test proves that for a given sequence of inputs, the entire system
 produces bit-exact outputs.
 """
+from fractions import Fraction
 import pytest
 import json
 import hashlib
@@ -33,13 +34,13 @@ def run_full_stack_simulation(seed_offset: int=0) -> Dict[str, Any]:
     humor = HumorSignalPolicy()
     artistic = ArtisticSignalPolicy()
     from v13.policy.artistic_constants import SCALE
-    dims_humor = {'chronos': 0.5, 'lexicon': 0.6, 'surreal': 0.7, 'empathy': 0.4, 'critique': 0.5, 'slapstick': 0.3, 'meta': 0.8}
-    s8 = int(0.8 * SCALE)
-    s9 = int(0.9 * SCALE)
-    s6 = int(0.6 * SCALE)
+    dims_humor = {'chronos': Fraction(1, 2), 'lexicon': Fraction(3, 5), 'surreal': Fraction(7, 10), 'empathy': Fraction(2, 5), 'critique': Fraction(1, 2), 'slapstick': Fraction(3, 10), 'meta': Fraction(4, 5)}
+    s8 = int(Fraction(4, 5) * SCALE)
+    s9 = int(Fraction(9, 10) * SCALE)
+    s6 = int(Fraction(3, 5) * SCALE)
     dims_artistic = {'composition': s8, 'color_harmony': s9, 'symmetry': s6, 'complexity': s8, 'narrative': s6, 'originality': s9, 'resonance': s8}
-    h_res = humor.calculate_humor_bonus(dims_humor, confidence=0.9)
-    a_res = artistic.calculate_artistic_bonus(dims_artistic, confidence=int(0.95 * SCALE))
+    h_res = humor.calculate_humor_bonus(dims_humor, confidence=Fraction(9, 10))
+    a_res = artistic.calculate_artistic_bonus(dims_artistic, confidence=int(Fraction(19, 20) * SCALE))
     signals_hash = get_deterministic_hash({'humor': h_res.bonus_factor, 'artistic': a_res.bonus_factor})
     helper = ValueNodeExplainabilityHelper(humor_policy=humor, artistic_policy=artistic)
     replay = ValueNodeReplayEngine(helper)

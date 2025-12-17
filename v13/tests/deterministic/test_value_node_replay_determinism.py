@@ -6,6 +6,7 @@ Ensures that replaying the same sequence of events always results in:
 1. The exact same state graph.
 2. The exact same explanation hashes.
 """
+from fractions import Fraction
 import pytest
 import copy
 from typing import List, Dict, Any
@@ -15,7 +16,7 @@ from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 
 @pytest.fixture
 def mock_humor_policy():
-    return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+    return HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
 
 @pytest.fixture
 def replay_engine(mock_humor_policy):

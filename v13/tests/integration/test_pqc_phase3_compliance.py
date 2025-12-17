@@ -2,6 +2,7 @@
 test_pqc_phase3_compliance.py - Phase-3 Compliance Test Suite
 Comprehensive tests for PQC modules deterministic behavior
 """
+from fractions import Fraction
 import pytest
 from copy import deepcopy
 from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer
@@ -47,7 +48,7 @@ class TestCanonicalSerializer:
     def test_float_rejection(self):
         """Phase-3: Floats must be rejected"""
         with pytest.raises(TypeError, match='Float type is nondeterministic'):
-            CanonicalSerializer.canonicalize_for_sign(3.14)
+            CanonicalSerializer.canonicalize_for_sign(Fraction(157, 50))
 
     def test_unsupported_type_rejection(self):
         """Phase-3: Unsupported types must be rejected"""
@@ -189,6 +190,6 @@ class TestZeroSimulationEnforcement:
         """5.3 Integer-Only Timestamp Test"""
         log = []
         with pytest.raises(TypeError, match='must be an int'):
-            PQC_Logger.log_pqc_operation('op', {}, log, deterministic_timestamp=42.5)
+            PQC_Logger.log_pqc_operation('op', {}, log, deterministic_timestamp=Fraction(85, 2))
 if __name__ == '__main__':
     pytest.main([__file__, '-v', '--tb=short'])

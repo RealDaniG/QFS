@@ -4,6 +4,7 @@ HumorPolicy.py - Policy configuration and integration for humor signals
 This module provides policy configurations and integration for the humor signal addon,
 including reward calculation, observability, and explainability features.
 """
+from fractions import Fraction
 import json
 import hashlib
 from typing import Dict, Any, Optional, List
@@ -36,8 +37,8 @@ class HumorPolicyConfig:
     """Configuration for humor policy rules and reward calculations."""
 
     def __init__(self):
-        self.dimension_weights = {'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}
-        self.max_humor_bonus = 0.25
+        self.dimension_weights = {'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}
+        self.max_humor_bonus = Fraction(1, 4)
         self.daily_user_cap = 1
         self.enabled = True
         self.recognition_only = False
@@ -82,7 +83,7 @@ class HumorSignalPolicy:
             policy: Explicit HumorPolicy struct (preferred)
         """
         self.config = config or HumorPolicyConfig()
-        self.policy = policy or HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1)
+        self.policy = policy or HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': Fraction(3, 20), 'lexicon': Fraction(1, 10), 'surreal': Fraction(1, 10), 'empathy': Fraction(1, 5), 'critique': Fraction(3, 20), 'slapstick': Fraction(1, 10), 'meta': Fraction(1, 5)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1)
         self.observation_stats = HumorObservationStats()
         for dimension in ['chronos', 'lexicon', 'surreal', 'empathy', 'critique', 'slapstick', 'meta']:
             self.observation_stats.dimension_distributions[dimension] = []

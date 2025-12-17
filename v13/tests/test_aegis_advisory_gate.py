@@ -1,6 +1,7 @@
 """
 Tests for AEGIS advisory gate functionality
 """
+from fractions import Fraction
 from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import pytest
 from v13.guards.AEGISGuard import AEGISGuard
@@ -35,7 +36,7 @@ class TestAEGISAdvisoryGate:
         assert observation.block_suggested is True
         assert observation.severity == 'critical'
         assert observation.safety_guard_result['passed'] is False
-        assert qnum(observation.safety_guard_result['risk_score']) > 0.7
+        assert qnum(observation.safety_guard_result['risk_score']) > Fraction(7, 10)
 
     def test_spam_content_suggests_blocking(self):
         """Test that spam content suggests blocking with appropriate severity"""
@@ -45,7 +46,7 @@ class TestAEGISAdvisoryGate:
         assert observation.severity == 'warning'
         assert observation.safety_guard_result['passed'] is False
         risk_score = qnum(observation.safety_guard_result['risk_score'])
-        assert 0.5 < risk_score <= 0.7
+        assert Fraction(1, 2) < risk_score <= Fraction(7, 10)
 
     def test_economic_violation_suggests_blocking(self):
         """Test that economic violations suggest blocking with appropriate severity"""

@@ -1,6 +1,7 @@
 """
 Tests for the humor signal addon integration with ATLAS API Gateway
 """
+from fractions import Fraction
 import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from v13.atlas_api.gateway import AtlasAPIGateway
@@ -22,7 +23,7 @@ class TestHumorSignalIntegration:
     def test_process_humor_signals_success(self):
         """Test successful processing of humor signals"""
         content = "Why don't scientists trust atoms? Because they make up everything!"
-        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': 0.8}
+        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': Fraction(4, 5)}
         humor_data = self.gateway._process_humor_signals(content, context)
         assert humor_data is not None
         assert 'dimensions' in humor_data
@@ -44,7 +45,7 @@ class TestHumorSignalIntegration:
     def test_process_humor_signals_empty_content(self):
         """Test processing of humor signals with empty content"""
         content = ''
-        context = {'views': 0, 'laughs': 0, 'saves': 0, 'replays': 0, 'author_reputation': 0.5}
+        context = {'views': 0, 'laughs': 0, 'saves': 0, 'replays': 0, 'author_reputation': Fraction(1, 2)}
         humor_data = self.gateway._process_humor_signals(content, context)
         assert humor_data is not None
         assert 'dimensions' in humor_data
@@ -53,7 +54,7 @@ class TestHumorSignalIntegration:
     def test_process_humor_signals_exception_handling(self):
         """Test that exceptions in humor signal processing are handled gracefully"""
         content = None
-        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': 0.8}
+        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': Fraction(4, 5)}
         humor_data = self.gateway._process_humor_signals(content, context)
         assert humor_data is None
 if __name__ == '__main__':

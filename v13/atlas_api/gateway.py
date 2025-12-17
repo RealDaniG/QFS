@@ -1,6 +1,7 @@
 """
 ATLAS API Gateway - Entry point for all ATLAS API endpoints
 """
+from fractions import Fraction
 import hashlib
 import json
 from typing import Dict, Any, List, Optional
@@ -661,11 +662,11 @@ class AtlasAPIGateway:
         s_psi_sync = token_bundle.psi_sync_state.get('psi_sync_metric', '0.08')
         f_atr = token_bundle.atr_state.get('atr_metric', '0.85')
         if interaction_type == 'like':
-            c_holo = str(qnum(c_holo) + 0.01)
+            c_holo = str(qnum(c_holo) + Fraction(1, 100))
         elif interaction_type == 'comment':
-            c_holo = str(qnum(c_holo) + 0.02)
+            c_holo = str(qnum(c_holo) + Fraction(1, 50))
         elif interaction_type == 'follow':
-            f_atr = str(qnum(f_atr) + 0.01)
+            f_atr = str(qnum(f_atr) + Fraction(1, 100))
         return {'c_holo': c_holo, 's_flx': s_flx, 's_psi_sync': s_psi_sync, 'f_atr': f_atr}
 
     def _estimate_reward_for_interaction(self, interaction_type: str, token_bundle: TokenStateBundle) -> BigNum128:

@@ -4,6 +4,7 @@ test_value_node_replay_explanation.py
 Unit tests for the explanation generation logic within the replay context.
 Focuses on correctness of data extraction and formatting.
 """
+from fractions import Fraction
 import pytest
 from typing import Dict, Any
 from v13.policy.value_node_replay import ValueNodeReplayEngine
@@ -12,7 +13,7 @@ from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 
 @pytest.fixture
 def engine():
-    policy = HumorSignalPolicy(HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+    policy = HumorSignalPolicy(HumorPolicy(enabled=True, mode='rewarding', dimension_weights={}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
     helper = ValueNodeExplainabilityHelper(policy)
     return ValueNodeReplayEngine(helper)
 

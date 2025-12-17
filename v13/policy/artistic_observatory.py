@@ -4,6 +4,7 @@ ArtisticObservatory.py - Observability layer for AES signals
 This module provides an observability layer that aggregates and analyzes AES signal outputs
 over time, providing statistics and insights for operators.
 """
+from fractions import Fraction
 from typing import Dict, Any, List
 from dataclasses import dataclass
 from collections import defaultdict
@@ -38,7 +39,7 @@ class ArtisticSignalObservatory:
 
     def __init__(self):
         self.signal_history: List[ArtisticSignalSnapshot] = []
-        self.bucket_size = 0.1
+        self.bucket_size = Fraction(1, 10)
         self.MAX_HISTORY = 1000
 
     def record_signal(self, snapshot: ArtisticSignalSnapshot):

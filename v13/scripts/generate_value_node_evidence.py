@@ -4,6 +4,7 @@ generate_value_node_evidence.py
 Generates the evidence bundle for the Value-Node / User-as-Token slice.
 Executes the deterministic replay engine and captures the state and explanation hashes.
 """
+from fractions import Fraction
 import json
 import hashlib
 from typing import Dict, Any
@@ -12,7 +13,7 @@ from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
 from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 
 def generate_evidence():
-    policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': 0.5}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
+    policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'chronos': Fraction(1, 2)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
     helper = ValueNodeExplainabilityHelper(policy)
     engine = ValueNodeReplayEngine(helper)
     events = [{'type': 'ContentCreated', 'content_id': 'c1', 'user_id': 'u1', 'timestamp': 1000}, {'type': 'InteractionCreated', 'user_id': 'u2', 'content_id': 'c1', 'interaction_type': 'like', 'timestamp': 1010}, {'type': 'RewardAllocated', 'event_id': 'r1', 'user_id': 'u1', 'amount_atr': 10, 'timestamp': 1020, 'log_details': {'base_reward': {'ATR': '5.0 ATR'}, 'bonuses': [{'label': 'Creator Bonus', 'value': '+5.0 ATR', 'reason': 'Good content'}], 'caps': [], 'guards': [{'name': 'EconGuard', 'result': 'pass'}]}}]

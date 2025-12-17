@@ -12,6 +12,7 @@ This test suite ensures 100% audit readiness with full coverage of:
 9. Copy / equality / comparison operators
 10. Type safety in comparisons
 """
+from fractions import Fraction
 import pytest
 import struct
 from v13.libs.BigNum128 import BigNum128, BigNum128Error
@@ -107,11 +108,11 @@ class TestBigNum128Phase3Audit:
 
     def test_arithmetic_overflow_mul(self):
         """Test multiplication overflow detection"""
-        sqrt_max_scaled = int((BigNum128.MAX_VALUE * BigNum128.SCALE) ** 0.5)
+        sqrt_max_scaled = int((BigNum128.MAX_VALUE * BigNum128.SCALE) ** Fraction(1, 2))
         large_val = BigNum128(sqrt_max_scaled)
-        large_val = BigNum128(int(BigNum128.MAX_VALUE * 0.8))
-        another_large_val = BigNum128(int(BigNum128.MAX_VALUE * 0.8))
-        sqrt_approach_val = int((BigNum128.MAX_VALUE * BigNum128.SCALE) ** 0.5) * 2
+        large_val = BigNum128(int(BigNum128.MAX_VALUE * Fraction(4, 5)))
+        another_large_val = BigNum128(int(BigNum128.MAX_VALUE * Fraction(4, 5)))
+        sqrt_approach_val = int((BigNum128.MAX_VALUE * BigNum128.SCALE) ** Fraction(1, 2)) * 2
         if sqrt_approach_val <= BigNum128.MAX_VALUE:
             val1 = BigNum128(sqrt_approach_val)
             val2 = BigNum128(sqrt_approach_val)
@@ -145,7 +146,7 @@ class TestBigNum128Phase3Audit:
         a = BigNum128.from_string('10.5')
         b = BigNum128.from_string('3.0')
         result = a % b
-        expected_value = 10.5 * BigNum128.SCALE % (3 * BigNum128.SCALE)
+        expected_value = Fraction(21, 2) * BigNum128.SCALE % (3 * BigNum128.SCALE)
         assert result.value == expected_value
         with pytest.raises(ZeroDivisionError):
             _ = a % BigNum128(0)

@@ -1,3 +1,4 @@
+from fractions import Fraction
 import re
 import json
 import os
@@ -44,22 +45,22 @@ def generate_fix_batches(all_violations):
     batches = []
     print_violations = [v for v in all_violations if v['type'] == 'FORBIDDEN_CALL' and 'print' in v.get('code', '')]
     if print_violations:
-        batches.append({'batch_id': 1, 'name': 'print_statement_removal', 'category': 'FORBIDDEN_CALL', 'violations': len(print_violations), 'complexity': 'trivial', 'auto_fix_confidence': 0.99, 'estimated_time_minutes': max(5, int(len(print_violations) * 0.1)), 'risk': 'minimal', 'files': list(set((v['file'] for v in print_violations))), 'transformation': 'Remove print() or replace with logger.info()', 'validation': 'Verify no print() in non-test core logic'})
+        batches.append({'batch_id': 1, 'name': 'print_statement_removal', 'category': 'FORBIDDEN_CALL', 'violations': len(print_violations), 'complexity': 'trivial', 'auto_fix_confidence': Fraction(99, 100), 'estimated_time_minutes': max(5, int(len(print_violations) * Fraction(1, 10))), 'risk': 'minimal', 'files': list(set((v['file'] for v in print_violations))), 'transformation': 'Remove print() or replace with logger.info()', 'validation': 'Verify no print() in non-test core logic'})
     dict_keys_violations = [v for v in all_violations if v['type'] == 'NONDETERMINISTIC_ITERATION' and '.keys()' in v.get('code', '')]
     if dict_keys_violations:
-        batches.append({'batch_id': 2, 'name': 'sorted_iterations_simple', 'category': 'NONDETERMINISTIC_ITERATION', 'violations': len(dict_keys_violations), 'complexity': 'low', 'auto_fix_confidence': 0.9, 'estimated_time_minutes': max(10, int(len(dict_keys_violations) * 0.2)), 'risk': 'low', 'pattern': 'for x in dict.keys():', 'transformation': 'for x in sorted(dict.keys()):', 'validation': "Ensure iteration order doesn't break logic"})
+        batches.append({'batch_id': 2, 'name': 'sorted_iterations_simple', 'category': 'NONDETERMINISTIC_ITERATION', 'violations': len(dict_keys_violations), 'complexity': 'low', 'auto_fix_confidence': Fraction(9, 10), 'estimated_time_minutes': max(10, int(len(dict_keys_violations) * Fraction(1, 5))), 'risk': 'low', 'pattern': 'for x in dict.keys():', 'transformation': 'for x in sorted(dict.keys()):', 'validation': "Ensure iteration order doesn't break logic"})
     set_violations = [v for v in all_violations if v['type'] == 'FORBIDDEN_CONTAINER']
     if set_violations:
-        batches.append({'batch_id': 3, 'name': 'set_to_list_conversion', 'category': 'FORBIDDEN_CONTAINER', 'violations': len(set_violations), 'complexity': 'low', 'auto_fix_confidence': 0.85, 'estimated_time_minutes': max(10, int(len(set_violations) * 0.1)), 'risk': 'low', 'transformation': 'Replace {"A", "B"} with ["A", "B"]', 'validation': 'Verify membership tests still work'})
+        batches.append({'batch_id': 3, 'name': 'set_to_list_conversion', 'category': 'FORBIDDEN_CONTAINER', 'violations': len(set_violations), 'complexity': 'low', 'auto_fix_confidence': Fraction(17, 20), 'estimated_time_minutes': max(10, int(len(set_violations) * Fraction(1, 10))), 'risk': 'low', 'transformation': 'Replace {"A", "B"} with ["A", "B"]', 'validation': 'Verify membership tests still work'})
     other_iter_violations = [v for v in all_violations if v['type'] == 'NONDETERMINISTIC_ITERATION' and v not in dict_keys_violations]
     if other_iter_violations:
-        batches.append({'batch_id': 4, 'name': 'sorted_iterations_complex', 'category': 'NONDETERMINISTIC_ITERATION', 'violations': len(other_iter_violations), 'complexity': 'medium', 'auto_fix_confidence': 0.75, 'estimated_time_minutes': max(20, int(len(other_iter_violations) * 0.5)), 'risk': 'medium', 'pattern': 'for obj in collection:', 'transformation': 'for obj in sorted(collection, key=lambda x: (x.timestamp, x.id)):', 'validation': 'Verify key function matches business logic', 'requires_testing': True})
+        batches.append({'batch_id': 4, 'name': 'sorted_iterations_complex', 'category': 'NONDETERMINISTIC_ITERATION', 'violations': len(other_iter_violations), 'complexity': 'medium', 'auto_fix_confidence': Fraction(3, 4), 'estimated_time_minutes': max(20, int(len(other_iter_violations) * Fraction(1, 2))), 'risk': 'medium', 'pattern': 'for obj in collection:', 'transformation': 'for obj in sorted(collection, key=lambda x: (x.timestamp, x.id)):', 'validation': 'Verify key function matches business logic', 'requires_testing': True})
     global_violations = [v for v in all_violations if v['type'] == 'GLOBAL_MUTATION']
     if global_violations:
-        batches.append({'batch_id': 5, 'name': 'global_mutation_refactor', 'category': 'GLOBAL_MUTATION', 'violations': len(global_violations), 'complexity': 'high', 'auto_fix_confidence': 0.4, 'estimated_time_minutes': max(60, int(len(global_violations) * 2)), 'risk': 'high', 'transformation': 'Move module state to function/class scope', 'validation': 'Run full test suite after each refactor', 'requires_manual_review': True})
+        batches.append({'batch_id': 5, 'name': 'global_mutation_refactor', 'category': 'GLOBAL_MUTATION', 'violations': len(global_violations), 'complexity': 'high', 'auto_fix_confidence': Fraction(2, 5), 'estimated_time_minutes': max(60, int(len(global_violations) * 2)), 'risk': 'high', 'transformation': 'Move module state to function/class scope', 'validation': 'Run full test suite after each refactor', 'requires_manual_review': True})
     float_violations = [v for v in all_violations if v['type'] == 'FLOAT_LITERAL']
     if float_violations:
-        batches.append({'batch_id': 6, 'name': 'float_to_bignum_economics', 'category': 'FLOAT_LITERAL', 'violations': len(float_violations), 'complexity': 'critical', 'auto_fix_confidence': 0.3, 'estimated_time_minutes': max(120, int(len(float_violations) * 3)), 'risk': 'critical', 'transformation': 'Replace floats with BigNum128.from_string()', 'validation': 'Verify economic invariants preserved', 'requires_manual_review': True, 'requires_precision_analysis': True})
+        batches.append({'batch_id': 6, 'name': 'float_to_bignum_economics', 'category': 'FLOAT_LITERAL', 'violations': len(float_violations), 'complexity': 'critical', 'auto_fix_confidence': Fraction(3, 10), 'estimated_time_minutes': max(120, int(len(float_violations) * 3)), 'risk': 'critical', 'transformation': 'Replace floats with BigNum128.from_string()', 'validation': 'Verify economic invariants preserved', 'requires_manual_review': True, 'requires_precision_analysis': True})
     return batches
 
 def main():

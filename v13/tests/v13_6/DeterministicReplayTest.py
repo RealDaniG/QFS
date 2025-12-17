@@ -12,6 +12,7 @@ Success Criteria:
 
 Evidence Artifact: evidence/v13.6/nod_replay_determinism.json
 """
+from fractions import Fraction
 from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
@@ -44,11 +45,11 @@ class DeterministicReplayTest:
             Dict with telemetry snapshot + SHA-256 hash
         """
         if scenario == 'baseline':
-            telemetry = {'schema_version': 'v1.0', 'block_height': 1000, 'nodes': {'node_001': {'uptime_ratio': 0.95, 'health_score': 0.95}, 'node_002': {'uptime_ratio': 0.93, 'health_score': 0.9}, 'node_003': {'uptime_ratio': 0.94, 'health_score': 0.92}}}
+            telemetry = {'schema_version': 'v1.0', 'block_height': 1000, 'nodes': {'node_001': {'uptime_ratio': Fraction(19, 20), 'health_score': Fraction(19, 20)}, 'node_002': {'uptime_ratio': Fraction(93, 100), 'health_score': Fraction(9, 10)}, 'node_003': {'uptime_ratio': Fraction(47, 50), 'health_score': Fraction(23, 25)}}}
         elif scenario == 'high_load':
-            telemetry = {'schema_version': 'v1.0', 'block_height': 2000, 'nodes': {'node_001': {'uptime_ratio': 0.98, 'health_score': 0.98}, 'node_002': {'uptime_ratio': 0.96, 'health_score': 0.96}, 'node_003': {'uptime_ratio': 0.97, 'health_score': 0.97}, 'node_004': {'uptime_ratio': 0.94, 'health_score': 0.94}}}
+            telemetry = {'schema_version': 'v1.0', 'block_height': 2000, 'nodes': {'node_001': {'uptime_ratio': Fraction(49, 50), 'health_score': Fraction(49, 50)}, 'node_002': {'uptime_ratio': Fraction(24, 25), 'health_score': Fraction(24, 25)}, 'node_003': {'uptime_ratio': Fraction(97, 100), 'health_score': Fraction(97, 100)}, 'node_004': {'uptime_ratio': Fraction(47, 50), 'health_score': Fraction(47, 50)}}}
         else:
-            telemetry = {'schema_version': 'v1.0', 'block_height': 500, 'nodes': {'node_001': {'uptime_ratio': 0.91, 'health_score': 0.81}, 'node_002': {'uptime_ratio': 0.9, 'health_score': 0.8}}}
+            telemetry = {'schema_version': 'v1.0', 'block_height': 500, 'nodes': {'node_001': {'uptime_ratio': Fraction(91, 100), 'health_score': Fraction(81, 100)}, 'node_002': {'uptime_ratio': Fraction(9, 10), 'health_score': Fraction(4, 5)}}}
         telemetry_json = json.dumps(telemetry, sort_keys=True, separators=(',', ':'))
         snapshot_hash = hashlib.sha256(telemetry_json.encode('utf-8')).hexdigest()
         telemetry['telemetry_hash'] = snapshot_hash

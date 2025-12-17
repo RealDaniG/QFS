@@ -5,6 +5,7 @@ Tests:
 1. Explain helper includes Artistic policy version/hash.
 2. Aggregation works correctly with/without Humor policy.
 """
+from fractions import Fraction
 import pytest
 from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
 from v13.policy.artistic_policy import ArtisticSignalPolicy
@@ -27,7 +28,7 @@ def test_explanation_hash_determinism():
     humor = HumorSignalPolicy()
     helper = ValueNodeExplainabilityHelper(humor_policy=humor, artistic_policy=artistic)
     exp1 = helper.explain_value_node_reward('w1', 'u1', 'evt1', 1, {}, [], [], [], 1000)
-    artistic.policy.dimension_weights['composition'] = 0.99
+    artistic.policy.dimension_weights['composition'] = Fraction(99, 100)
     artistic.policy.__post_init__()
     exp2 = helper.explain_value_node_reward('w1', 'u1', 'evt1', 1, {}, [], [], [], 1000)
     assert exp1.explanation_hash != exp2.explanation_hash

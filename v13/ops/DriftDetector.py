@@ -10,6 +10,7 @@ This tool performs a "Replay Drill" by:
 Usage:
     python -m v13.ops.DriftDetector --ledger-path v13/ledger/qfs_ledger.jsonl
 """
+from fractions import Fraction
 import argparse
 import logging
 from typing import List, Dict, Any
@@ -30,8 +31,8 @@ class DriftDetector:
         self.cm = CertifiedMath()
         self.storage = StorageEngine(self.cm)
         self.replay_source = LiveLedgerReplaySource(ledger_path, self.storage)
-        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'surreal': 0.5, 'meta': 0.5}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1))
-        self.artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 1}, max_bonus_ratio=0.3, per_user_daily_cap_atr=2))
+        self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rewarding', dimension_weights={'surreal': Fraction(1, 2), 'meta': Fraction(1, 2)}, max_bonus_ratio=Fraction(1, 4), per_user_daily_cap_atr=1))
+        self.artistic_policy = ArtisticSignalPolicy(policy=ArtisticPolicy(enabled=True, mode='rewarding', dimension_weights={'composition': 1}, max_bonus_ratio=Fraction(3, 10), per_user_daily_cap_atr=2))
         self.explain_helper = ValueNodeExplainabilityHelper(self.humor_policy, self.artistic_policy)
         self.replay_engine = ValueNodeReplayEngine(self.explain_helper)
 

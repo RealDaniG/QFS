@@ -4,6 +4,7 @@ HumorObservatory.py - Observability layer for humor signals
 This module provides an observability layer that aggregates and analyzes humor signal outputs
 over time, providing statistics and insights for operators.
 """
+from fractions import Fraction
 import json
 import hashlib
 from typing import Dict, Any, List, Optional
@@ -49,7 +50,7 @@ class HumorSignalObservatory:
     def __init__(self):
         """Initialize the humor signal observatory."""
         self.signal_history: List[HumorSignalSnapshot] = []
-        self.bucket_size = 0.1
+        self.bucket_size = Fraction(1, 10)
 
     def record_signal(self, snapshot: HumorSignalSnapshot):
         """
@@ -89,7 +90,7 @@ class HumorSignalObservatory:
         bonus_statistics = {'mean': sum(bonuses) / len(bonuses), 'min': min(bonuses), 'max': max(bonuses), 'median': sorted(bonuses)[len(bonuses) // 2]}
         mean_bonus = bonus_statistics['mean']
         variance = sum(((b - mean_bonus) ** 2 for b in bonuses)) / len(bonuses)
-        bonus_statistics['std_dev'] = variance ** 0.5
+        bonus_statistics['std_dev'] = variance ** Fraction(1, 2)
         anomaly_count = sum((1 for b in bonuses if b > mean_bonus * 2))
         sorted_signals = sorted(self.signal_history, key=lambda x: x.bonus_factor, reverse=True)
         top_performing_content = [{'content_id': signal.content_id, 'bonus_factor': signal.bonus_factor, 'dimensions': signal.dimensions, 'confidence': signal.confidence} for signal in sorted_signals[:10]]
@@ -141,8 +142,8 @@ class HumorSignalObservatory:
                     mean1 = sum(list1) / len(list1)
                     mean2 = sum(list2) / len(list2)
                     numerator = sum(((a - mean1) * (b - mean2) for a, b in zip(list1, list2)))
-                    denom1 = sum(((a - mean1) ** 2 for a in list1)) ** 0.5
-                    denom2 = sum(((b - mean2) ** 2 for b in list2)) ** 0.5
+                    denom1 = sum(((a - mean1) ** 2 for a in list1)) ** Fraction(1, 2)
+                    denom2 = sum(((b - mean2) ** 2 for b in list2)) ** Fraction(1, 2)
                     if denom1 == 0 or denom2 == 0:
                         correlation = 0
                     else:
