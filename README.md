@@ -77,7 +77,6 @@ ATLAS is the user-facing web application that provides wallet-based authenticati
 **ATLAS Documentation:** [v13/ATLAS/README.md](v13/ATLAS/README.md)
 
 **Key Features:**
-
 - Wallet-based identity (MetaMask, WalletConnect)
 - End-to-end encrypted messaging
 - Referral system with Genesis Points
@@ -143,7 +142,6 @@ Three layers of enforcement:
 ### Recent Security Fixes (PR #5)
 
 **🔴 Critical Issues Resolved:**
-
 - ✅ Added authentication to all `/explain/*` endpoints
 - ✅ Replaced hardcoded `localhost` URLs with environment-aware API base
 - ✅ Removed side-effectful `__main__` blocks from production modules (Phase 14 Remediation)
@@ -360,6 +358,18 @@ We're moving from verified baseline → live production with:
 ---
 
 ## 📞 Support & Community
-<https://www.patreon.com/c/QFSxATLAS>
-<https://www.tiktok.com/@danigthe1>
-<https://www.instagram.com/danigmcfresh/>
+
+
+### Connect With Us
+
+<div align="center">
+
+[![Patreon](https://img.shields.io/badge/Support_on-Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/c/QFSxATLAS)
+[![TikTok](https://img.shields.io/badge/Follow_on-TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@danigthe1)
+[![Instagram](https://img.shields.io/badge/Follow_on-Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/danigmcfresh/)
+
+</div>
+
+**Support the Project** | Get exclusive updates, behind-the-scenes development insights, and early access to new features by supporting us on Patreon!
+
+---
