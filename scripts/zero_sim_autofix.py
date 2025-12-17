@@ -77,6 +77,9 @@ class DivisionFixTransformer(cst.CSTTransformer):
         return updated_node
 
 
+import libcst.matchers as m
+
+
 class UUIDFixTransformer(cst.CSTTransformer):
     """Replace uuid.uuid4() with deterministic ID"""
 
@@ -88,21 +91,20 @@ class UUIDFixTransformer(cst.CSTTransformer):
         self, original_node: cst.Call, updated_node: cst.Call
     ) -> cst.BaseExpression:
         """Replace uuid.uuid4() calls"""
-        if isinstance(updated_node.func, cst.Attribute):
-            if (
-                isinstance(updated_node.func.value, cst.Name)
-                and updated_node.func.value.value == "uuid"
-                and updated_node.func.attr.value == "uuid4"
-            ):
-                self.fixed_count += 1
-                if self.strategy == "counter":
-                    # Replace with DeterministicID.next()
-                    return cst.Call(
-                        func=cst.Attribute(
-                            value=cst.Name("DeterministicID"), attr=cst.Name("next")
-                        ),
-                        args=[],
-                    )
+        # Match uuid.uuid4()
+        if m.matches(
+            updated_node,
+            m.Call(func=m.Attribute(value=m.Name("uuid"), attr=m.Name("uuid4"))),
+        ):
+            self.fixed_count += 1
+            if self.strategy == "counter":
+                # Replace with DeterministicID.next()
+                return cst.Call(
+                    func=cst.Attribute(
+                        value=cst.Name("DeterministicID"), attr=cst.Name("next")
+                    ),
+                    args=[],
+                )
         return updated_node
 
 
