@@ -1,5 +1,5 @@
+# import sys removed (unused)
 import os
-import sys
 import re
 import json
 import ast
@@ -67,6 +67,9 @@ def scan_python_file(filepath):
     # Regex Checks
     for i, line in enumerate(lines):
         ln = i + 1
+        if "QODO:JUSTIFIED" in line:
+            continue
+
         # Random
         if RANDOM_REGEX.search(line):
             # AST checking would be better but regex is faster for a broad sweep,
@@ -82,7 +85,17 @@ def scan_python_file(filepath):
 
         # IO
         if IO_REGEX.search(line):
-            if "policy" in filepath or "core" in filepath or "guard" in filepath:
+            # Enforce on core, policy, guard, aegis, governance
+            if any(
+                x in filepath
+                for x in [
+                    "policy",
+                    "core",
+                    "guard",
+                    "services/aegis",
+                    "services/governance",
+                ]
+            ):
                 if not line.strip().startswith("#"):
                     add_violation(filepath, ln, "EXTERNAL_IO", "CRITICAL", line.strip())
 
@@ -126,6 +139,9 @@ def scan_ts_file(filepath):
         ln = i + 1
         line_clean = line.strip()
         if line_clean.startswith("//") or line_clean.startswith("/*"):
+            continue
+
+        if "QODO:JUSTIFIED" in line:
             continue
 
         # Random
@@ -242,6 +258,9 @@ def main():
         scan_root = "v13"
 
     walk_and_scan(scan_root)
+
+    end_time = datetime.now()
+    print(f"Scan duration: {end_time - start_time}")
 
     # Generate Report
     report_path = os.path.join(

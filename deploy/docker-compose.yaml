@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  qfs-core:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.core
+    image: qfs-core:v13.8
+    environment:
+      - QFS_ENV=production
+      - ZERO_SIM_ENFORCE=true
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=INFO
+    depends_on:
+      - redis
+    volumes:
+      - ../v13:/app/v13:ro
+    networks:
+      - qfs-net
+
+  atlas-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.atlas
+    image: atlas-api:v13.8
+    ports:
+      - "8000:8000"
+    environment:
+      - QFS_ENV=production
+      - REDIS_URL=redis://redis:6379/0
+      - TRACE_PROPAGATION=true
+      - LOG_LEVEL=INFO
+    depends_on:
+      - redis
+      - qfs-core
+    volumes:
+      - ../v13:/app/v13:ro
+    networks:
+      - qfs-net
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - qfs-net
+
+  monitoring:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - qfs-net
+
+networks:
+  qfs-net:
+    driver: bridge
+
+volumes:
+  redis-data:

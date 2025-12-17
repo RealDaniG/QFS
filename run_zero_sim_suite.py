@@ -26,6 +26,11 @@ TEST_SUITES = [
         "name": "ATLAS Explanation E2E",
         "command": [sys.executable, "-m", "pytest", "v13/ATLAS/src/tests/test_explain_this_e2e.py", "-v"],
         "critical": True
+    },
+    {
+        "name": "Session Management Tests",
+        "command": [sys.executable, "-m", "pytest", "v13/tests/sessions/", "-v"],
+        "critical": True
     }
 ]
 

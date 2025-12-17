@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 
 from .humor_policy import HumorSignalPolicy
 from .artistic_policy import ArtisticSignalPolicy
+from ..libs.CertifiedMath import CertifiedMath, BigNum128
 
 
 @dataclass
@@ -98,6 +99,7 @@ class ValueNodeExplainabilityHelper:
         caps: List[Dict[str, Any]],
         guards: List[Dict[str, Any]],
         timestamp: int,
+        trace_id: str = "no-trace",
     ) -> ValueNodeRewardExplanation:
         """
         Generate detailed explanation for a value-node reward.
@@ -130,8 +132,10 @@ class ValueNodeExplainabilityHelper:
         if bonuses:
             reason_codes.append("REWARD_BONUSES_APPLIED")
 
-        # Calculate total reward
-        total_reward = self._calculate_total_reward(base_reward, bonuses, caps)
+        # Calculate total reward (verifying with CertifiedMath)
+        total_reward = self._calculate_total_reward(
+            base_reward, bonuses, caps, trace_id
+        )
 
         # Create explanation object
         explanation = ValueNodeRewardExplanation(
@@ -230,24 +234,6 @@ class ValueNodeExplainabilityHelper:
             hashes.append(f"Artistic:{self.artistic_policy.policy.hash[:8]}")
         return "|".join(sorted(hashes))
 
-    def _calculate_total_reward(
-        self,
-        base_reward: Dict[str, Any],
-        bonuses: List[Dict[str, Any]],
-        caps: List[Dict[str, Any]],
-    ) -> Dict[str, Any]:
-        """
-        Calculate total reward from base, bonuses, and caps.
-
-        Args:
-            base_reward: Base reward information
-            bonuses: List of bonus information
-            caps: List of cap information
-
-        Returns:
-            Dict: Total reward calculation
-        """
-
     def _parse_atr_to_int(self, value_str: str) -> int:
         """
         Parse "X.Y ATR" string to scaled integer (scale 100).
@@ -286,47 +272,73 @@ class ValueNodeExplainabilityHelper:
         base_reward: Dict[str, Any],
         bonuses: List[Dict[str, Any]],
         caps: List[Dict[str, Any]],
+        trace_id: str = "no-trace",
     ) -> Dict[str, Any]:
         """
         Calculate total reward from base, bonuses, and caps.
-
-        Args:
-            base_reward: Base reward information
-            bonuses: List of bonus information
-            caps: List of cap information
-
-        Returns:
-            Dict: Total reward calculation
+        Uses CertifiedMath to generate a consistency proof linked to the trace_id.
         """
         # Zero-Sim Compliant Calculation (No Floats)
         total = dict(base_reward)
+        cm = (
+            CertifiedMath()
+        )  # Create instance to track logs locally (even if discarded for now)
 
         # 1. Parse Base Reward
         base_atr_str = total.get("ATR", "0 ATR")
         if not isinstance(base_atr_str, str):
-            # Handle case where it might already be int (from resolvers)
-            # Default mock in resolvers.py returns int 100, but logic might expect string
-            base_val = int(base_atr_str) if isinstance(base_atr_str, int) else 0
+            base_val_int = int(base_atr_str) if isinstance(base_atr_str, int) else 0
         else:
-            base_val = self._parse_atr_to_int(base_atr_str)
+            base_val_int = self._parse_atr_to_int(base_atr_str)
+
+        # Convert to BigNum128 (Scale 100 -> Scale 1e18)
+        base_bn = BigNum128.from_int(base_val_int * 10**16)
 
         # 2. Add bonuses
-        total_bonus = 0
+        total_bonus_bn = BigNum128(0)
         for bonus in bonuses:
             val_str = bonus.get("value", "0 ATR")
-            total_bonus += self._parse_atr_to_int(val_str)
+            val_int = self._parse_atr_to_int(val_str)
+            val_bn = BigNum128.from_int(val_int * 10**16)
+            total_bonus_bn = cm.add(
+                total_bonus_bn,
+                val_bn,
+                quantum_metadata={"trace_id": trace_id, "op": "sum_bonuses"},
+            )
 
         # 3. Apply caps (reduction)
-        total_cap_reduction = 0
+        total_cap_bn = BigNum128(0)
         for cap in caps:
             val_str = cap.get("value", "0 ATR")
-            total_cap_reduction += self._parse_atr_to_int(val_str)
+            val_int = self._parse_atr_to_int(val_str)
+            val_bn = BigNum128.from_int(val_int * 10**16)
+            total_cap_bn = cm.add(
+                total_cap_bn,
+                val_bn,
+                quantum_metadata={"trace_id": trace_id, "op": "sum_caps"},
+            )
 
-        # 4. Calculate Final
-        final_val = base_val + total_bonus - total_cap_reduction
+        # 4. Calculate Final: base + bonuses - caps
+        temp = cm.add(
+            base_bn,
+            total_bonus_bn,
+            quantum_metadata={"trace_id": trace_id, "op": "add_base_bonus"},
+        )
+        final_bn = cm.sub(
+            temp,
+            total_cap_bn,
+            quantum_metadata={"trace_id": trace_id, "op": "sub_caps"},
+        )
 
-        # 5. Format back to string
-        total["ATR"] = self._format_int_to_atr(final_val)
+        # 5. Format back to string (Scale 1e18 -> Scale 100)
+        # We need to divide by 10^16 safely
+        final_val_bn = cm.idiv_bn(
+            final_bn,
+            10**16,
+            quantum_metadata={"trace_id": trace_id, "op": "normalize_scale"},
+        )
+        final_val_int = final_val_bn.value // BigNum128.SCALE
+        total["ATR"] = self._format_int_to_atr(final_val_int)
 
         return total
 

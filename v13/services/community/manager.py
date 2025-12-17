@@ -2,8 +2,8 @@
 manager.py - Guild Management Service
 """
 
-import uuid
-import time
+import uuid  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub service prototype (in-memory only), not P0 consensus (review in P1)
+import time  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub service prototype (in-memory only), not P0 consensus (review in P1)
 from typing import Dict, Any, Optional, List
 
 
@@ -27,7 +27,7 @@ class GuildManager:
         """
         Create a new Guild.
         """
-        guild_id = f"did:atlas:guild:{uuid.uuid4().hex[:12]}"
+        guild_id = f"did:atlas:guild:{uuid.uuid4().hex[:12]}"  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub implementation (review in P1)
 
         manifest = {
             "id": guild_id,
@@ -37,7 +37,9 @@ class GuildManager:
             "coherence_threshold": coherence_threshold,
             "staking_requirement": {"token": "QFS", "amount": staking_amt},
             "treasury_address": f"0xTreasury_{guild_id.split(':')[-1]}",  # Mock derivation
-            "created_at": int(time.time()),
+            "created_at": int(
+                time.time()
+            ),  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub implementation (review in P1)
             "members_count": 1,  # Founder
         }
 

@@ -1,7 +1,47 @@
 {
-  "timestamp": "2025-12-17T09:21:33.775509",
-  "total_violations": 93,
+  "timestamp": "2025-12-17T10:17:15.801752",
+  "total_violations": 97,
   "violations": [
+    {
+      "file": "v13/core/observability/logger.py",
+      "line": 34,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "return TraceContext(trace_id=uuid.uuid4().hex, span_id=uuid.uuid4().hex)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/core/observability/logger.py",
+      "line": 40,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "tid = headers.get(\"x-trace-id\") or uuid.uuid4().hex",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/core/observability/logger.py",
+      "line": 41,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "sid = headers.get(\"x-span-id\") or uuid.uuid4().hex",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/core/observability/logger.py",
+      "line": 79,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "or datetime.datetime.now(datetime.timezone.utc).isoformat()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/core/observability/logger.py",
+      "line": 17,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
     {
       "file": "v13/economics/test_economics_violations.py",
       "line": 26,
@@ -68,23 +108,23 @@
     },
     {
       "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 17,
+      "line": 25,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "start_time = datetime.datetime.now().isoformat()",
+      "code_snippet": "datetime.datetime.now().isoformat()",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 19,
+      "line": 29,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "end_time = datetime.datetime.now().isoformat()",
+      "code_snippet": "datetime.datetime.now().isoformat()",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 35,
+      "line": 49,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "filename = f\"v13/evidence/nightly/full_stack_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.jso",
@@ -92,23 +132,23 @@
     },
     {
       "file": "v13/scripts/nightly_e2e.py",
-      "line": 21,
+      "line": 23,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "print(f\"[{datetime.datetime.now()}] Running {name}...\")",
+      "code_snippet": "f\"[{datetime.datetime.now()}] Running {name}...\"",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/nightly_e2e.py",
-      "line": 22,
+      "line": 26,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "start = datetime.datetime.now()",
+      "code_snippet": "datetime.datetime.now()",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/nightly_e2e.py",
-      "line": 32,
+      "line": 37,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "duration = (datetime.datetime.now() - start).total_seconds()",
@@ -116,7 +156,7 @@
     },
     {
       "file": "v13/scripts/nightly_e2e.py",
-      "line": 81,
+      "line": 108,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "\"timestamp\": datetime.datetime.now().isoformat(),",
@@ -124,10 +164,10 @@
     },
     {
       "file": "v13/scripts/nightly_e2e.py",
-      "line": 89,
+      "line": 119,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "filename = f\"evidence/nightly/run_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
+      "code_snippet": "f\"evidence/nightly/run_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
@@ -260,18 +300,10 @@
     },
     {
       "file": "v13/services/community/manager.py",
-      "line": 30,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "guild_id = f\"did:atlas:guild:{uuid.uuid4().hex[:12]}\"",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/services/community/manager.py",
-      "line": 40,
+      "line": 41,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"created_at\": int(time.time()),",
+      "code_snippet": "time.time()",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {

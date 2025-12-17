@@ -155,7 +155,7 @@ class CIR302_Handler:
 
         # HARD HALT — no return, no state, no quarantine
         # Exit code must be deterministically derived from the fault, not hardcoded
-        exit_code = self.cm.idiv(
+        exit_code = self.cm.idiv_bn(
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
         sys.exit(exit_code)  # 302 integer exit code
@@ -247,7 +247,7 @@ class CIR302_Handler:
         )
 
         # HARD HALT — no return, no state, no quarantine
-        exit_code = self.cm.idiv(
+        exit_code = self.cm.idiv_bn(
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
         sys.exit(exit_code)  # 302 integer exit code
