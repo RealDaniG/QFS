@@ -4,6 +4,7 @@ Explain-This API endpoints for the ATLAS system.
 Provides read-only, deterministic explanations for rewards and rankings
 derived from QFS ledger replay.
 """
+from fractions import Fraction
 
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Dict, Any, Optional
@@ -30,16 +31,16 @@ humor_policy = HumorSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "chronos": 0.15,
-            "lexicon": 0.1,
-            "surreal": 0.1,
-            "empathy": 0.2,
-            "critique": 0.15,
-            "slapstick": 0.1,
-            "meta": 0.2,
+            "chronos": Fraction(3, 20),
+            "lexicon": Fraction(1, 10),
+            "surreal": Fraction(1, 10),
+            "empathy": Fraction(1, 5),
+            "critique": Fraction(3, 20),
+            "slapstick": Fraction(1, 10),
+            "meta": Fraction(1, 5),
         },
-        max_bonus_ratio=0.25,
-        per_user_daily_cap_atr=1.0,
+        max_bonus_ratio=Fraction(1, 4),
+        per_user_daily_cap_atr=1,
     )
 )
 artistic_policy = ArtisticSignalPolicy(
@@ -47,14 +48,14 @@ artistic_policy = ArtisticSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "composition": 0.2,
-            "originality": 0.25,
-            "emotional_resonance": 0.25,
-            "technical_execution": 0.15,
-            "cultural_context": 0.15,
+            "composition": Fraction(1, 5),
+            "originality": Fraction(1, 4),
+            "emotional_resonance": Fraction(1, 4),
+            "technical_execution": Fraction(3, 20),
+            "cultural_context": Fraction(3, 20),
         },
-        max_bonus_ratio=0.3,
-        per_user_daily_cap_atr=2.0,
+        max_bonus_ratio=Fraction(3, 10),
+        per_user_daily_cap_atr=2,
     )
 )
 explain_helper = ValueNodeExplainabilityHelper(humor_policy, artistic_policy)

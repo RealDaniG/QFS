@@ -35,10 +35,10 @@ class P2PBandwidthEconomics:
         """
         metrics = self.bandwidth_metrics.get(peer_id, {})
         if not metrics:
-            return 0.0
+            return 0
         total_bytes = metrics.get('sent', 0) + metrics.get('received', 0)
         total_mb = total_bytes / 1000000
         base_reward = total_mb * 0.01
         total_messages = metrics.get('encrypted_count', 0)
-        encryption_bonus = 0.1 if total_messages > 100 else 0.0
+        encryption_bonus = 0.1 if total_messages > 100 else 0
         return base_reward + encryption_bonus

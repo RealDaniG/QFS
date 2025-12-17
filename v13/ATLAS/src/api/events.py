@@ -8,7 +8,7 @@ router = APIRouter(prefix='/v1/events', tags=['events'])
 class EventItem(BaseModel):
     wallet: str
     event_type: str
-    value: float = 0.0
+    value: float = 0
     metadata: Dict[str, Any] = {}
     sequence_id: Optional[int] = None
 

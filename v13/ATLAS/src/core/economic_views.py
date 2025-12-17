@@ -30,8 +30,8 @@ def build_wallet_summary_view(balance_payload: Mapping[str, Any], *, did: str, a
     - It does not call time/random.
     - It only maps existing values into a stable view shape.
     """
-    available = qnum(balance_payload.get('balance', 0.0))
-    locked = qnum(balance_payload.get('locked', 0.0))
+    available = qnum(balance_payload.get('balance', 0))
+    locked = qnum(balance_payload.get('locked', 0))
     total = qnum(balance_payload.get('total', available + locked))
     return WalletSummaryView(did=did, asset=asset, available=available, locked=locked, total=total)
 
@@ -39,5 +39,5 @@ def build_transaction_list_view(transactions: Sequence[Mapping[str, Any]]) -> Li
     """Pure read-only mapping for transaction responses into UI list items."""
     result: List[TransactionListItemView] = []
     for tx in sorted(transactions):
-        result.append(TransactionListItemView(tx_id=str(tx.get('tx_id', '')), sender=str(tx.get('sender', '')), receiver=str(tx.get('receiver', '')), amount=qnum(tx.get('amount', 0.0)), asset=str(tx.get('asset', 'QFS')), timestamp=str(tx.get('timestamp', '')), status=str(tx.get('status', ''))))
+        result.append(TransactionListItemView(tx_id=str(tx.get('tx_id', '')), sender=str(tx.get('sender', '')), receiver=str(tx.get('receiver', '')), amount=qnum(tx.get('amount', 0)), asset=str(tx.get('asset', 'QFS')), timestamp=str(tx.get('timestamp', '')), status=str(tx.get('status', ''))))
     return result

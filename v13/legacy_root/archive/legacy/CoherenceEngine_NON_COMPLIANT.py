@@ -27,7 +27,7 @@ class CoherenceEngine:
         
         logger.info("Coherence Engine initialized")
     
-    def calculate_modulator(self, I_vector: np.ndarray, lambda_L: float, K: float = 10.0) -> float:
+    def calculate_modulator(self, I_vector: np.ndarray, lambda_L: float, K: float = 10) -> float:
         """
         Calculate modulator with potential clamping in Safe Mode
         
@@ -43,13 +43,13 @@ class CoherenceEngine:
             # Check if Safe Mode is active
             if self.gating_service.get_safe_mode_status():
                 logger.warning("Safe Mode active - clamping modulator to 0")
-                return 0.0
+                return 0
             
             # Compute projection of I_vector
             if len(I_vector) > 0:
                 proj_I = np.mean(I_vector)  # Simple projection
             else:
-                proj_I = 0.0
+                proj_I = 0
             
             # Compute λ(L) · proj(I_t(L))
             product = lambda_L * proj_I
@@ -69,7 +69,7 @@ class CoherenceEngine:
             return float(modulator_value)
         except Exception as e:
             logger.error(f"Error calculating modulator: {e}")
-            return 1.0  # Return neutral value on error
+            return 1  # Return neutral value on error
     
     def update_omega(self, features: np.ndarray, I_vector: np.ndarray, L: str) -> np.ndarray:
         """
@@ -161,8 +161,8 @@ class CoherenceEngine:
             "omega_history_length": len(self.omega_history),
             "modulator_history_length": len(self.modulator_history),
             "safe_mode_active": self.safe_mode_active,
-            "last_modulator": self.modulator_history[-1] if self.modulator_history else 1.0,
-            "omega_norm": float(np.linalg.norm(self.omega_history[-1])) if self.omega_history else 0.0,
+            "last_modulator": self.modulator_history[-1] if self.modulator_history else 1,
+            "omega_norm": float(np.linalg.norm(self.omega_history[-1])) if self.omega_history else 0,
             "timestamp": time.time()
         }
 
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     coherence_engine = CoherenceEngine(gating_service)
     
     # Example vectors
-    features = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+    features = np.array([1, 2, 3, 4, 5])
     I_vector = np.array([0.1, 0.15, 0.2, 0.25, 0.3])
     
     # Update Ω state

@@ -54,9 +54,9 @@ class HumorSignalAddon(SignalAddon):
         replays = context.get('replays', 0)
         views = context.get('views', 0)
         if views > 0:
-            timing_ratio = min(1.0, replays / views)
+            timing_ratio = min(1, replays / views)
             return timing_ratio
-        return 0.0
+        return 0
 
     def _evaluate_wordplay(self, content: str, context: Dict[str, Any]) -> QAmount:
         """
@@ -68,9 +68,9 @@ class HumorSignalAddon(SignalAddon):
         char_count = len(content)
         if word_count > 0:
             unique_chars = len(set(content.lower()))
-            lexicon_ratio = min(1.0, unique_chars / char_count) if char_count > 0 else 0.0
+            lexicon_ratio = min(1, unique_chars / char_count) if char_count > 0 else 0
             return lexicon_ratio
-        return 0.0
+        return 0
 
     def _evaluate_absurdity(self, content: str, context: Dict[str, Any]) -> QAmount:
         """
@@ -82,9 +82,9 @@ class HumorSignalAddon(SignalAddon):
         sentence_count = len(re.split('[.!?]+', content))
         if sentence_count > 0:
             avg_words_per_sentence = word_count / sentence_count
-            surreal_score = min(1.0, avg_words_per_sentence / 20.0)
+            surreal_score = min(1, avg_words_per_sentence / 20)
             return surreal_score
-        return 0.0
+        return 0
 
     def _evaluate_relatability(self, content: str, context: Dict[str, Any]) -> QAmount:
         """
@@ -95,9 +95,9 @@ class HumorSignalAddon(SignalAddon):
         views = context.get('views', 0)
         saves = context.get('saves', 0)
         if views > 0:
-            empathy_ratio = min(1.0, saves / views)
+            empathy_ratio = min(1, saves / views)
             return empathy_ratio
-        return 0.0
+        return 0
 
     def _evaluate_satire(self, content: str, context: Dict[str, Any]) -> QAmount:
         """
@@ -109,9 +109,9 @@ class HumorSignalAddon(SignalAddon):
         saves = context.get('saves', 0)
         total_engagement = laughs + saves
         if total_engagement > 0:
-            balance_factor = 1.0 - abs(laughs - saves) / total_engagement
+            balance_factor = 1 - abs(laughs - saves) / total_engagement
             return balance_factor
-        return 0.0
+        return 0
 
     def _evaluate_physical_comedy(self, content: str, context: Dict[str, Any]) -> QAmount:
         """
@@ -121,7 +121,7 @@ class HumorSignalAddon(SignalAddon):
         """
         emoji_count = len(re.findall('[😀-🙏]', content))
         exclamation_count = content.count('!')
-        visual_score = min(1.0, (emoji_count + exclamation_count) / 10.0)
+        visual_score = min(1, (emoji_count + exclamation_count) / 10)
         return visual_score
 
     def _evaluate_meta_humor(self, content: str, context: Dict[str, Any]) -> QAmount:
@@ -135,9 +135,9 @@ class HumorSignalAddon(SignalAddon):
         word_count = len(content.split())
         if word_count > 0:
             self_ref_count = sum((1 for word in content_lower.split() if word in self_ref_terms))
-            meta_ratio = min(1.0, self_ref_count / word_count)
+            meta_ratio = min(1, self_ref_count / word_count)
             return meta_ratio
-        return 0.0
+        return 0
 
     def _calculate_confidence(self, context: Dict[str, Any]) -> QAmount:
         """
@@ -154,5 +154,5 @@ class HumorSignalAddon(SignalAddon):
         saves = context.get('saves', 0)
         replays = context.get('replays', 0)
         total_engagement = views + laughs + saves + replays
-        confidence = 1.0 - 1.0 / (1.0 + total_engagement / 100.0)
-        return min(1.0, confidence)
+        confidence = 1 - 1 / (1 + total_engagement / 100)
+        return min(1, confidence)

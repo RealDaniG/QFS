@@ -10,7 +10,7 @@ class WalletBalance(BaseModel):
     """Model representing a wallet's balance for a specific asset."""
     asset: str = Field(..., description='Asset symbol')
     balance: QAmount = Field(..., description='Available balance')
-    locked: QAmount = Field(0.0, description='Locked balance (in orders, etc.)')
+    locked: QAmount = Field(0, description='Locked balance (in orders, etc.)')
     total: QAmount = Field(..., description='Total balance (available + locked)')
 
     @validator('balance', 'locked', 'total')

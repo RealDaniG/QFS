@@ -112,6 +112,16 @@ VIOLATION_REGISTRY = {
         risk_level="Low",
         reason="Dict/set iteration order non-deterministic; use sorted()",
     ),
+    "MUTATION_ASSIGNMENT": ViolationRule(
+        code="MUTATION_ASSIGNMENT",
+        name="State Mutation",
+        pattern="x += 1, obj.attr = val",
+        severity="Medium",
+        auto_fixable=False,
+        fix_strategy="use_functional_updates",
+        risk_level="Medium",
+        reason="In-place mutation complicates state tracking; prefer functional updates",
+    ),
 }
 
 
@@ -162,6 +172,20 @@ class ViolationAnalyzer(ast.NodeVisitor):
         """Detect float literals"""
         if isinstance(node.value, float):
             self._add_violation("FORBIDDEN_FLOAT_LITERAL", node)
+        self.generic_visit(node)
+
+    def visit_AugAssign(self, node: ast.AugAssign):
+        """Detect augmented assignments (mutations)"""
+        # x += 1, x -= 1, etc.
+        self._add_violation("MUTATION_ASSIGNMENT", node)
+        self.generic_visit(node)
+
+    def visit_Assign(self, node: ast.Assign):
+        """Detect attribute assignments (mutations)"""
+        for target in node.targets:
+            if isinstance(target, ast.Attribute):
+                # obj.attr = val
+                self._add_violation("MUTATION_ASSIGNMENT", node)
         self.generic_visit(node)
 
     def visit_For(self, node: ast.For):

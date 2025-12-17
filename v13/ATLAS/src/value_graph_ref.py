@@ -46,7 +46,7 @@ class InteractionEdge:
     user_id: str
     content_id: str
     interaction_type: str
-    weight: float = 1.0
+    weight: float = 1
 
 
 @dataclass(frozen=True)
@@ -139,7 +139,7 @@ class ValueGraphRef:
             user_id = event["user_id"]
             content_id = event["content_id"]
             interaction_type = event.get("interaction_type", "generic")
-            weight = float(event.get("weight", 1.0))
+            weight = float(event.get("weight", 1))
 
             user_node = self._ensure_user(user_id)
             self._ensure_content(content_id, creator_id=event.get("creator_id", ""))

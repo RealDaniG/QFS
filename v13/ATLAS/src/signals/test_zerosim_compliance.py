@@ -17,7 +17,7 @@ class TestHumorSignalAddonZeroSimCompliance(unittest.TestCase):
         content = "Why don't scientists trust atoms? Because they make up everything!"
         context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': 0.8}
         result = self.addon.evaluate(content, context)
-        self.assertEqual(result.score, 0.0)
+        self.assertEqual(result.score, 0)
 
     def test_deterministic_behavior(self):
         """Test that evaluations are fully deterministic."""
@@ -49,8 +49,8 @@ class TestHumorSignalAddonZeroSimCompliance(unittest.TestCase):
         for dim in sorted(expected_dimensions):
             self.assertIn(dim, dimensions)
             self.assertIsInstance(dimensions[dim], float)
-            self.assertGreaterEqual(dimensions[dim], 0.0)
-            self.assertLessEqual(dimensions[dim], 1.0)
+            self.assertGreaterEqual(dimensions[dim], 0)
+            self.assertLessEqual(dimensions[dim], 1)
 
     def test_ledger_derived_metrics_only(self):
         """Test that only ledger-derived metrics are used."""
@@ -81,9 +81,9 @@ class TestHumorSignalAddonZeroSimCompliance(unittest.TestCase):
         low_result = self.addon.evaluate(content, low_context)
         high_result = self.addon.evaluate(content, high_context)
         self.assertGreater(high_result.confidence, low_result.confidence)
-        self.assertGreaterEqual(low_result.confidence, 0.0)
-        self.assertLessEqual(low_result.confidence, 1.0)
-        self.assertGreaterEqual(high_result.confidence, 0.0)
-        self.assertLessEqual(high_result.confidence, 1.0)
+        self.assertGreaterEqual(low_result.confidence, 0)
+        self.assertLessEqual(low_result.confidence, 1)
+        self.assertGreaterEqual(high_result.confidence, 0)
+        self.assertLessEqual(high_result.confidence, 1)
 if __name__ == '__main__':
     unittest.main()

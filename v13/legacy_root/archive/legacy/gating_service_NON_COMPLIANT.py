@@ -31,7 +31,7 @@ class GatingService:
         self.log_file = log_file
         self.safe_mode_active = False
         self.memory_locked = False
-        self.last_metrics = GatingMetrics(0.0, 0.0, 0.0, False, 0.0)
+        self.last_metrics = GatingMetrics(0, 0, 0, False, 0)
         
         # Create logs directory if it doesn't exist
         log_dir = os.path.dirname(log_file)
@@ -63,21 +63,21 @@ class GatingService:
             
             # Calculate alignment based on quantum number harmonics
             # Higher quantum numbers should align better with curvature
-            quantum_alignment = np.sqrt(n**2 + l**2 + abs(m)**2 + s**2) / 10.0
+            quantum_alignment = np.sqrt(n**2 + l**2 + abs(m)**2 + s**2) / 10
             
             # Normalize to 0-1 range - ensure we don't divide by zero
             # Use a more appropriate normalization factor based on expected tensor magnitudes
             normalization_factor = 1e-62  # Expected typical magnitude
             if tensor_norm > 0:
-                gas = min(1.0, (tensor_norm * quantum_alignment) / normalization_factor)
+                gas = min(1, (tensor_norm * quantum_alignment) / normalization_factor)
             else:
-                gas = 0.0
+                gas = 0
             
             logger.debug(f"GAS calculated: {gas:.4f}")
             return gas
         except Exception as e:
             logger.error(f"Error calculating GAS: {e}")
-            return 0.0
+            return 0
     
     def apply_memory_lock(self, coherence_stability: float, gas: float) -> bool:
         """

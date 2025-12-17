@@ -63,12 +63,12 @@ def apply_event(state: UserState, event: Dict[str, Any]) -> UserState:
         # Increase a simple coherence score
         coherence = dict(new_state.coherence_metrics)
         # Handle missing delta gracefully
-        delta = event.get("delta", 0.0)
+        delta = event.get("delta", 0)
         try:
-            coherence["engagement"] = coherence.get("engagement", 0.0) + float(delta)
+            coherence["engagement"] = coherence.get("engagement", 0) + float(delta)
         except (ValueError, TypeError):
             # Handle invalid delta values gracefully
-            coherence["engagement"] = coherence.get("engagement", 0.0)
+            coherence["engagement"] = coherence.get("engagement", 0)
         return replace(new_state, coherence_metrics=coherence)
 
     if etype == "RewardAllocated":
@@ -225,7 +225,7 @@ def test_value_node_state_fields_updated_as_expected(simple_user_state: UserStat
     assert final_state.governance_footprint["content_created"] == ["cid_1"]
 
     # Coherence engagement metric should be updated
-    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0.0)) == 1.5
+    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == 1.5
 
     # Balances and ATR/FLX should reflect reward allocations
     assert final_state.balances["ATR"] == 10
@@ -251,7 +251,7 @@ def test_complex_event_trace_fields_updated(simple_user_state: UserState, comple
     assert set(final_state.governance_footprint["content_created"]) == {"cid_1", "cid_2"}
 
     # Engagement should be sum of deltas
-    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0.0)) == 2.3
+    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == 2.3
 
     # Balances should reflect all reward allocations
     assert final_state.balances["ATR"] == 25  # 10 + 15
@@ -463,7 +463,7 @@ def test_malformed_event_data_handling(simple_user_state: UserState) -> None:
         # Should handle missing fields gracefully (no changes to balances/metrics)
         assert final_state.atr_balance == 0
         assert final_state.flx_balance == 0
-        assert final_state.coherence_metrics.get("engagement", 0.0) == 0.0
+        assert final_state.coherence_metrics.get("engagement", 0) == 0
     except KeyError:
         # If it raises a KeyError, that's acceptable as the function is designed
         # to be simple and not handle all edge cases

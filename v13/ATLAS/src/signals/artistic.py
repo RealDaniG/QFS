@@ -45,7 +45,7 @@ class ArtisticSignalAddon(SignalAddon):
         aegis_info = context.get('aegis_verification', {})
         reputation_tier = aegis_info.get('reputation_tier', 'new')
         metadata = {'signal': 'artistic_value', 'version': 'v13.8', 'dimensions': dimensions, 'ledger_context': {'views': context.get('views', 0), 'saves': context.get('saves', 0), 'author_reputation': context.get('author_reputation', 0)}, 'aegis_context': {'verified': aegis_info.get('verified', False), 'reputation_tier': reputation_tier, 'user_id': aegis_info.get('user_id', '')}}
-        dummy_score = 0.0
+        dummy_score = 0
         return (dummy_score, confidence, metadata)
 
     def _evaluate_composition(self, content: str, context: Dict[str, Any]) -> QAmount:
@@ -54,11 +54,11 @@ class ArtisticSignalAddon(SignalAddon):
         Heuristic: Paragraph/Sentence structure balance.
         """
         if not content:
-            return 0.0
+            return 0
         paragraphs = content.split('\n\n')
         para_counts = [len(p.split()) for p in paragraphs if p.strip()]
         if not para_counts:
-            return 0.0
+            return 0
         total_words = sum(para_counts)
         avg_len = total_words * 1000 // len(para_counts)
         total_dev = 0
@@ -77,7 +77,7 @@ class ArtisticSignalAddon(SignalAddon):
         """
         words = content.lower().split()
         if not words:
-            return 0.0
+            return 0
         unique_words = len(set(words))
         ratio = unique_words * 10000 // len(words)
         return min(10000, ratio) / 10000
@@ -90,7 +90,7 @@ class ArtisticSignalAddon(SignalAddon):
         views = context.get('views', 1)
         saves = context.get('saves', 0)
         if views == 0:
-            return 0.0
+            return 0
         save_ratio = saves * 10000 // views
         return min(10000, save_ratio * 10) / 10000
 

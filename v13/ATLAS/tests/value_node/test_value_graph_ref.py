@@ -56,7 +56,7 @@ def test_value_graph_consistent_with_userstate(simple_user_state, simple_event_t
     atr_from_graph = sum((edge.amount_atr for edge in g.rewards if edge.user_id == user_id))
     assert atr_from_graph == final_state.atr_balance
     interactions_from_graph = sum((1 for edge in g.interactions if edge.user_id == user_id))
-    engagement_from_state = final_state.coherence_metrics.get('engagement', 0.0)
+    engagement_from_state = final_state.coherence_metrics.get('engagement', 0)
     assert interactions_from_graph == int(engagement_from_state)
 
 def test_value_graph_replay_invariance(simple_event_trace: List[Dict[str, Any]]) -> None:

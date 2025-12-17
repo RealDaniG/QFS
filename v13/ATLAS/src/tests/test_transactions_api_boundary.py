@@ -41,7 +41,7 @@ def test_transactions_minimal_happy_path(client: TestClient) -> None:
 
 def test_transactions_forbidden_case(client: TestClient) -> None:
     from src.api.routes import transactions as tx_routes
-    foreign_tx = tx_routes.transaction_processor.create_transaction(sender='user_other', receiver='user_else', amount=2.0, asset='QFS', metadata={'purpose': 'phase-c-forbidden'})
+    foreign_tx = tx_routes.transaction_processor.create_transaction(sender='user_other', receiver='user_else', amount=2, asset='QFS', metadata={'purpose': 'phase-c-forbidden'})
     tx_routes.transaction_processor.pending_transactions[foreign_tx.tx_id] = foreign_tx
     response = client.get(f'/api/v1/transactions/{foreign_tx.tx_id}', headers=_auth_headers())
     assert response.status_code == 403

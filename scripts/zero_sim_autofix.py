@@ -21,12 +21,11 @@ class AddImportsTransformer(cst.CSTTransformer):
     """Add missing imports to the module"""
 
     def __init__(self, imports_to_add: Set[str]):
-        self.imports_to_add = imports_to_add  # e.g. {"from fractions import Fraction"}
+        self.imports_to_add = imports_to_add
         self.added_count = 0
         self.existing_imports = set()
 
     def visit_ImportFrom(self, node: cst.ImportFrom):
-        # Track existing imports to avoid duplicates
         if node.module:
             module_name = cst.helpers.get_full_name_for_node(node.module)
             for alias in node.names:
@@ -38,13 +37,9 @@ class AddImportsTransformer(cst.CSTTransformer):
     def leave_Module(
         self, original_node: cst.Module, updated_node: cst.Module
     ) -> cst.Module:
-        # Simple insertion at the top (after docstrings if possible, or just start)
-        # This is basic; a full codemod is better but this suffices for "quick wins"
-
         new_body = list(updated_node.body)
         insertion_index = 0
 
-        # Skip docstring and future imports
         for i, stmt in enumerate(new_body):
             if isinstance(stmt, cst.SimpleStatementLine):
                 if isinstance(stmt.body[0], cst.Expr) and isinstance(
@@ -86,8 +81,6 @@ class AddImportsTransformer(cst.CSTTransformer):
 
 
 class PrintRemovalTransformer(cst.CSTTransformer):
-    """Remove or convert print() calls to logging"""
-
     def __init__(self, mode="remove"):
         self.mode = mode
         self.removed_count = 0
@@ -109,8 +102,6 @@ class PrintRemovalTransformer(cst.CSTTransformer):
 
 
 class DivisionFixTransformer(cst.CSTTransformer):
-    """Replace / with // or wrap in CertifiedMath.idiv()"""
-
     def __init__(self, mode="floor_div"):
         self.mode = mode
         self.fixed_count = 0
@@ -126,8 +117,6 @@ class DivisionFixTransformer(cst.CSTTransformer):
 
 
 class UUIDFixTransformer(cst.CSTTransformer):
-    """Replace uuid.uuid4() with deterministic ID"""
-
     def __init__(self, strategy="counter"):
         self.strategy = strategy
         self.fixed_count = 0
@@ -151,8 +140,6 @@ class UUIDFixTransformer(cst.CSTTransformer):
 
 
 class FloatLiteralFixTransformer(cst.CSTTransformer):
-    """Replace float literals with integers or Fractions"""
-
     def __init__(self, strategy="category-a-only"):
         self.strategy = strategy
         self.fixed_count = 0
@@ -164,19 +151,15 @@ class FloatLiteralFixTransformer(cst.CSTTransformer):
         try:
             val = float(original_node.value)
 
-            # Category A1: Whole Numbers (e.g., 3.0 -> 3)
+            # Simple debug output
+            # print(f"DEBUG: Checking float {val} with strategy {self.strategy}")
+
             if val.is_integer():
                 self.fixed_count += 1
                 return cst.Integer(value=str(int(val)))
 
-            # Category A2: Simple Decimals (e.g. 0.5 -> Fraction(1, 2))
             if self.strategy in ("category-a-only", "aggressive"):
-                # Safety check: simplistic conversion for now
-                # Use standard library Fraction to find rational representation
-                # Limit denominator to reasonable size to avoid crazy fractions for floating point errors
                 f = Fraction(val).limit_denominator(100)
-
-                # Check if exact match (or very close) and simple denominator
                 if abs(float(f) - val) < 1e-9 and f.denominator in (
                     2,
                     4,
@@ -197,16 +180,13 @@ class FloatLiteralFixTransformer(cst.CSTTransformer):
                             cst.Arg(cst.Integer(str(f.denominator))),
                         ],
                     )
-
-        except ValueError:
+        except Exception as e:
             pass
 
         return updated_node
 
 
 class NonDeterministicIterationFix(cst.CSTTransformer):
-    """Wrap dict/set iterations with sorted()"""
-
     def __init__(self):
         self.fixed_count = 0
 
@@ -234,7 +214,6 @@ def apply_fixes(file_path: str, fixes: List[Tuple[str, dict]], dry_run=True) -> 
             "error": None,
         }
 
-        # Track imports explicitly needed
         needed_imports = set()
 
         for fix_name, config in fixes:
@@ -266,11 +245,9 @@ def apply_fixes(file_path: str, fixes: List[Tuple[str, dict]], dry_run=True) -> 
             if count > 0:
                 result["fixes_applied"].append({"type": fix_name, "count": count})
 
-        # Apply imports if needed
         if needed_imports:
             import_transformer = AddImportsTransformer(needed_imports)
             module = module.visit(import_transformer)
-            # Don't strictly count imports as "fixes" but they are changes
 
         new_code = module.code
         result["new_length"] = len(new_code)
@@ -298,7 +275,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Zero-Sim Auto-Fix with libcst")
-    parser.add_argument("--dir", required=True, help="Directory to fix")
+    parser.add_argument("--dir", required=True, help="Directory or file to fix")
     parser.add_argument(
         "--fixes", default="PrintRemoval,DivisionFix", help="Comma-separated fix list"
     )
@@ -329,7 +306,7 @@ def main():
     ]
 
     print(f"🔧 Auto-Fix Configuration:")
-    print(f"  Directory: {args.dir}")
+    print(f"  Target: {args.dir}")
     print(f"  Fixes: {', '.join(f[0] for f in fixes)}")
     print(f"  Strategy: {args.strategy}")
     print(f"  Dry Run: {args.dry_run}")
@@ -339,7 +316,17 @@ def main():
     files_processed = 0
     files_changed = 0
 
-    for py_file in Path(args.dir).rglob("*.py"):
+    path_arg = Path(args.dir)
+    # Handle both directory iteration and single file
+    if path_arg.is_file():
+        files_iterable = [path_arg]
+    elif path_arg.is_dir():
+        files_iterable = path_arg.rglob("*.py")
+    else:
+        print(f"❌ Error: {args.dir} not found")
+        return
+
+    for py_file in files_iterable:
         if any(excl in str(py_file) for excl in args.exclude):
             continue
 

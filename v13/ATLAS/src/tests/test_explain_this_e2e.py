@@ -27,7 +27,7 @@ class MockReplaySource:
 
     def get_ranking_events(self, content_id):
         if content_id == 'c_test_ranking':
-            return [{'id': 'content_evt_1', 'timestamp': 1234567800, 'type': 'ContentCreated', 'quality_score': 95, 'content_id': content_id, 'creator_id': 'test_user_id'}, {'id': 'interact_evt_1', 'timestamp': 1234567850, 'type': 'InteractionCreated', 'interaction_type': 'view', 'content_id': content_id, 'user_id': 'viewer_user', 'weight': 1.0}]
+            return [{'id': 'content_evt_1', 'timestamp': 1234567800, 'type': 'ContentCreated', 'quality_score': 95, 'content_id': content_id, 'creator_id': 'test_user_id'}, {'id': 'interact_evt_1', 'timestamp': 1234567850, 'type': 'InteractionCreated', 'interaction_type': 'view', 'content_id': content_id, 'user_id': 'viewer_user', 'weight': 1}]
         return []
 
 @pytest.fixture(scope='module')

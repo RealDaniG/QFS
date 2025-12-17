@@ -36,8 +36,8 @@ class TestSignalAddonIntegration(unittest.TestCase):
         for dim in sorted(expected_dimensions):
             self.assertIn(dim, dimensions)
             self.assertIsInstance(dimensions[dim], float)
-            self.assertGreaterEqual(dimensions[dim], 0.0)
-            self.assertLessEqual(dimensions[dim], 1.0)
+            self.assertGreaterEqual(dimensions[dim], 0)
+            self.assertLessEqual(dimensions[dim], 1)
         ledger_context = metadata['ledger_context']
         self.assertEqual(ledger_context['views'], 1000)
         self.assertEqual(ledger_context['laughs'], 800)
@@ -62,8 +62,8 @@ class TestSignalAddonIntegration(unittest.TestCase):
         self.assertEqual(len(dimensions), 7)
         for dim_value in dimensions.values():
             self.assertIsInstance(dim_value, float)
-            self.assertGreaterEqual(dim_value, 0.0)
-            self.assertLessEqual(dim_value, 1.0)
+            self.assertGreaterEqual(dim_value, 0)
+            self.assertLessEqual(dim_value, 1)
 
     def test_addon_info(self):
         """Test that addon info is correctly provided."""
