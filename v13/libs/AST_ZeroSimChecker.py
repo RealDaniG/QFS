@@ -137,8 +137,22 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         if not self.inside_function:
             for target in node.targets:
                 if isinstance(target, ast.Name):
+                    # Skip uppercase constants
                     if target.id.isupper():
                         continue
+
+                    # Skip legitimate Python patterns
+                    legitimate_patterns = {
+                        "__all__",  # Module exports
+                        "__version__",  # Version strings
+                        "__contract_version__",  # Contract versions
+                        "json_schema_extra",  # Pydantic config
+                        "model_config",  # Pydantic v2 config
+                    }
+
+                    if target.id in legitimate_patterns:
+                        continue
+
                     self.add_violation(
                         node,
                         "GLOBAL_MUTATION",

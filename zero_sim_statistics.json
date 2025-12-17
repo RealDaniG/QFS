@@ -1,0 +1,67 @@
+{
+  "total_violations": 1616,
+  "breakdown_by_category": {
+    "GLOBAL_MUTATION": 150,
+    "GLOBAL_KEYWORD": 10,
+    "FORBIDDEN_COMP": 27,
+    "FORBIDDEN_CALL": 838,
+    "NONDETERMINISTIC_ITERATION": 83,
+    "NONDETERMINISTIC_COMP": 39,
+    "FORBIDDEN_IMPORT": 21,
+    "FORBIDDEN_MODULE_CALL": 49,
+    "FORBIDDEN_HASH": 3,
+    "FORBIDDEN_OPERATION": 188,
+    "FORBIDDEN_TYPE": 29,
+    "FLOAT_LITERAL": 129,
+    "MISSING_TIMESTAMP_PARAM": 29,
+    "GLOBAL_ATTR_MUTATION": 8,
+    "FORBIDDEN_CONTAINER": 4,
+    "UNCERTIFIED_ARITHMETIC": 2,
+    "FORBIDDEN_GENERATOR": 2,
+    "DYNAMIC_IMPORT": 1,
+    "WILDCARD_IMPORT": 2,
+    "BARE_EXCEPT": 2
+  },
+  "top_offending_files": [
+    {
+      "file": "v13/tests\\v13_6\\PerformanceBenchmark.py",
+      "count": 79
+    },
+    {
+      "file": "v13/libs\\governance\\AEGIS_Node_Verification.py",
+      "count": 57
+    },
+    {
+      "file": "v13/tests\\pqc\\TestPQCStandardization.py",
+      "count": 56
+    },
+    {
+      "file": "v13/libs\\governance\\NODInvariantChecker.py",
+      "count": 55
+    },
+    {
+      "file": "v13/tools\\humor_observatory_cli.py",
+      "count": 54
+    },
+    {
+      "file": "v13/libs\\economics\\EconomicsGuard.py",
+      "count": 52
+    },
+    {
+      "file": "v13/tests\\old\\demo_transaction.py",
+      "count": 52
+    },
+    {
+      "file": "v13/tests\\phase3_verification_suite.py",
+      "count": 51
+    },
+    {
+      "file": "v13/tests\\v13_6\\FailureModeTests.py",
+      "count": 50
+    },
+    {
+      "file": "v13/tests\\old\\example_usage.py",
+      "count": 49
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+import ast
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_V13_ROOT = os.path.abspath(os.path.join(_THIS_DIR, '..'))
+_PQC_PATH = os.path.join(_V13_ROOT, 'libs', 'PQC.py')
+with open(_PQC_PATH, 'r', encoding='utf-8') as f:
+    source = f.read()
+tree = ast.parse(source)
+for node in ast.walk(tree):
+    if isinstance(node, ast.Global):
+        print(f'Found global at line {node.lineno}: {node.names}')

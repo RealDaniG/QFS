@@ -1,0 +1,27 @@
+﻿
+baseline_verified.txt:22:  v13/AEGIS\__init__.py:15 [GLOBAL_MUTATION] Global assignment to '__version__' forbidden
+baseline_verified.txt:24:  v13/AEGIS\__init__.py:16 [GLOBAL_MUTATION] Global assignment to '__contract_version__' forbidden
+baseline_verified.txt:26:  v13/AEGIS\__init__.py:25 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:34:  v13/AEGIS\governance\proposals.py:40 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:36:  v13/AEGIS\governance\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:38:  v13/AEGIS\models\__init__.py:7 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:40:  v13/AEGIS\sandbox\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:42:  v13/AEGIS\services\evidence_models.py:50 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:58:  v13/AEGIS\services\governance_map.py:27 [GLOBAL_MUTATION] Global assignment to 'router' forbidden
+baseline_verified.txt:62:  v13/AEGIS\services\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:64:  v13/AEGIS\ui_contracts\schemas.py:38 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:66:  v13/AEGIS\ui_contracts\schemas.py:72 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:68:  v13/AEGIS\ui_contracts\schemas.py:98 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:70:  v13/AEGIS\ui_contracts\schemas.py:124 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:72:  v13/AEGIS\ui_contracts\schemas.py:149 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:74:  v13/AEGIS\ui_contracts\schemas.py:200 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:76:  v13/AEGIS\ui_contracts\schemas.py:229 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:78:  v13/AEGIS\ui_contracts\schemas.py:265 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+baseline_verified.txt:80:  v13/AEGIS\ui_contracts\schemas.py:278 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:82:  v13/AEGIS\ui_contracts\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+baseline_verified.txt:86:  v13/core\CoherenceEngine.py:19 [GLOBAL_MUTATION] Global assignment to 'ReferralRewarded' forbidden
+baseline_verified.txt:104:  v13/core\observability\logger.py:121 [GLOBAL_MUTATION] Global assignment to 'logger' forbidden
+baseline_verified.txt:108:  v13/libs\BigNum128.py:21 [GLOBAL_MUTATION] Global assignment to 'cm' forbidden
+baseline_verified.txt:114:  v13/libs\BigNum128_fixed.py:13 [GLOBAL_MUTATION] Global assignment to 'cm' forbidden
+
+
