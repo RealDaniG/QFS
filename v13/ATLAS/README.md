@@ -1,16 +1,16 @@
-# ATLAS 1.1 — Summary
+# ATLAS 1.2 — Deterministic Session Management
 
-> **Current Status:** ATLAS 1.1 Released (Explanaibility & Determinism)  
-> **Backend:** QFS V13.8 (Value Nodes)  
+> **Current Status:** ATLAS 1.2 Released (Session Management & Explainability)  
+> **Backend:** QFS V18.9 (Deterministic Session Management)  
 > **Frontend:** Next.js 15 + Explain-This Panels
 
-ATLAS 1.1 transforms ATLAS × QFS into a **deterministic, two-sided “Explain-This” platform**: users and operators can inspect **why** value, rewards, rankings, and visibility occur, while all real economics remain exclusively governed by QFS.
+ATLAS 1.2 transforms ATLAS × QFS into a **deterministic, two-sided "Explain-This" platform**: users and operators can inspect **why** value, rewards, rankings, and visibility occur, while all real economics remain exclusively governed by QFS.
 
 ATLAS is now formally constrained to act as a **read-only projection and intent router**, never an economic authority.
 
 ---
 
-## What ATLAS 1.1 Delivers
+## What ATLAS 1.2 Delivers
 
 ### 1. Deterministic Platform Architecture
 
@@ -33,7 +33,23 @@ ATLAS is explicitly defined as:
 
 **Result:** Architectural guarantees are enforced by tooling, not trust.
 
-### 2. Hardened Signal System (Humor Slice)
+### 2. Deterministic Session Management System
+
+`SessionManager` is fully production-grade:
+
+- **Deterministic authentication** with challenge-response flow.
+- **Ledger-replayable** session state reconstruction.
+- **Explain-This integration** for cryptographic proof generation.
+- **Zero-Simulation compliant** with no randomness or time dependencies.
+
+**Verification:**
+
+- Backed by **17 tests** covering session lifecycle, rotation, revocation, and replay.
+- Complete artifact set: Spec, evidence bundle, Zero-Sim status, API contracts.
+
+**Result:** ATLAS now supports secure, deterministic session management without economic risk.
+
+### 3. Hardened Signal System (Humor Slice)
 
 `HumorSignalAddon` is fully production-grade:
 
@@ -48,7 +64,7 @@ ATLAS is explicitly defined as:
 
 **Result:** ATLAS now supports governed, explainable signals without economic risk.
 
-### 3. Deterministic Storage & Proof Replay
+### 4. Deterministic Storage & Proof Replay
 
 `StorageEngine` upgraded with:
 
@@ -62,7 +78,7 @@ ATLAS is explicitly defined as:
 
 **Result:** Storage behavior is inspectable and verifiable, not opaque.
 
-### 4. Value-Node Replay & Explainability (V13.8)
+### 5. Value-Node Replay & Explainability (V18.9)
 
 Introduced **user-as-value-node** and **content-as-object** semantics as replayable views.
 
@@ -85,12 +101,14 @@ Introduced **user-as-value-node** and **content-as-object** semantics as replaya
 
 **Result:** Economic outcomes are explainable without exposing or mutating the engine.
 
-### 5. Explain-This APIs & ATLAS UI
+### 6. Explain-This APIs & ATLAS UI
 
 **Implemented Read-Only APIs:**
 
 - `GET /explain/reward/{wallet_id}`
 - `GET /explain/ranking/{content_id}`
+- `POST /session/challenge` (Session challenge request)
+- `POST /session/establish` (Session establishment with challenge response)
 - End-to-end tested with deterministic hashes.
 
 **Live UI Components:**
@@ -98,10 +116,11 @@ Introduced **user-as-value-node** and **content-as-object** semantics as replaya
 - `ExplainThisPanel`: Visualizes breakdowns (base, bonus, caps, guards).
 - `ValueNodeView`: Projects total user value from ledger.
 - `StorageDashboard`: Visualizes storage proofs and node health.
+- `SessionManager`: Manages deterministic session lifecycle with visual indicators.
 
 **Result:** ATLAS users can finally see **why** the system behaves as it does.
 
-### 6. Roadmap, Evidence, and Governance Readiness
+### 7. Roadmap, Evidence, and Governance Readiness
 
 A single **canonical roadmap tracker** encodes:
 
@@ -140,7 +159,7 @@ npm run build
 - **Frontend:** Next.js 15 (App Router), TypeScript 5, Tailwind CSS 4, shadcn/ui
 - **State:** Zustand (UI only), TanStack Query (Ledger views)
 - **Backend:** Axum/FastAPI (QFS), PostgreSQL (Non-authoritative metadata)
-- **Auth:** NextAuth.js (Session/Wallet binding)
+- **Auth:** NextAuth.js (Session/Wallet binding) with deterministic session management
 
 ## Powered by Z.ai
 

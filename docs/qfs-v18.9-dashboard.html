@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QFS V13.8 - Quantum Financial System | Zero-Sim & Explainability Release</title>
+    <title>QFS V18.9 - Quantum Financial System | Deterministic Session Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -39,26 +39,26 @@
                     </div>
                 </div>
                 <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                    QFS V13.8
+                    QFS V18.9
                 </h1>
                 <p class="text-xl md:text-2xl mb-4 text-blue-100">
-                    Zero-Sim Verification & Value-Node Explainability
+                    Deterministic Session Management & Explain-This Integration
                 </p>
                 <p class="text-lg mb-8 text-blue-200 max-w-2xl mx-auto">
-                    Achieving 100% deterministic replay for explainable AI economics. Full compliance scan complete with automated remediation.
+                    Achieving 100% deterministic session management with challenge-response authentication and cryptographic proof integration. Full compliance scan complete with automated remediation.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <div class="bg-white/20 backdrop-blur-sm text-lg px-4 py-2 rounded-full flex items-center">
                         <i class="fas fa-check-circle mr-2 text-green-400"></i>
-                        Zero-Sim Scan Complete
+                        Session Management Live
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm text-lg px-4 py-2 rounded-full flex items-center">
-                        <i class="fas fa-brain mr-2 text-purple-300"></i>
-                         Explain-This API Live
+                        <i class="fas fa-shield-alt mr-2 text-purple-300"></i>
+                        Challenge-Response Auth
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm text-lg px-4 py-2 rounded-full flex items-center">
                         <i class="fas fa-history mr-2 text-yellow-300"></i>
-                        Value-Node Replay
+                        Ledger Replay
                     </div>
                 </div>
             </div>
@@ -69,8 +69,11 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Tab Navigation -->
         <div class="flex flex-wrap justify-center mb-8 bg-white rounded-lg shadow-md p-1">
-            <button class="tab-button active px-4 py-2 m-1 rounded-lg transition-colors" onclick="showTab('v138')">
-                ✨ V13.8 Release
+            <button class="tab-button active px-4 py-2 m-1 rounded-lg transition-colors" onclick="showTab('v189')">
+                ✨ V18.9 Release
+            </button>
+            <button class="tab-button px-4 py-2 m-1 rounded-lg transition-colors" onclick="showTab('sessions')">
+                🔐 Session Management
             </button>
             <button class="tab-button px-4 py-2 m-1 rounded-lg transition-colors" onclick="showTab('compliance')">
                 🛡️ Zero-Sim Compliance
@@ -83,16 +86,16 @@
             </button>
         </div>
 
-        <!-- V13.8 Release Tab -->
-        <div id="v138" class="tab-content active space-y-8">
+        <!-- V18.9 Release Tab -->
+        <div id="v189" class="tab-content active space-y-8">
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-600">
                 <h2 class="text-3xl font-bold mb-4 flex items-center gap-3">
                     <i class="fas fa-rocket text-indigo-600"></i>
-                    QFS V13.8 Release Notes
+                    QFS V18.9 Release Notes
                 </h2>
                 <div class="flex gap-4 text-sm text-gray-600 mb-6">
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Date: 2025-12-14</span>
-                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">Status: STABLE</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Date: 2025-12-17</span>
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">Status: RELEASED</span>
                     <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Type: Feature & Compliance</span>
                 </div>
                 
@@ -103,29 +106,29 @@
                             <li class="flex items-start gap-3">
                                 <i class="fas fa-check bg-green-100 text-green-600 p-1 rounded-full mt-1"></i>
                                 <div>
-                                    <span class="font-semibold block">Value-Node Replay Engine</span>
-                                    <span class="text-sm text-gray-600">Deterministic reconstruction of past economic states for explanation.</span>
+                                    <span class="font-semibold block">Deterministic Session Management</span>
+                                    <span class="text-sm text-gray-600">Complete session lifecycle with deterministic ID generation and ledger replay.</span>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
                                 <i class="fas fa-check bg-green-100 text-green-600 p-1 rounded-full mt-1"></i>
                                 <div>
-                                    <span class="font-semibold block">Explain-This API</span>
-                                    <span class="text-sm text-gray-600">New endpoints `/explain/reward` and `/explain/ranking` exposed to ATLAS.</span>
+                                    <span class="font-semibold block">Challenge-Response Authentication</span>
+                                    <span class="text-sm text-gray-600">Secure authentication flow with deterministic challenge generation.</span>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
                                 <i class="fas fa-check bg-green-100 text-green-600 p-1 rounded-full mt-1"></i>
                                 <div>
-                                    <span class="font-semibold block">Zero-Sim Compliance Suite</span>
-                                    <span class="text-sm text-gray-600">Automated static analysis enforcing "No Randomness, No Wall-Clock" invariants.</span>
+                                    <span class="font-semibold block">Ledger Replay Integration</span>
+                                    <span class="text-sm text-gray-600">Full session state reconstruction from ledger events only.</span>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
                                 <i class="fas fa-check bg-green-100 text-green-600 p-1 rounded-full mt-1"></i>
                                 <div>
-                                    <span class="font-semibold block">Session Management System</span>
-                                    <span class="text-sm text-gray-600">Deterministic session layer with challenge-response authentication and ledger replay.</span>
+                                    <span class="font-semibold block">Explain-This Integration</span>
+                                    <span class="text-sm text-gray-600">Cryptographic proofs for session authentication and state.</span>
                                 </div>
                             </li>
                         </ul>
@@ -150,6 +153,94 @@
                                 <span>Session Tests</span>
                                 <span class="font-mono font-bold text-green-600">17/17 Pass</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Management Tab -->
+        <div id="sessions" class="tab-content space-y-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6">Session Management System</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="border rounded-lg p-6">
+                        <h3 class="font-bold mb-4 text-indigo-600">Authentication Flow</h3>
+                        <ol class="space-y-4 text-sm">
+                            <li class="flex gap-3">
+                                <span class="bg-white border rounded-full w-6 h-6 flex items-center justify-center font-bold text-gray-500">1</span>
+                                <div>
+                                    <span class="font-semibold">Device Registration</span>
+                                    <p class="text-gray-500">Deterministic device ID computed from os_type, hardware_id, and optional label.</p>
+                                </div>
+                            </li>
+                             <li class="flex gap-3">
+                                <span class="bg-white border rounded-full w-6 h-6 flex items-center justify-center font-bold text-gray-500">2</span>
+                                <div>
+                                    <span class="font-semibold">Challenge Request</span>
+                                    <p class="text-gray-500">Client requests challenge for wallet_id and device_id.</p>
+                                </div>
+                            </li>
+                             <li class="flex gap-3">
+                                <span class="bg-white border rounded-full w-6 h-6 flex items-center justify-center font-bold text-gray-500">3</span>
+                                <div>
+                                    <span class="font-semibold">Challenge Response</span>
+                                    <p class="text-gray-500">Client signs challenge with wallet private key and submits signature.</p>
+                                </div>
+                            </li>
+                             <li class="flex gap-3">
+                                <span class="bg-white border rounded-full w-6 h-6 flex items-center justify-center font-bold text-gray-500">4</span>
+                                <div>
+                                    <span class="font-semibold">Session Establishment</span>
+                                    <p class="text-gray-500">Server verifies signature and creates deterministic session.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="border rounded-lg p-6 bg-slate-50">
+                        <h3 class="font-bold mb-4">Session Lifecycle</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-plus-circle text-green-500 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold">Create Session</span>
+                                    <p class="text-gray-500">Deterministic session ID generation using SHA-256 from wallet_id, device_id, and timestamp.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-sync text-blue-500 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold">Rotate Session</span>
+                                    <p class="text-gray-500">Generate new session with same wallet/device but updated timestamp.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-times-circle text-red-500 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold">Revoke Session</span>
+                                    <p class="text-gray-500">Mark session as inactive with ledger event emission.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border rounded-lg p-6">
+                    <h3 class="font-bold mb-4">Ledger Events</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <h4 class="font-semibold text-blue-800 mb-2">SESSION_STARTED</h4>
+                            <p class="text-sm text-blue-600">Emitted when new session is created with wallet_id, device_id, session_id, and timestamp.</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                            <h4 class="font-semibold text-yellow-800 mb-2">SESSION_ROTATED</h4>
+                            <p class="text-sm text-yellow-600">Emitted when session is rotated with old_session_id, new_session_id, and timestamp.</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <h4 class="font-semibold text-red-800 mb-2">SESSION_REVOKED</h4>
+                            <p class="text-sm text-red-600">Emitted when session is revoked with session_id and revocation timestamp.</p>
                         </div>
                     </div>
                 </div>
@@ -203,6 +294,12 @@
                                     <td class="p-3 text-red-600"><code>Math.random()</code></td>
                                     <td class="p-3"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">FIXED</span></td>
                                     <td class="p-3">Replaced with content-hash PRNG</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="p-3">Session Manager</td>
+                                    <td class="p-3 text-green-600"><code>Deterministic ID Generation</code></td>
+                                    <td class="p-3"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">COMPLIANT</span></td>
+                                    <td class="p-3">SHA-256 based deterministic session IDs</td>
                                 </tr>
                                 <tr class="bg-white">
                                     <td class="p-3">React Hooks</td>
@@ -278,7 +375,7 @@
       }
     ],
     "confidence": 1.0,
-    "provenance": "replay_v13.8_verified"
+    "provenance": "replay_v18.9_verified"
   }
 }</pre>
                     </div>
@@ -309,31 +406,32 @@
 
                     <!-- Phase 2 -->
                     <div class="relative">
-                        <div class="absolute -left-12 bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-sync"></i>
+                        <div class="absolute -left-12 bg-green-500 text-white w-8 h-8 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-blue-600">Phase 2: Live QFS Feeds</h3>
-                        <p class="text-sm text-gray-500 mb-2">Dec 14 - Dec 20, 2025</p>
-                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                             <ul class="text-sm text-blue-800 list-disc pl-4">
-                                <li><strong>Current Focus:</strong> Wiring `QFSReplaySource` to live ledger data.</li>
-                                <li><strong>Goal:</strong> Replace mocks with immutable history.</li>
-                                <li>Feature Flag: `EXPLAIN_THIS_SOURCE`</li>
-                                <li><strong>New:</strong> Session Management System Integration</li>
+                        <h3 class="text-xl font-bold text-green-600">Phase 2: Deterministic Session Management</h3>
+                        <p class="text-sm text-gray-500 mb-2">Dec 14 - Dec 17, 2025</p>
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                             <ul class="text-sm text-green-800 list-disc pl-4">
+                                <li><strong>Completed:</strong> Deterministic session layer with challenge-response authentication.</li>
+                                <li><strong>Completed:</strong> Ledger-replayable session state reconstruction.</li>
+                                <li><strong>Completed:</strong> Explain-This cryptographic proof system integration.</li>
+                                <li><strong>Feature Flag:</strong> `SESSION_CHALLENGE_TTL`</li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Phase 3 -->
                     <div class="relative">
-                         <div class="absolute -left-12 bg-gray-200 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-clock"></i>
+                         <div class="absolute -left-12 bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center">
+                            <i class="fas fa-sync"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-500">Phase 3: Production Hardening</h3>
-                        <p class="text-sm text-gray-400 mb-2">Jan 2026</p>
-                        <ul class="text-sm text-gray-400 list-disc pl-4">
+                        <h3 class="text-xl font-bold text-blue-600">Phase 3: Production Hardening</h3>
+                        <p class="text-sm text-gray-500 mb-2">Jan 2026</p>
+                        <ul class="text-sm text-blue-600 list-disc pl-4">
                             <li>Linux PQC Deployment</li>
                             <li>Full Network Stress Test</li>
+                            <li>Session Management Performance Optimization</li>
                         </ul>
                     </div>
                 </div>

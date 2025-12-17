@@ -1,4 +1,4 @@
-# Quantum Financial System (QFS) V13.8 – Zero‑Sim Absolute
+# Quantum Financial System (QFS) V18.9 – Deterministic Session Management
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
 
@@ -12,16 +12,16 @@
 | **Deploy to production** | [Production Deployment](#production-deployment) |
 | **Review security** | [Security Compliance](#security-compliance) |
 | **Contribute** | [Contributing](#contributing) |
-| **Check status** | [Interactive Dashboard](docs/qfs-v13.8-dashboard.html) |
+| **Check status** | [Interactive Dashboard](docs/qfs-v18.9-dashboard.html) |
 | **Browse documentation** | [📚 Full Wiki](https://github.com/RealDaniG/QFS/wiki) |
 
 ---
 
 ## 📊 Current Status
 
-### V13.8 "Zero‑Sim Absolute" (BETA) ✅ COMPLETE
+### V18.9 "Deterministic Session Management" (RELEASED) ✅ LIVE
 
-This release locks the full stack into audited, replayable determinism: every ledger write is PQC‑signed, every reward and ranking is explainable via zero‑simulation replay, and all constitutional guards are wired into the production pipeline.
+This release introduces the complete deterministic session management system with challenge-response authentication, ledger-replayable state reconstruction, and Explain-This cryptographic proof integration.
 
 | Component | Status | Tests | Coverage |
 |-----------|--------|-------|----------|
@@ -34,19 +34,19 @@ This release locks the full stack into audited, replayable determinism: every le
 | Explanation Audit | ✅ Ready | Backend + UI | Complete |
 | Full-Stack Determinism | ✅ PASS | Nightly E2E green | Verified |
 | **Trust Loop** | ✅ Verified | v13/scripts/L-001 | Passed |
-| **Session Management** | ✅ Integrated | Deterministic | 100% |
+| **Session Management** | ✅ RELEASED | Deterministic | 100% |
 
-**Release Date:** 2025‑12‑15  
+**Release Date:** 2025‑12‑17  
 **Constitutional Status:** Guards enforced at all economic and governance gates  
 **Performance Target:** 2,000 TPS with full guard stack under AEGIS‑verified nodes
 
-📈 [View Real-Time Dashboard](docs/qfs-v13.8-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+📈 [View Real-Time Dashboard](docs/qfs-v18.9-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
 
 ---
 
 ## 🏗️ Architecture Overview
 
-QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
+QFS V18.9 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
 
 ```
 
@@ -54,9 +54,9 @@ QFS V13.8 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 │                 ATLAS Social Platform                   │
 │          (Censorship-Resistant P2P/TOR Network)         │
 └─────────────────────────────────────────────────────────┘
-                            ↓
+                           ↓
 ┌─────────────────────────────────────────────────────────┐
-│                   QFS V13.8 Engine                      │
+│                   QFS V18.9 Engine                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │Constitutional│  │  Zero-Sim    │  │ ExplainThis  │  │
 │  │    Guards    │  │    Replay    │  │    Audit     │  │
@@ -87,6 +87,7 @@ ATLAS is the user-facing web application that provides wallet-based authenticati
 - End-to-end encrypted messaging
 - Referral system with Genesis Points
 - Real-time coherence scoring
+- Deterministic session management with challenge-response authentication
 
 ---
 
@@ -148,6 +149,7 @@ Three layers of enforcement:
 - **Structured Logging**: All operations now emit JSON structured logs with `TraceContext` propagation.
 - **Consistency Proofs**: `CertifiedMath` logs are cryptographically bound to the audit trail via `pqc_cid`.
 - **PQC Abstraction**: OS-agnostic `IPQCProvider` ensures deterministic crypto operations across dev/prod environments.
+- **Session Management**: Deterministic session layer with challenge-response authentication and ledger replay.
 
 🔐 [Guard Implementation](v13/guards)
 
@@ -206,6 +208,7 @@ EXPLAIN_THIS_SOURCE=qfs_ledger  # NO MOCKS in production
 QFS_API_URL=<https://api.qfs.example.com>  # HTTPS only
 AEGIS_API_URL=<https://aegis.qfs.example.com>
 NEXT_PUBLIC_API_URL=/api
+SESSION_CHALLENGE_TTL=3600  # Session challenge TTL in seconds
 
 ```
 
@@ -219,6 +222,7 @@ NEXT_PUBLIC_API_URL=/api
 - [ ] PQC signatures verified on all ledger writes
 - [ ] AEGIS production service deployed
 - [ ] Nightly E2E pipeline green
+- [ ] Session management system tested and verified
 
 📖 [Operator Runbook (Production)](v13/docs/OPERATOR_RUNBOOK_V13.8.md)
 
@@ -253,7 +257,7 @@ python -m pytest v13/ATLAS/src/tests -v
 # Nightly E2E
 
 python scripts/generate_full_stack_evidence.py
-```
+
 ```
 
 ### Evidence Artifacts
@@ -278,13 +282,14 @@ All verification evidence is in `v13/evidence/`:
 - [ATLAS Web UI Guide](v13/ATLAS/README.md) – Frontend user interface
 - [Explain-This System](v13/docs/EXPLANATION_AUDIT_SPEC.md) – Reward transparency
 - [Humor Signal Overview](v13/docs/QFS_V13_7_HUMOR_SIGNAL_ADDON.md) – 7-dimensional comedy rewards
+- [Session Management System](v13/docs/SESSION_MANAGEMENT_SYSTEM.md) – Deterministic session layer
 - [📖 **Full Wiki**](https://github.com/RealDaniG/QFS/wiki) – Complete documentation hub
 
 ### For Developers
 
 - [Zero-Sim Contract v1.3](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) – **Start here**
 - [StorageEngine Spec](v13/docs/STORAGEENGINE_INTERFACE_SPEC.md) – Decentralized storage
-- [Session Management System](v13/docs/SESSION_MANAGEMENT_SYSTEM.md) – Deterministic session layer
+- [Session Management System](v13/docs/SESSION_MANAGEMENT_SYSTEM.md) – Deterministic session layer with challenge-response authentication
 - [📖 **Developer Wiki**](https://github.com/RealDaniG/QFS/wiki) – API docs, architecture guides
 
 ### For Auditors
@@ -297,13 +302,14 @@ All verification evidence is in `v13/evidence/`:
 
 ## 🤝 Contributing
 
-### Current Focus: ATLAS v1.3 "Governance Live"
+### Current Focus: QFS v18.9 "Deterministic Session Management"
 
 We're moving from verified baseline → live production with:
 
-1. Real AEGIS DID verification service
-2. Governance voting portal
-3. Public audit dashboard
+1. Deterministic session management system
+2. Challenge-response authentication flow
+3. Ledger-replayable session state reconstruction
+4. Explain-This cryptographic proof integration
 
 📋 [View Open Tasks](v13/docs/roadmaps/TASKS-V13.5.md)
 
@@ -338,6 +344,7 @@ We're moving from verified baseline → live production with:
 - ✅ **V13.6**: Constitutional guards deployed
 - ✅ **V13.8**: Zero-Sim Absolute / Pipeline Compliance (Phase 14)
 - ✅ **Session Management System**: Deterministic session layer with challenge-response authentication
+- ✅ **V18.9**: Full session management system release with Explain-This integration
 
 ### Current Phase
 
@@ -346,6 +353,7 @@ We're moving from verified baseline → live production with:
 - ✅ Minimal Trust Loop (Wallet -> Chat -> Referrals -> Reward)
 - ✅ Batch Event API
 - ✅ Deterministic User Identifiers
+- ✅ Session Management System
 
 🔵 **ATLAS v1.3 "Governance Live"** (Q1 2026)
 
@@ -374,22 +382,6 @@ We're moving from verified baseline → live production with:
 - **Referral System:** Ledger-backed, deterministic invitation logic
 - **Explain-This Framework:** Cryptographically auditable reward transparency
 - **PQC Ready:** CRYSTALS-Dilithium signatures on all ledger writes
-- **Session Management System:** Deterministic, replayable session layer with challenge-response authentication
-
----
-
-## 📞 Support & Community
-
-### Connect With Us
-
-<div align="center">
-
-[![Patreon](https://img.shields.io/badge/Support_on-Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/c/QFSxATLAS)
-[![TikTok](https://img.shields.io/badge/Follow_on-TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@danigthe1)
-[![Instagram](https://img.shields.io/badge/Follow_on-Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/danigmcfresh/)
-
-</div>
-
-**Support the Project** | Get exclusive updates, behind-the-scenes development insights, and early access to new features by supporting us on Patreon!
+- **Session Management System:** Deterministic, replayable session layer with challenge-response authentication and Explain-This integration
 
 ---
