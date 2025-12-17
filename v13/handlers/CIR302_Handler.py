@@ -1,7 +1,7 @@
 """
 CIR302_Handler.py - Deterministic Halt System for QFS V13.6
 
-Implements the CIR302_Handler class for deterministically halting 
+Implements the CIR302_Handler class for deterministically halting
 the system in case of critical failures.
 
 V13.6 Constitutional Integration:
@@ -19,7 +19,7 @@ import os
 from typing import Dict, Any, Optional, List, Type
 
 # Add the current directory to the path so we can import modules
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 # Handle imports for both direct execution and package usage
 try:
@@ -28,7 +28,7 @@ try:
 except ImportError:
     # Try with sys.path modification
     try:
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         from libs.BigNum128 import BigNum128
         from libs.CertifiedMath import CertifiedMath
     except ImportError:
@@ -40,16 +40,16 @@ except ImportError:
 class CIR302_Handler:
     """
     Deterministic Halt System for QFS V13.6.
-    
+
     Triggers on:
     - HSMF validation failure, treasury computation errors, or C_holo/S_CHR violations
     - Constitutional guard violations (EconomicsGuard, NODInvariantChecker)
     - AEGIS node verification failures
     - NOD transfer firewall violations
-    
+
     Implements immediate hard halt with no quarantine state or retries.
     Integrates with CertifiedMath for canonical logging.
-    
+
     V13.6 Error Code Categories:
     - ECON_*: Economic bound violations (EconomicsGuard)
     - NOD_INVARIANT_*: NOD invariant violations (NODInvariantChecker)
@@ -57,9 +57,9 @@ class CIR302_Handler:
     - NODE_*: AEGIS node verification failures
     - AEGIS_OFFLINE: AEGIS degradation/offline
     """
-    
+
     CIR302_CODE = BigNum128.from_int(302)
-    
+
     # V13.6: Constitutional error code to halt reason mappings
     GUARD_ERROR_MAPPINGS = {
         # Economic Guard Violations
@@ -78,31 +78,28 @@ class CIR302_Handler:
         "ECON_PER_ADDRESS_CAP": "Per-address reward cap exceeded",
         "ECON_DUST_THRESHOLD": "Reward below dust threshold",
         "ECON_IMMUTABLE_CONSTANT_MUTATION": "Attempted mutation of [IMMUTABLE] constant",
-        
         # NOD Invariant Violations
         "INVARIANT_VIOLATION_NOD_TRANSFER": "NOD transfer firewall: NOD delta outside allowed context",
         "NOD_INVARIANT_I1_VIOLATED": "NOD-I1 violated: Non-transferability (user transfer attempt)",
         "NOD_INVARIANT_I2_VIOLATED": "NOD-I2 violated: Supply conservation (unverified node or out-of-allocator creation)",
         "NOD_INVARIANT_I3_VIOLATED": "NOD-I3 violated: Voting power bounds (single node > 25%)",
         "NOD_INVARIANT_I4_VIOLATED": "NOD-I4 violated: Deterministic replay (snapshot hash mismatch)",
-        
         # AEGIS Node Verification Failures
         "NODE_NOT_IN_REGISTRY": "Node not found in AEGIS registry",
         "NODE_INSUFFICIENT_UPTIME": "Node uptime below threshold",
         "NODE_TELEMETRY_HASH_MISMATCH": "Telemetry hash coherence failure",
         "NODE_CRYPTOGRAPHIC_IDENTITY_INVALID": "PQC identity verification failed",
         "NODE_HEALTH_CHECK_FAILED": "Node health check failed",
-        
         # AEGIS System Status
         "AEGIS_OFFLINE": "AEGIS system offline or degraded",
         "AEGIS_SNAPSHOT_UNAVAILABLE": "AEGIS snapshot unavailable for deterministic replay",
         "AEGIS_SCHEMA_VERSION_MISMATCH": "AEGIS snapshot schema version mismatch",
     }
-    
+
     def __init__(self, cm_instance: Type[CertifiedMath]):
         """
         Initialize the CIR-302 Handler.
-        
+
         Args:
             cm_instance: CertifiedMath class for deterministic operations and logging
         """
@@ -111,9 +108,9 @@ class CIR302_Handler:
             "component": "CIR302_Handler",
             "version": "QFS-V13",
             "timestamp": BigNum128(0).to_decimal_string(),
-            "pqc_scheme": "None"
+            "pqc_scheme": "None",
         }
-        
+
     def handle_violation(
         self,
         error_type: str,
@@ -126,7 +123,7 @@ class CIR302_Handler:
         """
         Deterministically halt the system in case of critical failures.
         Logs the violation via CertifiedMath before hard halt.
-        
+
         Args:
             error_type: Type of violation
             error_details: Details of the violation
@@ -142,23 +139,27 @@ class CIR302_Handler:
                 "cir": "302",
                 "error_type": error_type,
                 "error_details": error_details,
-                "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
+                "timestamp": BigNum128.from_int(
+                    deterministic_timestamp
+                ).to_decimal_string(),
                 "finality": "CIR302_REGISTERED",
                 "tag_incident_id": f"cir302_{deterministic_timestamp}",
                 "tag_incident_type": error_type,
-                "tag_component": "CIR302"
+                "tag_component": "CIR302",
             },
             CIR302_Handler.CIR302_CODE,
             log_list,
             pqc_cid,
-            quantum_metadata
+            quantum_metadata,
         )
-        
+
         # HARD HALT — no return, no state, no quarantine
         # Exit code must be deterministically derived from the fault, not hardcoded
-        exit_code = CIR302_Handler.CIR302_CODE.value // CIR302_Handler.CIR302_CODE.SCALE
+        exit_code = self.cm.idiv(
+            CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
+        )
         sys.exit(exit_code)  # 302 integer exit code
-    
+
     def handle_guard_violation(
         self,
         error_code: str,
@@ -171,10 +172,10 @@ class CIR302_Handler:
     ):
         """
         Handle constitutional guard violations with structured error codes.
-        
+
         V13.6: Maps guard error codes to halt reasons and generates structured
         finality artifacts with guard status.
-        
+
         Args:
             error_code: Structured error code (e.g., 'ECON_BOUND_VIOLATION', 'NOD_INVARIANT_I1_VIOLATED')
             error_message: Human-readable error message
@@ -186,10 +187,9 @@ class CIR302_Handler:
         """
         # Map error code to halt reason
         halt_reason = self.GUARD_ERROR_MAPPINGS.get(
-            error_code,
-            f"Unknown guard violation: {error_code}"
+            error_code, f"Unknown guard violation: {error_code}"
         )
-        
+
         # Build structured violation payload
         violation_payload = {
             "cir": "302",
@@ -197,14 +197,16 @@ class CIR302_Handler:
             "error_code": error_code,
             "error_message": error_message,
             "halt_reason": halt_reason,
-            "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
-            "finality": "CIR302_CONSTITUTIONAL_HALT"
+            "timestamp": BigNum128.from_int(
+                deterministic_timestamp
+            ).to_decimal_string(),
+            "finality": "CIR302_CONSTITUTIONAL_HALT",
         }
-        
+
         # Extract minimal fields needed for math-level tagging
         incident_id = context.get("incident_id", f"cir302_{deterministic_timestamp}")
         incident_type = context.get("incident_type", error_code)
-        
+
         # Log the guard violation deterministically with flattened tag fields
         # Rich context is logged separately in CIR-302 events, not in math logs
         self.cm._log_operation(
@@ -212,49 +214,59 @@ class CIR302_Handler:
             {
                 "cir": "302",
                 "error_code": error_code,
-                "timestamp": BigNum128.from_int(deterministic_timestamp).to_decimal_string(),
+                "timestamp": BigNum128.from_int(
+                    deterministic_timestamp
+                ).to_decimal_string(),
                 "finality": "CIR302_CONSTITUTIONAL_HALT",
                 "tag_incident_id": str(incident_id),
                 "tag_incident_type": str(incident_type),
-                "tag_component": "CIR302"
+                "tag_component": "CIR302",
             },
             CIR302_Handler.CIR302_CODE,
             log_list,
             pqc_cid,
-            quantum_metadata
+            quantum_metadata,
         )
-        
+
         # Generate finality seal with guard violation metadata
         finality_seal = self.generate_guard_finality_seal(
             error_code=error_code,
             error_message=error_message,
             context=context,
-            timestamp=deterministic_timestamp
+            timestamp=deterministic_timestamp,
         )
-        
+
         # Log finality seal
-        log_list.append({
-            "operation": "cir302_finality_seal_generated",
-            "finality_seal_hash": finality_seal,
-            "error_code": error_code,
-            "timestamp": deterministic_timestamp
-        })
-        
+        log_list.append(
+            {
+                "operation": "cir302_finality_seal_generated",
+                "finality_seal_hash": finality_seal,
+                "error_code": error_code,
+                "timestamp": deterministic_timestamp,
+            }
+        )
+
         # HARD HALT — no return, no state, no quarantine
-        exit_code = CIR302_Handler.CIR302_CODE.value // CIR302_Handler.CIR302_CODE.SCALE
+        exit_code = self.cm.idiv(
+            CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
+        )
         sys.exit(exit_code)  # 302 integer exit code
-        
-    def generate_finality_seal(self, system_state: Optional[Dict[str, Any]] = None, constitutional_guard_status: str = "ok") -> str:
+
+    def generate_finality_seal(
+        self,
+        system_state: Optional[Dict[str, Any]] = None,
+        constitutional_guard_status: str = "ok",
+    ) -> str:
         """
         Produces JSON seal with deterministic hash of state.
         This method is for pre-halt logging only - CIR302 halts immediately after.
-        
+
         V13.6: Includes constitutional_guard_status for guard violation tracking.
-        
+
         Args:
             system_state: Optional system state to include in seal
             constitutional_guard_status: Guard status ("ok" | "halted")
-            
+
         Returns:
             str: Deterministic hash of system state
         """
@@ -265,36 +277,38 @@ class CIR302_Handler:
             "timestamp": BigNum128(0).to_decimal_string(),
             "is_active": False,
             "constitutional_guard_status": constitutional_guard_status,
-            "system_state_hash": self._hash_system_state(system_state) if system_state else "",
-            "quantum_metadata": self.quantum_metadata
+            "system_state_hash": self._hash_system_state(system_state)
+            if system_state
+            else "",
+            "quantum_metadata": self.quantum_metadata,
         }
-        
+
         # Serialize with sorted keys for deterministic output
-        seal_json = json.dumps(seal_data, sort_keys=True, separators=(',', ':'))
-        
+        seal_json = json.dumps(seal_data, sort_keys=True, separators=(",", ":"))
+
         # Generate deterministic hash
-        seal_hash = hashlib.sha256(seal_json.encode('utf-8')).hexdigest()
-        
+        seal_hash = hashlib.sha256(seal_json.encode("utf-8")).hexdigest()
+
         return seal_hash
-    
+
     def generate_guard_finality_seal(
         self,
         error_code: str,
         error_message: str,
         context: Dict[str, Any],
-        timestamp: int = 0
+        timestamp: int = 0,
     ) -> str:
         """
         Generate finality seal with guard violation metadata.
-        
+
         V13.6: Structured seal for constitutional guard violations.
-        
+
         Args:
             error_code: Structured error code
             error_message: Human-readable error message
             context: Violation context
             timestamp: Deterministic timestamp
-            
+
         Returns:
             str: Deterministic hash of finality seal
         """
@@ -309,39 +323,39 @@ class CIR302_Handler:
                 {
                     "error_code": error_code,
                     "error_message": error_message,
-                    "halt_reason": self.GUARD_ERROR_MAPPINGS.get(error_code, "Unknown violation")
+                    "halt_reason": self.GUARD_ERROR_MAPPINGS.get(
+                        error_code, "Unknown violation"
+                    ),
                 }
             ],
-            "quantum_metadata": self.quantum_metadata
+            "quantum_metadata": self.quantum_metadata,
         }
-        
+
         # Add context fields to seal data (flatten for deterministic serialization)
         for key, value in context.items():
             seal_data[f"violation_context_{key}"] = str(value)
-        
+
         # Serialize with sorted keys for deterministic output
-        seal_json = json.dumps(seal_data, sort_keys=True, separators=(',', ':'))
-        
+        seal_json = json.dumps(seal_data, sort_keys=True, separators=(",", ":"))
+
         # Generate deterministic hash
-        seal_hash = hashlib.sha256(seal_json.encode('utf-8')).hexdigest()
-        
+        seal_hash = hashlib.sha256(seal_json.encode("utf-8")).hexdigest()
+
         return seal_hash
-        
+
     def _hash_system_state(self, system_state: Dict[str, Any]) -> str:
         """
         Generate deterministic hash of system state.
-        
+
         Args:
             system_state: System state dictionary
-            
+
         Returns:
             str: SHA-256 hash of system state
         """
         if not system_state:
             return ""
-            
+
         # Serialize with sorted keys for deterministic output
-        state_json = json.dumps(system_state, sort_keys=True, separators=(',', ':'))
-        return hashlib.sha256(state_json.encode('utf-8')).hexdigest()
-
-
+        state_json = json.dumps(system_state, sort_keys=True, separators=(",", ":"))
+        return hashlib.sha256(state_json.encode("utf-8")).hexdigest()

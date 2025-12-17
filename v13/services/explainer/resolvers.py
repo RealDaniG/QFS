@@ -3,6 +3,7 @@ resolvers.py - Type-specific explanation resolvers
 """
 
 from typing import Dict, Any, List
+from ...libs.CertifiedMath import CertifiedMath
 
 
 class BaseResolver:
@@ -30,27 +31,29 @@ class RewardResolver(BaseResolver):
         if not reward_event:
             return {"inputs": [], "computation": {}}
 
-        # Mock computation
+        # Mock computation - use integers for Zero-Sim compliance
         base_reward = reward_event.get("amount", 100)
-        coherence_multiplier = 1.2  # Mock from user coherence
+        coherence_multiplier_scaled = 120  # 1.2 * 100 (scaled by 100)
 
         return {
             "inputs": [
                 {
                     "event_id": "content_posted",
-                    "weight": 0.6,
+                    "weight": 60,  # 0.6 * 100 (percentage as integer)
                     "description": "Content contribution",
                 },
                 {
                     "event_id": "coherence_score",
-                    "weight": 0.4,
+                    "weight": 40,  # 0.4 * 100 (percentage as integer)
                     "description": "User reputation",
                 },
             ],
             "computation": {
                 "base_reward": base_reward,
-                "coherence_multiplier": coherence_multiplier,
-                "final_reward": base_reward * coherence_multiplier,
+                "coherence_multiplier_scaled": coherence_multiplier_scaled,
+                "final_reward": CertifiedMath.idiv(
+                    base_reward * coherence_multiplier_scaled, 100
+                ),
             },
         }
 
@@ -63,8 +66,8 @@ class CoherenceResolver(BaseResolver):
     ) -> Dict[str, Any]:
         return {
             "inputs": [
-                {"event_id": "interaction_positive", "weight": 0.7},
-                {"event_id": "content_quality_score", "weight": 0.3},
+                {"event_id": "interaction_positive", "weight": 70},  # 0.7 * 100
+                {"event_id": "content_quality_score", "weight": 30},  # 0.3 * 100
             ],
             "computation": {
                 "previous_score": 400,
@@ -82,10 +85,10 @@ class FlagResolver(BaseResolver):
         self, entity_id: str, ledger_events: List[Dict[str, Any]], policy_version: str
     ) -> Dict[str, Any]:
         return {
-            "inputs": [{"event_id": "content_analysis", "weight": 1.0}],
+            "inputs": [{"event_id": "content_analysis", "weight": 100}],  # 1.0 * 100
             "computation": {
                 "flag_type": "ADVISORY",
-                "confidence": 0.85,
+                "confidence": 85,  # 0.85 * 100 (percentage as integer)
                 "matched_patterns": ["safety_keywords"],
                 "human_review_required": False,
             },
