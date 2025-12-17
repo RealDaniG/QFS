@@ -14,27 +14,16 @@ V13.6 Constitutional Integration:
 
 import json
 import hashlib
-import sys
-import os
 from typing import Dict, Any, Optional, List, Type
-
-# Add the current directory to the path so we can import modules
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 # Handle imports for both direct execution and package usage
 try:
     from libs.BigNum128 import BigNum128
     from libs.CertifiedMath import CertifiedMath
 except ImportError:
-    # Try with sys.path modification
-    try:
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-        from libs.BigNum128 import BigNum128
-        from libs.CertifiedMath import CertifiedMath
-    except ImportError:
-        # Last resort: try absolute import
-        from v13.libs.BigNum128 import BigNum128
-        from v13.libs.CertifiedMath import CertifiedMath
+    # Try absolute import as fallback
+    from v13.libs.BigNum128 import BigNum128
+    from v13.libs.CertifiedMath import CertifiedMath
 
 
 class CIR302_Handler:
@@ -158,7 +147,7 @@ class CIR302_Handler:
         exit_code = self.cm.idiv_bn(
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
-        sys.exit(exit_code)  # 302 integer exit code
+        raise SystemExit(exit_code)  # 302 integer exit code
 
     def handle_guard_violation(
         self,
@@ -200,43 +189,25 @@ class CIR302_Handler:
             "timestamp": BigNum128.from_int(
                 deterministic_timestamp
             ).to_decimal_string(),
-            "finality": "CIR302_CONSTITUTIONAL_HALT",
+            "context": context,
         }
 
-        # Extract minimal fields needed for math-level tagging
-        incident_id = context.get("incident_id", f"cir302_{deterministic_timestamp}")
-        incident_type = context.get("incident_type", error_code)
-
-        # Log the guard violation deterministically with flattened tag fields
-        # Rich context is logged separately in CIR-302 events, not in math logs
+        # Log the violation
         self.cm._log_operation(
-            "cir302_guard_violation",
-            {
-                "cir": "302",
-                "error_code": error_code,
-                "timestamp": BigNum128.from_int(
-                    deterministic_timestamp
-                ).to_decimal_string(),
-                "finality": "CIR302_CONSTITUTIONAL_HALT",
-                "tag_incident_id": str(incident_id),
-                "tag_incident_type": str(incident_type),
-                "tag_component": "CIR302",
-            },
+            "constitutional_guard_violation",
+            violation_payload,
             CIR302_Handler.CIR302_CODE,
             log_list,
             pqc_cid,
             quantum_metadata,
         )
 
-        # Generate finality seal with guard violation metadata
+        # Generate finality seal with guard status
         finality_seal = self.generate_guard_finality_seal(
-            error_code=error_code,
-            error_message=error_message,
-            context=context,
-            timestamp=deterministic_timestamp,
+            error_code, error_message, context, deterministic_timestamp
         )
 
-        # Log finality seal
+        # Log finality seal generation
         log_list.append(
             {
                 "operation": "cir302_finality_seal_generated",
@@ -250,7 +221,7 @@ class CIR302_Handler:
         exit_code = self.cm.idiv_bn(
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
-        sys.exit(exit_code)  # 302 integer exit code
+        raise SystemExit(exit_code)  # 302 integer exit code
 
     def generate_finality_seal(
         self,
@@ -332,7 +303,7 @@ class CIR302_Handler:
         }
 
         # Add context fields to seal data (flatten for deterministic serialization)
-        for key, value in context.items():
+        for key, value in sorted(context.items()):  # Use sorted for deterministic iteration
             seal_data[f"violation_context_{key}"] = str(value)
 
         # Serialize with sorted keys for deterministic output

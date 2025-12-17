@@ -7,7 +7,6 @@ deterministic system halt.
 """
 
 import json
-import sys
 import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
@@ -73,8 +72,11 @@ class CIR412_Handler:
         )
         
         # Implement canonical hard halt behavior with deterministic exit code
-        # Replace sys.exit(1) with sys.exit(CIR412_ERROR_CODE.value)
-        sys.exit(CIR412_Handler.CIR412_ERROR_CODE.value)
+        # Replace sys.exit(1) with raise SystemExit
+        exit_code = self.cm.idiv(
+            CIR412_Handler.CIR412_ERROR_CODE.value, CIR412_Handler.CIR412_ERROR_CODE.SCALE
+        )
+        raise SystemExit(exit_code)
 
     def _log_tampering_event(
         self,

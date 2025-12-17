@@ -2,9 +2,8 @@
 manager.py - Guild Management Service
 """
 
-import uuid  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub service prototype (in-memory only), not P0 consensus (review in P1)
-import time  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub service prototype (in-memory only), not P0 consensus (review in P1)
-from typing import Dict, Any, Optional, List
+import hashlib
+from typing import Dict, Any, Optional, List, Union
 
 
 class GuildManager:
@@ -23,11 +22,15 @@ class GuildManager:
         creator_id: str,
         coherence_threshold: int = 400,
         staking_amt: float = 100.0,
+        timestamp: int = 1700000000,
     ) -> Dict[str, Any]:
         """
         Create a new Guild.
         """
-        guild_id = f"did:atlas:guild:{uuid.uuid4().hex[:12]}"  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub implementation (review in P1)
+        # Deterministic ID generation from creator + name
+        seed_str = f"{creator_id}:{name}:{timestamp}"
+        guild_hash = hashlib.sha256(seed_str.encode()).hexdigest()
+        guild_id = f"did:atlas:guild:{guild_hash[:12]}"
 
         manifest = {
             "id": guild_id,
@@ -37,9 +40,7 @@ class GuildManager:
             "coherence_threshold": coherence_threshold,
             "staking_requirement": {"token": "QFS", "amount": staking_amt},
             "treasury_address": f"0xTreasury_{guild_id.split(':')[-1]}",  # Mock derivation
-            "created_at": int(
-                time.time()
-            ),  # QODO:JUSTIFIED NON_P0_TECHDEBT - Stub implementation (review in P1)
+            "created_at": timestamp,
             "members_count": 1,  # Founder
         }
 

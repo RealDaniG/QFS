@@ -20,14 +20,8 @@ except ImportError:
     try:
         from v13.libs.CertifiedMath import BigNum128, CertifiedMath
     except ImportError:
-        # Try with sys.path modification
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-        try:
-            from v13.libs.CertifiedMath import BigNum128, CertifiedMath
-        except ImportError:
-            from libs.CertifiedMath import BigNum128, CertifiedMath
+        # For Zero-Sim compliance, use direct import without sys.path modification
+        from libs.CertifiedMath import BigNum128, CertifiedMath
 
 @dataclass
 class TokenStateBundle:
@@ -136,18 +130,12 @@ class TokenStateBundle:
             try:
                 from v13.libs.PQC import PQC
             except ImportError:
-                # Try with sys.path modification
-                import sys
-                import os
-                sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+                # For Zero-Sim compliance, use direct import without sys.path modification
                 try:
-                    from v13.libs.PQC import PQC
+                    from libs.PQC import PQC
                 except ImportError:
-                    try:
-                        from libs.PQC import PQC
-                    except ImportError:
-                        # Handle case where PQC module is not available
-                        return False
+                    # Handle case where PQC module is not available
+                    return False
         
         try:
             # Create data to verify (excluding signature)
