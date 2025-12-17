@@ -1,0 +1,128 @@
+﻿python : WARNING:__main__:Syntax error in v13/core\DRV_Packet.py: invalid syntax (DRV_Packet.py, line 39)
+At line:1 char:1
++ python v13/libs/AST_ZeroSimChecker.py v13/ --fail 2>&1 | Out-File -Fi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING:__main_...et.py, line 39):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING:__main__:Syntax error in v13/handlers\CIR302_Handler.py: invalid syntax (CIR302_Handler.py, line 125)
+WARNING:__main__:Syntax error in v13/libs\crypto\derivation.py: unterminated string literal (detected at line 328) (derivation.py, line 328)
+WARNING:__main__:Syntax error in v13/policy\value_node_explainability.py: invalid syntax (value_node_explainability.py, line 67)
+WARNING:__main__:Syntax error in v13/policy\value_node_replay.py: invalid syntax (value_node_replay.py, line 17)
+WARNING:__main__:Syntax error in v13/services\community\manager.py: invalid syntax (manager.py, line 4)
+WARNING:__main__:Syntax error in v13/tests\deterministic_verification_suite.py: expected an indented block after 'if' statement on line 23 
+(deterministic_verification_suite.py, line 26)
+WARNING:__main__:Syntax error in v13/tests\performance_test_suite.py: invalid syntax (performance_test_suite.py, line 6)
+WARNING:__main__:Syntax error in v13/tests\pqc\TestPQCStandardization.py: invalid syntax (TestPQCStandardization.py, line 32)
+WARNING:__main__:Syntax error in v13/tests\unit\integration\.backups\run_simple_test_20251217_195530.py: invalid syntax (run_simple_test_20251217_195530.py, 
+line 1)
+WARNING:__main__:Syntax error in v13/tools\run_phase2_tests.py: invalid syntax (run_phase2_tests.py, line 6)
+[SCAN] Enforcing QFS V13 Phase 3 Zero-Simulation policy in: v13/
+[FAIL] 2519 violations found:
+  v13/AEGIS\__init__.py:15 [GLOBAL_MUTATION] Global assignment to '__version__' forbidden
+    > __version__ = "0.1.0"
+  v13/AEGIS\__init__.py:16 [GLOBAL_MUTATION] Global assignment to '__contract_version__' forbidden
+    > __contract_version__ = "AEGIS_ADVISORY_CONTRACT_v1.0"
+  v13/AEGIS\__init__.py:25 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = ["models", "governance", "services", "sandbox", "ui_contracts"]
+  v13/AEGIS\governance\model_registry.py:49 [GLOBAL_KEYWORD] 'global' keyword forbidden: _REGISTRY_CACHE
+    > global _REGISTRY_CACHE
+  v13/AEGIS\governance\model_registry.py:64 [FORBIDDEN_COMP] Dict comprehensions forbidden
+    > configs = {
+  v13/AEGIS\governance\model_registry.py:71 [FORBIDDEN_CALL] Forbidden function: print
+    > print(f"Error loading AEGIS model registry: {e}")
+  v13/AEGIS\governance\proposals.py:40 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\governance\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = ["model_registry", "proposals"]
+  v13/AEGIS\models\__init__.py:7 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = []
+  v13/AEGIS\sandbox\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = ["engine", "assistant"]
+  v13/AEGIS\services\evidence_models.py:50 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\services\evidence_service.py:42 [NONDETERMINISTIC_ITERATION] Dict/set iteration must use sorted()
+    > for event in events:
+  v13/AEGIS\services\evidence_service.py:85 [NONDETERMINISTIC_ITERATION] Dict/set iteration must use sorted()
+    > for pid in sorted_ids:
+  v13/AEGIS\services\explanation_control.py:46 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > dag_str = "".join([n.node_id for n in dag_nodes])
+  v13/AEGIS\services\explanation_control.py:50 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > proofs_str = "".join([pv.id for pv in proof_vectors])
+  v13/AEGIS\services\explanation_service.py:42 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > affected_nodes = [n for n in dag if n.node_type == "guard"]
+  v13/AEGIS\services\explanation_service.py:43 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > affected_modules = [n for n in dag if n.node_type == "module"]
+  v13/AEGIS\services\explanation_service.py:49 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > guards_str = ", ".join([n.label for n in affected_nodes])
+  v13/AEGIS\services\governance_map.py:27 [GLOBAL_MUTATION] Global assignment to 'router' forbidden
+    > router = APIRouter()
+  v13/AEGIS\services\governance_map.py:102 [NONDETERMINISTIC_COMP] Dict iteration in comprehension must use sorted()
+    > dag_descriptor = {"nodes": [n.node_id for n in nodes]}
+  v13/AEGIS\services\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = ["evidence_service", "explanation_service", "governance_map"]
+  v13/AEGIS\ui_contracts\schemas.py:38 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:72 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:98 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:124 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:149 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:200 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:229 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:265 [GLOBAL_MUTATION] Global assignment to 'json_schema_extra' forbidden
+    > json_schema_extra = {
+  v13/AEGIS\ui_contracts\schemas.py:278 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = [
+  v13/AEGIS\ui_contracts\__init__.py:8 [GLOBAL_MUTATION] Global assignment to '__all__' forbidden
+    > __all__ = ["schemas"]
+  v13/auth\open_agi_role.py:163 [NONDETERMINISTIC_ITERATION] Dict/set iteration must use sorted()
+    > for entry in source_logs:
+  v13/core\CoherenceEngine.py:19 [GLOBAL_MUTATION] Global assignment to 'ReferralRewarded' forbidden
+    > ReferralRewarded = Any
+  v13/core\CoherenceEngine.py:197 [NONDETERMINISTIC_ITERATION] Dict/set iteration must use sorted()
+    > for event in processed_events:
+  v13/core\observability\logger.py:15 [FORBIDDEN_IMPORT] Import of sys forbidden
+    > import sys
+  v13/core\observability\logger.py:17 [FORBIDDEN_IMPORT] Import of uuid forbidden
+    > import uuid
+  v13/core\observability\logger.py:18 [FORBIDDEN_IMPORT] Import of datetime forbidden
+    > import datetime
+  v13/core\observability\logger.py:34 [FORBIDDEN_MODULE_CALL] uuid.uuid4 forbidden
+    > return TraceContext(trace_id=uuid.uuid4().hex, span_id=uuid.uuid4().hex)
+  v13/core\observability\logger.py:34 [FORBIDDEN_MODULE_CALL] uuid.uuid4 forbidden
+    > return TraceContext(trace_id=uuid.uuid4().hex, span_id=uuid.uuid4().hex)
+  v13/core\observability\logger.py:40 [FORBIDDEN_MODULE_CALL] uuid.uuid4 forbidden
+    > tid = headers.get("x-trace-id") or uuid.uuid4().hex
+  v13/core\observability\logger.py:41 [FORBIDDEN_MODULE_CALL] uuid.uuid4 forbidden
+    > sid = headers.get("x-span-id") or uuid.uuid4().hex
+  v13/core\observability\logger.py:121 [GLOBAL_MUTATION] Global assignment to 'logger' forbidden
+    > logger = StructuredLogger()
+  v13/handlers\CIR511_Handler.py:72 [NONDETERMINISTIC_ITERATION] Dict/set iteration must use sorted()
+    > for event in dissonance_events:
+  v13/libs\BigNum128.py:21 [GLOBAL_MUTATION] Global assignment to 'cm' forbidden
+    > cm = None
+  v13/libs\BigNum128.py:156 [FORBIDDEN_CALL] Forbidden function: hash
+    > return hash(self.value)
+  v13/libs\BigNum128.py:156 [FORBIDDEN_HASH] hash() is randomized ÔÇö forbidden
+    > return hash(self.value)
+  v13/libs\BigNum128_fixed.py:13 [GLOBAL_MUTATION] Global assignment to 'cm' forbidden
+    > cm = None
+  v13/libs\BigNum128_fixed.py:155 [FORBIDDEN_CALL] Forbidden function: hash
+    > return hash(self.value)
+  v13/libs\BigNum128_fixed.py:155 [FORBIDDEN_HASH] hash() is randomized ÔÇö forbidden
+    > return hash(self.value)
+  v13/libs\DeterministicTime.py:61 [FORBIDDEN_OPERATION] Use CertifiedMath.pow(), not **
+    > hash_mod = prev_hash_int % 2 ** 64
+Traceback (most recent call last):
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\AST_ZeroSimChecker.py", line 484, in <module>
+    AST_ZeroSimChecker().enforce_policy(args.dir, args.fail)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\AST_ZeroSimChecker.py", line 472, in enforce_policy
+    raise ZeroSimAbort(1)
+ZeroSimAbort: 1
