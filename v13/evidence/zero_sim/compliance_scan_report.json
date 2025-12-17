@@ -1,39 +1,7 @@
 {
-  "timestamp": "2025-12-17T09:21:33.775509",
-  "total_violations": 93,
+  "timestamp": "2025-12-17T17:47:14.880882",
+  "total_violations": 80,
   "violations": [
-    {
-      "file": "v13/economics/test_economics_violations.py",
-      "line": 26,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "random_value = random.random()",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/economics/test_economics_violations.py",
-      "line": 27,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "current_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/economics/test_economics_violations.py",
-      "line": 6,
-      "violation_type": "FORBIDDEN_IMPORT_RANDOM",
-      "severity": "CRITICAL",
-      "code_snippet": "import random",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/economics/test_economics_violations.py",
-      "line": 7,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
     {
       "file": "v13/libs_root/checks_tests/verify_drv_compliance.py",
       "line": 36,
@@ -257,38 +225,6 @@
       "severity": "CRITICAL",
       "code_snippet": "'os.urandom': 'Use of os.urandom is forbidden - violates Zero-Simulation mandate',",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/services/community/manager.py",
-      "line": 30,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "guild_id = f\"did:atlas:guild:{uuid.uuid4().hex[:12]}\"",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/services/community/manager.py",
-      "line": 40,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"created_at\": int(time.time()),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/services/community/manager.py",
-      "line": 5,
-      "violation_type": "FORBIDDEN_IMPORT_UUID",
-      "severity": "CRITICAL",
-      "code_snippet": "import uuid",
-      "suggested_fix": "Check Zero-Sim contract."
-    },
-    {
-      "file": "v13/services/community/manager.py",
-      "line": 6,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/performance_test_suite.py",
@@ -635,38 +571,6 @@
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/tests/unit/integration/run_simple_test.py",
-      "line": 43,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp=int(time.time()),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/integration/run_simple_test.py",
-      "line": 3,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/integration/test_qfs_v13_phase1_2_integration.py",
-      "line": 55,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp=int(time.time()),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/integration/test_qfs_v13_phase1_2_integration.py",
-      "line": 9,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
       "file": "v13/tests/v13_6/PerformanceBenchmark.py",
       "line": 17,
       "violation_type": "FORBIDDEN_IMPORT_TIME",
@@ -677,14 +581,6 @@
     {
       "file": "v13/tools/run_phase2_tests.py",
       "line": 30,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now().isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tools/run_phase2_tests.py",
-      "line": 59,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "\"timestamp\": datetime.now().isoformat(),",
