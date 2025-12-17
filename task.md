@@ -151,10 +151,21 @@ QFS (Economic Authority) → value decisions, state mutations
 
 **Why First:** Cannot claim "deterministic economic core" while violations exist. All subsequent phases require provable determinism.
 
-- [/] Complete Zero-Sim reduction: 2,506 → 0 violations
-  - [x] Batch 1-4 executed (lessons learned documented)
-  - [/] Batch 5+ in progress (GLOBAL_MUTATION target)
-  - [ ] All violation categories addressed
+- [/] Complete Zero-Sim reduction (Target: 0 violations)
+  - [x] Phase 1: Initial Compliance & Analysis
+  - [x] Phase 2: Classification System
+  - [x] Phase 3: Quick Wins Design
+  - [/] Phase 4: Infrastructure Deployment (ACTIVE)
+    - [x] Enhanced Analyzer (`scripts/zero_sim_analyzer.py`)
+    - [x] Auto-Fix Framework (`scripts/zero_sim_autofix.py`)
+    - [x] Progress Dashboard (`scripts/zero_sim_dashboard.py`)
+    - [x] CI/CD Workflow (`.github/workflows/zero-sim-autofix.yml`)
+    - [x] Baseline Analysis (v13 clean)
+  - [ ] Phase 5: Continuous Reduction (Layers 1-4)
+    - [ ] Layer 1: Prevention Gate & Pre-commit
+    - [ ] Layer 2: Quick Wins (Batches 7-11)
+    - [ ] Layer 3: Deep Dives (Categories)
+    - [ ] Layer 4: Fine-grain Polish
 - [ ] Deploy prevention gate (CI/CD enforcement)
 - [ ] Verify full replayability across all economic scenarios
 - [ ] Document all sanctioned exceptions (7 currently approved)

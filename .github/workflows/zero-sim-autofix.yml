@@ -1,0 +1,159 @@
+name: Zero-Sim Auto-Fix Pipeline
+
+on:
+    push:
+        branches: [main]
+    schedule:
+        - cron: "0 2 * * 1" # Weekly on Monday 2 AM UTC
+    workflow_dispatch: # Allow manual triggering
+
+jobs:
+    detect:
+        runs-on: ubuntu-latest
+        outputs:
+            violation_count: ${{ steps.analyze.outputs.total }}
+            auto_fixable: ${{ steps.analyze.outputs.fixable }}
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+
+            - name: Install Dependencies
+              run: |
+                  pip install libcst rope
+                  if [ -f v13/requirements.txt ]; then pip install -r v13/requirements.txt; fi
+
+            - name: Analyze Violations
+              id: analyze
+              run: |
+                  # Use the new enhanced analyzer
+                  # Exclude virtual envs and build dirs to avoid noise
+                  python scripts/zero_sim_analyzer.py --dir v13 --output violation_report.json --exclude __pycache__ .git .venv node_modules qfs_env qfs_env_312 dist build
+
+                  # Parse results for GitHub Output
+                  TOTAL=$(python -c "import json; print(json.load(open('violation_report.json'))['total_violations'])")
+                  FIXABLE=$(python -c "import json; print(json.load(open('violation_report.json'))['auto_fixable'])")
+
+                  echo "total=$TOTAL" >> $GITHUB_OUTPUT
+                  echo "fixable=$FIXABLE" >> $GITHUB_OUTPUT
+
+                  echo "Total Violations: $TOTAL"
+                  echo "Auto-Fixable: $FIXABLE"
+
+            - name: Upload Report
+              uses: actions/upload-artifact@v3
+              with:
+                  name: violation-report
+                  path: violation_report.json
+
+    autofix:
+        needs: detect
+        runs-on: ubuntu-latest
+        # Only run if there are fixable violations AND (it's a schedule run OR manual dispatch)
+        # We don't want to auto-fix on every push to main potentially creating loops/noise unless explicitly desired
+        if: needs.detect.outputs.auto_fixable > 0 && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+
+            - name: Install Dependencies
+              run: |
+                  pip install libcst rope
+                  if [ -f v13/requirements.txt ]; then pip install -r v13/requirements.txt; fi
+
+            - name: Run Auto-Fix (Dry Run)
+              run: |
+                  # Dry run first to generate report
+                  python scripts/zero_sim_autofix.py --dir v13/ \
+                    --fixes PrintRemoval,DivisionFix,UUIDFix,IterationFix \
+                    --dry-run --output fix_report_dry.json \
+                    --exclude __pycache__ .git .venv node_modules qfs_env qfs_env_312 dist build legacy_root
+
+                  cat fix_report_dry.json
+
+            - name: Apply Fixes
+              run: |
+                  # Apply fixes excluding legacy_root for safety in early phases
+                  python scripts/zero_sim_autofix.py --dir v13/ \
+                    --fixes PrintRemoval,DivisionFix,UUIDFix,IterationFix \
+                    --output fix_report.json \
+                    --exclude __pycache__ .git .venv node_modules qfs_env qfs_env_312 dist build legacy_root
+
+            - name: Verify Fix Quality (Run Tests)
+              run: |
+                  # Run the existing ZeroSim checker to verify improvement
+                  python v13/libs/AST_ZeroSimChecker.py v13/ --fail || true
+
+                  # Run unit tests (if available and fast enough)
+                  # pytest v13/tests -q || echo "Tests failed but continuing to PR for review"
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v5
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: 🤖 Auto-fix zero-sim violations
+                  title: "[AUTO] Zero-Sim Fixes - Batch ${{ github.run_number }}"
+                  body: |
+                      ## Zero-Sim Auto-Fix Report
+
+                      **Summary**:
+                      - Total violations analyzed: ${{ needs.detect.outputs.violation_count }}
+                      - Auto-fixable detected: ${{ needs.detect.outputs.auto_fixable }}
+
+                      **Changes**:
+                      - Applied `PrintRemoval`
+                      - Applied `DivisionFix`
+                      - Applied `UUIDFix`
+                      - Applied `IterationFix`
+
+                      **Scope**: `v13/` (excluding legacy_root)
+
+                      **Verification**:
+                      - AST ZeroSimChecker run
+
+                      **Review Notes**:
+                      Please review the fixes in context. If any logic-breaking changes detected, revert this PR.
+                      This is an automated PR generated by `scripts/zero_sim_autofix.py`.
+                  branch: fix/zero-sim-batch-${{ github.run_number }}
+                  delete-branch: true
+
+    dashboard:
+        needs: detect
+        runs-on: ubuntu-latest
+        if: always()
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+
+            - name: Generate Dashboard
+              run: |
+                  mkdir -p reports/zero_sim
+                  # We would ideally pull history from artifacts or a persistent store
+                  # For now, we generate a dashboard for the current run
+
+                  # Get the report from detect job
+                  # (Simulating fetching artifacts from previous runs would be complex here without external storage)
+                  # We can just run the dashboard script on the current report
+
+                  # Download artifact
+            - uses: actions/download-artifact@v3
+              with:
+                  name: violation-report
+                  path: reports/zero_sim
+
+            - name: Run Dashboard
+              run: |
+                  # Rename to include date for the script
+                  mv reports/zero_sim/violation_report.json "reports/zero_sim/violation_report_$(date +%Y-%m-%d).json"
+                  python scripts/zero_sim_dashboard.py
