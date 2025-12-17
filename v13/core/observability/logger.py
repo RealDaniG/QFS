@@ -14,10 +14,10 @@ Contracts:
 
 import sys
 import json
-import uuid
 import datetime
 from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, Optional
+from v13.libs.deterministic_helpers import DeterministicID
 
 
 @dataclass
@@ -31,14 +31,16 @@ class TraceContext:
     @staticmethod
     def new_trace() -> "TraceContext":
         """Generate a new trace context (non-deterministic entry point)."""
-        return TraceContext(trace_id=uuid.uuid4().hex, span_id=uuid.uuid4().hex)
+        return TraceContext(
+            trace_id=DeterministicID.next(), span_id=DeterministicID.next()
+        )
 
     @staticmethod
     def from_headers(headers: Dict[str, str]) -> "TraceContext":
         """Extract trace context from headers (e.g., W3C Trace Context)."""
         # Simplified for P0
-        tid = headers.get("x-trace-id") or uuid.uuid4().hex
-        sid = headers.get("x-span-id") or uuid.uuid4().hex
+        tid = headers.get("x-trace-id") or DeterministicID.next()
+        sid = headers.get("x-span-id") or DeterministicID.next()
         pid = headers.get("x-parent-id")
         return TraceContext(trace_id=tid, span_id=sid, parent_id=pid)
 
