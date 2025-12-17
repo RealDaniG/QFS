@@ -510,24 +510,16 @@ class InfrastructureGovernance:
 
 def test_infrastructure_governance():
     """Test the InfrastructureGovernance implementation."""
-    print('Testing InfrastructureGovernance...')
     cm = CertifiedMath()
     gov = InfrastructureGovernance(cm, quorum_threshold='0.5')
     total_nod_supply = BigNum128.from_int(10000)
     proposal_id = gov.create_proposal(title='Increase Storage Replication Factor', description='Increase the storage replication factor from 3 to 5 for improved redundancy', proposal_type=GovernanceProposalType.STORAGE_REPLICATION_FACTOR, proposer_node_id='node_0xabc123', parameters={'current_factor': 3, 'proposed_factor': 5}, total_nod_supply=total_nod_supply, creation_timestamp=1234567890, voting_duration_blocks=100)
-    print(f'Created proposal: {proposal_id}')
     log_list = []
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xabc123', voter_nod_balance=BigNum128.from_int(3000), vote_yes=True, timestamp=1234567900, log_list=log_list)
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xdef456', voter_nod_balance=BigNum128.from_int(2000), vote_yes=False, timestamp=1234567910, log_list=log_list)
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xghi789', voter_nod_balance=BigNum128.from_int(4000), vote_yes=True, timestamp=1234567920, log_list=log_list)
     proposal_passed = gov.tally_votes(proposal_id=proposal_id, timestamp=12345680000, log_list=log_list)
     proposal = gov.get_proposal(proposal_id)
-    print(f'Proposal status: {proposal.status.value}')
-    print(f'Proposal passed: {proposal_passed}')
-    print(f'Yes votes: {proposal.yes_votes.to_decimal_string()}')
-    print(f'No votes: {proposal.no_votes.to_decimal_string()}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ InfrastructureGovernance test passed!')
 if __name__ == '__main__':
     test_infrastructure_governance()
 
@@ -619,23 +611,15 @@ if __name__ == '__main__':
 
 def test_infrastructure_governance():
     """Test the InfrastructureGovernance implementation."""
-    print('Testing InfrastructureGovernance...')
     cm = CertifiedMath()
     gov = InfrastructureGovernance(cm, quorum_threshold='0.5')
     total_nod_supply = BigNum128.from_int(10000)
     proposal_id = gov.create_proposal(title='Increase Storage Replication Factor', description='Increase the storage replication factor from 3 to 5 for improved redundancy', proposal_type=GovernanceProposalType.STORAGE_REPLICATION_FACTOR, proposer_node_id='node_0xabc123', parameters={'current_factor': 3, 'proposed_factor': 5}, total_nod_supply=total_nod_supply, creation_timestamp=1234567890, voting_duration_blocks=100)
-    print(f'Created proposal: {proposal_id}')
     log_list = []
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xabc123', voter_nod_balance=BigNum128.from_int(3000), vote_yes=True, timestamp=1234567900, log_list=log_list)
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xdef456', voter_nod_balance=BigNum128.from_int(2000), vote_yes=False, timestamp=1234567910, log_list=log_list)
     gov.cast_vote(proposal_id=proposal_id, voter_node_id='node_0xghi789', voter_nod_balance=BigNum128.from_int(4000), vote_yes=True, timestamp=1234567920, log_list=log_list)
     proposal_passed = gov.tally_votes(proposal_id=proposal_id, timestamp=12345680000, log_list=log_list)
     proposal = gov.get_proposal(proposal_id)
-    print(f'Proposal status: {proposal.status.value}')
-    print(f'Proposal passed: {proposal_passed}')
-    print(f'Yes votes: {proposal.yes_votes.to_decimal_string()}')
-    print(f'No votes: {proposal.no_votes.to_decimal_string()}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ InfrastructureGovernance test passed!')
 if __name__ == '__main__':
     test_infrastructure_governance()

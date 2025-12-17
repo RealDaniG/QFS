@@ -336,6 +336,5 @@ def validate_adversary_suite_results(suite_results: Dict[str, Any]) -> bool:
     certification_status = suite_results.get('certification_status', {})
     return certification_status.get('all_14_adversaries_blocked', False)
 if __name__ == '__main__':
-    print('EconomicAdversarySuite.py is a Phase 1 compliant library module. Do not execute directly.')
     raise ZeroSimAbort(1)
 __all__ = ['EconomicAdversarySuite', 'AdversaryTestError', 'TestCIRHandler', 'DeterministicResourceMonitor', 'create_economic_adversary_suite', 'validate_adversary_suite_results']

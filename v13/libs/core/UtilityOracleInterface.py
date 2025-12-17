@@ -187,7 +187,6 @@ def create_utility_oracle(cm_instance: CertifiedMath) -> UtilityOracleInterface:
 
 def test_utility_oracle_interface():
     """Test the UtilityOracleInterface implementation."""
-    print('Testing UtilityOracleInterface...')
     cm = CertifiedMath()
     oracle_interface = UtilityOracleInterface(cm)
     directional_value = BigNum128.from_int(2)
@@ -195,12 +194,7 @@ def test_utility_oracle_interface():
     target_atr_state = BigNum128.from_int(3)
     log_list = []
     f_atr = oracle_interface.get_f_atr(directional_value=directional_value, log_list=log_list, pqc_cid='test_oracle_001', deterministic_timestamp=1234567890)
-    print(f'f(ATR): {f_atr.to_decimal_string()}')
     alpha_update = oracle_interface.get_alpha_update(current_atr_state=current_atr_state, target_state=target_atr_state, log_list=log_list, pqc_cid='test_oracle_001', deterministic_timestamp=1234567890)
-    print(f'Alpha update: {alpha_update.to_decimal_string()}')
     is_valid = oracle_interface.validate_directional_encoding(directional_value=directional_value, log_list=log_list, pqc_cid='test_oracle_001', deterministic_timestamp=1234567890)
-    print(f'Directional encoding valid: {is_valid}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ UtilityOracleInterface test passed!')
 if __name__ == '__main__':
     test_utility_oracle_interface()

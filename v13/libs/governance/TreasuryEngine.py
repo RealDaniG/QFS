@@ -186,7 +186,6 @@ class TreasuryEngine:
 
 def test_treasury_engine():
     """Test the TreasuryEngine implementation."""
-    print('Testing TreasuryEngine...')
     cm = CertifiedMath()
     treasury = TreasuryEngine(cm)
     hsmf_metrics = {'S_CHR': BigNum128.from_int(5), 'C_holo': BigNum128.from_int(8), 'Action_Cost_QFS': BigNum128.from_int(2)}
@@ -206,11 +205,5 @@ def test_treasury_engine():
     token_bundle = create_token_state_bundle(chr_state=chr_state, flx_state=flx_state, psi_sync_state=psi_sync_state, atr_state=atr_state, res_state=res_state, lambda1=BigNum128.from_int(1), lambda2=BigNum128.from_int(1), c_crit=BigNum128.from_int(3), pqc_cid='test_treasury_001', timestamp=1234567890)
     log_list = []
     rewards = treasury.calculate_rewards(hsmf_metrics=hsmf_metrics, token_bundle=token_bundle, log_list=log_list, pqc_cid='test_treasury_001', deterministic_timestamp=1234567890)
-    print(f'CHR Reward: {rewards.chr_reward.to_decimal_string()}')
-    print(f'FLX Reward: {rewards.flx_reward.to_decimal_string()}')
-    print(f'NOD Reward: {rewards.nod_reward.to_decimal_string()}')
-    print(f'Total Reward: {rewards.total_reward.to_decimal_string()}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ TreasuryEngine test passed!')
 if __name__ == '__main__':
     test_treasury_engine()

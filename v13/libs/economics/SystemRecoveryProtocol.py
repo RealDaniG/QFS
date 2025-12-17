@@ -109,6 +109,5 @@ def validate_safe_mode_state(protocol: SystemRecoveryProtocol, deterministic_tim
         return duration <= protocol.SAFE_MODE_TIMEOUT
     return True
 if __name__ == '__main__':
-    print('SystemRecoveryProtocol.py is a production-perfect library module. Do not execute directly.')
     raise ZeroSimAbort(1)
 __all__ = ['SystemRecoveryProtocol', 'RecoverySecurityError', 'create_system_recovery_protocol', 'validate_safe_mode_state']

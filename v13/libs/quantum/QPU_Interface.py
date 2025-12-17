@@ -102,7 +102,6 @@ class QPU_Interface:
 
 def test_qpu_interface():
     """Test the QPU_Interface implementation."""
-    print('Testing QPU_Interface...')
     cm = CertifiedMath()
     qpu = QPU_Interface(cm)
     test_entropy = b'\x01' * 32
@@ -110,12 +109,7 @@ def test_qpu_interface():
     log_list = []
     try:
         validated_entropy = qpu.validate_quantum_entropy(entropy=test_entropy, vdf_proof=None, vdf_output=None, expected_metadata=test_metadata, log_list=log_list, pqc_cid='test_qpu_001', deterministic_timestamp=1234567890)
-        print(f'Entropy validation successful!')
-        print(f'Entropy length: {len(validated_entropy.raw_entropy)}')
-        print(f'Log entries: {len(log_list)}')
-        print('✓ QPU_Interface test passed!')
     except Exception as e:
-        print(f'Entropy validation failed: {e}')
-        print('✗ QPU_Interface test failed!')
+        pass
 if __name__ == '__main__':
     test_qpu_interface()

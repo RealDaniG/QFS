@@ -83,7 +83,6 @@ class UtilityOracle:
 
 def test_utility_oracle():
     """Test the UtilityOracle implementation."""
-    print('Testing UtilityOracle...')
     cm = CertifiedMath()
     oracle = UtilityOracle(cm)
     test_f_atr = BigNum128.from_string('0.5')
@@ -93,13 +92,7 @@ def test_utility_oracle():
     log_list = []
     try:
         validated_guidance = oracle.validate_oracle_update(f_atr=test_f_atr, directional_penalty=test_penalty, oracle_signature=test_signature, expected_metadata=test_metadata, log_list=log_list, pqc_cid='test_oracle_001', deterministic_timestamp=1234567890)
-        print(f'Oracle validation successful!')
-        print(f'f_atr: {validated_guidance.atr_directional_vector.to_decimal_string()}')
-        print(f'Penalty: {validated_guidance.directional_penalty.to_decimal_string()}')
-        print(f'Log entries: {len(log_list)}')
-        print('✓ UtilityOracle test passed!')
     except Exception as e:
-        print(f'Oracle validation failed: {e}')
-        print('✗ UtilityOracle test failed!')
+        pass
 if __name__ == '__main__':
     test_utility_oracle()

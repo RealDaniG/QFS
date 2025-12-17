@@ -254,7 +254,6 @@ class NODAllocator:
 
 def test_nod_allocator():
     """Test the NODAllocator implementation."""
-    print('Testing NODAllocator...')
     cm = CertifiedMath()
     allocator = NODAllocator(cm)
     nod_reward_pool = BigNum128.from_int(1000)
@@ -263,10 +262,6 @@ def test_nod_allocator():
     allocations = allocator.allocate_nod(nod_reward_pool=nod_reward_pool, node_contributions=node_contributions, log_list=log_list, pqc_cid='test_nod_001', deterministic_timestamp=1234567890)
     total_allocated = BigNum128(0)
     for alloc in sorted(allocations):
-        print(f'Node {alloc.node_id}: {alloc.nod_amount.to_decimal_string()} NOD (score: {alloc.contribution_score.to_decimal_string()})')
         total_allocated = cm.add(total_allocated, alloc.nod_amount, log_list, 'test_nod_001', {})
-    print(f'Total allocated: {total_allocated.to_decimal_string()} NOD')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ NODAllocator test passed!')
 if __name__ == '__main__':
     test_nod_allocator()

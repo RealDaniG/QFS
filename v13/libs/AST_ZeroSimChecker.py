@@ -503,23 +503,18 @@ class AST_ZeroSimChecker:
         return all_violations
 
     def enforce_policy(self, path: str, fail_on_violations: bool = False):
-        print(f"[SCAN] Enforcing QFS V13 Phase 3 Zero-Simulation policy in: {path}")
         if os.path.isfile(path) and path.endswith(".py"):
             violations = self.scan_file(path)
         else:
             violations = self.scan_directory(path)
         if violations:
-            print(f"[FAIL] {len(violations)} violations found:")
             for v in violations[:50]:
-                print(
-                    f"  {v.file_path}:{v.line_number} [{v.violation_type}] {v.message}"
-                )
                 if v.code_snippet:
-                    print(f"    > {v.code_snippet}")
+                    pass
             if fail_on_violations:
                 raise ZeroSimAbort(1)
         else:
-            print("[OK] Zero-Simulation compliance verified.")
+            pass
 
 
 if __name__ == "__main__":

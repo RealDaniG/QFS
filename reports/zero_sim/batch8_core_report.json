@@ -1,0 +1,255 @@
+[
+  {
+    "file": "v13\\core\\AEGISNodeVerification.py",
+    "original_length": 1200,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1200,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\audit_integrity.py",
+    "original_length": 2007,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2007,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\CoherenceEngine.py",
+    "original_length": 12313,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12313,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\CoherenceLedger.py",
+    "original_length": 8208,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8208,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\dependencies.py",
+    "original_length": 976,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 976,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\DRV_Packet.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\explanation_audit.py",
+    "original_length": 1808,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1808,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\gating_service.py",
+    "original_length": 11693,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 11693,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\HSMF.py",
+    "original_length": 20246,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 20246,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\KeyLedger.py",
+    "original_length": 5716,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5716,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\QFSReplaySource.py",
+    "original_length": 5454,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5454,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\reward_types.py",
+    "original_length": 745,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 745,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\StorageEngine.py",
+    "original_length": 28264,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 28264,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\storage_economic_views.py",
+    "original_length": 2630,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2630,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\storage_explainability.py",
+    "original_length": 3447,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3447,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\TokenStateBundle.py",
+    "original_length": 17054,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 17054,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\observability\\logger.py",
+    "original_length": 3984,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3984,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\observability\\metrics.py",
+    "original_length": 745,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 745,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\tests\\test_qfs_replay_source.py",
+    "original_length": 2193,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2120,
+    "changed": true
+  }
+]

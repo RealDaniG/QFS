@@ -263,92 +263,56 @@ def test_nod_invariant_checker():
     """
     Test the NODInvariantChecker implementation with all four invariants.
     """
-    print('\n=== Testing NODInvariantChecker - Formal Invariant Enforcement ===')
     cm = CertifiedMath()
     checker = NODInvariantChecker(cm)
-    print('\n--- Scenario 1: NOD-I1 Non-Transferability (Happy Path) ---')
     result = checker.check_non_transferability(caller_module='NODAllocator', operation_type='allocation', node_balances={'node1': BigNum128.from_int(1000)})
-    print(f'NOD-I1 check: {result.passed}')
     assert result.passed == True, 'Authorized allocation should pass NOD-I1'
-    print('\n--- Scenario 2: NOD-I1 Unauthorized Write Violation ---')
     result = checker.check_non_transferability(caller_module='TreasuryEngine', operation_type='allocation', node_balances={'node1': BigNum128.from_int(1000)})
-    print(f'NOD-I1 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Unauthorized write should violate NOD-I1'
     assert result.error_code == 'INVARIANT_NOD_I1_UNAUTHORIZED_WRITE'
-    print('\n--- Scenario 3: NOD-I1 Transfer Detection Violation ---')
     result = checker.check_non_transferability(caller_module='NODAllocator', operation_type='transfer', node_balances={'node1': BigNum128.from_int(1000)})
-    print(f'NOD-I1 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Transfer operation should violate NOD-I1'
     assert result.error_code == 'INVARIANT_NOD_I1_TRANSFER_DETECTED'
-    print('\n--- Scenario 4: NOD-I2 Supply Conservation (Happy Path) ---')
     allocations = [NODAllocation('node1', BigNum128.from_int(500), BigNum128.from_int(50), 1000), NODAllocation('node2', BigNum128.from_int(500), BigNum128.from_int(50), 1000)]
     previous_supply = BigNum128.from_int(10000)
     new_supply = BigNum128.from_int(11000)
     result = checker.check_supply_conservation(previous_supply, new_supply, allocations)
-    print(f'NOD-I2 check: {result.passed}')
     assert result.passed == True, 'Conserved supply should pass NOD-I2'
-    print('\n--- Scenario 5: NOD-I2 Supply Mismatch Violation ---')
     bad_new_supply = BigNum128.from_int(11500)
     result = checker.check_supply_conservation(previous_supply, bad_new_supply, allocations)
-    print(f'NOD-I2 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Supply mismatch should violate NOD-I2'
     assert result.error_code == 'INVARIANT_NOD_I2_SUPPLY_MISMATCH'
-    print('\n--- Scenario 6: NOD-I3 Voting Power Bounds (Happy Path) ---')
     node_balances = {'node1': BigNum128.from_int(2000), 'node2': BigNum128.from_int(2000), 'node3': BigNum128.from_int(6000)}
     total_supply = BigNum128.from_int(10000)
     balanced_balances = {'node1': BigNum128.from_int(2000), 'node2': BigNum128.from_int(2000), 'node3': BigNum128.from_int(2000), 'node4': BigNum128.from_int(2000), 'node5': BigNum128.from_int(2000)}
     result = checker.check_voting_power_bounds(balanced_balances, total_supply)
-    print(f'NOD-I3 check: {result.passed}')
     assert result.passed == True, 'Balanced voting power should pass NOD-I3'
-    print('\n--- Scenario 7: NOD-I3 Voting Power Exceeded Violation ---')
     excessive_balances = {'node1': BigNum128.from_int(3000), 'node2': BigNum128.from_int(7000)}
     result = checker.check_voting_power_bounds(excessive_balances, total_supply)
-    print(f'NOD-I3 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Excessive voting power should violate NOD-I3'
     assert result.error_code == 'INVARIANT_NOD_I3_VOTING_POWER_EXCEEDED'
-    print('\n--- Scenario 8: NOD-I4 Deterministic Allocation (Happy Path) ---')
     sorted_allocations = [NODAllocation('node1', BigNum128.from_int(500), BigNum128.from_int(50), 1000), NODAllocation('node2', BigNum128.from_int(500), BigNum128.from_int(50), 1000)]
     result = checker.check_deterministic_allocation(sorted_allocations)
-    print(f'NOD-I4 check: {result.passed}')
     assert result.passed == True, 'Sorted allocations should pass NOD-I4'
-    print('\n--- Scenario 9: NOD-I4 Non-Deterministic Order Violation ---')
     unsorted_allocations = [NODAllocation('node2', BigNum128.from_int(500), BigNum128.from_int(50), 1000), NODAllocation('node1', BigNum128.from_int(500), BigNum128.from_int(50), 1000)]
     result = checker.check_deterministic_allocation(unsorted_allocations)
-    print(f'NOD-I4 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Unsorted allocations should violate NOD-I4'
     assert result.error_code == 'INVARIANT_NOD_I4_NON_DETERMINISTIC_ORDER'
-    print('\n--- Scenario 10: NOD-I4 Hash Verification (Happy Path) ---')
     expected_hash = checker.generate_allocation_hash(sorted_allocations)
     result = checker.check_deterministic_allocation(sorted_allocations, expected_hash)
-    print(f'NOD-I4 check: {result.passed}')
-    print(f'Allocation hash: {expected_hash[:32]}...')
     assert result.passed == True, 'Matching hash should pass NOD-I4'
     assert len(expected_hash) == 64, 'Hash should be 64 characters'
-    print('\n--- Scenario 11: NOD-I4 Hash Mismatch Violation ---')
     bad_hash = '0' * 64
     result = checker.check_deterministic_allocation(sorted_allocations, bad_hash)
-    print(f'NOD-I4 check: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Hash mismatch should violate NOD-I4'
     assert result.error_code == 'INVARIANT_NOD_I4_HASH_VERIFICATION_FAILURE'
-    print('\n--- Scenario 12: Comprehensive Validation (All Invariants) ---')
     all_results = checker.validate_all_invariants(caller_module='NODAllocator', operation_type='allocation', previous_total_supply=previous_supply, new_total_supply=new_supply, node_balances=balanced_balances, allocations=sorted_allocations, expected_hash=expected_hash)
-    print(f'Total invariants checked: {len(all_results)}')
     for i, r in enumerate(all_results, 1):
-        print(f"  {r.invariant_id}: {('PASS' if r.passed else 'FAIL')}")
+        pass
     assert len(all_results) == 4, 'Should check all 4 invariants'
     assert all((r.passed for r in all_results)), 'All invariants should pass'
-    print('\n--- Scenario 13: Violation Event Hash Generation ---')
     violation = InvariantCheckResult(passed=False, invariant_id='NOD-I1', error_code='INVARIANT_NOD_I1_TRANSFER_DETECTED', error_message='Test violation', details={'operation': 'transfer'})
     event_hash = checker.generate_violation_event_hash(violation, 1000)
-    print(f'Violation event hash: {event_hash[:32]}...')
     assert len(event_hash) == 64, 'Event hash should be 64 characters'
-    print('\n✅ All 13 NODInvariantChecker scenarios passed!')
-    print('\n=== NODInvariantChecker is QFS V13.6 Compliant ===')
 if __name__ == '__main__':
     test_nod_invariant_checker()

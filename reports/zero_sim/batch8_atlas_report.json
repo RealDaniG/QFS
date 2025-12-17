@@ -1,0 +1,912 @@
+[
+  {
+    "file": "v13\\ATLAS\\src\\config.py",
+    "original_length": 332,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 332,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\main.py",
+    "original_length": 3952,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3952,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\numeric.py",
+    "original_length": 3445,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3445,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\qfs_client.py",
+    "original_length": 9729,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9729,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\qfs_types.py",
+    "original_length": 760,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 760,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\real_ledger.py",
+    "original_length": 4191,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4191,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\time.py",
+    "original_length": 3632,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3632,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\types.py",
+    "original_length": 1091,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1091,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\value_graph_ref.py",
+    "original_length": 8576,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8576,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\__init__.py",
+    "original_length": 420,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 420,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_content_id_determinism.py",
+    "original_length": 3081,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3081,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_value_graph_ref.py",
+    "original_length": 8690,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8690,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_value_node_replay.py",
+    "original_length": 16504,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 16504,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\crypto_utils.py",
+    "original_length": 506,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 506,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\dependencies.py",
+    "original_length": 5326,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5326,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\events.py",
+    "original_length": 1494,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1494,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\__init__.py",
+    "original_length": 1296,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1296,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\economic_views.py",
+    "original_length": 1887,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1887,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\pqc_session.py",
+    "original_length": 1315,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1315,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\quantum_engine.py",
+    "original_length": 4083,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4083,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\transaction_processor.py",
+    "original_length": 7320,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7320,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\__init__.py",
+    "original_length": 299,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 299,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\quantum.py",
+    "original_length": 4673,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4673,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\transaction.py",
+    "original_length": 4155,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4155,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\user.py",
+    "original_length": 1166,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1166,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\wallet.py",
+    "original_length": 5073,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5073,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\aegis_bootstrap.py",
+    "original_length": 2218,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2218,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\bandwidth_economics.py",
+    "original_length": 1674,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1674,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\connection_manager.py",
+    "original_length": 8218,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8218,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\secure_message_logger.py",
+    "original_length": 1936,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1936,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\secure_message_v2.py",
+    "original_length": 2490,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2490,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\__init__.py",
+    "original_length": 54,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 54,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\security\\wallet_id.py",
+    "original_length": 803,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 803,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\artistic.py",
+    "original_length": 5378,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5378,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\base.py",
+    "original_length": 4200,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4200,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor.py",
+    "original_length": 8351,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8351,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor_v2.py",
+    "original_length": 6672,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6672,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor_zerosim.py",
+    "original_length": 8207,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8207,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_base.py",
+    "original_length": 2463,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2463,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_humor.py",
+    "original_length": 4541,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4541,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_integration.py",
+    "original_length": 3809,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3809,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_zerosim_compliance.py",
+    "original_length": 4796,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4796,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\__init__.py",
+    "original_length": 28,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 28,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_atlas_api_wallets_auth_and_policy.py",
+    "original_length": 1778,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1778,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_economic_views.py",
+    "original_length": 1510,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1510,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_explain_this_e2e.py",
+    "original_length": 3364,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3364,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_metrics_and_proofs_endpoints.py",
+    "original_length": 2721,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2721,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_qfs_client.py",
+    "original_length": 5196,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5196,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_transactions_api_boundary.py",
+    "original_length": 2111,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2111,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\core\\engine.py",
+    "original_length": 7779,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7779,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\core\\__init__.py",
+    "original_length": 167,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 167,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\crypto\\__init__.py",
+    "original_length": 145,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 145,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\ipfs_storage.py",
+    "original_length": 6220,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6220,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\memory_storage.py",
+    "original_length": 1068,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1068,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\__init__.py",
+    "original_length": 104,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 104,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\test_secure_chat_api.py",
+    "original_length": 3773,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3773,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\test_secure_chat_engine.py",
+    "original_length": 5209,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5209,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\__init__.py",
+    "original_length": 32,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 32,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\explain.py",
+    "original_length": 10378,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10378,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\explain_p2p.py",
+    "original_length": 2023,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2023,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\governance.py",
+    "original_length": 1904,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1904,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\metrics.py",
+    "original_length": 5426,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5426,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\proofs.py",
+    "original_length": 5051,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5051,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\quantum.py",
+    "original_length": 5650,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5650,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\secure_chat.py",
+    "original_length": 12189,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12189,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_explain.py",
+    "original_length": 1528,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1528,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_metrics.py",
+    "original_length": 775,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 775,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_proofs.py",
+    "original_length": 761,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 761,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\transactions.py",
+    "original_length": 3420,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3420,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\wallets.py",
+    "original_length": 4260,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4260,
+    "changed": false
+  }
+]

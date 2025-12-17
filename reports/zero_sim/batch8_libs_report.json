@@ -1,0 +1,787 @@
+[
+  {
+    "file": "v13\\libs\\AST_ZeroSimChecker.py",
+    "original_length": 18817,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 18464,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\BigNum128.py",
+    "original_length": 9267,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9267,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\BigNum128_fixed.py",
+    "original_length": 9285,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9285,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\CertifiedMath.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\DeterministicTime.py",
+    "original_length": 5458,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5458,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic_hash.py",
+    "original_length": 2541,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2541,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic_helpers.py",
+    "original_length": 3403,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3403,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\fatal_errors.py",
+    "original_length": 5979,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5979,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\HolonetSync.py",
+    "original_length": 15308,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 15308,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\PQC.py",
+    "original_length": 15675,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 15675,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc_provider.py",
+    "original_length": 5457,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5457,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\core_pqc_adapter.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\dilithium5_adapter.py",
+    "original_length": 1061,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1061,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\mock_pqc.py",
+    "original_length": 1479,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1479,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\mock_pqc_adapter.py",
+    "original_length": 2236,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2236,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\pqc_adapter_factory.py",
+    "original_length": 2097,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2097,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\__init__.py",
+    "original_length": 151,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 151,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\core\\SafetyGuard.py",
+    "original_length": 10167,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 12
+      }
+    ],
+    "error": null,
+    "new_length": 9537,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\core\\UtilityOracle.py",
+    "original_length": 5470,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 8
+      }
+    ],
+    "error": null,
+    "new_length": 5033,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\core\\UtilityOracleInterface.py",
+    "original_length": 11147,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 6
+      }
+    ],
+    "error": null,
+    "new_length": 10840,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\crypto\\derivation.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: unterminated string literal\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic\\random.py",
+    "original_length": 4573,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4573,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic\\time.py",
+    "original_length": 3019,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3019,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\EconomicAdversarySuite.py",
+    "original_length": 23235,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 23132,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\EconomicsGuard.py",
+    "original_length": 33118,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 40
+      }
+    ],
+    "error": null,
+    "new_length": 30737,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\economic_constants.py",
+    "original_length": 3936,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3936,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\GenesisHarmonicState.py",
+    "original_length": 11511,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 11450,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\HarmonicEconomics.py",
+    "original_length": 19794,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 19794,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\HoloRewardEngine.py",
+    "original_length": 10057,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 9959,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\PsiFieldEngine.py",
+    "original_length": 19232,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 19232,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\PsiSyncProtocol.py",
+    "original_length": 14820,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 14723,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\QAmount.py",
+    "original_length": 6968,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6968,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\SystemRecoveryProtocol.py",
+    "original_length": 6538,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 6434,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\TreasuryDistributionEngine.py",
+    "original_length": 9439,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 9331,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\encoding\\canonical.py",
+    "original_length": 4646,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4646,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\encoding\\__init__.py",
+    "original_length": 240,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 240,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\governance\\AEGIS_Node_Verification.py",
+    "original_length": 22094,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 49
+      }
+    ],
+    "error": null,
+    "new_length": 19782,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\InfrastructureGovernance.py",
+    "original_length": 41096,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 16
+      }
+    ],
+    "error": null,
+    "new_length": 40246,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\NODAllocator.py",
+    "original_length": 19304,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 18971,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\NODInvariantChecker.py",
+    "original_length": 22584,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 37
+      }
+    ],
+    "error": null,
+    "new_length": 20431,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\RewardAllocator.py",
+    "original_length": 11848,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 11593,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\TreasuryEngine.py",
+    "original_length": 14181,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 7
+      }
+    ],
+    "error": null,
+    "new_length": 13784,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\integration\\StateTransitionEngine.py",
+    "original_length": 19136,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 8
+      }
+    ],
+    "error": null,
+    "new_length": 18665,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\interfaces\\message_protocol.py",
+    "original_length": 3171,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3171,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\module_interface.py",
+    "original_length": 2607,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2607,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\pqc_interface.py",
+    "original_length": 1872,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1872,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\__init__.py",
+    "original_length": 298,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 298,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\keystore\\manager.py",
+    "original_length": 1691,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1691,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\logging\\qfs_logger.py",
+    "original_length": 5215,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 6
+      }
+    ],
+    "error": null,
+    "new_length": 4858,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\logging\\__init__.py",
+    "error": "[Errno 13] Permission denied: 'v13\\\\libs\\\\logging\\\\__init__.py'",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\CanonicalSerializer.py",
+    "original_length": 2489,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2489,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\ConcretePQCProvider.py",
+    "original_length": 12329,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12329,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\IPQCProvider.py",
+    "original_length": 4624,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4624,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\MemoryHygiene.py",
+    "original_length": 1483,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1483,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\oqs_adapter.py",
+    "original_length": 8145,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8145,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Audit.py",
+    "original_length": 2050,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2050,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Core.py",
+    "original_length": 10483,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 10389,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Logger.py",
+    "original_length": 3861,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3861,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\registry.py",
+    "original_length": 1125,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1125,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\__init__.py",
+    "original_length": 481,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 481,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\quantum\\QPU_Interface.py",
+    "original_length": 5775,
+    "fixes_applied": [
+      {
+        "type": "PrintRemoval",
+        "count": 7
+      }
+    ],
+    "error": null,
+    "new_length": 5442,
+    "changed": true
+  }
+]

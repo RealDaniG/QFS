@@ -22,7 +22,6 @@ def test_replay_source_fetches_rewards():
     bundle = create_test_bundle(cm)
     rewards = {'CHR': {'token_name': 'CHR', 'amount': '100.0', 'wallet_id': 'wallet_123', 'details': 'Reward for wallet_123'}}
     entry = ledger.log_state(token_bundle=bundle, rewards=rewards, deterministic_timestamp=1000)
-    print(f'Logged entry {entry.entry_id} with type {entry.entry_type}')
     events = source.get_reward_events('wallet_123', epoch=1)
     assert len(events) > 0, 'Should find at least one event'
     reward_event = next((e for e in events if e['type'] == 'RewardAllocated'))

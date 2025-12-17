@@ -240,7 +240,6 @@ class StateTransitionEngine:
 
 def test_state_transition_engine():
     """Test the StateTransitionEngine implementation."""
-    print('Testing StateTransitionEngine...')
     cm = CertifiedMath()
     engine = StateTransitionEngine(cm)
     from ...core.TokenStateBundle import create_token_state_bundle
@@ -255,13 +254,8 @@ def test_state_transition_engine():
     log_list = []
     result = engine.apply_state_transition(current_token_bundle=current_bundle, allocated_rewards=allocated_rewards, log_list=log_list, pqc_cid='test_transition_001', deterministic_timestamp=1234567891)
     if result.success and result.new_token_bundle is not None:
-        print(f'State transition successful!')
-        print(f'New bundle ID: {result.new_token_bundle.bundle_id[:16]}...')
-        print(f"New CHR balance: {result.new_token_bundle.chr_state['balance']}")
-        print(f"New FLX balance: {result.new_token_bundle.flx_state['balance']}")
-        print(f'Log entries: {len(log_list)}')
+        pass
     else:
-        print(f'State transition failed: {result.error_message}')
-    print('✓ StateTransitionEngine test passed!')
+        pass
 if __name__ == '__main__':
     test_state_transition_engine()

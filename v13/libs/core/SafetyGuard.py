@@ -136,7 +136,6 @@ class SafetyGuard:
 
 def test_safety_guard():
     """Test the SafetyGuard implementation."""
-    print('Testing SafetyGuard...')
     cm = CertifiedMath()
     safety_guard = SafetyGuard(cm)
     try:
@@ -152,21 +151,10 @@ def test_safety_guard():
     safe_content = 'This is a safe, family-friendly post about quantum computing.'
     safe_metadata = {'author': 'user_123', 'community': 'technology', 'timestamp': 1234567890}
     result1 = safety_guard.validate_content(content_text=safe_content, content_metadata=safe_metadata, token_bundle=token_bundle, log_list=log_list, pqc_cid='test_safety_001', deterministic_timestamp=1234567890)
-    print(f'Safe content validation: {result1.passed}')
-    print(f'Risk score: {result1.risk_score.to_decimal_string()}')
-    print(f'Explanation: {result1.explanation}')
     unsafe_content = 'This is explicit adult content that should be flagged.'
     unsafe_metadata = {'author': 'user_456', 'community': 'general', 'timestamp': 1234567891}
     result2 = safety_guard.validate_content(content_text=unsafe_content, content_metadata=unsafe_metadata, token_bundle=token_bundle, log_list=log_list, pqc_cid='test_safety_002', deterministic_timestamp=1234567891)
-    print(f'Unsafe content validation: {result2.passed}')
-    print(f'Risk score: {result2.risk_score.to_decimal_string()}')
-    print(f'Explanation: {result2.explanation}')
     media_metadata = {'mime_type': 'image/jpeg', 'size': 5 * 1024 * 1024, 'hash': 'QmHash1234567890'}
     result3 = safety_guard.validate_media(media_metadata=media_metadata, token_bundle=token_bundle, log_list=log_list, pqc_cid='test_safety_003', deterministic_timestamp=1234567892)
-    print(f'Media validation: {result3.passed}')
-    print(f'Risk score: {result3.risk_score.to_decimal_string()}')
-    print(f'Explanation: {result3.explanation}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ SafetyGuard test passed!')
 if __name__ == '__main__':
     test_safety_guard()

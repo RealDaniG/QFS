@@ -36,7 +36,6 @@ try:
             d = DilithiumBase(dilithium.DEFAULT_PARAMETERS['dilithium5'])
             return d.verify(public_key, message, signature)
 except (ImportError, Exception) as e:
-    print(f'[WARNING] dilithium-py not available ({e}). PQC operations will fail if called.')
     Dilithium5Impl = None
 from .CanonicalSerializer import CanonicalSerializer
 from .PQC_Logger import PQC_Logger

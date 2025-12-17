@@ -272,99 +272,51 @@ def test_aegis_node_verification():
     """
     Test the AEGIS_Node_Verifier implementation with comprehensive scenarios.
     """
-    print('\n=== Testing AEGIS_Node_Verifier - Pure Deterministic Verification ===')
     cm = CertifiedMath()
     verifier = AEGIS_Node_Verifier(cm)
     registry_snapshot = {'schema_version': 'v1.0', 'nodes': {'node_valid': {'pqc_public_key': '0x1234567890abcdef', 'pqc_scheme': 'Dilithium5', 'revoked': False}, 'node_revoked': {'pqc_public_key': '0xabcdef123456', 'pqc_scheme': 'Dilithium5', 'revoked': True, 'revocation_reason': 'Security violation'}, 'node_no_pqc': {'pqc_public_key': '', 'pqc_scheme': '', 'revoked': False}, 'node_bad_scheme': {'pqc_public_key': '0xfedcba987654', 'pqc_scheme': 'RSA2048', 'revoked': False}}}
     telemetry_snapshot = {'schema_version': 'v1.0', 'telemetry_hash': 'a' * 64, 'block_height': 12345, 'nodes': {'node_valid': {'uptime_ratio': '0.95', 'health_score': '0.80', 'conflict_detected': False}, 'node_low_uptime': {'uptime_ratio': '0.85', 'health_score': '0.80', 'conflict_detected': False}, 'node_unhealthy': {'uptime_ratio': '0.95', 'health_score': '0.70', 'conflict_detected': False}, 'node_conflict': {'uptime_ratio': '0.95', 'health_score': '0.80', 'conflict_detected': True, 'conflict_reason': 'Duplicate entries in different shards'}}}
-    print('\n--- Scenario 1: Valid Node (All Checks Pass) ---')
     result = verifier.verify_node('node_valid', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_valid')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
     assert result.is_valid == True, 'Valid node should pass all checks'
     assert result.status == NodeVerificationStatus.VERIFIED
-    print('\n--- Scenario 2: Node Not in Registry ---')
     result = verifier.verify_node('node_nonexistent', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_nonexistent')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_NO_REGISTRY_ENTRY
-    print('\n--- Scenario 3: Revoked Node ---')
     telemetry_snapshot['nodes']['node_revoked'] = {'uptime_ratio': '0.95', 'health_score': '0.80', 'conflict_detected': False}
     result = verifier.verify_node('node_revoked', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_revoked')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_REVOKED
-    print('\n--- Scenario 4: Node Missing PQC Key ---')
     telemetry_snapshot['nodes']['node_no_pqc'] = {'uptime_ratio': '0.95', 'health_score': '0.80', 'conflict_detected': False}
     result = verifier.verify_node('node_no_pqc', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_no_pqc')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_NO_PQC_KEY
-    print('\n--- Scenario 5: Unsupported PQC Scheme ---')
     telemetry_snapshot['nodes']['node_bad_scheme'] = {'uptime_ratio': '0.95', 'health_score': '0.80', 'conflict_detected': False}
     result = verifier.verify_node('node_bad_scheme', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_bad_scheme')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_UNSUPPORTED_PQC_SCHEME
-    print('\n--- Scenario 6: Low Uptime ---')
     registry_snapshot['nodes']['node_low_uptime'] = {'pqc_public_key': '0x11111111', 'pqc_scheme': 'Dilithium5', 'revoked': False}
     result = verifier.verify_node('node_low_uptime', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_low_uptime')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_LOW_UPTIME
-    print('\n--- Scenario 7: Unhealthy Node ---')
     registry_snapshot['nodes']['node_unhealthy'] = {'pqc_public_key': '0x22222222', 'pqc_scheme': 'Dilithium5', 'revoked': False}
     result = verifier.verify_node('node_unhealthy', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_unhealthy')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_UNHEALTHY
-    print('\n--- Scenario 8: Telemetry Hash Conflict ---')
     registry_snapshot['nodes']['node_conflict'] = {'pqc_public_key': '0x33333333', 'pqc_scheme': 'Dilithium5', 'revoked': False}
     result = verifier.verify_node('node_conflict', registry_snapshot, telemetry_snapshot)
-    print(f'Node: node_conflict')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
-    print(f'Reason: {result.reason_message}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_TELEMETRY_HASH_CONFLICT
-    print('\n--- Scenario 9: Batch Verification ---')
     node_ids = ['node_valid', 'node_revoked', 'node_low_uptime']
     results = verifier.verify_nodes_batch(node_ids, registry_snapshot, telemetry_snapshot)
-    print(f'Batch verification of {len(node_ids)} nodes:')
     for node_id, result in results.items():
-        print(f'  {node_id}: {result.status.value} (valid={result.is_valid})')
+        pass
     assert len(results) == 3
     assert results['node_valid'].is_valid == True
     assert results['node_revoked'].is_valid == False
     assert results['node_low_uptime'].is_valid == False
-    print('\n--- Scenario 10: Malformed Telemetry Snapshot ---')
     bad_telemetry = {'schema_version': 'v0.9'}
     result = verifier.verify_node('node_valid', registry_snapshot, bad_telemetry)
-    print(f'Malformed telemetry check:')
-    print(f'Is valid: {result.is_valid}')
-    print(f'Status: {result.status.value}')
     assert result.is_valid == False
     assert result.status == NodeVerificationStatus.UNVERIFIED_TELEMETRY_MALFORMED
-    print('\n✅ All 10 AEGIS_Node_Verifier scenarios passed!')
-    print('\n=== AEGIS_Node_Verification.py is QFS V13.6 Compliant ===')
 if __name__ == '__main__':
     test_aegis_node_verification()

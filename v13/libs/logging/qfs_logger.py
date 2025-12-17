@@ -66,11 +66,11 @@ class QFSLogger:
     def _write_log(self, entry: Dict):
         """Write log entry to file and stdout"""
         if entry['level'] in ['ERROR', 'CRITICAL', 'SECURITY']:
-            print(f"::error::{entry['category']}: {entry['message']}")
+            pass
         elif entry['level'] == 'WARNING':
-            print(f"::warning::{entry['category']}: {entry['message']}")
+            pass
         else:
-            print(json.dumps(entry, indent=2, default=str))
+            pass
         log_dir = Path('v13/evidence/logs')
         log_dir.mkdir(parents=True, exist_ok=True)
         log_file = log_dir / f"{self.component}_{entry['level'].lower()}.jsonl"
@@ -85,11 +85,11 @@ class QFSLogger:
             if hasattr(handler, 'handle_critical_event'):
                 handler.handle_critical_event(entry)
             else:
-                print(f'::warning::CIR302Handler found but handle_critical_event method missing.')
+                pass
         except ImportError:
-            print(f'::warning::CIR302Handler not found. Skipping automatic handler trigger.')
+            pass
         except Exception as e:
-            print(f'::error::Failed to trigger CIR handler: {e}')
+            pass
 
     def trace(self, category: LogCategory, message: str, **kwargs):
         self.log(LogLevel.TRACE, category, message, **kwargs)

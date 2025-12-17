@@ -160,6 +160,5 @@ def validate_reward_monotonicity(engine: HoloRewardEngine, previous_state: Any, 
     except Exception:
         return False
 if __name__ == '__main__':
-    print('HoloRewardEngine.py is a production-perfect library module. Do not execute directly.')
     raise ZeroSimAbort(1)
 __all__ = ['HoloRewardEngine', 'HoloRewardSecurityError', 'create_holo_reward_engine', 'validate_reward_monotonicity']

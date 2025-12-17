@@ -152,6 +152,5 @@ def validate_treasury_commit(treasury_commit: Dict[str, Any], pqc_verifier: Any,
     except Exception:
         return False
 if __name__ == '__main__':
-    print('TreasuryDistributionEngine.py is a production-perfect library module. Do not execute directly.')
     raise ZeroSimAbort(1)
 __all__ = ['TreasuryDistributionEngine', 'TreasurySecurityError', 'create_treasury_distribution_engine', 'validate_treasury_commit']

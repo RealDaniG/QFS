@@ -235,6 +235,5 @@ def generate_psisync_evidence(protocol: PsiSyncProtocol, consensus_result: Dict[
     """Generate comprehensive ΨSync evidence for Phase3EvidenceBuilder."""
     return {'psi_sync_consensus': consensus_result, 'protocol_configuration': {'outlier_threshold_percentile': protocol.OUTLIER_THRESHOLD_PERCENTILE, 'max_outlier_ratio': protocol.MAX_OUTLIER_RATIO, 'min_consensus_shards': protocol.MIN_CONSENSUS_SHARDS, 'progressive_degradation': protocol.PROGRESSIVE_DEGRADATION, 'degradation_fallback_mode': protocol.DEGRADATION_FALLBACK_MODE, 'max_consensus_attempts': protocol.MAX_CONSENSUS_ATTEMPTS, 'consensus_timeout_ms': protocol.CONSENSUS_TIMEOUT_MS}, 'security_status': {'consensus_achieved': consensus_result['consensus_achieved'], 'outlier_ratio': consensus_result['outlier_ratio'] if 'outlier_ratio' in consensus_result else 0, 'max_deviation': consensus_result['max_deviation'], 'shard_participation': 0, 'consensus_quality': consensus_result.get('consensus_quality', {}), 'fallback_used': 'fallback_consensus' in consensus_result}}
 if __name__ == '__main__':
-    print('PsiSyncProtocol.py is a production-perfect library module. Do not execute directly.')
     raise ZeroSimAbort(1)
 __all__ = ['PsiSyncProtocol', 'SecurityError', 'create_psisync_protocol', 'generate_psisync_evidence']

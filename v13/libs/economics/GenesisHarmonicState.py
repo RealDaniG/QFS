@@ -161,7 +161,6 @@ try:
     assert CONST.MIN_FOUNDING_NODES <= active_nodes <= CONST.MAX_FOUNDING_NODES
     for node in FOUNDING_NODE_REGISTRY.values():
         _validate_pqc_key_format(node['pqc_public_key'])
-    print('✓ GenesisHarmonicState static validation PASSED')
 except Exception as e:
     raise ImportError(f'GenesisHarmonicState CRITICAL VALIDATION FAILED: {e}')
 SafetyManager = GenesisSafetyManager()

@@ -343,40 +343,28 @@ def test_economics_guard():
     """
     Test the EconomicsGuard implementation with all validation scenarios.
     """
-    print('\n=== Testing EconomicsGuard - Constitutional Bounds Enforcement ===')
     cm = CertifiedMath()
     guard = EconomicsGuard(cm)
-    print('\n--- Scenario 1: CHR Reward Validation (Happy Path) ---')
     chr_reward = BigNum128.from_int(5000)
     daily_total = BigNum128.from_int(1000000)
     total_supply = BigNum128.from_int(100000000)
     result = guard.validate_chr_reward(chr_reward, daily_total, total_supply)
-    print(f'CHR reward validation: {result.passed}')
     assert result.passed == True, 'CHR reward should pass'
-    print('\n--- Scenario 2: CHR Reward Exceeds Maximum ---')
     chr_reward_high = BigNum128.from_int(20000)
     result = guard.validate_chr_reward(chr_reward_high, daily_total, total_supply)
-    print(f'CHR reward validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'CHR reward should fail'
     assert result.error_code == 'ECON_CHR_REWARD_ABOVE_MAX'
-    print('\n--- Scenario 3: FLX Reward Validation (Happy Path) ---')
     flx_reward = BigNum128.from_int(500)
     chr_base = BigNum128.from_int(5000)
     user_balance = BigNum128.from_int(10000)
     result = guard.validate_flx_reward(flx_reward, chr_base, user_balance)
-    print(f'FLX reward validation: {result.passed}')
     assert result.passed == True, 'FLX reward should pass'
-    print('\n--- Scenario 4: FLX Per-User Cap Exceeded ---')
     user_balance_high = BigNum128.from_int(999000)
     chr_base_high = BigNum128.from_int(20000)
     flx_reward_big = BigNum128.from_int(2000)
     result = guard.validate_flx_reward(flx_reward_big, chr_base_high, user_balance_high)
-    print(f'FLX reward validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'FLX should fail per-user cap'
     assert result.error_code == 'ECON_FLX_PER_USER_EXCEEDED'
-    print('\n--- Scenario 5: NOD Allocation Validation (Happy Path) ---')
     nod_amount = BigNum128.from_int(1000)
     total_fees = BigNum128.from_int(10000)
     node_voting_power = BigNum128.from_int(2000)
@@ -385,72 +373,44 @@ def test_economics_guard():
     epoch_issuance = BigNum128.from_int(50000)
     active_nodes = 5
     result = guard.validate_nod_allocation(nod_amount, total_fees, node_voting_power, total_voting_power, node_reward_share, epoch_issuance, active_nodes)
-    print(f'NOD allocation validation: {result.passed}')
     assert result.passed == True, 'NOD allocation should pass'
-    print('\n--- Scenario 6: NOD Voting Power Exceeded ---')
     node_voting_power_high = BigNum128.from_int(3000)
     result = guard.validate_nod_allocation(nod_amount, total_fees, node_voting_power_high, total_voting_power, node_reward_share, epoch_issuance, active_nodes)
-    print(f'NOD allocation validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'NOD should fail voting power cap'
     assert result.error_code == 'ECON_NOD_VOTING_POWER_EXCEEDED'
-    print('\n--- Scenario 7: PSI Accumulation Validation (Happy Path) ---')
     psi_delta = BigNum128.from_string('0.05')
     current_psi = BigNum128.from_int(50000)
     result = guard.validate_psi_accumulation(psi_delta, current_psi)
-    print(f'PSI accumulation validation: {result.passed}')
     assert result.passed == True, 'PSI accumulation should pass'
-    print('\n--- Scenario 8: PSI Delta Exceeds Maximum ---')
     psi_delta_high = BigNum128.from_string('0.15')
     result = guard.validate_psi_accumulation(psi_delta_high, current_psi)
-    print(f'PSI accumulation validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'PSI should fail delta cap'
     assert result.error_code == 'ECON_PSI_DELTA_ABOVE_MAX'
-    print('\n--- Scenario 9: ATR Usage Validation (Happy Path) ---')
     cost_multiplier = BigNum128.from_string('2.0')
     accumulated_atr = BigNum128.from_int(50000)
     result = guard.validate_atr_usage(cost_multiplier, accumulated_atr)
-    print(f'ATR usage validation: {result.passed}')
     assert result.passed == True, 'ATR usage should pass'
-    print('\n--- Scenario 10: ATR Cost Multiplier Exceeded ---')
     cost_multiplier_high = BigNum128.from_string('15.0')
     result = guard.validate_atr_usage(cost_multiplier_high, accumulated_atr)
-    print(f'ATR usage validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'ATR should fail cost multiplier cap'
     assert result.error_code == 'ECON_ATR_COST_MULTIPLIER_EXCEEDED'
-    print('\n--- Scenario 11: Supply Change Validation (Happy Path) ---')
     supply_delta = BigNum128.from_int(1000000)
     current_supply = BigNum128.from_int(100000000)
     result = guard.validate_supply_change(supply_delta, current_supply)
-    print(f'Supply change validation: {result.passed}')
     assert result.passed == True, 'Supply change should pass'
-    print('\n--- Scenario 12: Supply Ratio Change Exceeded ---')
     supply_delta_high = BigNum128.from_int(5000000)
     result = guard.validate_supply_change(supply_delta_high, current_supply)
-    print(f'Supply change validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Supply should fail ratio cap'
     assert result.error_code == 'ECON_SUPPLY_RATIO_CHANGE_EXCEEDED'
-    print('\n--- Scenario 13: Governance Change Validation (Happy Path) ---')
     quorum_value = BigNum128.from_string('0.66')
     result = guard.validate_governance_change('nod_quorum_threshold', quorum_value)
-    print(f'Governance change validation: {result.passed}')
     assert result.passed == True, 'Governance change should pass'
-    print('\n--- Scenario 14: Governance Quorum Below Minimum ---')
     quorum_low = BigNum128.from_string('0.40')
     result = guard.validate_governance_change('nod_quorum_threshold', quorum_low)
-    print(f'Governance change validation: {result.passed}')
-    print(f'Error code: {result.error_code}')
     assert result.passed == False, 'Governance should fail quorum min'
     assert result.error_code == 'GOV_SAFETY_QUORUM_BELOW_MIN'
-    print('\n--- Scenario 15: Violation Event Hash Generation ---')
     violation = ValidationResult(passed=False, error_code='ECON_CHR_REWARD_ABOVE_MAX', error_message='Test violation', details={'reward': '20000'})
     event_hash = guard.generate_violation_event_hash(violation, 1000)
-    print(f'Event hash generated: {event_hash[:32]}...')
     assert len(event_hash) == 64, 'Event hash should be 64 characters'
-    print('\n✅ All 15 EconomicsGuard scenarios passed!')
-    print('\n=== EconomicsGuard is QFS V13.6 Compliant ===')
 if __name__ == '__main__':
     test_economics_guard()

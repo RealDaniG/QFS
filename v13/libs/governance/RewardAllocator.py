@@ -171,7 +171,6 @@ class RewardAllocator:
 
 def test_reward_allocator():
     """Test the RewardAllocator implementation."""
-    print('Testing RewardAllocator...')
     cm = CertifiedMath()
     allocator = RewardAllocator(cm)
     from v13.core.reward_types import RewardBundle
@@ -179,10 +178,7 @@ def test_reward_allocator():
     recipient_addresses = ['addr_001', 'addr_002', 'addr_003']
     log_list = []
     allocated_rewards = allocator.allocate_rewards(reward_bundle=reward_bundle, recipient_addresses=recipient_addresses, log_list=log_list, pqc_cid='test_allocator_001', deterministic_timestamp=1234567890)
-    print(f'Number of recipients: {len(allocated_rewards)}')
     for address, alloc in allocated_rewards.items():
-        print(f'  {address}: Total = {alloc.total_amount.to_decimal_string()}')
-    print(f'Log entries: {len(log_list)}')
-    print('✓ RewardAllocator test passed!')
+        pass
 if __name__ == '__main__':
     test_reward_allocator()
