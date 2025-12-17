@@ -171,7 +171,7 @@ class Phase3Validator:
         if not os.path.exists(evidence_dir):
             return False
         required_files = ['phase3_genesis.json', 'phase3_psi_dynamics.json', 'phase3_harmonics.json', 'phase3_adversary_results.json', 'phase3_manifest.json', 'phase3_final_hash.sha256']
-        for file_name in required_files:
+        for file_name in sorted(required_files):
             if not os.path.exists(os.path.join(evidence_dir, file_name)):
                 return False
         with open(os.path.join(evidence_dir, 'phase3_manifest.json'), 'r') as f:

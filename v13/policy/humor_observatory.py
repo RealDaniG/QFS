@@ -77,13 +77,13 @@ class HumorSignalObservatory:
         avg_confidence = sum((s.confidence for s in self.signal_history)) / total_signals
         dimension_sums = defaultdict(float)
         dimension_counts = defaultdict(int)
-        for snapshot in self.signal_history:
+        for snapshot in sorted(self.signal_history):
             for dimension, score in snapshot.dimensions.items():
                 dimension_sums[dimension] += score
                 dimension_counts[dimension] += 1
         dimension_averages = {dim: dimension_sums[dim] / dimension_counts[dim] for dim in dimension_sums}
         dimension_distributions = {}
-        for dimension in dimension_sums:
+        for dimension in sorted(dimension_sums):
             dimension_distributions[dimension] = self._calculate_histogram(dimension)
         bonuses = [s.bonus_factor for s in self.signal_history]
         bonus_statistics = {'mean': sum(bonuses) / len(bonuses), 'min': min(bonuses), 'max': max(bonuses), 'median': sorted(bonuses)[len(bonuses) // 2]}
@@ -110,7 +110,7 @@ class HumorSignalObservatory:
         if not dimension_scores:
             return {}
         buckets = defaultdict(int)
-        for score in dimension_scores:
+        for score in sorted(dimension_scores):
             bucket = f'{int(score // self.bucket_size) * self.bucket_size:.1f}-{(int(score // self.bucket_size) + 1) * self.bucket_size:.1f}'
             buckets[bucket] += 1
         total = len(dimension_scores)
@@ -126,13 +126,13 @@ class HumorSignalObservatory:
         if len(self.signal_history) < 2:
             return {}
         all_dimensions = set()
-        for snapshot in self.signal_history:
+        for snapshot in sorted(self.signal_history):
             all_dimensions.update(snapshot.dimensions.keys())
         correlations = {}
         dimension_lists = {dim: [snapshot.dimensions.get(dim, 0.0) for snapshot in self.signal_history] for dim in all_dimensions}
-        for dim1 in all_dimensions:
+        for dim1 in sorted(all_dimensions):
             correlations[dim1] = {}
-            for dim2 in all_dimensions:
+            for dim2 in sorted(all_dimensions):
                 if dim1 == dim2:
                     correlations[dim1][dim2] = 1.0
                 else:

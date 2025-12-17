@@ -95,7 +95,7 @@ def pytest_collection_modifyitems(config, items):
     This is intentionally test-only behavior to make unit subsets runnable
     in CI/dev while Phase A fixes import drift and PQC environment dependencies.
     """
-    for item in items:
+    for item in sorted(items):
         nodeid = item.nodeid.replace('\\', '/')
         if '/v13/tests/old/' in nodeid:
             item.add_marker('legacy')

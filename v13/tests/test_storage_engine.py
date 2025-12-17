@@ -112,7 +112,7 @@ class TestStorageEngine:
         shard_id = result['shard_ids'][0]
         assigned_nodes = self.storage_engine.shards[shard_id].assigned_nodes
         updated_node_found = False
-        for node_id in assigned_nodes:
+        for node_id in sorted(assigned_nodes):
             if node_id in self.storage_engine.nodes:
                 final_bytes = self.storage_engine.nodes[node_id].bytes_stored
                 if final_bytes.value > 0:
@@ -238,7 +238,7 @@ class TestStorageEngineEconomics:
         self.storage_engine.register_storage_node('node2', '192.168.1.2', 8080)
         self.storage_engine.register_storage_node('node3', '192.168.1.3', 8080)
         self.storage_engine.register_storage_node('node4', '192.168.1.4', 8080)
-        for node_id in self.storage_engine.nodes:
+        for node_id in sorted(self.storage_engine.nodes):
             self.storage_engine.nodes[node_id].is_aegis_verified = True
             self.storage_engine.nodes[node_id].aegis_verification_epoch = 0
 

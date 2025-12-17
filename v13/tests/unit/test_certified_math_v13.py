@@ -15,7 +15,7 @@ def test_v13_compliance():
     print('=' * 40)
     required_functions = ['add', 'sub', 'mul', 'div', 'safe_exp', 'safe_ln', 'safe_pow', 'safe_two_to_the_power', 'fast_sqrt', 'calculate_phi_series', 'calculate_I_eff', 'calculate_c_holo', 'from_string']
     print('Required functions for QFS V13 compliance:')
-    for func in required_functions:
+    for func in sorted(required_functions):
         print(f'  ✅ {func}')
     print('\n' + '=' * 40)
     print('✅ CertifiedMath is now fully compliant with QFS V13 requirements')

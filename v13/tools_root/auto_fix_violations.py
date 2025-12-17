@@ -173,7 +173,7 @@ def main():
     # Filter out the auto_fix_violations.py file itself to prevent recursion
     py_files = [p for p in py_files if p.name != "auto_fix_violations.py"]
     print(f"[INFO] Found {len(py_files)} Python files to process")
-    for p in py_files:
+    for p in sorted(py_files):
         transform_file(p, dry_run=True)  # Dry run by default
 if __name__ == "__main__":
     main()

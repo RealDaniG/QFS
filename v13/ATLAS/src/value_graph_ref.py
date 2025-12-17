@@ -243,6 +243,6 @@ class ValueGraphRef:
         insertion order).
         """
 
-        for ev in events:
+        for ev in sorted(events):
             self.apply_event(ev)
         return self

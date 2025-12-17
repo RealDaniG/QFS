@@ -81,11 +81,11 @@ def test_cross_check_with_sdk_compatibility():
     assert len(audit_log) == 1
     entry = audit_log[0]
     required_fields = ['operation', 'timestamp', 'details', 'pqc_cid', 'quantum_metadata']
-    for field in required_fields:
+    for field in sorted(required_fields):
         assert field in entry, f"Required field '{field}' missing from audit entry"
     details = entry['details']
     required_details = ['ttsTimestamp', 'sequence', 'seed', 'metadata', 'previous_hash']
-    for field in required_details:
+    for field in sorted(required_details):
         assert field in details, f"Required detail field '{field}' missing from audit entry details"
     reconstructed_packet = DRV_Packet(ttsTimestamp=details['ttsTimestamp'], sequence=details['sequence'], seed=details['seed'], metadata=details['metadata'], previous_hash=details['previous_hash'])
     assert reconstructed_packet.ttsTimestamp == packet.ttsTimestamp
@@ -110,7 +110,7 @@ def test_audit_log_chain_validation():
     audit_log = get_drv_packet_audit_log()
     operations = [entry['operation'] for entry in audit_log]
     expected_operations = ['create', 'create', 'sign', 'sign', 'validate_chain']
-    for op in expected_operations:
+    for op in sorted(expected_operations):
         assert op in operations, f"Expected operation '{op}' not found in audit log"
     print('  [PASS] Audit log chain validation verified')
 

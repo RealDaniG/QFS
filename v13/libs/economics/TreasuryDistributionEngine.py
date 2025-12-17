@@ -68,11 +68,11 @@ class TreasuryDistributionEngine:
         for s in raw_node_scores.values():
             total_score += int(s)
         if total_score == 0:
-            for shard_id in sorted_shard_ids:
+            for shard_id in sorted(sorted_shard_ids):
                 distribution_map[shard_id] = BigNum128.from_int(0)
         else:
             total_score_bn = BigNum128.from_int(total_score)
-            for shard_id in sorted_shard_ids:
+            for shard_id in sorted(sorted_shard_ids):
                 score = int(raw_node_scores[shard_id])
                 score_bn = BigNum128.from_int(score)
                 numerator = self.math.mul(score_bn, treasury_balance, log_list)
@@ -90,7 +90,7 @@ class TreasuryDistributionEngine:
         Returns a deterministic score for each shard ID.
         """
         scores = {}
-        for shard_id in genesis_shard_ids:
+        for shard_id in sorted(genesis_shard_ids):
             scores[shard_id] = 100
             if hasattr(harmonic_state, 'node_metrics') and shard_id in harmonic_state.node_metrics:
                 uptime = harmonic_state.node_metrics[shard_id].get('uptime', 0)

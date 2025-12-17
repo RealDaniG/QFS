@@ -42,7 +42,7 @@ class AtlasAPIRouter:
             if response.policy_metadata and response.policy_metadata.get('status') == 'REQUEST_VALIDATION_FAILED':
                 return {'error_code': 'REQUEST_VALIDATION_FAILED', 'message': 'Request validation failed', 'details': response.policy_metadata.get('version', 'Invalid request')}
             posts_data = []
-            for post in response.posts:
+            for post in sorted(response.posts):
                 posts_data.append({'post_id': post.post_id, 'coherence_score': post.coherence_score.to_decimal_string(), 'policy_version': post.policy_version, 'why_this_ranking': post.why_this_ranking, 'timestamp': post.timestamp})
             return {'posts': posts_data, 'next_cursor': response.next_cursor, 'policy_metadata': response.policy_metadata}
         except Exception as e:

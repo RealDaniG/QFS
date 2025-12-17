@@ -310,7 +310,7 @@ class QFSV13AutonomousAudit:
             cir302_triggered = False
             finality_seal = None
             log_hash = None
-            for entry in log_list:
+            for entry in sorted(log_list):
                 if entry.get('op_name') == 'cir302_trigger':
                     cir302_triggered = True
                     break
@@ -471,14 +471,14 @@ class QFSV13AutonomousAudit:
     def generate_evidence_checklist(self) -> List[Dict[str, Any]]:
         """Generate evidence checklist for the audit report."""
         checklist = []
-        for result in self.audit_results:
+        for result in sorted(self.audit_results):
             checklist.append({'test_name': result.test_name, 'passed': result.passed, 'evidence_files': result.evidence_files, 'details': result.details})
         return checklist
 
     def generate_detailed_validation(self) -> List[Dict[str, Any]]:
         """Generate detailed validation results for the audit report."""
         validation_details = []
-        for result in self.audit_results:
+        for result in sorted(self.audit_results):
             validation_details.append({'phase': result.test_name, 'status': 'PASSED' if result.passed else 'FAILED', 'details': result.details, 'hash_proof': result.hash_proof, 'evidence_files': result.evidence_files})
         return validation_details
 
@@ -516,7 +516,7 @@ class QFSV13AutonomousAudit:
         print('\n' + '=' * 70)
         print('AUDIT SUMMARY')
         print('=' * 70)
-        for result in results:
+        for result in sorted(results):
             status = '✅ PASSED' if result.passed else '❌ FAILED'
             print(f'{status} {result.test_name}: {result.details}')
         print('\n' + '=' * 70)

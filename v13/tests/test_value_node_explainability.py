@@ -113,7 +113,7 @@ class TestValueNodeExplainability:
         import inspect
         source = inspect.getsource(module)
         forbidden_patterns = ['requests.', 'urllib.', 'socket.', 'httplib.', 'http.client', 'aiohttp.']
-        for pattern in forbidden_patterns:
+        for pattern in sorted(forbidden_patterns):
             assert pattern not in source, f"Forbidden network I/O pattern '{pattern}' found in value-node modules"
 
     def test_no_filesystem_io_in_value_node_modules(self) -> None:
@@ -122,7 +122,7 @@ class TestValueNodeExplainability:
         import inspect
         source = inspect.getsource(module)
         forbidden_patterns = ['open(', 'os.', 'shutil.', 'pathlib.', 'pickle.']
-        for pattern in forbidden_patterns:
+        for pattern in sorted(forbidden_patterns):
             assert pattern not in source, f"Forbidden filesystem I/O pattern '{pattern}' found in value-node modules"
 
     def test_no_ledger_adapters_in_value_node_modules(self) -> None:
@@ -131,7 +131,7 @@ class TestValueNodeExplainability:
         import inspect
         source = inspect.getsource(module)
         forbidden_patterns = ['TreasuryEngine', 'RealLedger', 'TokenStateBundle', 'CoherenceLedger']
-        for pattern in forbidden_patterns:
+        for pattern in sorted(forbidden_patterns):
             assert pattern not in source, f"Forbidden ledger adapter pattern '{pattern}' found in value-node modules"
 
     def test_extreme_reward_values(self, explain_helper: ValueNodeExplainabilityHelper) -> None:

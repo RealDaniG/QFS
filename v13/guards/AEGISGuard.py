@@ -156,7 +156,7 @@ class AEGISGuard:
     def get_observations_summary(self) -> Dict[str, Any]:
         """Get a summary of AEGIS observations."""
         event_types = []
-        for obs in self.observations:
+        for obs in sorted(self.observations):
             if obs.event_type not in event_types:
                 event_types.append(obs.event_type)
         event_types.sort()

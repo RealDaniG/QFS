@@ -25,10 +25,10 @@ def static_checks():
         cmd = ['grep', '-r', '-E', '|'.join(forbidden), 'v13/policy/value_node_*.py']
         import glob
         files = glob.glob('v13/policy/value_node_*.py')
-        for fpath in files:
+        for fpath in sorted(files):
             with open(fpath, 'r', encoding='utf-8') as f:
                 for i, line in enumerate(f, 1):
-                    for pattern in forbidden:
+                    for pattern in sorted(forbidden):
                         if pattern in line and 'import' in line:
                             violations.append(f'{fpath}:{i} found {pattern}')
     return (len(violations) == 0, violations)

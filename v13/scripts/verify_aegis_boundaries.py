@@ -114,7 +114,7 @@ class AEGISBoundaryVerifier:
             recent_logs = []  # Mock for standalone testing
 
         violations = []
-        for log_entry in recent_logs:
+        for log_entry in sorted(recent_logs):
             # Check for AEGIS fields in deterministic log
             aegis_fields = [k for k in log_entry.keys() if k.startswith("aegis_")]
             if aegis_fields:

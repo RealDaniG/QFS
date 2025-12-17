@@ -23,7 +23,7 @@ class ZeroSimulationChecker(ast.NodeVisitor):
         if self.visit_count >= self.max_visits:
             return
         self.visit_count += 1
-        for alias in node.names:
+        for alias in sorted(node.names):
             if alias.name in PROHIBITED_MODULES:
                 self.errors.append((node.lineno, f'Prohibited module import: {alias.name}'))
             self.imports.add(alias.name)
@@ -37,7 +37,7 @@ class ZeroSimulationChecker(ast.NodeVisitor):
         if node.module in PROHIBITED_MODULES:
             self.errors.append((node.lineno, f'Prohibited module import: {node.module}'))
         if node.module:
-            for alias in node.names:
+            for alias in sorted(node.names):
                 full_name = f'{node.module}.{alias.name}'
                 if full_name in PROHIBITED_FUNCTIONS:
                     self.errors.append((node.lineno, f'Prohibited function import: {full_name}'))
@@ -90,13 +90,13 @@ def main():
     print('Targeted AST Checker')
     print('=' * 20)
     target_files = ['v13/tools_root/ast_checker.py', 'v13/tools_root/auto_fix_violations.py']
-    for target_file in target_files:
+    for target_file in sorted(target_files):
         print(f'Checking: {target_file}')
         try:
             errors = check_file(target_file)
             if errors:
                 print(f'  Found {len(errors)} errors:')
-                for line, error in errors:
+                for line, error in sorted(errors):
                     print(f'    Line {line}: {error}')
             else:
                 print('  No errors found')

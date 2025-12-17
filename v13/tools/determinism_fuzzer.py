@@ -38,7 +38,7 @@ class DeterminismFuzzer:
         """Run fuzz test and return deterministic SHA-256 hash of all outputs."""
         log_list = []
         inputs = self._generate_test_inputs(num_tests)
-        for test in inputs:
+        for test in sorted(inputs):
             # unused variables are expected here as we are testing the math engine stability
             _exp = self.cm.exp(test["a"], test["iterations"], log_list)
             _ln = self.cm.ln(

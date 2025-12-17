@@ -295,7 +295,7 @@ def main():
     print(f"[INFO] Targeting {len(target_files)} files with violations")
     
     modified_count = 0
-    for file_path in target_files:
+    for file_path in sorted(target_files):
         path = pathlib.Path(file_path)
         print(f"[DEBUG] Checking file: {path} (exists: {path.exists()})")
         if path.exists():

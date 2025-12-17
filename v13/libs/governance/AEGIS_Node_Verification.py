@@ -264,7 +264,7 @@ class AEGIS_Node_Verifier:
             log_list = []
         results = {}
         sorted_node_ids = sorted(node_ids)
-        for node_id in sorted_node_ids:
+        for node_id in sorted(sorted_node_ids):
             results[node_id] = self.verify_node(node_id, registry_snapshot, telemetry_snapshot, log_list)
         return results
 

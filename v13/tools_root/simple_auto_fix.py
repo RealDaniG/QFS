@@ -205,7 +205,7 @@ def main():
     print(f"[INFO] Processing sample of {len(sample_files)} files")
     
     modified_count = 0
-    for p in sample_files:
+    for p in sorted(sample_files):
         try:
             if transform_file(p, dry_run=False):
                 modified_count += 1

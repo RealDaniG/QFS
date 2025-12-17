@@ -244,7 +244,7 @@ class NODAllocator:
         """
         allocation_count = len(allocations)
         total_allocated = BigNum128(0)
-        for alloc in allocations:
+        for alloc in sorted(allocations):
             total_allocated = self.cm.add(total_allocated, alloc.nod_amount, log_list, pqc_cid, quantum_metadata)
         details = {'operation': 'nod_allocation', 'nod_reward_pool': nod_reward_pool.to_decimal_string(), 'total_contributions': sum((score.value for score in node_contributions.values())), 'total_allocated': total_allocated.to_decimal_string(), 'allocation_count': allocation_count, 'epoch': epoch_number, 'timestamp': deterministic_timestamp}
         dummy_result = BigNum128(1)
@@ -262,7 +262,7 @@ def test_nod_allocator():
     log_list = []
     allocations = allocator.allocate_nod(nod_reward_pool=nod_reward_pool, node_contributions=node_contributions, log_list=log_list, pqc_cid='test_nod_001', deterministic_timestamp=1234567890)
     total_allocated = BigNum128(0)
-    for alloc in allocations:
+    for alloc in sorted(allocations):
         print(f'Node {alloc.node_id}: {alloc.nod_amount.to_decimal_string()} NOD (score: {alloc.contribution_score.to_decimal_string()})')
         total_allocated = cm.add(total_allocated, alloc.nod_amount, log_list, 'test_nod_001', {})
     print(f'Total allocated: {total_allocated.to_decimal_string()} NOD')

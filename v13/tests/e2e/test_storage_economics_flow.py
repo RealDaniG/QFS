@@ -35,7 +35,7 @@ def setup_test_storage_engine() -> StorageEngine:
         host = f'192.168.1.{100 + i}'
         port = 8080
         storage_engine.register_storage_node(node_id, host, port)
-    for node_id in storage_engine.nodes:
+    for node_id in sorted(storage_engine.nodes):
         storage_engine.nodes[node_id].is_aegis_verified = True
         storage_engine.nodes[node_id].aegis_verification_epoch = 1
     storage_engine._invalidate_eligible_nodes_cache()

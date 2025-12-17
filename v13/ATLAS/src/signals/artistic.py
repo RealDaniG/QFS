@@ -62,7 +62,7 @@ class ArtisticSignalAddon(SignalAddon):
         total_words = sum(para_counts)
         avg_len = total_words * 1000 // len(para_counts)
         total_dev = 0
-        for count in para_counts:
+        for count in sorted(para_counts):
             scaled_count = count * 1000
             diff = scaled_count - avg_len
             total_dev += abs(diff)

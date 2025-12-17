@@ -37,14 +37,14 @@ def test_feed_generation_with_policy_hints():
     assert hasattr(response, 'posts'), 'Response should have posts'
     assert hasattr(response, 'policy_metadata'), 'Response should have policy_metadata'
     assert len(response.posts) > 0, 'Should have at least one post'
-    for post in response.posts:
+    for post in sorted(response.posts):
         print(f'Post ID: {post.post_id}')
         print(f'AEGIS Advisory: {post.aegis_advisory}')
         print(f'Policy Hints: {post.policy_hints}')
         assert hasattr(post, 'policy_hints'), 'Post should have policy_hints field'
         assert post.policy_hints is not None, 'Policy hints should not be None'
         expected_fields = ['visibility_level', 'warning_banner', 'requires_click_through', 'client_tags']
-        for field in expected_fields:
+        for field in sorted(expected_fields):
             assert field in post.policy_hints, f'Policy hints should contain {field}'
     print('✅ Feed generation with policy hints test passed!')
 if __name__ == '__main__':

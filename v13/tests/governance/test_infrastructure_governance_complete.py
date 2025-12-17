@@ -96,7 +96,7 @@ def test_all_scenarios():
     print(f'Total log entries: {len(log_list)}')
     print(f'Total proposals: {len(gov.proposals)}')
     print(f'Proposals by status:')
-    for status in ProposalStatus:
+    for status in sorted(ProposalStatus):
         count = sum((1 for p in gov.proposals.values() if p.status == status))
         if count > 0:
             print(f'  - {status.value}: {count}')

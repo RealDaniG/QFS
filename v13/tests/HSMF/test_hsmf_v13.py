@@ -18,7 +18,7 @@ def test_hsmf_v13_compliance():
     print('=' * 40)
     required_functions = ['_calculate_I_eff', '_calculate_delta_lambda', '_calculate_delta_h', '_check_directional_encoding', '_check_atr_coherence', '_calculate_action_cost_qfs', '_calculate_c_holo', 'validate_action_bundle', '_safe_two_to_the_power']
     print('Required functions for QFS V13 compliance:')
-    for func in required_functions:
+    for func in sorted(required_functions):
         print(f'  ✅ {func}')
     print('\nKey Compliance Points:')
     print('  ✅ Correct DRV packet sequence handling in validate_action_bundle')

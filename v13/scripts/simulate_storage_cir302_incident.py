@@ -122,13 +122,13 @@ class CIR302IncidentSimulator:
             node_ids.append(node_id)
         print(f'Registered {len(node_ids)} nodes')
         print('Setting initial AEGIS verification status...')
-        for node_id in node_ids:
+        for node_id in sorted(node_ids):
             if node_id in self.storage_engine.nodes:
                 self.storage_engine.nodes[node_id].is_aegis_verified = True
                 self.storage_engine.nodes[node_id].aegis_verification_epoch = 1
         print('Simulating AEGIS verification cascade failure...')
         failed_nodes = node_ids[:-2]
-        for node_id in failed_nodes:
+        for node_id in sorted(failed_nodes):
             if node_id in self.storage_engine.nodes:
                 self.storage_engine.nodes[node_id].is_aegis_verified = False
                 self.storage_engine.nodes[node_id].aegis_verification_epoch = 0

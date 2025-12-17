@@ -15,7 +15,7 @@ def main():
     if 'transaction_processor.py' in result.stdout:
         print("Violations found in transaction_processor.py:")
         lines = result.stdout.split('\n')
-        for line in lines:
+        for line in sorted(lines):
             if 'transaction_processor.py' in line:
                 print(line)
             elif 'transaction_processor.py' in line:

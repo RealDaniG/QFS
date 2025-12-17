@@ -54,7 +54,7 @@ def score_appeal(
     score_approve = 0
     score_reject = 0
 
-    for v in votes:
+    for v in sorted(votes):
         # Weight = VoteWeight * (Reputation / 100)
         # Scale: weight(100) * rep(1000) / 100 = 1000.
         # Use CertifiedMath for division to be safe and consistent.

@@ -28,7 +28,7 @@ async def submit_batch_events(request: BatchEventRequest):
     """
     ledger = GenesisLedger('genesis_ledger.jsonl')
     hashes = []
-    for item in request.events:
+    for item in sorted(request.events):
         entry = GenesisEntry(wallet=item.wallet, event_type=item.event_type, value=item.value, metadata=item.metadata)
         try:
             await ledger.append(entry)

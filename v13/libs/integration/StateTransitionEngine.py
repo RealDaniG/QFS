@@ -96,7 +96,7 @@ class StateTransitionEngine:
                 old_nod_state = current_token_bundle.nod_state if hasattr(current_token_bundle, 'nod_state') else {'balance': '0'}
                 mock_allocations = []
                 invariant_results = self.nod_invariant_checker.validate_all_invariants(caller_module='StateTransitionEngine', operation_type='nod_allocation', previous_total_supply=BigNum128.from_string(str(old_nod_state.get('balance', '0'))), new_total_supply=BigNum128.from_string(str(new_nod_state.get('balance', '0'))), node_balances=new_nod_state, allocations=mock_allocations, log_list=log_list)
-                for invariant_result in invariant_results:
+                for invariant_result in sorted(invariant_results):
                     if not invariant_result.passed:
                         log_list.append({'operation': 'nod_invariant_violation', 'error_code': invariant_result.error_code, 'error_message': invariant_result.error_message, 'details': invariant_result.details, 'timestamp': deterministic_timestamp})
                         raise ValueError(f'[GUARD] NOD invariant violation: {invariant_result.error_message} (code: {invariant_result.error_code})')
@@ -188,7 +188,7 @@ class StateTransitionEngine:
             ValueError: If any supply delta violates economic bounds
         """
         tokens = [('CHR', old_bundle.chr_state, new_bundle.chr_state), ('FLX', old_bundle.flx_state, new_bundle.flx_state), ('RES', old_bundle.res_state, new_bundle.res_state)]
-        for token_name, old_state, new_state in tokens:
+        for token_name, old_state, new_state in sorted(tokens):
             old_balance = BigNum128.from_string(str(old_state.get('balance', '0')))
             new_balance = BigNum128.from_string(str(new_state.get('balance', '0')))
             supply_delta = self.cm.sub(new_balance, old_balance, log_list, None, None)

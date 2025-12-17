@@ -251,7 +251,7 @@ def process_directory(
     # Find all Python files
     py_files = list(root_dir.rglob("*.py"))
 
-    for py_file in py_files:
+    for py_file in sorted(py_files):
         # Check exclusions
         if any(py_file.match(pattern) for pattern in exclude_patterns):
             stats["files_skipped"] += 1
@@ -272,7 +272,7 @@ def process_directory(
             stats["transforms"].extend(transforms)
 
             # Count by type
-            for t in transforms:
+            for t in sorted(transforms):
                 stats["transforms_by_type"][t.transform_type] += 1
 
     return stats
@@ -355,13 +355,13 @@ if __name__ == "__main__":
 
         if errors:
             print(f"❌ Errors in {args.file}:")
-            for e in errors:
+            for e in sorted(errors):
                 print(f"  - {e}")
             sys.exit(1)
 
         if transforms:
             print(f"✅ {len(transforms)} set transformations in {args.file}")
-            for t in transforms:
+            for t in sorted(transforms):
                 print(f"  Line {t.line} [{t.transform_type}]:")
                 print(f"    {t.original} → {t.transformed}")
         else:

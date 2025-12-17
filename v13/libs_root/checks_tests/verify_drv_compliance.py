@@ -20,7 +20,7 @@ def verify_drv_compliance():
     print('QFS V13 DRV_Packet Compliance Verification')
     print('=' * 50)
     compliance_points = [('Structure & Fields', '✅ Core fields correctly implemented (version, ttsTimestamp, sequence, seed, metadata, previous_hash, pqc_signature)'), ('Initialization & Validation', '✅ Proper validation of field types and ranges'), ('Serialization & Hashing', '✅ Deterministic JSON serialization with SHA3-512 hashing'), ('PQC Integration', '✅ Real PQC library integration using Dilithium5'), ('Validation Logic', '✅ Sequence monotonicity, timestamp range, chain integrity, and signature validation'), ('Audit Logging', '✅ Enhanced audit trail with log_index, entry_hash, prev_hash, and SHA3-512 hashing'), ('Quantum Metadata', '✅ Proper handling and logging of quantum metadata'), ('PQC CID Handling', '✅ Proper handling and logging of PQC correlation IDs'), ('Seed-Based Key Generation', '✅ Support for deterministic seed-based key generation'), ('Deterministic Timestamp Source', '✅ Use of ttsTimestamp for deterministic operations'), ('Zero-Simulation Compliance', '✅ No native floats, random, or time.time() in critical path'), ('BigNum128 Integration', '✅ Compatible with BigNum128 serialization via PQC module'), ('CIR-302 Support', '✅ ValidationResult structure for error handling and CIR-302 triggering')]
-    for point, description in compliance_points:
+    for point, description in sorted(compliance_points):
         print(f'{point:<30} {description}')
     print('\n' + '=' * 50)
     print('✅ DRV_Packet.py is fully compliant with QFS V13 requirements')

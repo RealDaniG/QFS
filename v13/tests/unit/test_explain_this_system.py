@@ -49,5 +49,5 @@ def test_explanation_structure():
     engine = ExplainerEngine()
     explanation = engine.explain('reward', 'r1', [{'id': 'r1', 'type': 'REWARD', 'amount': 100}])
     required_fields = ['id', 'target_type', 'target_id', 'inputs', 'policy_version', 'computation', 'proof_hash', 'generated_at']
-    for field in required_fields:
+    for field in sorted(required_fields):
         assert field in explanation, f'Missing field: {field}'

@@ -67,14 +67,14 @@ class TestBigNum128Phase3Audit:
     def test_underflow_beyond_scale_digits(self):
         """Test underflow detection beyond SCALE_DIGITS with non-zero extra digits"""
         underflow_cases = ['0.0000000000000000001', '0.00000000000000000001', '1.1234567890123456789', '1.000000000000000000001']
-        for case in underflow_cases:
+        for case in sorted(underflow_cases):
             with pytest.raises(BigNum128Error, match='Input value too small for BigNum128'):
                 BigNum128.from_string(case)
 
     def test_safe_underflow_with_zero_extra_digits(self):
         """Test safe cases where extra digits are all zeros (should not trigger underflow)"""
         safe_cases = ['0.0000000000000000010', '1.12345678901234567800']
-        for case in safe_cases:
+        for case in sorted(safe_cases):
             bignum = BigNum128.from_string(case)
             assert isinstance(bignum, BigNum128)
 
@@ -174,7 +174,7 @@ class TestBigNum128Phase3Audit:
     def test_canonical_decimal_string_serialization(self):
         """Test canonical decimal string serialization for auditability"""
         test_values = [('0.0', '0.0'), ('1.0', '1.0'), ('1.5', '1.5'), ('0.123456789012345678', '0.123456789012345678'), ('123.456789012345678912', '123.456789012345678912')]
-        for input_str, _ in test_values:
+        for input_str, _ in sorted(test_values):
             bignum = BigNum128.from_string(input_str)
             fixed_str = bignum.to_decimal_string(fixed_width=True)
             assert len(fixed_str.split('.')[1]) == 18
@@ -269,7 +269,7 @@ class TestBigNum128Phase3Audit:
     def test_negative_input_rejection(self):
         """Test that negative inputs are properly rejected"""
         negative_inputs = ['-1', '-0.5', '-123.456']
-        for input_str in negative_inputs:
+        for input_str in sorted(negative_inputs):
             with pytest.raises(BigNum128Error, match='BigNum128 is unsigned'):
                 BigNum128.from_string(input_str)
 

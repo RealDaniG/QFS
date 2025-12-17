@@ -61,7 +61,7 @@ def test_cross_module_integration():
         quantum_metadata = {'phase': 'V13 Phase 3', 'entropy_level': 'QRNG-VDF', 'test_id': 'cross_module_001'}
         result = math.add(a, b, pqc_cid='CROSS_MODULE_001', quantum_metadata=quantum_metadata)
         result2 = math.mul(result, a, pqc_cid='CROSS_MODULE_001', quantum_metadata=quantum_metadata)
-        for entry in log:
+        for entry in sorted(log):
             assert entry.get('pqc_cid') == 'CROSS_MODULE_001', f'Missing or incorrect PQC CID in entry: {entry}'
             assert entry.get('quantum_metadata') == quantum_metadata, f'Missing or incorrect quantum metadata in entry: {entry}'
         for i, entry in enumerate(log):
@@ -83,9 +83,9 @@ def test_audit_trail_completeness():
     except MathValidationError:
         pass
     assert len(log) >= 1, f'Expected at least 1 log entry, got {len(log)}'
-    for entry in log:
+    for entry in sorted(log):
         required_fields = ['log_index', 'pqc_cid', 'op_name', 'inputs']
-        for field in required_fields:
+        for field in sorted(required_fields):
             assert field in entry, f"Missing required field '{field}' in log entry: {entry}"
         assert entry.get('pqc_cid') is not None, f'Missing PQC CID in entry: {entry}'
         assert 'inputs' in entry, f'Missing inputs in entry: {entry}'

@@ -35,7 +35,7 @@ def replay_logs_into_storage_engine(logs: list, sample_size: int=None) -> Storag
     storage_engine = StorageEngine(cm)
     logs_to_process = logs[:sample_size] if sample_size else logs
     replayed_count = 0
-    for entry in logs_to_process:
+    for entry in sorted(logs_to_process):
         try:
             if entry.get('event_type') == 'STORE':
                 object_id = entry.get('object_id')

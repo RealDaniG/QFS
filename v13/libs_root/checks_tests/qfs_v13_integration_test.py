@@ -113,7 +113,7 @@ def test_hsmf_validation():
             print(f'  Errors: {result.errors}')
             print(f'  HSMF log entries: {len(log_list)}')
             required_metrics = ['action_cost', 'c_holo', 's_res', 's_flx', 's_psi_sync', 'f_atr', 's_chr']
-            for metric in required_metrics:
+            for metric in sorted(required_metrics):
                 if metric in result.raw_metrics:
                     print(f"  ✓ Metric '{metric}' present: {result.raw_metrics[metric].to_decimal_string()}")
                 else:
@@ -202,7 +202,7 @@ def test_ast_zero_simulation():
             return True
         else:
             print(f'  ✗ Zero-Simulation violations found:')
-            for violation in violations:
+            for violation in sorted(violations):
                 print(f'    Line {violation.line_number}: {violation.violation_type} - {violation.message}')
             return False
     except Exception as e:
@@ -253,7 +253,7 @@ def run_complete_integration_test():
     print('=' * 60)
     passed = 0
     total = len(test_results)
-    for test_name, result in test_results:
+    for test_name, result in sorted(test_results):
         status = '✓ PASS' if result else '✗ FAIL'
         print(f'{status} {test_name}')
         if result:

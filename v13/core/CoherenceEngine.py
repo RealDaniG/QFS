@@ -194,7 +194,7 @@ class CoherenceEngine:
         """
         new_flx_state = dict(current_bundle.flx_state)
         if processed_events:
-            for event in processed_events:
+            for event in sorted(processed_events):
                 if hasattr(event, 'event_type') and event.event_type == 'REFERRAL_REWARDED':
                     wallet = event.referrer_wallet
                     amount = BigNum128.from_int(event.amount_scaled)

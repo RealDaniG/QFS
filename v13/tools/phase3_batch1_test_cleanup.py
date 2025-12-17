@@ -190,7 +190,7 @@ def process_directory(root_dir: str, dry_run: bool = False):
     # Process all Python files
     py_files = list(test_dir.rglob("*.py"))
 
-    for py_file in py_files:
+    for py_file in sorted(py_files):
         # Skip __init__.py and backup files
         if py_file.name == "__init__.py" or ".backups" in str(py_file):
             continue

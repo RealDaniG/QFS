@@ -43,7 +43,7 @@ class TestOPENAGIRoleEnforcer:
         """Test authorization for PROPOSER role"""
         cm = CertifiedMath()
         enforcer = OPENAGIRoleEnforcer(cm)
-        for action_type in OPENAGIActionType:
+        for action_type in sorted(OPENAGIActionType):
             result = enforcer.authorize_action(role=OPENAGIRole.PROPOSER, action_type=action_type, inputs={'test': 'data'}, deterministic_timestamp=1234567890)
             assert result['authorized'] == True
 

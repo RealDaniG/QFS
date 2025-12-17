@@ -99,7 +99,7 @@ def apply_event(state: UserState, event: Dict[str, Any]) -> UserState:
 def run_event_sequence(initial: UserState, events: List[Dict[str, Any]]) -> UserState:
     """Apply a sequence of events in order, returning the final state."""
     state = initial
-    for ev in events:
+    for ev in sorted(events):
         state = apply_event(state, ev)
     return state
 

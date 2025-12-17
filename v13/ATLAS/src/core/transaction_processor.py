@@ -193,7 +193,7 @@ class TransactionProcessor:
             QAmount: Current balance
         """
         balance = QAmount(0)
-        for tx in self.ledger:
+        for tx in sorted(self.ledger):
             if tx.asset != asset:
                 continue
             if tx.sender == address:

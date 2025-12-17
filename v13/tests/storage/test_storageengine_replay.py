@@ -25,7 +25,7 @@ def replay_storage_events(events: List[Mapping[str, Any]]) -> Dict[str, Any]:
     """
     objects: Dict[str, Dict[str, Any]] = {}
     proof_accounting: Dict[str, Dict[str, int]] = {}
-    for ev in events:
+    for ev in sorted(events):
         event_type = ev.get('event_type')
         if event_type == 'STORE':
             object_id = ev.get('object_id')
@@ -38,7 +38,7 @@ def replay_storage_events(events: List[Mapping[str, Any]]) -> Dict[str, Any]:
         if event_type == 'PROOF_GENERATED':
             replica_sets = ev.get('replica_sets') or {}
             for _, nodes in sorted(replica_sets.items()):
-                for node_id in nodes:
+                for node_id in sorted(nodes):
                     proof_accounting.setdefault(node_id, {'generated': 0, 'failed': 0})
                     proof_accounting[node_id]['generated'] += 1
             continue
@@ -53,7 +53,7 @@ def _live_snapshot(engine: StorageEngine) -> Dict[str, Any]:
     objects: Dict[str, Dict[str, Any]] = {}
     for object_key, obj in sorted(engine.objects.items()):
         replica_sets: Dict[str, List[str]] = {}
-        for shard_id in obj.shard_ids:
+        for shard_id in sorted(obj.shard_ids):
             replica_sets[shard_id] = list(engine.shards[shard_id].assigned_nodes)
         content_size = sum((len(engine.shards[shard_id].content_chunk) for shard_id in obj.shard_ids))
         objects[object_key] = {'object_id': obj.object_id, 'version': obj.version, 'hash_commit': obj.hash_commit, 'content_size': content_size, 'shard_ids': list(obj.shard_ids), 'replica_sets': replica_sets, 'epoch': engine.current_epoch}
@@ -61,7 +61,7 @@ def _live_snapshot(engine: StorageEngine) -> Dict[str, Any]:
 
 def _live_proof_accounting(engine: StorageEngine, shard_ids: List[str], object_id: str, version: int) -> Dict[str, Dict[str, int]]:
     accounting: Dict[str, Dict[str, int]] = {}
-    for shard_id in shard_ids:
+    for shard_id in sorted(shard_ids):
         proof = engine.get_storage_proof(object_id, version, shard_id)
         for node_id in proof.get('assigned_nodes') or []:
             accounting.setdefault(node_id, {'generated': 0, 'failed': 0})
@@ -119,5 +119,5 @@ def test_storageengine_replay_proof_accounting_matches_live() -> None:
     replayed = replay_storage_events(list(engine.storage_event_log))
     replay_proofs = replayed.get('proof_accounting') or {}
     assert set(replay_proofs.keys()) >= set(live_proofs.keys())
-    for node_id in live_proofs:
+    for node_id in sorted(live_proofs):
         assert replay_proofs[node_id]['generated'] == live_proofs[node_id]['generated']

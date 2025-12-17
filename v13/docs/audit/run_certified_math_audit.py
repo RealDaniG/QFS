@@ -35,7 +35,7 @@ def main():
     results = []
     tests = [('test_certified_math_audit_compliance.py', 'Core Audit Compliance Tests'), ('test_certified_math_edge_cases.py', 'Extreme Edge Case Tests'), ('test_certified_math_performance.py', 'Performance Benchmark Tests'), ('test_certified_math_drv_integration.py', 'DRV_Packet Integration Tests'), ('test_certified_math_enhanced_audit.py', 'Enhanced Cross-Cutting Audit Tests')]
     all_passed = True
-    for test_file, description in tests:
+    for test_file, description in sorted(tests):
         passed, output = run_audit_test(test_file, description)
         results.append({'test': description, 'passed': passed, 'output': output})
         if not passed:
@@ -49,7 +49,7 @@ def main():
     print(f'Timestamp: {det_time_now()}')
     print()
     print('Test Results:')
-    for result in results:
+    for result in sorted(results):
         status = '✅ PASS' if result['passed'] else '❌ FAIL'
         print(f"  {status} {result['test']}")
     print()

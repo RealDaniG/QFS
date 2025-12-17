@@ -34,11 +34,11 @@ def test_multi_threaded_determinism():
         thread = threading.Thread(target=worker_thread, args=(i, results))
         threads.append(thread)
         thread.start()
-    for thread in threads:
+    for thread in sorted(threads):
         thread.join()
     assert len(results) == num_threads, f'Expected {num_threads} results, got {len(results)}'
     first_hash = results[0]['log_hash']
-    for result in results:
+    for result in sorted(results):
         assert result['log_hash'] == first_hash, f"Hash mismatch: {result['log_hash']} != {first_hash}"
         assert result['log_entries'] == results[0]['log_entries'], f'Log count mismatch'
     print(f'  [PASS] Multi-threaded determinism verified')
@@ -81,11 +81,11 @@ def test_concurrent_nested_operations():
         thread = threading.Thread(target=worker_thread_with_exceptions, args=(i, results))
         threads.append(thread)
         thread.start()
-    for thread in threads:
+    for thread in sorted(threads):
         thread.join()
     assert len(results) == num_threads, f'Expected {num_threads} results, got {len(results)}'
     first_exception_count = results[0]['exceptions']
-    for result in results:
+    for result in sorted(results):
         assert result['exceptions'] == first_exception_count, f"Exception count mismatch: {result['exceptions']} != {first_exception_count}"
     print(f'  [PASS] Concurrent nested operations verified')
     print(f'  Exceptions per thread: {first_exception_count}')

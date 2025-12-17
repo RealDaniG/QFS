@@ -210,7 +210,7 @@ class HarmonicEconomics:
         expected_chr = getattr(state.parameters.get('MAX_CHR_SUPPLY'), 'value', 10000000000)
         if total_chr != expected_chr:
             violations.append((EconomicViolation.CHR_CONSERVATION_BREACH, f'Global CHR conservation: {total_chr} != {expected_chr}'))
-        for shard_id in shards:
+        for shard_id in sorted(shards):
             flow_imbalance = self._compute_flow_imbalance(shard_id, state)
             delta_max = getattr(state.parameters.get('δ_max'), 'value', 5)
             if self.math.abs(flow_imbalance) > delta_max * 1000:
@@ -224,7 +224,7 @@ class HarmonicEconomics:
         for shard_id, shard in shards.items():
             if shard['ATR'] < 0:
                 violations.append((EconomicViolation.ATTR_ATTRACTOR_VIOLATION, f"Negative ATR in {shard_id}: {shard['ATR']}"))
-        for violation_type, message in violations:
+        for violation_type, message in sorted(violations):
             self._handle_economic_violation(violation_type, message)
 
     def _compute_flow_imbalance(self, shard_id: str, state: TokenStateBundle) -> int:

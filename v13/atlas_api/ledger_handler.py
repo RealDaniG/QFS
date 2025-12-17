@@ -77,7 +77,7 @@ class LedgerHandler:
         Returns:
             Dict: Event details or error information
         """
-        for entry in self.ledger.ledger_entries:
+        for entry in sorted(self.ledger.ledger_entries):
             if entry.entry_id == event_id:
                 ledger_event = self._map_to_ledger_event(entry, detailed=True)
                 ledger_event['links'] = self._get_navigation_links(entry)

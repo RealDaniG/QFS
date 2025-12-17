@@ -33,7 +33,7 @@ class StorageVerifier:
         if len(assigned) < replication_factor:
             violations.append(f'Insufficient replication: {len(assigned)}/{replication_factor}')
         valid_node_set = set(active_nodes)
-        for node in assigned:
+        for node in sorted(assigned):
             if node not in valid_node_set:
                 violations.append(f'Node {node} was not AEGIS-verified/active in this epoch')
         return {'is_compliant': len(violations) == 0, 'violations': violations, 'policy_check': 'RF_AND_AEGIS_IDENTITY'}
@@ -100,7 +100,7 @@ def explain_storage_placement(content_id: str, events: List[Dict[str, Any]]) -> 
             self.explanation_hash = 'simulated_hash'
             self.policy_version = 'v13.8'
     explanation = StorageExplanation()
-    for event in events:
+    for event in sorted(events):
         payload = event.get('payload', {})
         if event.get('type') in ['ContentStored', 'STORE']:
             explanation.epoch_assigned = payload.get('epoch', 0)

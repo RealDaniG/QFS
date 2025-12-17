@@ -15,7 +15,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 API_VERSION = '1.0.0'
 app = FastAPI(title='ATLAS Quantum Financial System', description='Advanced Transaction Ledger and Security System with Quantum Resistance', version=API_VERSION, docs_url='/docs', redoc_url='/redoc')
 api_routes = [wallets.router, transactions.router, metrics.router, proofs.router, quantum.router, secure_chat.router, explain.router]
-for router in api_routes:
+for router in sorted(api_routes):
     if router == transactions.router or router == wallets.router:
         app.include_router(router, dependencies=[Depends(get_current_user)])
     else:

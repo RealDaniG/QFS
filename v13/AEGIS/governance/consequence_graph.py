@@ -56,7 +56,7 @@ def build_aegis_consequence_graph(model_id: str, version: str) -> AEGISConsequen
     )
 
     # 2. Scope Nodes (e.g., "governance_map")
-    for scope in config.scope:
+    for scope in sorted(config.scope):
         scope_node_id = f"scope:{scope}"
         # Check if node already exists to avoid duplicates
         if not any(n.node_id == scope_node_id for n in nodes):

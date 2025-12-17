@@ -65,7 +65,7 @@ class DeterministicReplayTest:
             Dict with registry snapshot + SHA-256 hash
         """
         registry = {'schema_version': '1.0', 'nodes': {}}
-        for node_id in node_ids:
+        for node_id in sorted(node_ids):
             registry['nodes'][node_id] = {'pqc_public_key': f'pk_{node_id}', 'pqc_scheme': 'Dilithium5', 'registered_at': 0, 'status': 'active', 'revoked': False}
         registry_json = json.dumps(registry, sort_keys=True, separators=(',', ':'))
         snapshot_hash = hashlib.sha256(registry_json.encode('utf-8')).hexdigest()
@@ -94,7 +94,7 @@ class DeterministicReplayTest:
             allocator = NODAllocator(self.cm)
             allocation_result = allocator.allocate_from_atr_fees(atr_total_fees=atr_fees, node_contributions={'node_001': BigNum128.from_string('500'), 'node_002': BigNum128.from_string('300'), 'node_003': BigNum128.from_string('200')}, registry_snapshot=registry_snapshot['registry'], telemetry_snapshot=aegis_snapshot['telemetry'], log_list=log_list, deterministic_timestamp=1000)
             total_nod = BigNum128(0)
-            for alloc in allocation_result:
+            for alloc in sorted(allocation_result):
                 total_nod = self.cm.add(total_nod, alloc.nod_amount, log_list)
             log_json = json.dumps(log_list, sort_keys=True, separators=(',', ':'))
             log_hash = hashlib.sha256(log_json.encode('utf-8')).hexdigest()

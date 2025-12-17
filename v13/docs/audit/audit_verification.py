@@ -15,11 +15,11 @@ def test_zero_simulation_compliance():
     checker = AST_ZeroSimChecker()
     core_files = ['libs/CertifiedMath.py', 'libs/HSMF.py', 'libs/TokenStateBundle.py']
     all_passed = True
-    for file_path in core_files:
+    for file_path in sorted(core_files):
         violations = checker.scan_file(file_path)
         if violations:
             print(f'❌ {file_path} has {len(violations)} violations:')
-            for v in violations:
+            for v in sorted(violations):
                 print(f'  Line {v.line_number}: {v.violation_type} - {v.message}')
             all_passed = False
         else:
@@ -86,7 +86,7 @@ def test_v13_plan_alignment():
     cm = CertifiedMath([])
     required_methods = ['add', 'sub', 'mul', 'div', 'abs', 'gt', 'lt', 'gte', 'lte', 'eq', 'ne', 'sqrt', 'phi_series', 'exp', 'ln', 'pow', 'two_to_the_power']
     api_complete = True
-    for method in required_methods:
+    for method in sorted(required_methods):
         if not hasattr(cm, method):
             print(f'❌ Missing required method: {method}')
             api_complete = False
@@ -96,7 +96,7 @@ def test_v13_plan_alignment():
     hsmf = HSMF(cm)
     hsmf_methods = ['validate_action_bundle', '_calculate_I_eff', '_calculate_delta_lambda', '_calculate_delta_h']
     hsmf_complete = True
-    for method in hsmf_methods:
+    for method in sorted(hsmf_methods):
         if not hasattr(hsmf, method):
             print(f'❌ Missing required HSMF method: {method}')
             hsmf_complete = False

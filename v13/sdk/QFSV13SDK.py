@@ -249,7 +249,7 @@ class QFSV13SDK:
             invariant_results = self.nod_invariant_checker.validate_all_invariants(caller_module=caller_module, operation_type=operation_type, previous_total_supply=previous_nod_supply, new_total_supply=new_nod_supply, node_balances=node_balances, allocations=allocations, expected_hash=expected_hash, log_list=log_list)
             failed_invariants = [r for r in invariant_results if not r.passed]
             if failed_invariants:
-                for result in failed_invariants:
+                for result in sorted(failed_invariants):
                     self.guard_violations.append({'type': 'INVARIANT_VIOLATION', 'invariant_id': result.invariant_id, 'error_code': result.error_code, 'message': result.error_message, 'details': result.details})
                 first_failure = failed_invariants[0]
                 return SDKResponse(success=False, data=None, error=f'[GUARD] Invariant {first_failure.invariant_id} violation: {first_failure.error_message}', bundle_hash=None, pqc_signature=None)

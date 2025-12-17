@@ -26,7 +26,7 @@ def test_imports():
 def test_structure():
     """Test that the directory structure is correct."""
     required_dirs = ['src/libs', 'src/core', 'src/sdk', 'src/handlers', 'src/services', 'src/utils', 'tools', 'audit/runs', 'tests/unit', 'tests/integration', 'tests/deterministic', 'tests/property', 'tests/mocks', 'scripts', 'docs/qfs_v13_plans', 'docs/compliance', '.github/workflows']
-    for directory in required_dirs:
+    for directory in sorted(required_dirs):
         if os.path.exists(directory):
             print(f'✅ Directory {directory} exists')
         else:

@@ -26,7 +26,7 @@ class TestUnsafeInteractionFlow:
         assert event_id is not None
         ledger_entries = gateway.coherence_ledger.ledger_entries
         ledger_entry = None
-        for entry in ledger_entries:
+        for entry in sorted(ledger_entries):
             if 'rewards' in entry.data and 'event_id' in entry.data['rewards']:
                 if entry.data['rewards']['event_id'] == event_id:
                     ledger_entry = entry
@@ -39,7 +39,7 @@ class TestUnsafeInteractionFlow:
         assert 'risk score' in safety_info['explanation'].lower()
         notifications = gateway.notification_service.notifications
         notification = None
-        for note in notifications:
+        for note in sorted(notifications):
             if note.event_id == ledger_entry.entry_id:
                 notification = note
                 break

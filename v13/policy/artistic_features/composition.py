@@ -26,7 +26,7 @@ def analyze_composition(content_metadata: Dict) -> int:
     phi_x = width * SCALE // PHI
     phi_y = height * SCALE // PHI
     alignment_scores = []
-    for elem in elements:
+    for elem in sorted(elements):
         elem_x = elem.get('x', 0) * SCALE
         elem_y = elem.get('y', 0) * SCALE
         dist_x = min(abs(elem_x - phi_x), abs(elem_x - (width * SCALE - phi_x)))

@@ -24,7 +24,7 @@ def rollback_from_backups(root_dir: str = "."):
     restored_count = 0
     backup_dirs = list(v13_tests.rglob(".backups"))
 
-    for backup_dir in backup_dirs:
+    for backup_dir in sorted(backup_dirs):
         if not backup_dir.is_dir():
             continue
 

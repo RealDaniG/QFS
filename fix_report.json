@@ -1,0 +1,6965 @@
+[
+  {
+    "file": "v13\\test_violations.py",
+    "original_length": 381,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 381,
+    "changed": false
+  },
+  {
+    "file": "v13\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\api.py",
+    "original_length": 956,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 956,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\__init__.py",
+    "original_length": 710,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 710,
+    "changed": false
+  },
+  {
+    "file": "v13\\atlas_api\\gateway.py",
+    "original_length": 43321,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 6
+      }
+    ],
+    "error": null,
+    "new_length": 43369,
+    "changed": true
+  },
+  {
+    "file": "v13\\atlas_api\\ledger_handler.py",
+    "original_length": 11188,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 11196,
+    "changed": true
+  },
+  {
+    "file": "v13\\atlas_api\\models.py",
+    "original_length": 2455,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2455,
+    "changed": false
+  },
+  {
+    "file": "v13\\atlas_api\\referral_handler.py",
+    "original_length": 2060,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2060,
+    "changed": false
+  },
+  {
+    "file": "v13\\atlas_api\\router.py",
+    "original_length": 13558,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 13566,
+    "changed": true
+  },
+  {
+    "file": "v13\\atlas_api\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\auth\\open_agi_role.py",
+    "original_length": 12895,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 12903,
+    "changed": true
+  },
+  {
+    "file": "v13\\cli\\init_creator.py",
+    "original_length": 3726,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3726,
+    "changed": false
+  },
+  {
+    "file": "v13\\compliance\\golden_pass.py",
+    "original_length": 453,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 453,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\AEGISNodeVerification.py",
+    "original_length": 1200,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1200,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\audit_integrity.py",
+    "original_length": 2007,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2007,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\CoherenceEngine.py",
+    "original_length": 12305,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 12313,
+    "changed": true
+  },
+  {
+    "file": "v13\\core\\CoherenceLedger.py",
+    "original_length": 8208,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8208,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\dependencies.py",
+    "original_length": 976,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 976,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\DRV_Packet.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\explanation_audit.py",
+    "original_length": 1808,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1808,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\gating_service.py",
+    "original_length": 11693,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 11693,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\HSMF.py",
+    "original_length": 20246,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 20246,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\KeyLedger.py",
+    "original_length": 5716,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5716,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\QFSReplaySource.py",
+    "original_length": 5430,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 5454,
+    "changed": true
+  },
+  {
+    "file": "v13\\core\\reward_types.py",
+    "original_length": 745,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 745,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\StorageEngine.py",
+    "original_length": 28240,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 28264,
+    "changed": true
+  },
+  {
+    "file": "v13\\core\\storage_economic_views.py",
+    "original_length": 2630,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2630,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\storage_explainability.py",
+    "original_length": 3447,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3447,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\TokenStateBundle.py",
+    "original_length": 17054,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 17054,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\economics\\test_economics_violations.py",
+    "original_length": 608,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 608,
+    "changed": false
+  },
+  {
+    "file": "v13\\epoch\\Replayer.py",
+    "original_length": 5849,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5857,
+    "changed": true
+  },
+  {
+    "file": "v13\\events\\referral_events.py",
+    "original_length": 2503,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2503,
+    "changed": false
+  },
+  {
+    "file": "v13\\guards\\AEGISGuard.py",
+    "original_length": 8942,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 8950,
+    "changed": true
+  },
+  {
+    "file": "v13\\guards\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\handlers\\AntiTamper.py",
+    "original_length": 9437,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9437,
+    "changed": false
+  },
+  {
+    "file": "v13\\handlers\\CIR302_Handler.py",
+    "error": "Syntax Error @ 126:1.\nparser error: error at 125:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\n<<<<<<< HEAD\n           ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\handlers\\CIR412_Handler.py",
+    "original_length": 3495,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3495,
+    "changed": false
+  },
+  {
+    "file": "v13\\handlers\\CIR511_Handler.py",
+    "original_length": 4601,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4609,
+    "changed": true
+  },
+  {
+    "file": "v13\\handlers\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\integrations\\openagi_dm_adapter.py",
+    "original_length": 4115,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4115,
+    "changed": false
+  },
+  {
+    "file": "v13\\integrations\\openagi_pqc_adapter.py",
+    "original_length": 2844,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2844,
+    "changed": false
+  },
+  {
+    "file": "v13\\integrations\\__init__.py",
+    "original_length": 44,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 44,
+    "changed": false
+  },
+  {
+    "file": "v13\\ledger\\genesis_ledger.py",
+    "original_length": 2223,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2231,
+    "changed": true
+  },
+  {
+    "file": "v13\\ledger\\referral_ledger.py",
+    "original_length": 6474,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6474,
+    "changed": false
+  },
+  {
+    "file": "v13\\ledger\\writer.py",
+    "original_length": 1291,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1291,
+    "changed": false
+  },
+  {
+    "file": "v13\\ledger\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\AST_ZeroSimChecker.py",
+    "original_length": 18777,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 18817,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\BigNum128.py",
+    "original_length": 9267,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9267,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\BigNum128_fixed.py",
+    "original_length": 9285,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9285,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\CertifiedMath.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\DeterministicTime.py",
+    "original_length": 5458,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5458,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic_hash.py",
+    "original_length": 2541,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2541,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic_helpers.py",
+    "original_length": 3403,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3403,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\fatal_errors.py",
+    "original_length": 5979,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5979,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\HolonetSync.py",
+    "original_length": 15308,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 15308,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\PQC.py",
+    "original_length": 15675,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 15675,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc_provider.py",
+    "original_length": 5457,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5457,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs_root\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\ops\\DriftDetector.py",
+    "original_length": 3945,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3953,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\artistic_constants.py",
+    "original_length": 624,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 624,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\artistic_observatory.py",
+    "original_length": 3497,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 3521,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\artistic_policy.py",
+    "original_length": 7638,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7638,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\artistic_vector.py",
+    "original_length": 1674,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1674,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\authorization.py",
+    "original_length": 1454,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1462,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\humor_explainability.py",
+    "original_length": 7195,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7203,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\humor_observatory.py",
+    "original_length": 8228,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 6
+      }
+    ],
+    "error": null,
+    "new_length": 8276,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\humor_policy.py",
+    "original_length": 8299,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8299,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\PolicyRegistry.py",
+    "original_length": 2159,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2167,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\policy_engine.py",
+    "original_length": 5157,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5157,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\storage_explainability.py",
+    "original_length": 5291,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 5307,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\value_node_explainability.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\value_node_replay.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\autonomous_fix_analyzer.py",
+    "original_length": 8165,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 8181,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\build_phase3_evidence.py",
+    "original_length": 4834,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4834,
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\check_dual_write_consistency.py",
+    "original_length": 9291,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 9307,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\generate_aes_gut_evidence.py",
+    "original_length": 1564,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1564,
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\generate_drill_ledger.py",
+    "original_length": 840,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 848,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\generate_full_stack_evidence.py",
+    "error": "Syntax Error @ 12:3.\nparser error: error at 11:2: expected INDENT\n\n    print(\"Running Full Stack Determinism Test...\")\n  ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\generate_staging_ledger.py",
+    "original_length": 3590,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3598,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\generate_value_node_evidence.py",
+    "original_length": 2207,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2207,
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\nightly_e2e.py",
+    "error": "Syntax Error @ 19:3.\nparser error: error at 18:2: expected INDENT\n\n    print(\n  ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\run_autonomous_audit.py",
+    "original_length": 14635,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 14667,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\run_autonomous_audit_v2.py",
+    "original_length": 18430,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 12
+      }
+    ],
+    "error": null,
+    "new_length": 18526,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\run_storage_replay_drill.py",
+    "original_length": 6299,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 6307,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\run_zero_sim_suite.py",
+    "original_length": 1079,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1087,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\scan_zero_mock_compliance.py",
+    "original_length": 6873,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 6913,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\scan_zero_sim_compliance.py",
+    "error": "Syntax Error @ 2:3.\nparser error: error at 1:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\n# import sys removed (unused)\n  ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\simulate_storage_cir302_incident.py",
+    "original_length": 12789,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 12805,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\verify_aegis_boundaries.py",
+    "original_length": 11259,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 11267,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\verify_reward_proof.py",
+    "original_length": 2994,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2994,
+    "changed": false
+  },
+  {
+    "file": "v13\\scripts\\verify_trust_loop.py",
+    "original_length": 4588,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 4604,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\verify_value_node_zero_sim.py",
+    "original_length": 2400,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 2416,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\zero-sim-ast.py",
+    "original_length": 7386,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7394,
+    "changed": true
+  },
+  {
+    "file": "v13\\scripts\\zero_mock_final_sweep.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: unterminated string literal\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\sdk\\QFSV13SDK.py",
+    "original_length": 21987,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 21995,
+    "changed": true
+  },
+  {
+    "file": "v13\\sdk\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\aegis_api.py",
+    "original_length": 26790,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 26798,
+    "changed": true
+  },
+  {
+    "file": "v13\\services\\ledger_economics_service.py",
+    "original_length": 5450,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5450,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\notification_service.py",
+    "original_length": 12053,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 12077,
+    "changed": true
+  },
+  {
+    "file": "v13\\services\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\services_root\\ActionCostEngine.py",
+    "original_length": 4592,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4592,
+    "changed": false
+  },
+  {
+    "file": "v13\\services_root\\CertifiedMathService.py",
+    "original_length": 119,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 119,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\conftest.py",
+    "original_length": 4569,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4577,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\debug_gateway.py",
+    "original_length": 1385,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1385,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\deterministic_verification_suite.py",
+    "error": "Syntax Error @ 27:10.\nparser error: error at 26:9: expected INDENT\n\n    from PQC import PQC\n         ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\final_integration_test.py",
+    "original_length": 8544,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8544,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\performance_test_suite.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\phase3_audit_suite.py",
+    "original_length": 13187,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 13219,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\phase3_verification_suite.py",
+    "original_length": 8992,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 9000,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\simple_policy_test.py",
+    "error": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_aegis_advisory_exposure.py",
+    "original_length": 4851,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4851,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_aegis_advisory_gate.py",
+    "original_length": 6293,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6293,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_aegis_guard.py",
+    "original_length": 2735,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2735,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_aes_vectors.py",
+    "original_length": 2168,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2168,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_agi_observation_endpoint.py",
+    "original_length": 4287,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4287,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_artistic_compliance.py",
+    "original_length": 1329,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 1345,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_artistic_explainability.py",
+    "original_length": 1609,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1609,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_artistic_observatory.py",
+    "original_length": 1256,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1256,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_artistic_policy.py",
+    "original_length": 2908,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2908,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_artistic_signal.py",
+    "original_length": 3059,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3059,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_ast.py",
+    "original_length": 407,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 407,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_ast_math.py",
+    "original_length": 439,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 439,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_ast_zerosimchecker_modules.py",
+    "original_length": 5134,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5134,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_audit_integrity.py",
+    "original_length": 2030,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2030,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_comprehensive.py",
+    "original_length": 2754,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2754,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_copy.py",
+    "original_length": 1931,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1931,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_edge_cases.py",
+    "original_length": 1883,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1883,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_fixes.py",
+    "original_length": 1943,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1943,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_operators.py",
+    "original_length": 2249,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2249,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_phase3_audit.py",
+    "original_length": 13986,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 14018,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_bignum128_underflow.py",
+    "original_length": 1646,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1646,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_certifiedmath_edge_cases.py",
+    "original_length": 2979,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2979,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_certified_math_integration.py",
+    "original_length": 2240,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2240,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_deterministic_behavior.py",
+    "original_length": 3107,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3107,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_deterministic_components.py",
+    "original_length": 9118,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9118,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_deterministic_replay.py",
+    "original_length": 6762,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 6770,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_dilithium.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_economics_guard.py",
+    "original_length": 1745,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1745,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_explain_live_equivalence.py",
+    "original_length": 3747,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3747,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_explain_this_performance.py",
+    "original_length": 2255,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2255,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_feed_aegis_advisory_exposure.py",
+    "original_length": 3050,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 3066,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_feed_integration.py",
+    "original_length": 3278,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 3294,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_feed_safety.py",
+    "original_length": 1679,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1679,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_functionality.py",
+    "original_length": 1415,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1415,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_gateway_aegis_integration.py",
+    "original_length": 4655,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4655,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_governance_dashboard.py",
+    "original_length": 8741,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8741,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_humor_compliance.py",
+    "original_length": 12808,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 9
+      }
+    ],
+    "error": null,
+    "new_length": 12880,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_humor_deterministic_replay.py",
+    "original_length": 7347,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7347,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_humor_explainability.py",
+    "original_length": 13386,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 13394,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_humor_observatory.py",
+    "original_length": 11082,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 8
+      }
+    ],
+    "error": null,
+    "new_length": 11146,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_humor_policy.py",
+    "original_length": 10417,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 10433,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_humor_signal_integration.py",
+    "original_length": 2828,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2836,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_interaction_safety.py",
+    "original_length": 4224,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4224,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_ledger_economics_integration.py",
+    "original_length": 4455,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4455,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_observation_correlation.py",
+    "original_length": 3599,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3607,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_phase3_integration.py",
+    "original_length": 6000,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6000,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_policy_engine.py",
+    "original_length": 4624,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4624,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_policy_integration.py",
+    "original_length": 5686,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5694,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_policy_integration_fixed.py",
+    "original_length": 5686,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5694,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_policy_severities.py",
+    "original_length": 3957,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3965,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_pqc.py",
+    "original_length": 2269,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2269,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_pqc_integration.py",
+    "original_length": 3672,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3672,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_pqc_network_integration.py",
+    "original_length": 4376,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4376,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_psi_dynamics.py",
+    "original_length": 5967,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5967,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_real_storage_wiring.py",
+    "original_length": 3903,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3903,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_safety_guard.py",
+    "original_length": 2314,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2314,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_safety_guard_integration.py",
+    "original_length": 3173,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3173,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_storage_economic_views.py",
+    "original_length": 1745,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1745,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_storage_engine.py",
+    "original_length": 15645,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 15661,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_token_state_bundle_storage.py",
+    "original_length": 8391,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8391,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_token_state_extension.py",
+    "original_length": 3078,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3078,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_unsafe_interaction_flow.py",
+    "original_length": 2425,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 2441,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_value_node_explainability.py",
+    "original_length": 14189,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 14213,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\test_value_node_replay.py",
+    "original_length": 2307,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2307,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_write.py",
+    "original_length": 407,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 407,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_write2.py",
+    "original_length": 640,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 640,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\test_zero_sim_violations.py",
+    "original_length": 732,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 732,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\adversarial_simulator.py",
+    "original_length": 7435,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7443,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\determinism_fuzzer.py",
+    "original_length": 4332,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4340,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\evidence_indexer.py",
+    "original_length": 7225,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7233,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\extract_violation_count.py",
+    "original_length": 797,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 797,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\fix_drv_packet.py",
+    "original_length": 1091,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1099,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\generate_reference_hash.py",
+    "original_length": 834,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 834,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\generate_violation_taxonomy.py",
+    "original_length": 10227,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 10259,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\humor_observatory_cli.py",
+    "original_length": 6216,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 6256,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_batch1_test_cleanup.py",
+    "original_length": 7166,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7174,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_batch2_sorted_iterations.py",
+    "original_length": 12180,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 12212,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_batch3_print_removal.py",
+    "original_length": 8681,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 8705,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_batch4_set_removal.py",
+    "original_length": 11523,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 11555,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py",
+    "original_length": 6080,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 6112,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\phase3_verification_dashboard.py",
+    "original_length": 7402,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7402,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\rollback_batch1.py",
+    "original_length": 3780,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3788,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\run_phase2_tests.py",
+    "error": "Syntax Error @ 7:3.\nparser error: error at 6:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\nfrom datetime import datetime\n  ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\simple_reference_generator.py",
+    "original_length": 2295,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2303,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\test_cir302_handler.py",
+    "original_length": 2036,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2036,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\ast_checker.py",
+    "original_length": 7718,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 7742,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\auto_fix_violations.py",
+    "original_length": 5650,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5658,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\check_transaction_targeted.py",
+    "original_length": 538,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 546,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\check_transaction_violations.py",
+    "original_length": 837,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 845,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\comprehensive_checker.py",
+    "original_length": 5345,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 5369,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\debug_checker.py",
+    "original_length": 6422,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 6446,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\deterministic_hash_check.py",
+    "original_length": 2250,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2250,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\deterministic_migration_fixer.py",
+    "original_length": 27750,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 8
+      }
+    ],
+    "error": null,
+    "new_length": 27814,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\final_auto_fix.py",
+    "original_length": 8572,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 8580,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\generate_reference_hash.py",
+    "original_length": 727,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 727,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\safe_ast_checker.py",
+    "original_length": 8061,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 8085,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\simple_auto_fix.py",
+    "original_length": 6715,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 6723,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\simple_checker.py",
+    "original_length": 745,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 753,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\targeted_auto_fix.py",
+    "original_length": 10125,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 10133,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\targeted_checker.py",
+    "original_length": 4399,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 4431,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools_root\\test_auto_fix.py",
+    "original_length": 6446,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6446,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\test_violations_simple.py",
+    "original_length": 444,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 444,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\validate_pqc_integrity.py",
+    "original_length": 3086,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3086,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\utils\\qfs_system.py",
+    "original_length": 2705,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2705,
+    "changed": false
+  },
+  {
+    "file": "v13\\utils\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools_root\\audit\\phase3_validator.py",
+    "original_length": 10563,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 10571,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\ci\\check_commit_status.py",
+    "original_length": 1431,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1439,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\ci\\check_failing_details.py",
+    "original_length": 710,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 710,
+    "changed": false
+  },
+  {
+    "file": "v13\\tools\\ci\\check_pr_status.py",
+    "original_length": 1069,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1077,
+    "changed": true
+  },
+  {
+    "file": "v13\\tools\\discovery\\discovery_scan.py",
+    "original_length": 4790,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4798,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\api\\test_atlas_p0_surfaces.py",
+    "original_length": 7592,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7592,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\api\\test_explain_api.py",
+    "original_length": 1721,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1721,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\auth\\test_open_agi_role.py",
+    "original_length": 5266,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5274,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\cir302\\test_cir302_handler.py",
+    "original_length": 18091,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 18123,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\deterministic\\test_deterministic_replay.py",
+    "original_length": 1847,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1847,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\deterministic\\test_deterministic_time_regression_cir302.py",
+    "original_length": 13629,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 13653,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\deterministic\\test_deterministic_time_replay.py",
+    "original_length": 9985,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 9993,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\deterministic\\test_value_node_replay_determinism.py",
+    "original_length": 3246,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3246,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\deterministic\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\drv_packet\\test_drv_packet.py",
+    "original_length": 1084,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1084,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\drv_packet\\test_drv_packet_version.py",
+    "original_length": 2727,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2727,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\e2e\\test_storage_economics_flow.py",
+    "original_length": 7790,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7798,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\e2e\\test_storage_user_flow.py",
+    "original_length": 11576,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 11600,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\governance\\test_aegis_zerosim.py",
+    "original_length": 1498,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1498,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\governance\\test_appeals_deterministic.py",
+    "original_length": 1362,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1362,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\governance\\test_evidence_determinism.py",
+    "original_length": 1509,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1509,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\governance\\test_governance_zero_sim_replay.py",
+    "original_length": 4500,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4500,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\governance\\test_infrastructure_governance_complete.py",
+    "original_length": 9127,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 9135,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\governance\\test_user_context_replay.py",
+    "original_length": 2213,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2213,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\guards\\test_aegis_guard.py",
+    "original_length": 4828,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4828,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\handlers\\test_cir302_handler_phase1.py",
+    "original_length": 10401,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10401,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\HSMF\\test_hsmf_certifiedmath_integration.py",
+    "original_length": 6161,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6161,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\HSMF\\test_hsmf_compliance.py",
+    "original_length": 2941,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2949,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\HSMF\\test_hsmf_implementation.py",
+    "original_length": 2849,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2849,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\HSMF\\test_hsmf_simple.py",
+    "original_length": 1689,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 1705,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\HSMF\\test_hsmf_v13.py",
+    "original_length": 1770,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1778,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\HSMF\\verify_hsmf_compliance.py",
+    "original_length": 3300,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3308,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\infrastructure\\test_pqc_backend.py",
+    "original_length": 1912,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1912,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\integration\\test_full_stack_determinism.py",
+    "original_length": 3267,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3267,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\integration\\test_live_replay.py",
+    "original_length": 2405,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2413,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\integration\\test_pqc_phase3_compliance.py",
+    "original_length": 7702,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7702,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\integration\\test_verify_reward_proof_script.py",
+    "original_length": 1824,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1824,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\integration\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\mocks\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\observability\\test_trace_propagation.py",
+    "original_length": 3432,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 3448,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\old\\comprehensive_log_test.py",
+    "original_length": 6303,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 6311,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\old\\debug_hsmf.py",
+    "original_length": 2242,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2242,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\debug_overflow.py",
+    "original_length": 910,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 910,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\debug_transcendental.py",
+    "original_length": 886,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 886,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\demo_transaction.py",
+    "original_length": 5576,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5576,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\error_handling_comprehensive_test.py",
+    "original_length": 3791,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3791,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\example_pqc_usage.py",
+    "original_length": 1941,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1941,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\example_usage.py",
+    "original_length": 2648,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2648,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\hsmf_tokenstate_integration_test.py",
+    "original_length": 6870,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6870,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\run_all_tests.py",
+    "original_length": 2129,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2137,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\old\\run_certified_math_extensions_tests.py",
+    "original_length": 1324,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1324,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\run_hsmf_tests.py",
+    "original_length": 791,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 791,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\run_integration_tests.py",
+    "original_length": 1248,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1248,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\run_pqc_tests.py",
+    "original_length": 1119,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1119,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\run_tests.py",
+    "original_length": 830,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 830,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\test_all_operations.py",
+    "original_length": 3401,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3401,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\test_drv_chain.py",
+    "original_length": 3428,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3428,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\old\\test_version_check.py",
+    "original_length": 1488,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1488,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\performance\\test_memory_exhaustion.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\TestPQCAdapters.py",
+    "original_length": 8874,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8874,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\TestPQCStandardization.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\test_pqc.py",
+    "original_length": 4324,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4324,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\test_pqc_adapter_mock.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\test_pqc_key_management.py",
+    "original_length": 5983,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5983,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\pqc\\test_pqc_real_backend.py",
+    "original_length": 11148,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 11148,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\property\\test_bignum128_fuzz.py",
+    "original_length": 14776,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 13
+      }
+    ],
+    "error": null,
+    "new_length": 14880,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\property\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\scripts\\test_cir302_simulation.py",
+    "original_length": 4014,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4014,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sdk\\test_sdk.py",
+    "original_length": 2943,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2943,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\security\\test_pqc_integration_mock.py",
+    "original_length": 6414,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6414,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\services\\test_notification_service.py",
+    "original_length": 6338,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6338,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sessions\\test_session_challenge_reuse.py",
+    "original_length": 3525,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3525,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sessions\\test_session_cutover_boundary.py",
+    "original_length": 3748,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3748,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sessions\\test_session_explainability_mixed_eras.py",
+    "original_length": 5780,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5780,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sessions\\test_session_lifecycle_replay.py",
+    "original_length": 3498,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3498,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\sessions\\test_session_rotation_ordering.py",
+    "original_length": 4730,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4730,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\signals\\test_humor.py",
+    "original_length": 5512,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5520,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\signals\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\storage\\test_storageengine_replay.py",
+    "original_length": 6856,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 5
+      }
+    ],
+    "error": null,
+    "new_length": 6896,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\tools\\test_evidence_indexer.py",
+    "original_length": 6710,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6710,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_appeals_workflow.py",
+    "original_length": 1459,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1459,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_bignum_fixes.py",
+    "original_length": 2771,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2771,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_bignum_negative.py",
+    "original_length": 270,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 270,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_bignum_underflow.py",
+    "original_length": 280,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 280,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certifiedmath.py",
+    "original_length": 8542,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8542,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certifiedmath_fixes.py",
+    "original_length": 2344,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2344,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math.py",
+    "original_length": 74,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 74,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math_edge_cases.py",
+    "original_length": 14947,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 14947,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math_extensions.py",
+    "original_length": 3184,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3184,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math_performance.py",
+    "error": "Syntax Error @ 5:1.\nparser error: error at 4:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\n<<<<<<< HEAD\n           ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math_proofvectors.py",
+    "original_length": 12850,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12850,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_certified_math_v13.py",
+    "original_length": 1177,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1185,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_coherence_referral_integration.py",
+    "original_length": 2004,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2012,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_community_model.py",
+    "original_length": 1392,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1392,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_division_by_zero.py",
+    "original_length": 556,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 556,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_dm_integration.py",
+    "original_length": 1662,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1662,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_drv_timestamp.py",
+    "original_length": 1955,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1955,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_explain_this_system.py",
+    "original_length": 2245,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2253,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_gateway_explain.py",
+    "original_length": 1909,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1909,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_hd_derivation.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: unterminated triple-quoted string literal\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_ln.py",
+    "original_length": 3052,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3052,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_memory_hygiene.py",
+    "original_length": 2619,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2619,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_onboarding_tours.py",
+    "original_length": 2081,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2081,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_openagi_dm_integration.py",
+    "original_length": 4414,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4422,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_phi_series.py",
+    "original_length": 2921,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2921,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_pqc_malleability.py",
+    "original_length": 1431,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1431,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_pqc_provider.py",
+    "original_length": 3695,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3695,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_pqc_provider_consistency_shim.py",
+    "original_length": 7919,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7919,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_referral_ledger_sync.py",
+    "original_length": 1733,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1733,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_referral_system.py",
+    "original_length": 6004,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6004,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_reward_system.py",
+    "original_length": 3340,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3348,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_structure.py",
+    "original_length": 1538,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1546,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\test_system_creator_wallet.py",
+    "error": "Syntax Error @ 13:1.\nparser error: error at 12:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\n<<<<<<< HEAD\n           ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_transcendentals.py",
+    "original_length": 2820,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2820,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\test_value_node_replay_explanation.py",
+    "original_length": 2700,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2700,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\verify_certifiedmath_compliance.py",
+    "original_length": 2655,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2663,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\verify_certifiedmath_compliance_final.py",
+    "original_length": 3351,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3359,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\__init__.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\v13_6\\BoundaryConditionTests.py",
+    "original_length": 10971,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10971,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\v13_6\\DeterministicReplayTest.py",
+    "original_length": 11286,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 11302,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\v13_6\\FailureModeTests.py",
+    "original_length": 18880,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 18888,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\v13_6\\PerformanceBenchmark.py",
+    "original_length": 14052,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 14052,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\determinism\\test_certified_math_config_runtime.py",
+    "original_length": 306,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 306,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\determinism\\test_certified_math_extended_determinism.py",
+    "original_length": 306,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 306,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\determinism\\test_certified_math_stress_concurrency.py",
+    "original_length": 7807,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 7839,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\run_simple_test.py",
+    "error": "Syntax Error @ 2:3.\nparser error: error at 1:2: expected one of (, *, +, -, ..., AWAIT, EOF, False, NAME, NUMBER, None, True, [, break, continue, lambda, match, not, pass, ~\n\nimport sys\n  ^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_certified_math_drv_integration.py",
+    "original_length": 108,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 108,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_malformed_input_handling.py",
+    "original_length": 7905,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7905,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_packet_creation_logging.py",
+    "original_length": 8746,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 8770,
+    "changed": true
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_packet_hash_determinism.py",
+    "original_length": 7409,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7409,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_qfs_integration.py",
+    "original_length": 7601,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7601,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_qfs_system.py",
+    "original_length": 1880,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1880,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_qfs_v13_phase1_2_integration.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_quantum_metadata_determinism.py",
+    "original_length": 5947,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5947,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\integration\\test_token_state_bundle.py",
+    "original_length": 9821,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9821,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\verification\\test_certified_math_exception_verification.py",
+    "original_length": 306,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 306,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\verification\\test_certified_math_formal_verification.py",
+    "original_length": 6964,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6964,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\unit\\verification\\test_certified_math_regression_hash_system.py",
+    "original_length": 8239,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8239,
+    "changed": false
+  },
+  {
+    "file": "v13\\tests\\phase3\\treasury\\test_treasury_proportional_distribution.py",
+    "original_length": 3254,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3254,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\aegis\\policies.py",
+    "original_length": 1743,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1743,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\appeals\\manager.py",
+    "original_length": 1800,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1800,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\appeals\\__init__.py",
+    "original_length": 27,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 27,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\community\\manager.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: no matching outer block for dedent\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\community\\membership.py",
+    "original_length": 1790,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1790,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\community\\__init__.py",
+    "original_length": 36,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 36,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\dm\\crypto.py",
+    "original_length": 1182,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1182,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\dm\\identity.py",
+    "original_length": 1238,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1238,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\dm\\messenger.py",
+    "original_length": 1733,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1733,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\dm\\__init__.py",
+    "original_length": 36,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 36,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\explainer\\engine.py",
+    "original_length": 2075,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2075,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\explainer\\resolvers.py",
+    "original_length": 2724,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2724,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\explainer\\__init__.py",
+    "original_length": 29,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 29,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\governance\\appeals.py",
+    "original_length": 2416,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2424,
+    "changed": true
+  },
+  {
+    "file": "v13\\services\\governance\\context.py",
+    "original_length": 4065,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4073,
+    "changed": true
+  },
+  {
+    "file": "v13\\services\\governance\\evidence.py",
+    "original_length": 2018,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2018,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\onboarding\\progress.py",
+    "original_length": 1667,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1667,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\onboarding\\tours.py",
+    "original_length": 1237,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1237,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\onboarding\\__init__.py",
+    "original_length": 30,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 30,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\sessions\\explain_helper.py",
+    "original_length": 3511,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3511,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\sessions\\replay_helper.py",
+    "original_length": 2285,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2285,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\sessions\\session_challenge.py",
+    "original_length": 2327,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2327,
+    "changed": false
+  },
+  {
+    "file": "v13\\services\\sessions\\session_manager.py",
+    "original_length": 3681,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3681,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\artistic_features\\color.py",
+    "original_length": 1096,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1096,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\artistic_features\\complexity.py",
+    "original_length": 1065,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1073,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\artistic_features\\composition.py",
+    "original_length": 1649,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1657,
+    "changed": true
+  },
+  {
+    "file": "v13\\policy\\artistic_features\\narrative.py",
+    "original_length": 1413,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1413,
+    "changed": false
+  },
+  {
+    "file": "v13\\policy\\artistic_features\\symmetry.py",
+    "original_length": 1499,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 1515,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs_root\\checks_tests\\integration_test.py",
+    "original_length": 3550,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3550,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs_root\\checks_tests\\qfs_v13_integration_test.py",
+    "original_length": 16264,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 16288,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs_root\\checks_tests\\quick_determinism_test.py",
+    "original_length": 3769,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3769,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs_root\\checks_tests\\verify_drv_compliance.py",
+    "original_length": 2654,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2662,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\adapters\\core_pqc_adapter.py",
+    "original_length": 0,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 0,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\dilithium5_adapter.py",
+    "original_length": 1061,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1061,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\mock_pqc.py",
+    "original_length": 1479,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1479,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\mock_pqc_adapter.py",
+    "original_length": 2236,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2236,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\pqc_adapter_factory.py",
+    "original_length": 2097,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2097,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\adapters\\__init__.py",
+    "original_length": 151,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 151,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\core\\SafetyGuard.py",
+    "original_length": 10167,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10167,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\core\\UtilityOracle.py",
+    "original_length": 5470,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5470,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\core\\UtilityOracleInterface.py",
+    "original_length": 11147,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 11147,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\crypto\\derivation.py",
+    "error": "Syntax Error @ 1:1.\ntokenizer error: unterminated string literal\n\n\"\"\"\n^",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic\\random.py",
+    "original_length": 4573,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4573,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\deterministic\\time.py",
+    "original_length": 3019,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3019,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\EconomicAdversarySuite.py",
+    "original_length": 23219,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 23235,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\EconomicsGuard.py",
+    "original_length": 33118,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 33118,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\economic_constants.py",
+    "original_length": 3936,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3936,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\GenesisHarmonicState.py",
+    "original_length": 11503,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 11511,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\HarmonicEconomics.py",
+    "original_length": 19778,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 19794,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\HoloRewardEngine.py",
+    "original_length": 10057,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10057,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\PsiFieldEngine.py",
+    "original_length": 19144,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 11
+      }
+    ],
+    "error": null,
+    "new_length": 19232,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\PsiSyncProtocol.py",
+    "original_length": 14788,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 14820,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\economics\\QAmount.py",
+    "original_length": 6968,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6968,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\SystemRecoveryProtocol.py",
+    "original_length": 6538,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6538,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\economics\\TreasuryDistributionEngine.py",
+    "original_length": 9415,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 9439,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\encoding\\canonical.py",
+    "original_length": 4646,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4646,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\encoding\\__init__.py",
+    "original_length": 240,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 240,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\governance\\AEGIS_Node_Verification.py",
+    "original_length": 22086,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 22094,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\InfrastructureGovernance.py",
+    "original_length": 41088,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 41096,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\NODAllocator.py",
+    "original_length": 19288,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 19304,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\NODInvariantChecker.py",
+    "original_length": 22568,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 22584,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\RewardAllocator.py",
+    "original_length": 11840,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 11848,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\governance\\TreasuryEngine.py",
+    "original_length": 14181,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 14181,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\integration\\StateTransitionEngine.py",
+    "original_length": 19120,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 19136,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\interfaces\\message_protocol.py",
+    "original_length": 3171,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3171,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\module_interface.py",
+    "original_length": 2607,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2607,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\pqc_interface.py",
+    "original_length": 1872,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1872,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\interfaces\\__init__.py",
+    "original_length": 298,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 298,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\keystore\\manager.py",
+    "original_length": 1691,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1691,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\logging\\qfs_logger.py",
+    "original_length": 5215,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5215,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\logging\\__init__.py",
+    "error": "[Errno 13] Permission denied: 'v13\\\\libs\\\\logging\\\\__init__.py'",
+    "fixes_applied": [],
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\CanonicalSerializer.py",
+    "original_length": 2489,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2489,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\ConcretePQCProvider.py",
+    "original_length": 12329,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12329,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\IPQCProvider.py",
+    "original_length": 4624,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4624,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\MemoryHygiene.py",
+    "original_length": 1483,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1483,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\oqs_adapter.py",
+    "original_length": 8145,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8145,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Audit.py",
+    "original_length": 2034,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 2050,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Core.py",
+    "original_length": 10483,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10483,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\PQC_Logger.py",
+    "original_length": 3853,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3861,
+    "changed": true
+  },
+  {
+    "file": "v13\\libs\\pqc\\registry.py",
+    "original_length": 1125,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1125,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\pqc\\__init__.py",
+    "original_length": 481,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 481,
+    "changed": false
+  },
+  {
+    "file": "v13\\libs\\quantum\\QPU_Interface.py",
+    "original_length": 5775,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5775,
+    "changed": false
+  },
+  {
+    "file": "v13\\docs\\audit\\audit_verification.py",
+    "original_length": 6138,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 6170,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\phase_a_module_audit.py",
+    "original_length": 23330,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 11
+      }
+    ],
+    "error": null,
+    "new_length": 23418,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\qfs_v13_autonomous_audit.py",
+    "original_length": 36459,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 4
+      }
+    ],
+    "error": null,
+    "new_length": 36491,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\qfs_v13_full_audit.py",
+    "original_length": 17836,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 17852,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\qfs_v13_technical_test_report.py",
+    "original_length": 28552,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 28552,
+    "changed": false
+  },
+  {
+    "file": "v13\\docs\\audit\\run_certified_math_audit.py",
+    "original_length": 4334,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 4350,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\test_certified_math_audit_compliance.py",
+    "original_length": 13965,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 13965,
+    "changed": false
+  },
+  {
+    "file": "v13\\docs\\audit\\test_certified_math_audit_trail_hardening.py",
+    "original_length": 5743,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 5759,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\test_certified_math_cross_module_audit.py",
+    "original_length": 426,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 426,
+    "changed": false
+  },
+  {
+    "file": "v13\\docs\\audit\\test_certified_math_enhanced_audit.py",
+    "original_length": 10610,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 3
+      }
+    ],
+    "error": null,
+    "new_length": 10634,
+    "changed": true
+  },
+  {
+    "file": "v13\\docs\\audit\\test_serialization_audit.py",
+    "original_length": 7638,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7638,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\observability\\logger.py",
+    "original_length": 3984,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3984,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\observability\\metrics.py",
+    "original_length": 745,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 745,
+    "changed": false
+  },
+  {
+    "file": "v13\\core\\tests\\test_qfs_replay_source.py",
+    "original_length": 2193,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2193,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\config.py",
+    "original_length": 332,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 332,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\main.py",
+    "original_length": 3952,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3952,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\numeric.py",
+    "original_length": 3445,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3445,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\qfs_client.py",
+    "original_length": 9729,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9729,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\qfs_types.py",
+    "original_length": 760,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 760,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\real_ledger.py",
+    "original_length": 4191,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4191,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\time.py",
+    "original_length": 3632,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3632,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\types.py",
+    "original_length": 1091,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1091,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\value_graph_ref.py",
+    "original_length": 8568,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 8576,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\__init__.py",
+    "original_length": 420,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 420,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_content_id_determinism.py",
+    "original_length": 3081,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3081,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_value_graph_ref.py",
+    "original_length": 8682,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 8690,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\tests\\value_node\\test_value_node_replay.py",
+    "original_length": 16496,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 16504,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\crypto_utils.py",
+    "original_length": 506,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 506,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\dependencies.py",
+    "original_length": 5326,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5326,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\events.py",
+    "original_length": 1486,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1494,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\__init__.py",
+    "original_length": 1288,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1296,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\economic_views.py",
+    "original_length": 1879,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1887,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\pqc_session.py",
+    "original_length": 1315,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1315,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\quantum_engine.py",
+    "original_length": 4083,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4083,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\transaction_processor.py",
+    "original_length": 7312,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 7320,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\core\\__init__.py",
+    "original_length": 299,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 299,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\quantum.py",
+    "original_length": 4673,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4673,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\transaction.py",
+    "original_length": 4155,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4155,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\user.py",
+    "original_length": 1166,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1166,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\models\\wallet.py",
+    "original_length": 5073,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5073,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\aegis_bootstrap.py",
+    "original_length": 2218,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2218,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\bandwidth_economics.py",
+    "original_length": 1674,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1674,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\connection_manager.py",
+    "original_length": 8218,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8218,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\secure_message_logger.py",
+    "original_length": 1936,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1936,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\p2p\\secure_message_v2.py",
+    "original_length": 2490,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2490,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\__init__.py",
+    "original_length": 54,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 54,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\security\\wallet_id.py",
+    "original_length": 803,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 803,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\artistic.py",
+    "original_length": 5370,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5378,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\base.py",
+    "original_length": 4200,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4200,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor.py",
+    "original_length": 8351,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8351,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor_v2.py",
+    "original_length": 6672,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6672,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\humor_zerosim.py",
+    "original_length": 8207,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 8207,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_base.py",
+    "original_length": 2463,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2463,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_humor.py",
+    "original_length": 4533,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4541,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_integration.py",
+    "original_length": 3801,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3809,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\test_zerosim_compliance.py",
+    "original_length": 4788,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 4796,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\signals\\__init__.py",
+    "original_length": 28,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 28,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_atlas_api_wallets_auth_and_policy.py",
+    "original_length": 1770,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1778,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_economic_views.py",
+    "original_length": 1502,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 1510,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_explain_this_e2e.py",
+    "original_length": 3364,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3364,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_metrics_and_proofs_endpoints.py",
+    "original_length": 2713,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2721,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_qfs_client.py",
+    "original_length": 5188,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5196,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\tests\\test_transactions_api_boundary.py",
+    "original_length": 2103,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 2111,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\core\\engine.py",
+    "original_length": 7779,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 7779,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\core\\__init__.py",
+    "original_length": 167,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 167,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\crypto\\__init__.py",
+    "original_length": 145,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 145,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\ipfs_storage.py",
+    "original_length": 6220,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 6220,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\memory_storage.py",
+    "original_length": 1068,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1068,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\storage\\__init__.py",
+    "original_length": 104,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 104,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\test_secure_chat_api.py",
+    "original_length": 3765,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3773,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\test_secure_chat_engine.py",
+    "original_length": 5201,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 5209,
+    "changed": true
+  },
+  {
+    "file": "v13\\ATLAS\\src\\secure_chat\\tests\\__init__.py",
+    "original_length": 32,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 32,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\explain.py",
+    "original_length": 10378,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 10378,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\explain_p2p.py",
+    "original_length": 2023,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2023,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\governance.py",
+    "original_length": 1904,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1904,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\metrics.py",
+    "original_length": 5426,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5426,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\proofs.py",
+    "original_length": 5051,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5051,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\quantum.py",
+    "original_length": 5650,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 5650,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\secure_chat.py",
+    "original_length": 12189,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 12189,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_explain.py",
+    "original_length": 1528,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1528,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_metrics.py",
+    "original_length": 775,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 775,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\test_proofs.py",
+    "original_length": 761,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 761,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\transactions.py",
+    "original_length": 3420,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3420,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\src\\api\\routes\\wallets.py",
+    "original_length": 4260,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 4260,
+    "changed": false
+  },
+  {
+    "file": "v13\\ATLAS\\node_modules\\flatted\\python\\flatted.py",
+    "original_length": 3048,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 9
+      }
+    ],
+    "error": null,
+    "new_length": 3120,
+    "changed": true
+  },
+  {
+    "file": "v13\\AEGIS\\governance\\api.py",
+    "original_length": 606,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 606,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\governance\\consequence_graph.py",
+    "original_length": 3907,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 1
+      }
+    ],
+    "error": null,
+    "new_length": 3915,
+    "changed": true
+  },
+  {
+    "file": "v13\\AEGIS\\governance\\model_registry.py",
+    "original_length": 2925,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2925,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\governance\\proposals.py",
+    "original_length": 1669,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1669,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\governance\\__init__.py",
+    "original_length": 226,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 226,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\models\\__init__.py",
+    "original_length": 114,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 114,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\sandbox\\api.py",
+    "original_length": 662,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 662,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\sandbox\\assistant.py",
+    "original_length": 1409,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1409,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\sandbox\\engine.py",
+    "original_length": 1943,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1943,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\sandbox\\__init__.py",
+    "original_length": 204,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 204,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\counter_scenario.py",
+    "original_length": 1267,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1267,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\evidence_api.py",
+    "original_length": 748,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 748,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\evidence_models.py",
+    "original_length": 2112,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2112,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\evidence_service.py",
+    "original_length": 3767,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 2
+      }
+    ],
+    "error": null,
+    "new_length": 3783,
+    "changed": true
+  },
+  {
+    "file": "v13\\AEGIS\\services\\explanation_api.py",
+    "original_length": 1211,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1211,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\explanation_control.py",
+    "original_length": 2327,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2327,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\explanation_service.py",
+    "original_length": 2042,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 2042,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\governance_map.py",
+    "original_length": 3990,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 3990,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\services\\__init__.py",
+    "original_length": 240,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 240,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\tests\\test_evidence_integration.py",
+    "original_length": 1898,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 1898,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\ui_contracts\\schemas.py",
+    "original_length": 9131,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 9131,
+    "changed": false
+  },
+  {
+    "file": "v13\\AEGIS\\ui_contracts\\__init__.py",
+    "original_length": 182,
+    "fixes_applied": [
+      {
+        "type": "IterationFix",
+        "count": 0
+      }
+    ],
+    "error": null,
+    "new_length": 182,
+    "changed": false
+  }
+]

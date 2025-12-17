@@ -112,7 +112,7 @@ class AEGISTelemetrySnapshot:
                 if not isinstance(metrics, dict):
                     return (False, f"Node {node_id} metrics must be dict")
                 required_fields = ["uptime_ratio", "health_score"]
-                for field in required_fields:
+                for field in sorted(required_fields):
                     if field not in metrics:
                         return (
                             False,

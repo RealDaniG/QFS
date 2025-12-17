@@ -178,7 +178,7 @@ def process_directory(
     # Find all Python files
     py_files = list(root_dir.rglob("*.py"))
 
-    for py_file in py_files:
+    for py_file in sorted(py_files):
         # Check exclusions
         if any(py_file.match(pattern) for pattern in exclude_patterns):
             stats["files_skipped"] += 1
@@ -275,13 +275,13 @@ if __name__ == "__main__":
 
         if errors:
             print(f"❌ Errors in {args.file}:")
-            for e in errors:
+            for e in sorted(errors):
                 print(f"  - {e}")
             sys.exit(1)
 
         if removals:
             print(f"✅ {len(removals)} print() removals in {args.file}")
-            for r in removals:
+            for r in sorted(removals):
                 print(f"  Line {r.line}: {r.removed_code}")
         else:
             print(f"No print() statements found in {args.file}")

@@ -44,7 +44,7 @@ class ZeroSimulationChecker(ast.NodeVisitor):
         if self.visit_count >= self.max_visits:
             return
         self.visit_count += 1
-        for alias in node.names:
+        for alias in sorted(node.names):
             if alias.name in PROHIBITED_MODULES:
                 self.errors.append((node.lineno, f'Prohibited module import: {alias.name}'))
             self.imports.add(alias.name)
@@ -58,7 +58,7 @@ class ZeroSimulationChecker(ast.NodeVisitor):
         if node.module in PROHIBITED_MODULES:
             self.errors.append((node.lineno, f'Prohibited module import: {node.module}'))
         if node.module:
-            for alias in node.names:
+            for alias in sorted(node.names):
                 full_name = f'{node.module}.{alias.name}'
                 if full_name in PROHIBITED_FUNCTIONS:
                     self.errors.append((node.lineno, f'Prohibited function import: {full_name}'))
@@ -151,7 +151,7 @@ def main():
         print('-' * 45)
         for filepath, errors in results.items():
             print(f'\nFile: {filepath}')
-            for line, error in errors:
+            for line, error in sorted(errors):
                 print(f'  Line {line}: {error}')
         return 1
     else:

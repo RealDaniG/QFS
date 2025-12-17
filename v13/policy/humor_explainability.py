@@ -133,7 +133,7 @@ class HumorExplainabilityHelper:
             List[HumorRewardExplanation]: List of explanations
         """
         explanations = []
-        for reward_data in reward_data_list:
+        for reward_data in sorted(reward_data_list):
             explanation = self.explain_humor_reward(**reward_data)
             explanations.append(explanation)
         return explanations

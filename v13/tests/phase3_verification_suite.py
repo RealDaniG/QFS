@@ -172,7 +172,7 @@ def main():
     tests = [('BigNum128 Arithmetic', test_bignum128_arithmetic), ('DeterministicTime', test_deterministic_time), ('Zero-Simulation Compliance', test_zero_simulation_compliance), ('Phase 3 Audit Requirements', test_audit_requirements), ('Fixed-Point Precision', test_fixed_point_precision)]
     passed = 0
     failed = 0
-    for test_name, test_func in tests:
+    for test_name, test_func in sorted(tests):
         try:
             if test_func():
                 passed += 1

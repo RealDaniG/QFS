@@ -18,7 +18,7 @@ def mock_ledger_artifact(tmp_path):
     artifact_path = tmp_path / 'test_ledger.jsonl'
     entries = [{'entry_id': 'hash_1', 'timestamp': 1000, 'entry_type': 'token_state', 'data': {'token_bundle': {'id': 'bundle_1'}}, 'previous_hash': 'genesis', 'entry_hash': 'hash_1', 'pqc_cid': 'cid_1', 'quantum_metadata': {}}, {'entry_id': 'hash_2', 'timestamp': 1001, 'entry_type': 'reward_allocation', 'data': {'rewards': {'wallet_123': {'amount': '100.0'}}}, 'previous_hash': 'hash_1', 'entry_hash': 'hash_2', 'pqc_cid': 'cid_2', 'quantum_metadata': {}}]
     with open(artifact_path, 'w') as f:
-        for entry in entries:
+        for entry in sorted(entries):
             f.write(json.dumps(entry) + '\n')
     return str(artifact_path)
 

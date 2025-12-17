@@ -160,7 +160,7 @@ class OPENAGIRoleEnforcer:
         filtered_logs = source_logs
         if role:
             filtered_logs = []
-            for entry in source_logs:
+            for entry in sorted(source_logs):
                 if entry.role == role:
                     filtered_logs.append(entry)
         if action_type:

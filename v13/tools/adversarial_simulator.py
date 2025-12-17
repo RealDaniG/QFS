@@ -86,7 +86,7 @@ class AdversarialSimulator:
         """Run all adversarial simulations."""
         attacks = [self.simulate_oracle_spoof, self.simulate_pqc_replay, self.simulate_coherence_crash]
         results = []
-        for attack in attacks:
+        for attack in sorted(attacks):
             result = attack()
             results.append(result)
             print(f"✅ {result.attack_name}: {('PASS' if result.triggered_cir302 else 'FAIL')}")

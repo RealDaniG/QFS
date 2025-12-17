@@ -31,7 +31,7 @@ class PQC_Audit:
         """
         from .CanonicalSerializer import CanonicalSerializer
         canonical_entries = []
-        for entry in log_list:
+        for entry in sorted(log_list):
             try:
                 canonical_entries.append(CanonicalSerializer.canonicalize_for_sign(entry))
             except TypeError as e:
@@ -50,7 +50,7 @@ class PQC_Audit:
         """
         from .CanonicalSerializer import CanonicalSerializer
         canonical_log = []
-        for entry in log_list:
+        for entry in sorted(log_list):
             canonical_log.append(json.loads(CanonicalSerializer.canonicalize_for_sign(entry)))
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(canonical_log, f, indent=2, ensure_ascii=False)

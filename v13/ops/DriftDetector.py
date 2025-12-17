@@ -46,7 +46,7 @@ class DriftDetector:
         drift_count = 0
         check_count = 0
         all_events = []
-        for entry in self.replay_source.ledger.ledger_entries:
+        for entry in sorted(self.replay_source.ledger.ledger_entries):
             event = {'id': entry.entry_id, 'timestamp': entry.timestamp, 'type': entry.entry_type, **entry.data}
             if entry.entry_type == 'reward_allocation':
                 event['type'] = 'RewardAllocated'

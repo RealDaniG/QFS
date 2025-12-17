@@ -175,7 +175,7 @@ def assess_component_status(config: Dict, modules: Dict, tests_found: Set[str], 
     """
     statuses = []
     components = config.get('critical_components', [])
-    for comp in components:
+    for comp in sorted(components):
         name = comp['name']
         file_path = comp['file']
         test_patterns = comp['test_patterns']
@@ -184,12 +184,12 @@ def assess_component_status(config: Dict, modules: Dict, tests_found: Set[str], 
         full_path = REPO_ROOT / file_path
         file_exists = full_path.is_file()
         matching_tests = []
-        for test_pattern in test_patterns:
-            for test_file in tests_found:
+        for test_pattern in sorted(test_patterns):
+            for test_file in sorted(tests_found):
                 if fnmatch(test_file.lower(), test_pattern.lower()):
                     matching_tests.append(test_file)
         found_evidence = []
-        for ev_path in evidence_paths:
+        for ev_path in sorted(evidence_paths):
             if (REPO_ROOT / ev_path).is_file():
                 found_evidence.append(ev_path)
         non_det = []
@@ -244,22 +244,22 @@ def generate_verdict(components: List[ComponentStatus], test_results: Dict, comp
     critical_issues = []
     recommendations = []
     exit_code = 0
-    for comp in comparisons:
+    for comp in sorted(comparisons):
         if comp.status == 'REGRESSION':
             critical_issues.append(f'{comp.metric}: {comp.baseline_value} → {comp.current_value}')
             exit_code = max(exit_code, 1)
     critical_missing = [c for c in components if c.criticality == 'CRITICAL' and c.status == 'MISSING']
     if critical_missing:
-        for comp in critical_missing:
+        for comp in sorted(critical_missing):
             critical_issues.append(f'CRITICAL COMPONENT MISSING: {comp.name}')
             exit_code = 2
     critical_non_det = [c for c in components if c.criticality == 'CRITICAL' and c.non_det_patterns]
     if critical_non_det:
-        for comp in critical_non_det:
+        for comp in sorted(critical_non_det):
             msg = f'Non-deterministic patterns in CRITICAL component {comp.name}: {comp.non_det_patterns}'
             critical_issues.append(msg)
             exit_code = max(exit_code, 1)
-    for comp in components:
+    for comp in sorted(components):
         if comp.status == 'UNKNOWN':
             recommendations.append(f'Create tests for {comp.name} (file exists but no tests found)')
         elif comp.status == 'PARTIALLY_IMPLEMENTED':
@@ -279,7 +279,7 @@ def generate_markdown_report(config: Dict, modules: Dict, components: List[Compo
     lines.extend(['# QFS V13.5 Autonomous Audit Report (v2.0)', '', '**Evidence-driven compliance audit for QFS V13.5 / V2.1**', '', f'**Generated:** {now}', f'**Repository:** {REPO_ROOT}', f'**Audit Status:** {verdict.overall_status}', '', f'Git commit: `{get_git_commit()}`', f'Python version: `{get_python_version()}`', '', '---', ''])
     lines.extend(['## Executive Summary', '', f'**Verdict:** {verdict.overall_status}', '', '### Critical Issues', ''])
     if verdict.critical_issues:
-        for issue in verdict.critical_issues:
+        for issue in sorted(verdict.critical_issues):
             lines.append(f'- ❌ {issue}')
     else:
         lines.append('- ✅ No critical issues detected')
@@ -299,7 +299,7 @@ def generate_markdown_report(config: Dict, modules: Dict, components: List[Compo
     lines.extend(['## Test Execution Results', '', f"- Tests collected: {test_results.get('tests_collected', '?')}", f"- Collection errors: {test_results.get('errors', '?')}", f"- Exit code: {test_results.get('exit_code', '?')}", f"- Output log: `{test_results.get('output_path', '')}`", ''])
     if comparisons:
         lines.extend(['## Baseline Comparison', ''])
-        for comp in comparisons:
+        for comp in sorted(comparisons):
             status_icon = '📈' if comp.status == 'IMPROVEMENT' else '📉' if comp.status == 'REGRESSION' else '✅'
             lines.append(f'- {status_icon} {comp.metric}: {comp.baseline_value} → {comp.current_value} ({comp.status})')
         lines.append('')
@@ -308,7 +308,7 @@ def generate_markdown_report(config: Dict, modules: Dict, components: List[Compo
     if critical_with_issues:
         lines.append('### ⚠️ Critical Path Issues')
         lines.append('')
-        for comp in critical_with_issues:
+        for comp in sorted(critical_with_issues):
             lines.append(f'- **{comp.name}**: {comp.non_det_patterns}')
         lines.append('')
     else:
@@ -373,7 +373,7 @@ def run_audit():
     logger.info('=' * 80)
     if verdict.critical_issues:
         logger.warning('\nCritical Issues:')
-        for issue in verdict.critical_issues:
+        for issue in sorted(verdict.critical_issues):
             logger.warning(f'  - {issue}')
     logger.info('\nRecommendations:')
     for rec in verdict.recommendations[:3]:

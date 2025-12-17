@@ -69,7 +69,7 @@ class CIR511_Handler:
                     dissonance_event = DissonanceEvent(metric_name=metric_name, current_value=current_value, previous_value=previous_value, deviation=deviation, threshold=threshold, timestamp=deterministic_timestamp, quantum_metadata=quantum_metadata)
                     dissonance_events.append(dissonance_event)
         if dissonance_detected:
-            for event in dissonance_events:
+            for event in sorted(dissonance_events):
                 self.log_micro_discrepancy(event, log_list, pqc_cid, quantum_metadata, deterministic_timestamp)
         return dissonance_detected
 

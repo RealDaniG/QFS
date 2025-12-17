@@ -165,7 +165,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
 
     def visit_Assign(self, node: ast.Assign):
         if not self.inside_function:
-            for target in node.targets:
+            for target in sorted(node.targets):
                 if isinstance(target, ast.Name):
                     # Skip uppercase constants
                     if target.id.isupper():
@@ -291,7 +291,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         return False
 
     def visit_ListComp(self, node):
-        for gen in node.generators:
+        for gen in sorted(node.generators):
             if self._is_dict_like(gen.iter) and (not self._is_sorted_call(gen.iter)):
                 self.add_violation(
                     node,
@@ -355,7 +355,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Import(self, node):
-        for alias in node.names:
+        for alias in sorted(node.names):
             if alias.name in self.forbidden_modules:
                 self.add_violation(
                     node, "FORBIDDEN_IMPORT", f"Import of {alias.name} forbidden"
@@ -430,7 +430,7 @@ class AST_ZeroSimChecker:
                         has_det_time = True
                         break
                     if isinstance(node, ast.Import):
-                        for alias in node.names:
+                        for alias in sorted(node.names):
                             if "DeterministicTime" in alias.name:
                                 has_det_time = True
                                 break
@@ -495,7 +495,7 @@ class AST_ZeroSimChecker:
                 for d in dirs
                 if not any((fnmatch.fnmatch(d, p) for p in exclude_patterns))
             ]
-            for file in files:
+            for file in sorted(files):
                 if file.endswith(".py") and (
                     not any((fnmatch.fnmatch(file, p) for p in exclude_patterns))
                 ):

@@ -33,7 +33,7 @@ class TestSignalAddonIntegration(unittest.TestCase):
         self.assertIsInstance(dimensions, dict)
         self.assertEqual(len(dimensions), 7)
         expected_dimensions = ['chronos', 'lexicon', 'surreal', 'empathy', 'critique', 'slapstick', 'meta']
-        for dim in expected_dimensions:
+        for dim in sorted(expected_dimensions):
             self.assertIn(dim, dimensions)
             self.assertIsInstance(dimensions[dim], float)
             self.assertGreaterEqual(dimensions[dim], 0.0)

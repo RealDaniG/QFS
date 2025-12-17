@@ -28,7 +28,7 @@ class ZeroSimChecker(ast.NodeVisitor):
 
     def visit_Import(self, node):
         """Check for forbidden imports."""
-        for alias in node.names:
+        for alias in sorted(node.names):
             if alias.name in self.FORBIDDEN_IMPORTS:
                 self.violations.append({'type': 'FORBIDDEN_IMPORT', 'message': self.FORBIDDEN_IMPORTS[alias.name], 'line': node.lineno, 'column': node.col_offset, 'import': alias.name})
         self.generic_visit(node)

@@ -48,7 +48,7 @@ class TestCIR302HandlerComprehensive:
         """
         econ_violations = [('ECON_BOUND_VIOLATION', 'Generic economic bound violation'), ('ECON_CHR_MAX_REWARD_EXCEEDED', 'CHR reward exceeds max per action'), ('ECON_CHR_DAILY_EMISSION_CAP_EXCEEDED', 'CHR daily emission cap exceeded'), ('ECON_CHR_SATURATION_THRESHOLD_EXCEEDED', 'CHR saturation threshold exceeded'), ('ECON_FLX_FRACTION_OUT_OF_BOUNDS', 'FLX reward fraction out of bounds'), ('ECON_FLX_PER_USER_CAP_EXCEEDED', 'FLX per-user cap exceeded'), ('ECON_FLX_SATURATION_THRESHOLD_EXCEEDED', 'FLX saturation threshold exceeded'), ('ECON_RES_ALLOCATION_OUT_OF_BOUNDS', 'RES allocation out of bounds'), ('ECON_NOD_ALLOCATION_FRACTION_VIOLATION', 'NOD allocation fraction out of bounds'), ('ECON_NOD_ISSUANCE_CAP_EXCEEDED', 'NOD issuance exceeds epoch cap'), ('ECON_NOD_NODE_DOMINANCE_VIOLATION', 'Single node exceeds max NOD share'), ('ECON_NOD_VOTING_POWER_VIOLATION', 'Single node exceeds max voting power'), ('ECON_PER_ADDRESS_CAP', 'Per-address reward cap exceeded'), ('ECON_DUST_THRESHOLD', 'Reward below dust threshold'), ('ECON_IMMUTABLE_CONSTANT_MUTATION', 'Attempted mutation of [IMMUTABLE] constant')]
         print(f'\n[TEST GROUP] Economic Bound Violations ({len(econ_violations)} tests)')
-        for error_code, error_message in econ_violations:
+        for error_code, error_message in sorted(econ_violations):
             test_name = f'ECON_{error_code}'
             print(f'\n[TEST] {test_name}')
             try:
@@ -78,7 +78,7 @@ class TestCIR302HandlerComprehensive:
         """
         nod_violations = [('INVARIANT_VIOLATION_NOD_TRANSFER', 'NOD transfer firewall: NOD delta outside allowed context'), ('NOD_INVARIANT_I1_VIOLATED', 'NOD-I1 violated: Non-transferability'), ('NOD_INVARIANT_I2_VIOLATED', 'NOD-I2 violated: Supply conservation'), ('NOD_INVARIANT_I3_VIOLATED', 'NOD-I3 violated: Voting power bounds'), ('NOD_INVARIANT_I4_VIOLATED', 'NOD-I4 violated: Deterministic replay')]
         print(f'\n[TEST GROUP] NOD Invariant Violations ({len(nod_violations)} tests)')
-        for error_code, error_message in nod_violations:
+        for error_code, error_message in sorted(nod_violations):
             test_name = f'NOD_{error_code}'
             print(f'\n[TEST] {test_name}')
             try:
@@ -108,7 +108,7 @@ class TestCIR302HandlerComprehensive:
         """
         aegis_errors = [('NODE_NOT_IN_REGISTRY', 'Node not found in AEGIS registry'), ('NODE_INSUFFICIENT_UPTIME', 'Node uptime below threshold'), ('NODE_TELEMETRY_HASH_MISMATCH', 'Telemetry hash coherence failure'), ('NODE_CRYPTOGRAPHIC_IDENTITY_INVALID', 'PQC identity verification failed'), ('NODE_HEALTH_CHECK_FAILED', 'Node health check failed')]
         print(f'\n[TEST GROUP] AEGIS Node Verification Errors ({len(aegis_errors)} tests)')
-        for error_code, error_message in aegis_errors:
+        for error_code, error_message in sorted(aegis_errors):
             test_name = f'AEGIS_{error_code}'
             print(f'\n[TEST] {test_name}')
             try:
@@ -138,7 +138,7 @@ class TestCIR302HandlerComprehensive:
         """
         aegis_status_errors = [('AEGIS_OFFLINE', 'AEGIS system offline or degraded'), ('AEGIS_SNAPSHOT_UNAVAILABLE', 'AEGIS snapshot unavailable for deterministic replay'), ('AEGIS_SCHEMA_VERSION_MISMATCH', 'AEGIS snapshot schema version mismatch')]
         print(f'\n[TEST GROUP] AEGIS System Status Errors ({len(aegis_status_errors)} tests)')
-        for error_code, error_message in aegis_status_errors:
+        for error_code, error_message in sorted(aegis_status_errors):
             test_name = f'AEGIS_{error_code}'
             print(f'\n[TEST] {test_name}')
             try:

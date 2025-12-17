@@ -34,7 +34,7 @@ def run_all_tests():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     test_files = [('CertifiedMath extensions tests', os.path.join(script_dir, 'tests', 'test_certified_math_extensions.py')), ('CertifiedMath DRV integration tests', os.path.join(script_dir, 'tests', 'test_certified_math_drv_integration.py')), ('DRV Packet tests', os.path.join(script_dir, 'tests', 'test_drv_packet.py')), ('CertifiedMath tests', os.path.join(script_dir, 'tests', 'test_certified_math.py'))]
     all_passed = True
-    for test_name, test_file in test_files:
+    for test_name, test_file in sorted(test_files):
         if os.path.exists(test_file):
             success = run_tests(test_name, test_file)
             if not success:

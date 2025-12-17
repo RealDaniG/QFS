@@ -84,7 +84,7 @@ class RewardAllocator:
         normalized_weights = self._normalize_weights(allocation_weights, log_list, pqc_cid, quantum_metadata)
         allocated_rewards = {}
         total_recipients = len(recipient_addresses)
-        for address in recipient_addresses:
+        for address in sorted(recipient_addresses):
             weight = normalized_weights.get(address, BigNum128(0))
             chr_amount = self.cm.mul(reward_bundle.chr_reward, weight, log_list, pqc_cid, quantum_metadata)
             flx_amount = self.cm.mul(reward_bundle.flx_reward, weight, log_list, pqc_cid, quantum_metadata)

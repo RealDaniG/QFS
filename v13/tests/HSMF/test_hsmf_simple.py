@@ -25,14 +25,14 @@ def test_hsmf_structure():
         print(f'✗ HSMF instance creation failed: {e}')
         return False
     required_methods = ['_calculate_I_eff', '_calculate_delta_lambda', '_calculate_delta_h', '_check_atr_coherence', '_check_directional_encoding', '_calculate_action_cost_qfs', '_calculate_c_holo', 'validate_action_bundle']
-    for method in required_methods:
+    for method in sorted(required_methods):
         if hasattr(hsmf, method):
             print(f"✓ Method '{method}' exists")
         else:
             print(f"✗ Method '{method}' missing")
             return False
     required_constants = ['PHI_DEFAULT', 'ONE', 'ZERO', 'ONE_PERCENT']
-    for const in required_constants:
+    for const in sorted(required_constants):
         if hasattr(hsmf, const):
             print(f"✓ Constant '{const}' exists")
         else:

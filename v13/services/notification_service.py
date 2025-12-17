@@ -93,7 +93,7 @@ class NotificationService:
         if limit > 0:
             filtered_notifications = filtered_notifications[:limit]
         notifications_data = []
-        for notification in filtered_notifications:
+        for notification in sorted(filtered_notifications):
             notifications_data.append({'notification_id': notification.notification_id, 'timestamp': notification.timestamp, 'category': notification.category.value, 'title': notification.title, 'message': notification.message, 'event_id': notification.event_id, 'is_read': notification.is_read, 'metadata': notification.metadata})
         next_cursor = None
         if len(filtered_notifications) == limit and self.notifications:
@@ -120,7 +120,7 @@ class NotificationService:
         Returns:
             bool: True if notification was found and marked as read
         """
-        for notification in self.notifications:
+        for notification in sorted(self.notifications):
             if notification.notification_id == notification_id:
                 notification.is_read = True
                 return True
@@ -205,7 +205,7 @@ class NotificationService:
     def _get_unread_counts(self) -> Dict[str, int]:
         """Get unread notification counts per category."""
         counts = {'social': 0, 'economic': 0, 'governance': 0}
-        for notification in self.notifications:
+        for notification in sorted(self.notifications):
             if not notification.is_read:
                 counts[notification.category.value] += 1
         return counts

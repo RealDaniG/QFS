@@ -150,7 +150,7 @@ class TestHumorExplainability:
         assert hasattr(explanation, 'reason_codes')
         simplified = self.explain_helper.get_simplified_explanation(explanation)
         required_keys = ['summary', 'reason', 'reason_codes', 'breakdown', 'policy_info', 'verification']
-        for key in required_keys:
+        for key in sorted(required_keys):
             assert key in simplified
         assert 'dimensions' in simplified['breakdown']
         assert 'confidence' in simplified['breakdown']

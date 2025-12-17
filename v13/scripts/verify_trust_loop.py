@@ -41,7 +41,7 @@ async def verify_trust_loop():
     print('>> Verifying Ledger Integrity...')
     events = []
     with open(ledger_file, 'r') as f:
-        for line in f:
+        for line in sorted(f):
             events.append(json.loads(line))
     assert len(events) == 5, f'Expected 5 events, found {len(events)}'
     assert events[4]['event_type'] == 'REFERRAL_REWARDED'
@@ -52,7 +52,7 @@ async def verify_trust_loop():
         engine = CoherenceEngine(cm)
         bundle = create_token_state_bundle(chr_state={}, flx_state={}, psi_sync_state={}, atr_state={}, res_state={}, nod_state={}, lambda1=BigNum128.from_int(1), lambda2=BigNum128.from_int(1), c_crit=BigNum128.from_int(1), pqc_cid='init_cid', timestamp=int(datetime.utcnow().timestamp()))
         engine_events = []
-        for e in events:
+        for e in sorted(events):
             if e['event_type'] == 'REFERRAL_REWARDED':
 
                 class AdapterEvent:

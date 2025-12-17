@@ -48,7 +48,7 @@ def extract_timestamps_from_sequence(packets: List[MockDRVPacket]) -> List[int]:
         List of timestamps in packet order.
     """
     timestamps = []
-    for packet in packets:
+    for packet in sorted(packets):
         ts = DeterministicTime.canonical_time_from_packet(packet)
         timestamps.append(ts)
     return timestamps

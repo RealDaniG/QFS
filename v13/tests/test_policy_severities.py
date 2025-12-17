@@ -22,7 +22,7 @@ def test_policy_hints_for_different_severities():
     gateway.coherence_engine.update_omega = Mock(return_value=[1, 2, 3])
     gateway._calculate_coherence_score = Mock(return_value=100)
     test_cases = [{'name': 'Info Advisory', 'block_suggested': False, 'severity': 'info', 'expected_visibility': 'visible', 'expected_banner': 'none', 'expected_click_through': False}, {'name': 'Warning Advisory', 'block_suggested': True, 'severity': 'warning', 'expected_visibility': 'warned', 'expected_banner': 'general', 'expected_click_through': False}, {'name': 'Critical Advisory', 'block_suggested': True, 'severity': 'critical', 'expected_visibility': 'hidden', 'expected_banner': 'safety', 'expected_click_through': True}]
-    for test_case in test_cases:
+    for test_case in sorted(test_cases):
         print(f"\nTesting {test_case['name']}...")
 
         def mock_observe_event(*args, **kwargs):

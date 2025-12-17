@@ -40,7 +40,7 @@ def test_hsmf_compliance():
             print(f'Errors: {result.errors}')
             print(f'Log entries: {len(log_list)}')
             required_metrics = ['action_cost', 'c_holo', 's_res', 's_flx', 's_psi_sync', 'f_atr', 's_chr']
-            for metric in required_metrics:
+            for metric in sorted(required_metrics):
                 if metric in result.raw_metrics:
                     print(f"✓ Metric '{metric}' present: {result.raw_metrics[metric].to_decimal_string()}")
                 else:

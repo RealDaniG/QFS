@@ -70,7 +70,7 @@ class PsiSyncProtocol:
         clean_values = []
         accepted_shards = []
         outlier_shards = []
-        for val, idx in sorted_values:
+        for val, idx in sorted(sorted_values):
             if len(outlier_indices) >= max_outliers:
                 clean_values.append(val)
                 accepted_shards.append(shard_ids[idx])
@@ -107,7 +107,7 @@ class PsiSyncProtocol:
             return {'max_deviation': 0, 'average_deviation': 0, 'consensus_achieved': False, 'consensus_quality': {'shard_agreement_ratio': 0.0, 'consensus_stability': 0, 'byzantine_resistance_score': 0}}
         deviations = []
         total_deviation = 0
-        for val in values:
+        for val in sorted(values):
             deviation = self.math.abs(self.math.sub(val, global_psisync))
             deviations.append(deviation)
             total_deviation = self.math.add(total_deviation, deviation)
@@ -127,11 +127,11 @@ class PsiSyncProtocol:
             return 1000
         bn_values = [BigNum128(v) for v in values]
         total = BigNum128(0)
-        for v in bn_values:
+        for v in sorted(bn_values):
             total = self.math.add(total, v)
         mean_val = self.math.div_floor(total, BigNum128(len(values)))
         variance = BigNum128(0)
-        for v in bn_values:
+        for v in sorted(bn_values):
             diff = self.math.sub(v, mean_val)
             squared_diff = self.math.mul(diff, diff)
             variance = self.math.add(variance, squared_diff)

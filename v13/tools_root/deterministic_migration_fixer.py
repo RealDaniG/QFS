@@ -98,7 +98,7 @@ def classify_mode(path: pathlib.Path) -> str:
     
     # Check if in target directories
     path_str = str(path).replace('\\', '/')
-    for target_dir in TARGET_DIRS:
+    for target_dir in sorted(TARGET_DIRS):
         if target_dir in path_str:
             return "target"
     
@@ -356,7 +356,7 @@ class DeterministicMigrationFixer(ast.NodeTransformer):
                     self.changes_made.append("Fixed get_balance docstring return type")
             
             # Also look for assignments to fix balance initialization
-            for stmt in node.body:
+            for stmt in sorted(node.body):
                 if (isinstance(stmt, ast.Assign) and 
                     len(stmt.targets) == 1 and 
                     isinstance(stmt.targets[0], ast.Name) and 
@@ -419,7 +419,7 @@ def add_imports_if_needed(source: str, needs_imports: bool, changes_made: List[s
     lines_to_remove = []
     
     # First pass: Identify and mark duplicate imports for removal
-    for i, existing_line in existing_import_lines:
+    for i, existing_line in sorted(existing_import_lines):
         if existing_line in seen_imports:
             lines_to_remove.append(i)
         else:
@@ -442,7 +442,7 @@ def add_imports_if_needed(source: str, needs_imports: bool, changes_made: List[s
     
     # Check for partial matches and update existing imports
     updated_lines = set()
-    for i, existing_line in existing_import_lines:
+    for i, existing_line in sorted(existing_import_lines):
         # Check if this is a deterministic helpers import that needs to be expanded
         if "from libs.deterministic_helpers import" in existing_line:
             # Check if it's missing any of the required functions
@@ -470,7 +470,7 @@ def add_imports_if_needed(source: str, needs_imports: bool, changes_made: List[s
     
     # Filter out imports that are already present or updated
     new_imports = set()
-    for import_needed in imports_needed:
+    for import_needed in sorted(imports_needed):
         # Skip deterministic helpers import if we already updated an existing one
         if "from libs.deterministic_helpers import" in import_needed:
             # Check if we already have a deterministic helpers import
@@ -625,7 +625,7 @@ def find_target_files() -> List[pathlib.Path]:
     """
     target_files = []
     
-    for target_dir in TARGET_DIRS:
+    for target_dir in sorted(TARGET_DIRS):
         dir_path = ROOT / target_dir
         if dir_path.exists():
             target_files.extend(dir_path.rglob("*.py"))
@@ -666,11 +666,11 @@ def main():
         
         if args.verbose:
             print("[INFO] Target files:")
-            for f in target_files:
+            for f in sorted(target_files):
                 print(f"  {f}")
         
         modified_count = 0
-        for path in target_files:
+        for path in sorted(target_files):
             try:
                 if transform_file(path, dry_run=args.dry_run):
                     modified_count += 1

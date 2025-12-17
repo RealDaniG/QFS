@@ -298,7 +298,7 @@ class StorageEngine:
         logical_object = self.objects[object_key]
         content_chunks = []
         proofs = []
-        for shard_id in logical_object.shard_ids:
+        for shard_id in sorted(logical_object.shard_ids):
             if shard_id not in self.shards:
                 raise KeyError(f'Shard {shard_id} not found')
             shard = self.shards[shard_id]
@@ -398,7 +398,7 @@ class StorageEngine:
             raise KeyError(f'Object {object_id} version {version} not found')
         logical_object = self.objects[object_key]
         content_chunks = []
-        for shard_id in logical_object.shard_ids:
+        for shard_id in sorted(logical_object.shard_ids):
             if shard_id in self.shards:
                 shard = self.shards[shard_id]
                 content_chunks.append(shard.content_chunk)
@@ -611,7 +611,7 @@ class StorageEngine:
         if is_conservation_maintained:
             conservation_difference = self.cm.sub(self.total_atr_fees_collected, self.total_nod_rewards_distributed, [])
         store_event_count = 0
-        for ev in self.storage_event_log:
+        for ev in sorted(self.storage_event_log):
             if isinstance(ev, dict) and ev.get('event_type') == 'STORE':
                 store_event_count += 1
         return {'total_atr_fees_collected': self.total_atr_fees_collected.to_decimal_string(), 'total_nod_rewards_distributed': self.total_nod_rewards_distributed.to_decimal_string(), 'conservation_difference': conservation_difference.to_decimal_string(), 'is_conservation_maintained': is_conservation_maintained, 'storage_event_count': store_event_count}

@@ -113,7 +113,7 @@ class AtlasAPIGateway:
             filtered_entries = self.coherence_ledger.ledger_entries
             if start_timestamp is not None or end_timestamp is not None:
                 filtered_entries = [entry for entry in self.coherence_ledger.ledger_entries if (start_timestamp is None or entry.timestamp >= start_timestamp) and (end_timestamp is None or entry.timestamp <= end_timestamp)]
-            for entry in filtered_entries:
+            for entry in sorted(filtered_entries):
                 if 'guards' in entry.data and 'aegis_advisory' in entry.data['guards']:
                     aegis_data = entry.data['guards']['aegis_advisory']
                     severity = aegis_data.get('severity', 'info')
@@ -160,7 +160,7 @@ class AtlasAPIGateway:
             Dict: Explanation payload with human-readable reason, linked events, and proofs
         """
         target_entry = None
-        for entry in self.coherence_ledger.ledger_entries:
+        for entry in sorted(self.coherence_ledger.ledger_entries):
             if entry.entry_id == transaction_id:
                 target_entry = entry
                 break
@@ -197,7 +197,7 @@ class AtlasAPIGateway:
         try:
             aegis_observations = []
             agi_observations = []
-            for entry in self.coherence_ledger.ledger_entries:
+            for entry in sorted(self.coherence_ledger.ledger_entries):
                 if 'guards' in entry.data and 'aegis_advisory' in entry.data['guards']:
                     aegis_data = entry.data['guards']['aegis_advisory']
                     related = False
@@ -283,7 +283,7 @@ class AtlasAPIGateway:
             content_candidates = self._fetch_content_candidates(request.user_id, request.limit or 20)
             i_vector = [BigNum128.from_int(1), BigNum128.from_int(2), BigNum128.from_int(3)]
             ranked_posts = []
-            for candidate in content_candidates:
+            for candidate in sorted(content_candidates):
                 coherence_input = self._build_coherence_input(candidate)
                 humor_data = None
                 if 'content' in candidate:
@@ -467,7 +467,7 @@ class AtlasAPIGateway:
         if not omega_vector:
             return BigNum128(0)
         sum_squares = BigNum128(0)
-        for val in omega_vector:
+        for val in sorted(omega_vector):
             val_squared = self.cm.mul(val, val, [])
             sum_squares = self.cm.add(sum_squares, val_squared, [])
         coherence_score = self.cm.sqrt(sum_squares, 50, [])
@@ -597,7 +597,7 @@ class AtlasAPIGateway:
             try:
                 content_ids = self.storage_client.query_feed_candidates(user_id, limit)
                 candidates = []
-                for content_id in content_ids:
+                for content_id in sorted(content_ids):
                     try:
                         metadata = self.storage_client.get_content_metadata(content_id)
                         content_cid = metadata.get('content_cid')

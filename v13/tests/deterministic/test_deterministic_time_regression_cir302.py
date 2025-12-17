@@ -62,7 +62,7 @@ class TestDeterministicTimeMonotonicity:
         """Test that strictly increasing timestamps are accepted"""
         timestamps = [1000, 1100, 1200, 1300, 1400, 1500]
         prior_ts = None
-        for ts in timestamps:
+        for ts in sorted(timestamps):
             DeterministicTime.enforce_monotonicity(current_ts=ts, prior_ts=prior_ts)
             prior_ts = ts
         print(f'✅ Monotonically increasing sequence accepted: {timestamps}')
@@ -109,7 +109,7 @@ class TestDeterministicTimeMonotonicity:
         valid_sequence = [1000, 1100, 1200, 1300, 1400]
         regression_value = 1250
         prior_ts = None
-        for ts in valid_sequence:
+        for ts in sorted(valid_sequence):
             DeterministicTime.enforce_monotonicity(current_ts=ts, prior_ts=prior_ts)
             prior_ts = ts
         with pytest.raises(ValueError, match='Time regression detected'):
@@ -187,7 +187,7 @@ class TestCIR302Scenarios:
         legitimate_packets = [MockDRVPacket(0, 1000, '0' * 64), MockDRVPacket(1, 1100, 'a' * 64), MockDRVPacket(2, 1200, 'b' * 64)]
         replay_attack_packet = MockDRVPacket(3, 1100, 'c' * 64)
         prior_ts = None
-        for packet in legitimate_packets:
+        for packet in sorted(legitimate_packets):
             ts = DeterministicTime.canonical_time_from_packet(packet)
             DeterministicTime.enforce_monotonicity(ts, prior_ts)
             prior_ts = ts

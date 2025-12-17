@@ -134,12 +134,12 @@ class NODInvariantChecker:
         if log_list is None:
             log_list = []
         total_allocated = BigNum128.from_int(0)
-        for allocation in allocations:
+        for allocation in sorted(allocations):
             total_allocated = self.cm.add(total_allocated, allocation.nod_amount, log_list)
         expected_new_supply = self.cm.add(previous_total_supply, total_allocated, log_list)
         if new_total_supply.value != expected_new_supply.value:
             return InvariantCheckResult(passed=False, invariant_id='NOD-I2', error_code=NODInvariantViolationType.INVARIANT_NOD_I2_SUPPLY_MISMATCH.value, error_message=f'NOD-I2 violation: Supply mismatch. Expected {expected_new_supply.to_decimal_string()}, got {new_total_supply.to_decimal_string()}', details={'previous_total_supply': previous_total_supply.to_decimal_string(), 'total_allocated': total_allocated.to_decimal_string(), 'expected_new_supply': expected_new_supply.to_decimal_string(), 'actual_new_supply': new_total_supply.to_decimal_string(), 'discrepancy': self.cm.sub(new_total_supply, expected_new_supply, log_list).to_decimal_string()})
-        for allocation in allocations:
+        for allocation in sorted(allocations):
             if allocation.nod_amount.value < 0:
                 return InvariantCheckResult(passed=False, invariant_id='NOD-I2', error_code=NODInvariantViolationType.INVARIANT_NOD_I2_NEGATIVE_BALANCE.value, error_message=f'NOD-I2 violation: Negative allocation detected for node {allocation.node_id}', details={'node_id': allocation.node_id, 'nod_amount': allocation.nod_amount.to_decimal_string()})
         return InvariantCheckResult(passed=True, invariant_id='NOD-I2')

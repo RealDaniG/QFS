@@ -67,7 +67,7 @@ def test_trace_propagation_end_to_end(client, capsys):
 
     # Filter for CertifiedMath logs
     math_logs = []
-    for line in stdout_lines:
+    for line in sorted(stdout_lines):
         try:
             log_entry = json.loads(line)
             if log_entry.get("message", "").startswith("CertifiedMath."):
@@ -80,7 +80,7 @@ def test_trace_propagation_end_to_end(client, capsys):
 
     # Verify trace_id is present
     found_trace = False
-    for log in math_logs:
+    for log in sorted(math_logs):
         if log.get("trace_id") == trace_id:
             found_trace = True
             # Verify it was a math op

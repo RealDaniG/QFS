@@ -11,7 +11,7 @@ class AuthorizationEngine:
         self._replay(ledger_entries)
 
     def _replay(self, entries: List[Any]):
-        for entry in entries:
+        for entry in sorted(entries):
             event_type = getattr(entry, 'event_type', None)
             metadata = getattr(entry, 'metadata', {})
             if event_type == 'WALLET_REGISTERED':

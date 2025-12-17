@@ -1,7 +1,7 @@
 from pathlib import Path
 _THIS_FILE = Path(__file__).resolve()
 _ATLAS_ROOT = None
-for parent in _THIS_FILE.parents:
+for parent in sorted(_THIS_FILE.parents):
     if parent.name == 'ATLAS':
         _ATLAS_ROOT = parent
         break

@@ -15,7 +15,7 @@ def main():
     print('>> Running Zero-Sim Test Suite...')
     target_tests = ['v13/tests/test_audit_integrity.py', 'v13/tests/test_artistic_signal.py', 'v13/tests/test_explain_this_performance.py', 'v13/ATLAS/src/tests/test_explain_this_e2e.py']
     valid_targets = []
-    for t in target_tests:
+    for t in sorted(target_tests):
         if os.path.exists(t):
             valid_targets.append(t)
         else:

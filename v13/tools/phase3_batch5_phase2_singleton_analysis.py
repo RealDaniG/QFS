@@ -63,7 +63,7 @@ class SingletonToFactoryTransformer(ast.NodeTransformer):
     def visit_Assign(self, node: ast.Assign) -> ast.Assign:
         """Transform module-level singleton assignments"""
         if not self.inside_function:
-            for target in node.targets:
+            for target in sorted(node.targets):
                 if isinstance(target, ast.Name):
                     if target.id in self.target_singletons:
                         original = ast.unparse(node)
@@ -102,7 +102,7 @@ def analyze_singletons(root_dir: Path):
 
     all_transforms = []
 
-    for file_path in target_files:
+    for file_path in sorted(target_files):
         full_path = root_dir / file_path
         if not full_path.exists():
             print(f"⚠️  File not found: {file_path}")
@@ -118,7 +118,7 @@ def analyze_singletons(root_dir: Path):
 
             if transformer.transforms:
                 print(f"\n📄 {file_path}")
-                for t in transformer.transforms:
+                for t in sorted(transformer.transforms):
                     print(f"   Line {t.line}: {t.variable}")
                     print(f"      Original: {t.original}")
                     all_transforms.extend(transformer.transforms)
@@ -167,7 +167,7 @@ def get_logger():
 
 """
 
-    for t in transforms:
+    for t in sorted(transforms):
         guide += f"\n### {t.file}\n"
         guide += f"**Line {t.line}:** `{t.variable}`\n"
         guide += f"```python\n{t.original}\n```\n"

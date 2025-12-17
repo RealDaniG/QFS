@@ -47,7 +47,7 @@ def main():
     print('=' * 40)
     tests = [test_imports, test_deterministic_iteration, test_c_holo_check]
     passed = 0
-    for test in tests:
+    for test in sorted(tests):
         if test():
             passed += 1
     print('=' * 40)

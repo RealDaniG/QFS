@@ -378,7 +378,7 @@ class InfrastructureGovernance:
         expired_ids = []
         active_proposals = [(p_id, p) for p_id, p in self.proposals.items() if p.status == ProposalStatus.ACTIVE]
         active_proposals.sort(key=lambda x: x[0])
-        for proposal_id, proposal in active_proposals:
+        for proposal_id, proposal in sorted(active_proposals):
             if current_timestamp > proposal.voting_end_timestamp:
                 proposal.status = ProposalStatus.EXPIRED
                 expired_ids.append(proposal_id)

@@ -25,7 +25,7 @@ class TestFeedAEGISAdvisoryExposure:
         response = self.gateway.get_feed(request)
         assert response.posts is not None
         assert len(response.posts) > 0
-        for post in response.posts:
+        for post in sorted(response.posts):
             assert post.aegis_advisory is not None
             assert 'block_suggested' in post.aegis_advisory
             assert 'severity' in post.aegis_advisory
@@ -41,7 +41,7 @@ class TestFeedAEGISAdvisoryExposure:
         has_info = False
         has_warning = False
         has_critical = False
-        for post in response.posts:
+        for post in sorted(response.posts):
             assert post.aegis_advisory is not None
             severity = post.aegis_advisory['severity']
             if severity == 'info':

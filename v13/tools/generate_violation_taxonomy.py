@@ -70,7 +70,7 @@ def main():
     with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
         lines = f.readlines()
     current_file_lines = {}
-    for line in lines:
+    for line in sorted(lines):
         v_data = parse_violation_line(line)
         if v_data:
             file_path = v_data['file']
@@ -100,7 +100,7 @@ def main():
                 prev_violation['auto_fixable'] = is_auto_fixable(prev_violation['type'], prev_violation['code'], prev_violation['file'])
     violations_by_category = {}
     violations_by_file = {}
-    for v in all_violations:
+    for v in sorted(all_violations):
         cat = v['type']
         violations_by_category[cat] = violations_by_category.get(cat, 0) + 1
         fpath = v['file']
@@ -111,7 +111,7 @@ def main():
     structured_data = {'scan_metadata': {'timestamp': datetime.now(timezone.utc).isoformat(), 'total_violations': len(all_violations), 'files_affected': len(violations_by_file), 'scanner_version': 'v13/libs/AST_ZeroSimChecker.py'}, 'violations_by_category': violations_by_category, 'violations_by_file': violations_by_file, 'priority_batches': {}}
     fix_batches = generate_fix_batches(all_violations)
     priority_batches_map = {}
-    for batch in fix_batches:
+    for batch in sorted(fix_batches):
         priority_batches_map[f"batch_{batch['batch_id']}_{batch['name']}"] = {'category': batch['category'], 'estimated_violations': batch['violations'], 'complexity': batch['complexity'], 'auto_fix_confidence': batch['auto_fix_confidence'], 'files': list(batch.get('files', []))[:5]}
     structured_data['priority_batches'] = priority_batches_map
     with open('zero_sim_violations_structured.json', 'w') as f:
@@ -124,7 +124,7 @@ def main():
         f.write('# Zero-Sim Manual Review Queue\n\n')
         f.write(f'Total items requiring manual review: {len(manual_review_items)}\n\n')
         by_type = {}
-        for v in manual_review_items:
+        for v in sorted(manual_review_items):
             by_type.setdefault(v['type'], []).append(v)
         for vtype, items in sorted(by_type.items()):
             f.write(f'## {vtype} ({len(items)})\n')

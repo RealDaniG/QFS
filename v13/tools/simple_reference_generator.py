@@ -36,7 +36,7 @@ class SimpleDeterminismFuzzer:
         """Run fuzz test and return deterministic SHA-256 hash of all outputs."""
         log_list = []
         inputs = self._generate_test_inputs(num_tests)
-        for test in inputs:
+        for test in sorted(inputs):
             exp_result = self.cm.exp(test["a"], test["iterations"], log_list)
             ln_result = self.cm.ln(
                 test["a"] if test["a"].value > 0 else BigNum128(1),

@@ -34,7 +34,7 @@ class TestHumorSignalIntegration:
         assert isinstance(dimensions, dict)
         assert len(dimensions) == 7
         expected_dimensions = ['chronos', 'lexicon', 'surreal', 'empathy', 'critique', 'slapstick', 'meta']
-        for dim in expected_dimensions:
+        for dim in sorted(expected_dimensions):
             assert dim in dimensions
             assert isinstance(dimensions[dim], float)
             assert 0.0 <= dimensions[dim] <= 1.0

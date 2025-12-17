@@ -30,7 +30,7 @@ def main():
     entries.append({'entry_id': hashlib.sha256(b'proof_1').hexdigest(), 'timestamp': 1030, 'entry_type': 'storage_proof', 'data': {'object_id': content_id, 'shard_ids': ['shard_1'], 'proof': {'merkle_root': merkle_root, 'size': len(content_data), 'algo': 'SHA3-256-Merkle-4KB'}}, 'previous_hash': entries[-1]['entry_hash'], 'entry_hash': hashlib.sha256(b'proof_1_hash').hexdigest(), 'pqc_cid': 'cid_004', 'quantum_metadata': {'seq': 4}})
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, 'w') as f:
-        for e in entries:
+        for e in sorted(entries):
             f.write(json.dumps(e) + '\n')
     print(f'Success. Generated {len(entries)} entries.')
 if __name__ == '__main__':

@@ -40,7 +40,7 @@ class EvidenceIndexer:
     def scan_evidence_directories(self) -> List[Dict[str, Any]]:
         """Scan evidence directories for artifacts."""
         artifacts = []
-        for evidence_dir in self.evidence_dirs:
+        for evidence_dir in sorted(self.evidence_dirs):
             pass
             evidence_path = Path(evidence_dir)
             for file_path in evidence_path.rglob("*"):

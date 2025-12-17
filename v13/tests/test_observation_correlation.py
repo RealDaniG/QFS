@@ -31,7 +31,7 @@ class TestObservationCorrelation:
         assert len(aegis_obs) >= 1
         assert len(agi_obs) >= 1
         found_agi_with_correlation = False
-        for obs in agi_obs:
+        for obs in sorted(agi_obs):
             if 'observation_data' in obs and 'correlated_aegis_observations' in obs['observation_data']:
                 if event_id in obs['observation_data']['correlated_aegis_observations']:
                     found_agi_with_correlation = True

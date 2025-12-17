@@ -39,7 +39,7 @@ def _events_to_proof_vector(tx_id: str, events: List[Dict[str, Any]]) -> ProofVe
 
     # Simple extraction logic - in a real system this would be more complex
     # filtering for specific event types that contain state/log hashes
-    for event in events:
+    for event in sorted(events):
         if "integrity_hash" in event:
             log_hashes.append(event["integrity_hash"])
         if "state_hash" in event:
@@ -82,7 +82,7 @@ def get_proof_vectors_by_ids(
     results = []
     sorted_ids = sorted(ids)
 
-    for pid in sorted_ids:
+    for pid in sorted(sorted_ids):
         try:
             # Fetch real events from the authoritative replay source
             events = replay_source.get_events_for_transaction(pid)

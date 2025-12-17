@@ -53,7 +53,7 @@ def compare_object_content(storage_engine: StorageEngine, postgres: MockPostgreS
     content_matches = 0
     content_mismatches = 0
     errors = 0
-    for obj_id in object_ids:
+    for obj_id in sorted(object_ids):
         try:
             if ':' in obj_id:
                 obj_id_part, version_part = obj_id.split(':')
@@ -78,7 +78,7 @@ def compare_object_metadata(storage_engine: StorageEngine, postgres: MockPostgre
     metadata_matches = 0
     metadata_mismatches = 0
     errors = 0
-    for obj_id in object_ids:
+    for obj_id in sorted(object_ids):
         try:
             if obj_id in storage_engine.objects:
                 storage_obj = storage_engine.objects[obj_id]

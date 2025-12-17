@@ -40,7 +40,7 @@ class TestPolicyIntegration(unittest.TestCase):
         self.assertTrue(hasattr(response, 'posts'))
         self.assertTrue(hasattr(response, 'policy_metadata'))
         self.assertGreater(len(response.posts), 0)
-        for post in response.posts:
+        for post in sorted(response.posts):
             self.assertTrue(hasattr(post, 'policy_hints'))
             self.assertIsNotNone(post.policy_hints)
             policy_hints = post.policy_hints

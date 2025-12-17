@@ -147,7 +147,7 @@ class EconomicAdversarySuite:
         pqc_cid = f'state_creation_{test_id}_{run_number}'
         quantum_metadata = {'test_id': test_id, 'run_number': run_number, 'deterministic_seed': self.deterministic_seed}
         test_id_sum = 0
-        for char in test_id:
+        for char in sorted(test_id):
             test_id_sum = self.math.add(test_id_sum, ord(char), log_list, pqc_cid, quantum_metadata)
         run_num = self.math.from_int(run_number)
         seed_base = self.math.from_int(self.deterministic_seed)
@@ -197,7 +197,7 @@ class EconomicAdversarySuite:
     def _compute_deterministic_hash(self, log_list: List) -> str:
         """Compute hash using only CertifiedMath operations."""
         hash_input = ''
-        for entry in log_list:
+        for entry in sorted(log_list):
             if isinstance(entry, dict):
                 for key in sorted(entry.keys()):
                     value = entry[key]

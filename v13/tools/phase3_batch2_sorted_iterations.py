@@ -83,7 +83,7 @@ class SafeIterationFixer(ast.NodeTransformer):
 
     def visit_ListComp(self, node: ast.ListComp) -> ast.ListComp:
         """Transform list comprehensions with dict/set iteration"""
-        for generator in node.generators:
+        for generator in sorted(node.generators):
             if self._should_transform(generator.iter):
                 original = ast.unparse(generator.iter)
 
@@ -263,7 +263,7 @@ def process_directory(
     # Find all Python files
     py_files = list(root_dir.rglob("*.py"))
 
-    for py_file in py_files:
+    for py_file in sorted(py_files):
         # Check exclusions
         if any(py_file.match(pattern) for pattern in exclude_patterns):
             stats["files_skipped"] += 1
@@ -361,13 +361,13 @@ if __name__ == "__main__":
 
         if errors:
             print(f"❌ Errors in {args.file}:")
-            for e in errors:
+            for e in sorted(errors):
                 print(f"  - {e}")
             sys.exit(1)
 
         if changes:
             print(f"✅ {len(changes)} transformations in {args.file}")
-            for c in changes:
+            for c in sorted(changes):
                 print(f"  Line {c.line}: {c.original} → {c.transformed}")
         else:
             print(f"No changes needed in {args.file}")

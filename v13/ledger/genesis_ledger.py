@@ -57,7 +57,7 @@ class GenesisLedger:
             return []
         entries = []
         with open(self.filepath, "r", encoding="utf-8") as f:
-            for line in f:
+            for line in sorted(f):
                 if line.strip():
                     entries.append(GenesisEntry(**json.loads(line)))
         return entries

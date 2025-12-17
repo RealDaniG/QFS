@@ -249,7 +249,7 @@ def main():
         print(f"[INFO] Processing batch {i//batch_size + 1}/{(len(py_files)-1)//batch_size + 1} ({len(batch)} files)")
         
         modified_count = 0
-        for p in batch:
+        for p in sorted(batch):
             try:
                 if transform_file(p, dry_run=False):
                     modified_count += 1

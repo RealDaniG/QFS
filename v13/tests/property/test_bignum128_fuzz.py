@@ -55,7 +55,7 @@ def test_construction_parsing_fuzz():
     """Fuzz test: Construction from strings and integers"""
     result = BigNum128FuzzResult('construction_parsing_fuzz')
     test_values = ['0', '1', '999999999999999999', '0.0', '1.0', '0.1', '0.000000000000000001', '123456.789012345678901234', '340282366920938463463.374607431768211455', '0.' + '9' * 18, '1' + '0' * 20]
-    for val_str in test_values:
+    for val_str in sorted(test_values):
         try:
             bn = BigNum128.from_string(val_str)
             reconstructed = BigNum128.from_string(bn.to_decimal_string(fixed_width=True))
@@ -75,8 +75,8 @@ def test_addition_properties_fuzz():
     """Fuzz test: Addition properties (commutativity, associativity)"""
     result = BigNum128FuzzResult('addition_properties_fuzz')
     test_values = [BigNum128(0), BigNum128(1), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE // 2), BigNum128(BigNum128.MAX_VALUE // 4), BigNum128(BigNum128.MAX_VALUE // 2), BigNum128(BigNum128.MAX_VALUE - 1)]
-    for a in test_values:
-        for b in test_values:
+    for a in sorted(test_values):
+        for b in sorted(test_values):
             try:
                 sum_ab = a.add(b)
                 sum_ba = b.add(a)
@@ -108,8 +108,8 @@ def test_subtraction_properties_fuzz():
     """Fuzz test: Subtraction properties and underflow handling"""
     result = BigNum128FuzzResult('subtraction_properties_fuzz')
     test_values = [BigNum128(0), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.MAX_VALUE // 2), BigNum128(BigNum128.MAX_VALUE - 1), BigNum128(BigNum128.MAX_VALUE)]
-    for a in test_values:
-        for b in test_values:
+    for a in sorted(test_values):
+        for b in sorted(test_values):
             if a.value >= b.value:
                 try:
                     diff = a.sub(b)
@@ -133,8 +133,8 @@ def test_multiplication_properties_fuzz():
     """Fuzz test: Multiplication properties (commutativity, distributivity)"""
     result = BigNum128FuzzResult('multiplication_properties_fuzz')
     test_values = [BigNum128(0), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE // 2), BigNum128(BigNum128.SCALE * 2), BigNum128(BigNum128.SCALE * 1000), BigNum128(int(BigNum128.MAX_VALUE ** 0.5))]
-    for a in test_values:
-        for b in test_values:
+    for a in sorted(test_values):
+        for b in sorted(test_values):
             try:
                 prod_ab = a.mul(b)
                 prod_ba = b.mul(a)
@@ -153,8 +153,8 @@ def test_division_properties_fuzz():
     result = BigNum128FuzzResult('division_properties_fuzz')
     test_values = [BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE * 2), BigNum128(BigNum128.SCALE * 1000), BigNum128(BigNum128.MAX_VALUE // 2)]
     divisors = [BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE // 2), BigNum128(BigNum128.SCALE * 2), BigNum128(BigNum128.SCALE * 1000)]
-    for a in test_values:
-        for b in divisors:
+    for a in sorted(test_values):
+        for b in sorted(divisors):
             if b.value == 0:
                 try:
                     quot = a.div(b)
@@ -179,8 +179,8 @@ def test_comparison_consistency_fuzz():
     """Fuzz test: Comparison operator consistency"""
     result = BigNum128FuzzResult('comparison_consistency_fuzz')
     test_values = [BigNum128(0), BigNum128(1), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.SCALE + 1), BigNum128(BigNum128.MAX_VALUE // 2), BigNum128(BigNum128.MAX_VALUE - 1), BigNum128(BigNum128.MAX_VALUE)]
-    for a in test_values:
-        for b in test_values:
+    for a in sorted(test_values):
+        for b in sorted(test_values):
             try:
                 lt = a < b
                 le = a <= b
@@ -220,7 +220,7 @@ def test_serialization_determinism_fuzz():
     """Fuzz test: Serialization produces identical output for identical inputs"""
     result = BigNum128FuzzResult('serialization_determinism_fuzz')
     test_values = [BigNum128(0), BigNum128(BigNum128.SCALE), BigNum128(BigNum128.MAX_VALUE // 2), BigNum128(BigNum128.MAX_VALUE)]
-    for val in test_values:
+    for val in sorted(test_values):
         try:
             ser1 = val.to_decimal_string(fixed_width=True)
             ser2 = val.to_decimal_string(fixed_width=True)
@@ -250,7 +250,7 @@ def run_all_fuzzing_tests():
     total_passed = 0
     total_failed = 0
     total_cases = 0
-    for test_func in tests:
+    for test_func in sorted(tests):
         print(f'Running: {test_func.__name__}...')
         result = test_func()
         results.append(result)

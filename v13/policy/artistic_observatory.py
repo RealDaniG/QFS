@@ -53,13 +53,13 @@ class ArtisticSignalObservatory:
         avg_confidence = sum((s.confidence for s in self.signal_history)) / total_signals
         dim_sums = defaultdict(float)
         dim_counts = defaultdict(int)
-        for s in self.signal_history:
+        for s in sorted(self.signal_history):
             for d, v in s.dimensions.items():
                 dim_sums[d] += v
                 dim_counts[d] += 1
         dim_avgs = {d: dim_sums[d] / dim_counts[d] for d in dim_sums}
         dim_dists = {}
-        for d in dim_sums:
+        for d in sorted(dim_sums):
             dim_dists[d] = self._calculate_histogram(d)
         bonuses = [s.bonus_factor for s in self.signal_history]
         bonus_stats = {'mean': sum(bonuses) / len(bonuses), 'min': min(bonuses), 'max': max(bonuses), 'median': sorted(bonuses)[len(bonuses) // 2]}
@@ -74,7 +74,7 @@ class ArtisticSignalObservatory:
             return {}
         total = len(scores)
         buckets = defaultdict(int)
-        for s in scores:
+        for s in sorted(scores):
             bucket = f'{int(s // self.bucket_size) * self.bucket_size:.1f}'
             buckets[bucket] += 1
         return {b: c / total for b, c in buckets.items()}

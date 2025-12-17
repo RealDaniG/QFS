@@ -88,7 +88,7 @@ def run_phase_2_dynamic_execution():
     print(f'    Hash generation: {hash_generation}')
     print('\n2.4 PQC/Quantum Metadata Propagation')
     metadata_propagation = False
-    for entry in log_list:
+    for entry in sorted(log_list):
         if entry.get('pqc_cid') == pqc_cid and entry.get('quantum_metadata') == quantum_metadata:
             metadata_propagation = True
             break
@@ -201,7 +201,7 @@ def run_phase_5_cir302_verification():
     f_atr = BigNum128.from_string('0.000010000000000000')
     validation_result = hsmf.validate_action_bundle(token_bundle, f_atr, pqc_cid, raise_on_failure=True, strict_atr_coherence=True, quantum_metadata=quantum_metadata)
     cir302_triggered = False
-    for entry in log_list:
+    for entry in sorted(log_list):
         if entry.get('op_name') == 'cir302_trigger':
             cir302_triggered = True
             break

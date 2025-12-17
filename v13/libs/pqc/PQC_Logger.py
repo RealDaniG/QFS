@@ -76,7 +76,7 @@ class PQC_Logger:
 
         def __exit__(self, exc_type, exc_val, exc_tb):
             prev = PQC_Logger.ZERO_HASH
-            for entry in self.log:
+            for entry in sorted(self.log):
                 entry['prev_hash'] = prev
                 prev = entry['entry_hash']
             self._sealed = True

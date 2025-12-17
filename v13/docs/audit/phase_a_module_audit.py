@@ -67,7 +67,7 @@ class ZeroSimulationASTChecker:
         issues = []
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
-                for alias in node.names:
+                for alias in sorted(node.names):
                     if alias.name in self.forbidden_imports:
                         issues.append(f'Forbidden import: {alias.name}')
             elif isinstance(node, ast.ImportFrom):
@@ -129,7 +129,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing TokenStateBundle ---')
         result = ModuleAuditResult('TokenStateBundle')
         issues = self.ast_checker.check_file('libs/TokenStateBundle.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             chr_state = {'coherence_metric': BigNum128.from_string('1.5')}
@@ -162,7 +162,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing UtilityOracle ---')
         result = ModuleAuditResult('UtilityOracle')
         issues = self.ast_checker.check_file('libs/UtilityOracleInterface.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             oracle = create_utility_oracle('TEST_PQC_002', {'test': 'metadata'})
@@ -197,7 +197,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing DRV_Packet ---')
         result = ModuleAuditResult('DRV_Packet')
         issues = self.ast_checker.check_file('libs/DRV_Packet.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             packet1 = DRV_Packet(ttsTimestamp=1700000000, sequence=1, seed='test_seed', metadata={'test': 'data'}, previous_hash='0' * 64, pqc_cid='TEST_PQC_005', quantum_metadata={'test': 'metadata'})
@@ -233,7 +233,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing PQC ---')
         result = ModuleAuditResult('PQC')
         issues = self.ast_checker.check_file('libs/PQC.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             keypair1 = generate_keypair('TEST_PQC_008', {'test': 'metadata'})
@@ -265,7 +265,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing HSMF ---')
         result = ModuleAuditResult('HSMF')
         issues = self.ast_checker.check_file('libs/HSMF.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             log_list = []
@@ -307,7 +307,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing CIR302_Handler ---')
         result = ModuleAuditResult('CIR302_Handler')
         issues = self.ast_checker.check_file('libs/CIR302_Handler.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             log_list = []
@@ -338,7 +338,7 @@ class ModuleMigrationAuditor:
         print('\n--- Auditing CertifiedMath ---')
         result = ModuleAuditResult('CertifiedMath')
         issues = self.ast_checker.check_file('libs/CertifiedMath.py')
-        for issue in issues:
+        for issue in sorted(issues):
             result.add_issue(f'Zero-Simulation violation: {issue}')
         try:
             log_list1 = []
@@ -374,11 +374,11 @@ class ModuleMigrationAuditor:
         print(f'{status} {result.module_name}')
         if result.issues:
             print('  Issues:')
-            for issue in result.issues:
+            for issue in sorted(result.issues):
                 print(f'    - {issue}')
         if result.recommendations:
             print('  Recommendations:')
-            for recommendation in result.recommendations:
+            for recommendation in sorted(result.recommendations):
                 print(f'    - {recommendation}')
 
 def main():
@@ -390,7 +390,7 @@ def main():
     print('=' * 60)
     passed_count = 0
     total_count = len(results)
-    for result in results:
+    for result in sorted(results):
         status = '✅ PASSED' if result.passed else '❌ FAILED'
         print(f'{status} {result.module_name}')
         if result.issues:

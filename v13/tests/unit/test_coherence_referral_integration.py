@@ -23,7 +23,7 @@ class TestCoherenceReferralIntegration:
         assert new_balance.value == expected_balance.value
         assert new_balance.value > old_balance.value
         found_log = False
-        for log in log_list:
+        for log in sorted(log_list):
             if log.get('op_name') == 'apply_referral_reward':
                 if log.get('inputs', {}).get('wallet') == referrer_wallet:
                     found_log = True

@@ -25,7 +25,7 @@ print()
 
 if failing:
     print("FAILING CHECKS:")
-    for check in failing:
+    for check in sorted(failing):
         print(f"  - {check['name']}")
 print()
 

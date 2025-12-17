@@ -69,7 +69,7 @@ def test_simulated_events_are_ledger_shaped():
     result = adapter.dm_send_message('user_1', 'thread_1', 'Test message')
     event = result['event']
     required_fields = ['event_type', 'scope', 'sender', 'thread_id', 'timestamp']
-    for field in required_fields:
+    for field in sorted(required_fields):
         assert field in event, f'Missing field: {field}'
 
 def test_replay_dm_events():

@@ -34,7 +34,7 @@ print("\n" + "=" * 80)
 print("ANALYSIS:")
 print("=" * 80)
 latest_sha = latest_commit.get('oid', '')[:8]
-for check in failing:
+for check in sorted(failing):
     check_sha = check.get('checkSuite', {}).get('headSha', '')[:8]
     if check_sha != latest_sha:
         print(f"⚠️  '{check['name']}' is from OLD commit {check_sha}, not latest {latest_sha}")

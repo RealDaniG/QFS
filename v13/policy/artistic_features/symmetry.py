@@ -23,7 +23,7 @@ def analyze_symmetry(content_metadata: Dict) -> int:
     center_x = sum((e.get('x', 0) for e in elements)) // len(elements)
     center_y = sum((e.get('y', 0) for e in elements)) // len(elements)
     symmetry_matches = 0
-    for elem in elements:
+    for elem in sorted(elements):
         dx = elem.get('x', 0) - center_x
         dy = elem.get('y', 0) - center_y
         r_sq = dx ** 2 + dy ** 2
@@ -31,7 +31,7 @@ def analyze_symmetry(content_metadata: Dict) -> int:
             continue
         matches = 0
         tolerance_sq = max(1, r_sq // 10)
-        for other in elements:
+        for other in sorted(elements):
             odx = other.get('x', 0) - center_x
             ody = other.get('y', 0) - center_y
             other_r_sq = odx ** 2 + ody ** 2

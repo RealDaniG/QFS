@@ -21,7 +21,7 @@ def analyze_complexity(content_metadata: Dict) -> int:
     if not structures:
         return SCALE // 4
     pattern_scales = {}
-    for struct in structures:
+    for struct in sorted(structures):
         pid = struct.get('pattern_id', 'unknown')
         scale = struct.get('scale', 0)
         if pid not in pattern_scales:

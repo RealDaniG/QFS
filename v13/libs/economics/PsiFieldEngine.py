@@ -59,7 +59,7 @@ class DiscretePsiField:
             evidence = {'connections_count': len(connections)}
             raise SecurityError(f'EXCESSIVE_CONNECTIONS: Excessive connections: {len(connections)}', violation_type='EXCESSIVE_CONNECTIONS', evidence=evidence, cir_code='CIR-412')
         shard_set = set()
-        for a, b in connections:
+        for a, b in sorted(connections):
             if not isinstance(a, str) or not isinstance(b, str):
                 evidence = {'shard_a_type': type(a), 'shard_b_type': type(b)}
                 raise SecurityError(f'INVALID_SHARD_ID_TYPES: Invalid shard ID types: {type(a)}, {type(b)}', violation_type='INVALID_SHARD_ID_TYPES', evidence=evidence, cir_code='CIR-412')
@@ -68,7 +68,7 @@ class DiscretePsiField:
         self.shard_ids = shard_set
         self.graph = {shard: set() for shard in self.shard_ids}
         edge_count = {}
-        for a, b in connections:
+        for a, b in sorted(connections):
             if a not in self.shard_ids or b not in self.shard_ids:
                 evidence = {'shard_a': a, 'shard_b': b, 'valid_shards': list(self.shard_ids)}
                 raise SecurityError(f'INVALID_SHARD_IN_CONNECTION: Invalid shard in connection: {a}-{b}', violation_type='INVALID_SHARD_IN_CONNECTION', evidence=evidence, cir_code='CIR-412')
@@ -109,7 +109,7 @@ class DiscretePsiField:
             visited.add(v)
             parent[v] = u
             neighbors = sorted(self.graph[v])
-            for w in neighbors:
+            for w in sorted(neighbors):
                 if w == u:
                     continue
                 if w in visited:
@@ -124,7 +124,7 @@ class DiscretePsiField:
                 else:
                     secure_dfs(v, w, depth + 1)
         sorted_shards = sorted(self.shard_ids)
-        for shard in sorted_shards:
+        for shard in sorted(sorted_shards):
             if shard not in visited:
                 secure_dfs(None, shard)
         self.cycle_basis = cycles
@@ -149,14 +149,14 @@ class DiscretePsiField:
                 current = parent.get(current)
             set1 = set(path1)
             lca = None
-            for node in path2:
+            for node in sorted(path2):
                 if node in set1:
                     lca = node
                     break
             if lca is None:
                 return None
             cycle = []
-            for node in path1:
+            for node in sorted(path1):
                 cycle.append(node)
                 if node == lca:
                     break
@@ -265,7 +265,7 @@ class DiscretePsiField:
             raise SecurityError('Cycle basis integrity compromised')
         curls = []
         anomalies = []
-        for cycle in self.cycle_basis:
+        for cycle in sorted(self.cycle_basis):
             curl_val = self.psi_curl_around_cycle(cycle, harmonic_state)
             curls.append((cycle, curl_val))
             curl_mag = self.certified_math.abs(curl_val)
@@ -282,7 +282,7 @@ class DiscretePsiField:
         """
         shard_syncs = {}
         shards = harmonic_state.chr_state.get('shards', {})
-        for shard_id in self.shard_ids:
+        for shard_id in sorted(self.shard_ids):
             shard = shards[shard_id]
             chr_val = shard['CHR']
             res_val = shard['RES']
@@ -315,9 +315,9 @@ class DiscretePsiField:
         self.verify_cycle_basis_integrity()
         validation_result = {'psi_densities': {}, 'psi_gradients': {}, 'psi_curls': [], 'psi_sync': {}, 'anomalies': [], 'violations': [], 'security_checks_passed': True, 'max_curl_magnitude': 0}
         try:
-            for shard in self.shard_ids:
+            for shard in sorted(self.shard_ids):
                 validation_result['psi_densities'][shard] = self.psi_density(shard, harmonic_state)
-            for i in self.shard_ids:
+            for i in sorted(self.shard_ids):
                 for j in sorted(self.graph[i]):
                     if i < j:
                         grad = self.psi_gradient(i, j, harmonic_state)
@@ -326,7 +326,7 @@ class DiscretePsiField:
             validation_result['psi_curls'] = curls
             validation_result['anomalies'].extend(anomalies)
             max_curl = 0
-            for cycle, curl_val in curls:
+            for cycle, curl_val in sorted(curls):
                 curl_mag = self.certified_math.abs(curl_val)
                 max_curl = max(max_curl, curl_mag)
                 if curl_mag > delta_curl_threshold:

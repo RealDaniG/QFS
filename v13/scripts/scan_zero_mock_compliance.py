@@ -44,7 +44,7 @@ class ZeroMockScanner:
                 lines = f.readlines()
             for i, line in enumerate(lines):
                 line_num = i + 1
-                for keyword in FORBIDDEN_KEYWORDS:
+                for keyword in sorted(FORBIDDEN_KEYWORDS):
                     if re.search(f'\\b{keyword}\\b', line, re.IGNORECASE):
                         violation = {'file': file_path, 'line': line_num, 'keyword': keyword, 'content': line.strip()}
                         self.violations.append(violation)
@@ -56,7 +56,7 @@ class ZeroMockScanner:
 
     def scan_directories(self):
         root_dir = os.getcwd()
-        for scan_path in SCAN_ROOTS:
+        for scan_path in sorted(SCAN_ROOTS):
             abs_scan_path = Path(root_dir) / scan_path
             if not abs_scan_path.exists():
                 print(f'Warning: Path not found {scan_path}')
@@ -64,7 +64,7 @@ class ZeroMockScanner:
             for root, dirs, files in os.walk(abs_scan_path):
                 dirs[:] = [d for d in dirs if not any((x in os.path.join(root, d).replace('\\', '/') for x in EXCLUDE_DIRS))]
                 files = [f for f in files if f.endswith(('.py', '.ts', '.tsx', '.js'))]
-                for file in files:
+                for file in sorted(files):
                     file_path = os.path.join(root, file).replace('\\', '/')
                     if any((x in file_path for x in EXCLUDE_DIRS)):
                         continue
@@ -80,7 +80,7 @@ class ZeroMockScanner:
         Special check for explain.py to ensure it sources from ReplayEngine.
         This is a heuristic check looking for hardcoded lists vs Allowed calls.
         """
-        for route_file in EXPLAIN_THIS_ROUTES:
+        for route_file in sorted(EXPLAIN_THIS_ROUTES):
             if not os.path.exists(route_file):
                 continue
             with open(route_file, 'r', encoding='utf-8') as f:
@@ -91,7 +91,7 @@ class ZeroMockScanner:
                     if re.search('events\\s*=\\s*\\[.*\\{.*\\}.*\\]', content, re.DOTALL):
                         self.violations.append({'file': route_file, 'line': 0, 'keyword': 'INLINE_MOCK_ARRAY', 'content': 'Found inline array assignment potentially containing mock events.'})
                     found_valid_source = False
-                    for valid in ALLOWED_EXPLAIN_SOURCES:
+                    for valid in sorted(ALLOWED_EXPLAIN_SOURCES):
                         if valid in content:
                             found_valid_source = True
                     slice_name = self._get_slice_name(route_file)

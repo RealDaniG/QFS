@@ -59,7 +59,7 @@ class QFSReplaySource:
         Performs a linear scan (in this slice) to find the matching entry.
         """
         target_entry_id = None
-        for entry in self.ledger.ledger_entries:
+        for entry in sorted(self.ledger.ledger_entries):
             if entry.entry_type == 'reward_allocation':
                 raw_data = str(entry.data.get('rewards', ''))
                 if wallet_id in raw_data:
@@ -71,7 +71,7 @@ class QFSReplaySource:
         Retrieve events related to Content Ranking for a specific content ID.
         """
         events = []
-        for entry in self.ledger.ledger_entries:
+        for entry in sorted(self.ledger.ledger_entries):
             if str(entry.data.get('content_id')) == content_id:
                 events.append({'id': entry.entry_id, 'timestamp': entry.timestamp, 'type': 'ContentInteraction', **entry.data})
         return events
@@ -82,7 +82,7 @@ class QFSReplaySource:
         Includes initial 'ContentStored' and subsequent 'StorageProofSubmitted'.
         """
         events = []
-        for entry in self.ledger.ledger_entries:
+        for entry in sorted(self.ledger.ledger_entries):
             if entry.entry_type == 'content_stored':
                 if str(entry.data.get('content_id')) == content_id:
                     events.append({'id': entry.entry_id, 'timestamp': entry.timestamp, 'type': 'ContentStored', 'payload': entry.data, 'epoch': 1})

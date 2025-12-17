@@ -58,7 +58,7 @@ def test_comprehensive_log_consistency():
     print(f'  Sequential indexing: {sequential_indexing}')
     print('\n4. Testing PQC/Quantum metadata propagation...')
     metadata_consistent = True
-    for entry in log_list1:
+    for entry in sorted(log_list1):
         if 'quantum_metadata' not in entry or entry['quantum_metadata'] != {'source': 'test'}:
             metadata_consistent = False
             break

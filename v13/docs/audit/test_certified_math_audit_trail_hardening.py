@@ -21,7 +21,7 @@ def test_log_hash_chaining():
     assert len(log) >= 3, f'Expected at least 3 log entries, got {len(log)}'
     for i, entry in enumerate(log):
         required_fields = ['log_index', 'pqc_cid', 'op_name', 'inputs']
-        for field in required_fields:
+        for field in sorted(required_fields):
             assert field in entry, f"Missing required field '{field}' in log entry {i}: {entry}"
         assert entry['log_index'] == i, f"Incorrect log index in entry {i}: expected {i}, got {entry['log_index']}"
         assert entry['pqc_cid'] == 'HASH_CHAIN_001', f"Incorrect PQC CID in entry {i}: {entry['pqc_cid']}"
@@ -45,7 +45,7 @@ def test_tamper_simulation():
     result2 = math1.mul(result1, a, pqc_cid='TAMPER_001')
     original_hash = math1.get_log_hash()
     log2 = []
-    for entry in log1:
+    for entry in sorted(log1):
         log2.append(entry.copy())
     if len(log2) > 0:
         log2[0]['inputs']['a'] = '999.999999999999999999'

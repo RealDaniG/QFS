@@ -6,7 +6,7 @@ def fix_drv_packet():
         lines = f.readlines()
     new_lines = []
     state = 'NORMAL'
-    for line in lines:
+    for line in sorted(lines):
         stripped = line.strip()
         if stripped.startswith('<<<<<<< HEAD'):
             state = 'HEAD_BLOCK'

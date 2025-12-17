@@ -26,7 +26,7 @@ class TestHumorCompliance:
         source = inspect.getsource(humor_module)
         lines = source.split('\n')
         in_class_or_function = False
-        for line in lines:
+        for line in sorted(lines):
             stripped_line = line.strip()
             if stripped_line.startswith('class ') or stripped_line.startswith('def '):
                 in_class_or_function = True
@@ -64,7 +64,7 @@ class TestHumorCompliance:
         import v13.policy.humor_policy as policy_module
         source = inspect.getsource(policy_module)
         lines = source.split('\n')
-        for line in lines:
+        for line in sorted(lines):
             if line.strip().startswith('#'):
                 continue
             if 'TreasuryEngine()' in line and (not line.strip().startswith('#')):
@@ -82,7 +82,7 @@ class TestHumorCompliance:
         import v13.policy.humor_observatory as observatory_module
         source = inspect.getsource(observatory_module)
         lines = source.split('\n')
-        for line in lines:
+        for line in sorted(lines):
             if line.strip().startswith('#'):
                 continue
             if 'token_balance' in line and (not line.strip().startswith('#')):
@@ -98,7 +98,7 @@ class TestHumorCompliance:
         import v13.policy.humor_explainability as explainability_module
         source = inspect.getsource(explainability_module)
         lines = source.split('\n')
-        for line in lines:
+        for line in sorted(lines):
             if line.strip().startswith('#'):
                 continue
             if 'token_balance' in line and (not line.strip().startswith('#')):
@@ -119,7 +119,7 @@ class TestHumorCompliance:
         assert isinstance(dimensions, dict)
         assert len(dimensions) == 7
         required_dimensions = ['chronos', 'lexicon', 'surreal', 'empathy', 'critique', 'slapstick', 'meta']
-        for dim in required_dimensions:
+        for dim in sorted(required_dimensions):
             assert dim in dimensions
             assert isinstance(dimensions[dim], float)
             assert 0.0 <= dimensions[dim] <= 1.0
@@ -164,9 +164,9 @@ class TestHumorCompliance:
         import v13.policy.humor_explainability as explainability_module
         humor_source = inspect.getsource(humor_module)
         forbidden_patterns = ['open(', 'write(', 'read(', 'os.', 'shutil.', 'pathlib.', 'pickle.', 'json.dump', 'json.load', 'csv.', 'sqlite3.']
-        for pattern in forbidden_patterns:
+        for pattern in sorted(forbidden_patterns):
             lines = humor_source.split('\n')
-            for line in lines:
+            for line in sorted(lines):
                 stripped = line.strip()
                 if not stripped.startswith('#') and pattern in line:
                     if not ('"' in line[:line.find(pattern)] and '"' in line[line.find(pattern):]):
@@ -184,7 +184,7 @@ class TestHumorCompliance:
             """Check that forbidden terms are not used in actual code (not comments)"""
             lines = source_code.split('\n')
             in_multiline_string = False
-            for line in lines:
+            for line in sorted(lines):
                 stripped = line.strip()
                 if '"""' in line or "'''" in line:
                     quote_count = line.count('"""') + line.count("'''")
@@ -192,7 +192,7 @@ class TestHumorCompliance:
                         in_multiline_string = not in_multiline_string
                 if stripped.startswith('#') or in_multiline_string:
                     continue
-                for term in forbidden_terms:
+                for term in sorted(forbidden_terms):
                     if term in line:
                         if '#' in line and line.find(term) > line.find('#'):
                             continue

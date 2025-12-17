@@ -101,7 +101,7 @@ class TestHumorPolicy:
             self.humor_policy.calculate_humor_bonus(dimensions, confidence)
         final_stats = self.humor_policy.get_observability_stats()
         assert final_stats.total_signals_processed == initial_count + 5
-        for dimension in dimensions:
+        for dimension in sorted(dimensions):
             assert len(final_stats.dimension_distributions[dimension]) == 5
 
     def test_policy_explanation_generation(self):
@@ -141,7 +141,7 @@ class TestHumorPolicy:
         bonus_calc_max = self.humor_policy.calculate_humor_bonus(dimensions, max_confidence)
         assert bonus_calc_max.bonus_factor <= self.humor_policy.policy.max_bonus_ratio
         modes = ['recognition_only', 'rewarding']
-        for mode in modes:
+        for mode in sorted(modes):
             test_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode=mode, dimension_weights={'chronos': 0.15, 'lexicon': 0.1, 'surreal': 0.1, 'empathy': 0.2, 'critique': 0.15, 'slapstick': 0.1, 'meta': 0.2}, max_bonus_ratio=0.25, per_user_daily_cap_atr=1.0))
             bonus_calc = test_policy.calculate_humor_bonus(dimensions, 0.85)
             if mode == 'rewarding':

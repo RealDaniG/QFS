@@ -110,7 +110,7 @@ class FailureModeTests:
                     self.state_engine.apply_state_transition(current_token_bundle=current_bundle, allocated_rewards=allocated_rewards, log_list=log_list, nod_allocations=nod_allocations, call_context=call_context, deterministic_timestamp=1000)
                 except Exception as e:
                     pass
-                for entry in log_list:
+                for entry in sorted(log_list):
                     if entry.get('operation') == 'nod_transfer_firewall_violation' and entry.get('error_code') == 'INVARIANT_VIOLATION_NOD_TRANSFER':
                         firewall_violation_logged = True
                         error_code = entry['error_code']

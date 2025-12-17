@@ -23,7 +23,7 @@ class HumorObservatoryCLI:
     def load_sample_data(self):
         """Load sample data for demonstration."""
         sample_snapshots = [HumorSignalSnapshot(timestamp=1000 + i * 100, content_id=f'sample_content_{i}', dimensions={'chronos': 0.5 + i % 3 * 0.2, 'lexicon': 0.4 + i % 4 * 0.15, 'surreal': 0.3 + i % 5 * 0.1, 'empathy': 0.6 + i % 2 * 0.2, 'critique': 0.5 + i % 3 * 0.15, 'slapstick': 0.2 + i % 4 * 0.2, 'meta': 0.4 + i % 6 * 0.1}, confidence=0.7 + i % 4 * 0.05, bonus_factor=0.1 + i % 5 * 0.03, policy_version='v1.0.0') for i in range(20)]
-        for snapshot in sample_snapshots:
+        for snapshot in sorted(sample_snapshots):
             self.observatory.record_signal(snapshot)
         print(f'Loaded {len(sample_snapshots)} sample humor signal snapshots')
 
@@ -50,7 +50,7 @@ class HumorObservatoryCLI:
         for dimension, distribution in report.dimension_distributions.items():
             print(f'\n{dimension.upper()}:')
             sorted_buckets = sorted(distribution.items(), key=lambda x: qnum(x[0].split('-')[0]))
-            for bucket, percentage in sorted_buckets:
+            for bucket, percentage in sorted(sorted_buckets):
                 bar_length = int(percentage * 50)
                 bar = '█' * bar_length
                 print(f'  {bucket:8}: {bar} ({percentage:.1%})')
@@ -77,12 +77,12 @@ class HumorObservatoryCLI:
         print('\n=== DIMENSION CORRELATIONS ===')
         dimensions = sorted(correlations.keys())
         print(f"{'':<12}", end='')
-        for dim in dimensions:
+        for dim in sorted(dimensions):
             print(f'{dim:<8}', end='')
         print()
-        for dim1 in dimensions:
+        for dim1 in sorted(dimensions):
             print(f'{dim1:<12}', end='')
-            for dim2 in dimensions:
+            for dim2 in sorted(dimensions):
                 corr = correlations[dim1][dim2]
                 if dim1 == dim2:
                     print(f"{'1.000':<8}", end='')

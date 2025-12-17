@@ -20,7 +20,7 @@ def verify_hsmf_compliance():
     print('QFS V13 HSMF Compliance Verification')
     print('=' * 50)
     compliance_points = [('Integration with CertifiedMath', '✅ Correctly uses CertifiedMath instance for deterministic calculations'), ('Statelessness & Determinism', '✅ HSMF class is stateless aside from holding CertifiedMath and CIR302_Handler'), ('PQC & Quantum Metadata', '✅ Properly accepts and logs pqc_cid and quantum_metadata'), ('Coherence Checks', '✅ Implements DEZ check, Survival Imperative check, and ATR coherence check'), ('Core Metrics Calculation', '✅ Calculates I_eff, ΔΛ (S_FLX), ΔH (S_PsiSync), Action_Cost_QFS, C_holo'), ('CIR-302 Integration', '✅ Integrates with CIR302_Handler and triggers quarantine on validation failure'), ('Validation Result Structure', '✅ Uses ValidationResult dataclass for structured validation status'), ('Zero-Simulation Compliance', '✅ Avoids native floats/random/time in its own logic'), ('Proper DRV Packet Integration', '✅ Now correctly handles DRV packet sequence number'), ('HSMF Three-Step Cycle', '✅ Follows the three-step cycle structure for coherence calculation'), ('Deterministic Golden Ratio', '✅ Uses deterministic PHI_DEFAULT constant without math.sqrt'), ('Deterministic 2^x Calculation', '✅ Implements _safe_two_to_the_power using CertifiedMath'), ('Error Handling', '✅ Proper zero-division handling and CIR-302 triggering'), ('Audit Logging', '✅ Comprehensive logging of all operations with PQC correlation')]
-    for point, description in compliance_points:
+    for point, description in sorted(compliance_points):
         print(f'{point:<35} {description}')
     print('\n' + '=' * 50)
     print('✅ HSMF.py is fully compliant with QFS V13 requirements')

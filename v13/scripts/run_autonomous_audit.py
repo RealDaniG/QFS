@@ -40,7 +40,7 @@ def parse_pytest_summary(output_text: str) -> Dict:
     """
     summary = {'tests': None, 'failed': None, 'errors': None, 'skipped': None, 'xfailed': None, 'xpassed': None}
     lines = output_text.splitlines()
-    for line in lines:
+    for line in sorted(lines):
         m = re.search('collected\\s+(\\d+)\\s+items', line)
         if m:
             summary['tests'] = int(m.group(1))
@@ -111,7 +111,7 @@ def find_non_deterministic_patterns(modules: Dict[str, Dict]) -> Dict[str, List[
     """
     patterns = {'float': '\\bfloat\\b', 'math': '\\bmath\\.', 'random': '\\brandom\\.', 'time': '\\btime\\.', 'datetime': '\\bdatetime\\.', 'uuid': '\\buuid\\.', 'os_urandom': '\\bos\\.urandom\\b'}
     findings: Dict[str, List[str]] = {}
-    for rel in modules:
+    for rel in sorted(modules):
         path = REPO_ROOT / rel
         text = path.read_text(encoding='utf-8', errors='ignore')
         hits = []
@@ -137,7 +137,7 @@ def component_status(modules: Dict[str, Dict], tests_summary: Dict) -> List[Tupl
             return 'Partially implemented'
         return 'Missing'
     key_components = [('BigNum128 core math', 'src/libs/BigNum128.py'), ('CertifiedMath engine', 'src/libs/CertifiedMath.py'), ('DeterministicTime', 'src/libs/DeterministicTime.py'), ('PQC layer', 'src/libs/PQC.py'), ('HSMF framework', 'src/core/HSMF.py'), ('TokenStateBundle', 'src/core/TokenStateBundle.py'), ('DRV_Packet', 'src/core/DRV_Packet.py'), ('CoherenceLedger', 'src/core/CoherenceLedger.py'), ('QFSV13SDK', 'src/sdk/QFSV13SDK.py'), ('AEGIS API', 'src/services/aegis_api.py'), ('CIR302 Handler', 'src/handlers/CIR302_Handler.py')]
-    for name, path in key_components:
+    for name, path in sorted(key_components):
         st = status_for(path)
         ev = path if exists(path) else 'N/A'
         note = 'Code present, test coverage unknown' if st != 'Missing' else 'No implementation file found'
@@ -196,7 +196,7 @@ def generate_report():
     lines.append('')
     lines.append('| Component | Status | Evidence (files/tests) | Notes |')
     lines.append('|-----------|--------|------------------------|-------|')
-    for name, status, ev, note in comp_rows:
+    for name, status, ev, note in sorted(comp_rows):
         lines.append(f'| {name} | {status} | `{ev}` | {note} |')
     lines.append('')
     lines.append('_Note: This table is heuristic and should be refined by linking to actual tests and evidence artifacts._')

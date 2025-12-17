@@ -14,7 +14,7 @@ def check_imports(filename):
         tree = ast.parse(f.read())
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
-            for alias in node.names:
+            for alias in sorted(node.names):
                 if alias.name in ['random', 'time']:
                     return f"Forbidden import '{alias.name}' found"
         elif isinstance(node, ast.ImportFrom):
@@ -25,7 +25,7 @@ def check_imports(filename):
     return None
 
 def test_zero_sim_imports():
-    for fpath in POLICY_FILES:
+    for fpath in sorted(POLICY_FILES):
         if not os.path.exists(fpath):
             continue
         error = check_imports(fpath)

@@ -42,7 +42,7 @@ def _verify_toroidal_topology() -> bool:
     connections = GENESIS_STATE['topology']['shard_connections']
     shard_ids = set(GENESIS_STATE['token_allocations']['shards'].keys())
     graph = {shard: set() for shard in shard_ids}
-    for a, b in connections:
+    for a, b in sorted(connections):
         graph[a].add(b)
         graph[b].add(a)
     for shard, neighbors in graph.items():

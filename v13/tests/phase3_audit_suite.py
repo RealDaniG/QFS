@@ -41,7 +41,7 @@ class AuditReport:
         report.append(f'Compliance: {compliance_pct:.1f}%')
         report.append('')
         categories = {}
-        for test in self.tests:
+        for test in sorted(self.tests):
             cat = test['category']
             if cat not in categories:
                 categories[cat] = []
@@ -50,7 +50,7 @@ class AuditReport:
             report.append(f"\n{'=' * 80}")
             report.append(f'{category}')
             report.append(f"{'=' * 80}")
-            for test in tests:
+            for test in sorted(tests):
                 status = '✅ PASS' if test['passed'] else '❌ FAIL'
                 report.append(f"{status}: {test['test_name']}")
                 if test['details']:
@@ -129,7 +129,7 @@ def test_3_1_certified_math_audit(report: AuditReport):
     try:
         test_cases = [('0.000000000000000001', 'Smallest unit'), ('1.5', 'Simple decimal'), ('999999999999.999999999999999999', 'Large number with precision')]
         all_passed = True
-        for value_str, description in test_cases:
+        for value_str, description in sorted(test_cases):
             try:
                 val = BigNum128.from_string(value_str)
                 assert isinstance(val.value, int), f'{description}: must be integer internally'
@@ -260,7 +260,7 @@ def main():
     print('=' * 80)
     report = AuditReport()
     tests = [test_1_1_zero_simulation_compliance, test_1_2_float_free_execution, test_3_1_certified_math_audit, test_3_2_deterministic_replay, test_5_economic_determinism, test_deterministic_time_enforcement, test_bignum128_overflow_protection]
-    for test_func in tests:
+    for test_func in sorted(tests):
         try:
             test_func(report)
         except Exception as e:

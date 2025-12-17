@@ -44,7 +44,7 @@ class PolicyRegistry:
             return None
         timeline = sorted(self.history[policy_type].keys())
         effective_epoch = None
-        for start_epoch in timeline:
+        for start_epoch in sorted(timeline):
             if start_epoch <= epoch:
                 effective_epoch = start_epoch
             else:

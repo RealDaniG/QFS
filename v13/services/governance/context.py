@@ -66,7 +66,7 @@ def build_user_context(
     flags = {}
 
     # 2. Deterministic Replay
-    for event in ledger_slice:
+    for event in sorted(ledger_slice):
         evt_type = event.get("type", "")
 
         # Identity Creation

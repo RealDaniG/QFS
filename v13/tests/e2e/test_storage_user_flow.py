@@ -39,7 +39,7 @@ def setup_test_storage_engine() -> StorageEngine:
     storage_engine.register_storage_node('node2', '192.168.1.2', 8080)
     storage_engine.register_storage_node('node3', '192.168.1.3', 8080)
     storage_engine.register_storage_node('node4', '192.168.1.4', 8080)
-    for node_id in storage_engine.nodes:
+    for node_id in sorted(storage_engine.nodes):
         storage_engine.nodes[node_id].is_aegis_verified = True
         storage_engine.nodes[node_id].aegis_verification_epoch = 1
     storage_engine._invalidate_eligible_nodes_cache()
@@ -130,7 +130,7 @@ def test_deterministic_replay():
     storage_engine1 = StorageEngine(cm1)
     storage_engine1.register_storage_node('node1', '192.168.1.1', 8080)
     storage_engine1.register_storage_node('node2', '192.168.1.2', 8080)
-    for node_id in storage_engine1.nodes:
+    for node_id in sorted(storage_engine1.nodes):
         storage_engine1.nodes[node_id].is_aegis_verified = True
         storage_engine1.nodes[node_id].aegis_verification_epoch = 1
     storage_engine1._invalidate_eligible_nodes_cache()
@@ -147,7 +147,7 @@ def test_deterministic_replay():
     storage_engine2 = StorageEngine(cm2)
     storage_engine2.register_storage_node('node1', '192.168.1.1', 8080)
     storage_engine2.register_storage_node('node2', '192.168.1.2', 8080)
-    for node_id in storage_engine2.nodes:
+    for node_id in sorted(storage_engine2.nodes):
         storage_engine2.nodes[node_id].is_aegis_verified = True
         storage_engine2.nodes[node_id].aegis_verification_epoch = 1
     storage_engine2._invalidate_eligible_nodes_cache()

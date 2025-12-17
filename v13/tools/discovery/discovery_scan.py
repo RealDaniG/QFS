@@ -60,7 +60,7 @@ def scan_directory(path: Path) -> List[str]:
             if not d.startswith(".") and d != "__pycache__" and d != "node_modules"
         ]
 
-        for filename in filenames:
+        for filename in sorted(filenames):
             # Include .py and .ts/.tsx files
             if filename.endswith((".py", ".ts", ".tsx")) and not filename.startswith(
                 "."

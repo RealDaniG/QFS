@@ -13,7 +13,7 @@ def main():
     
     if errors:
         print(f"Violations found in {file_path}:")
-        for line, error in errors:
+        for line, error in sorted(errors):
             print(f"  Line {line}: {error}")
     else:
         print(f"No violations found in {file_path}")

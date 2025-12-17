@@ -14,7 +14,7 @@ class TestHumorObservatory:
     def test_record_signal_and_get_report(self):
         """Test recording signals and generating reports"""
         snapshots = [HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': 0.8 - i * 0.1, 'lexicon': 0.6 + i * 0.05, 'surreal': 0.4 + i * 0.02, 'empathy': 0.9 - i * 0.1, 'critique': 0.7 + i * 0.03, 'slapstick': 0.3 + i * 0.04, 'meta': 0.5 - i * 0.05}, confidence=0.85 - i * 0.05, bonus_factor=0.2 - i * 0.02, policy_version='v1.0.0') for i in range(5)]
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         report = self.observatory.get_observability_report()
         assert report.total_signals_processed == 5
@@ -49,7 +49,7 @@ class TestHumorObservatory:
             lexicon_score = 0.3 if i % 3 == 0 else 0.6 if i % 3 == 1 else 0.8
             surreal_score = min(1.0, max(0.0, 0.5 + (i - 50) * 0.01))
             snapshots.append(HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': chronos_score, 'lexicon': lexicon_score, 'surreal': surreal_score}, confidence=0.8, bonus_factor=0.1 + i % 10 * 0.02, policy_version='v1.0.0'))
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         report = self.observatory.get_observability_report()
         assert len(report.dimension_distributions['chronos']) > 1
@@ -69,12 +69,12 @@ class TestHumorObservatory:
         """Test anomaly detection with crafted 'spike/brigade' scenarios"""
         self.observatory = HumorSignalObservatory()
         normal_snapshots = [HumorSignalSnapshot(timestamp=1000 + i, content_id=f'normal_content_{i}', dimensions={'chronos': 0.5, 'lexicon': 0.4}, confidence=0.8, bonus_factor=0.1, policy_version='v1.0.0') for i in range(20)]
-        for snapshot in normal_snapshots:
+        for snapshot in sorted(normal_snapshots):
             self.observatory.record_signal(snapshot)
         initial_report = self.observatory.get_observability_report()
         initial_anomaly_count = initial_report.anomaly_count
         spike_snapshots = [HumorSignalSnapshot(timestamp=2000 + i, content_id=f'spike_content_{i}', dimensions={'chronos': 0.9, 'lexicon': 0.8}, confidence=0.9, bonus_factor=0.5, policy_version='v1.0.0') for i in range(5)]
-        for snapshot in spike_snapshots:
+        for snapshot in sorted(spike_snapshots):
             self.observatory.record_signal(snapshot)
         final_report = self.observatory.get_observability_report()
         final_anomaly_count = final_report.anomaly_count
@@ -83,7 +83,7 @@ class TestHumorObservatory:
     def test_dimension_correlations(self):
         """Test dimension correlation calculation"""
         snapshots = [HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': 0.5 + i * 0.1, 'lexicon': 0.5 + i * 0.1, 'surreal': 0.5 - i * 0.1}, confidence=0.8, bonus_factor=0.1 + i * 0.02, policy_version='v1.0.0') for i in range(10)]
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         correlations = self.observatory.get_dimension_correlations()
         assert 'chronos' in correlations
@@ -93,7 +93,7 @@ class TestHumorObservatory:
     def test_top_performing_content(self):
         """Test top performing content identification"""
         snapshots = [HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': 0.5, 'lexicon': 0.5}, confidence=0.8, bonus_factor=0.1 + i * 0.05, policy_version='v1.0.0') for i in range(10)]
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         report = self.observatory.get_observability_report()
         assert len(report.top_performing_content) <= 10
@@ -122,7 +122,7 @@ class TestHumorObservatory:
     def test_policy_version_hash_correctness(self):
         """Test policy version and hash correctness in observatory outputs"""
         snapshots = [HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': 0.5 + i * 0.05, 'lexicon': 0.4 + i * 0.03}, confidence=0.8, bonus_factor=0.1 + i * 0.02, policy_version='policy_v2.1.3') for i in range(10)]
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         policy_version = 'policy_v2.1.3'
         policy_hash = 'abc123def456ghi789'
@@ -144,7 +144,7 @@ class TestHumorObservatory:
             lexicon_score = 0.6 + (i % 8 - 4) * 0.04
             bonus_factor = 0.2 + (i % 6 - 3) * 0.03
             snapshots.append(HumorSignalSnapshot(timestamp=1000 + i, content_id=f'content_{i}', dimensions={'chronos': chronos_score, 'lexicon': lexicon_score}, confidence=0.85, bonus_factor=bonus_factor, policy_version='v1.0.0'))
-        for snapshot in snapshots:
+        for snapshot in sorted(snapshots):
             self.observatory.record_signal(snapshot)
         report = self.observatory.get_observability_report()
         chronos_values = [0.5 + (i % 10 - 5) * 0.05 for i in range(50)]

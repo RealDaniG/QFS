@@ -48,7 +48,7 @@ class EpochReplayer:
             validation = self.validate_log()
             if not validation.is_valid:
                 return validation
-        for entry in self.log:
+        for entry in sorted(self.log):
             operation = entry.get('operation')
             details = entry.get('details', {})
             if operation == 'token_mint':

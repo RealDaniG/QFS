@@ -95,7 +95,7 @@ class TestDeterministicReplay:
         feed_request = FeedRequest(user_id='test_user', limit=2, mode='coherence')
         feed_response = self.gateway.get_feed(feed_request)
         assert len(feed_response.posts) > 0
-        for post in feed_response.posts:
+        for post in sorted(feed_response.posts):
             assert hasattr(post, 'aegis_advisory')
             assert post.aegis_advisory is not None
             assert 'block_suggested' in post.aegis_advisory
