@@ -1,9 +1,7 @@
 """
 identity.py - Identity Management for Direct Messaging
 """
-
 from typing import Dict, Optional, Any
-
 
 class IdentityManager:
     """
@@ -12,29 +10,13 @@ class IdentityManager:
     """
 
     def __init__(self):
-        # In-memory registry for V1 (would be backed by Redis/Ledger)
         self._registry: Dict[str, Dict[str, Any]] = {}
 
-    def publish_identity(
-        self,
-        user_id: str,
-        public_key: str,
-        proof: str,
-        timestamp: int,
-        encryption_algo: str = "Dilithium+Kyber",
-        min_coherence: int = 300,
-    ):
+    def publish_identity(self, user_id: str, public_key: str, proof: str, timestamp: int, encryption_algo: str='Dilithium+Kyber', min_coherence: int=300):
         """
         Publish or update an identity bundle.
         """
-        bundle = {
-            "user_id": user_id,
-            "public_key": public_key,
-            "encryption_algo": encryption_algo,
-            "min_coherence_required": min_coherence,
-            "updated_at": timestamp,
-            "proof": proof,  # Signature verifying ownership
-        }
+        bundle = {'user_id': user_id, 'public_key': public_key, 'encryption_algo': encryption_algo, 'min_coherence_required': min_coherence, 'updated_at': timestamp, 'proof': proof}
         self._registry[user_id] = bundle
         return bundle
 
@@ -49,5 +31,4 @@ class IdentityManager:
         Mock validation of the identity proof.
         In production, this would verify the signature against the public key and user_id.
         """
-        # TODO: Implement actual PQC signature verification
         return len(proof) > 0

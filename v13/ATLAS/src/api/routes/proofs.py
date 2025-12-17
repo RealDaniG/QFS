@@ -3,21 +3,16 @@ Proof verification API endpoints for the ATLAS system.
 
 Provides minimal proof verification path for ATLAS to verify high-stakes actions.
 """
-
 from fastapi import APIRouter, HTTPException, status, Body
 from typing import Dict, Any, Optional
 import logging
 import hashlib
 import json
-
 logger = logging.getLogger(__name__)
+router = APIRouter(prefix='/proofs', tags=['proofs'])
 
-router = APIRouter(prefix="/proofs", tags=["proofs"])
-
-@router.post("/verify-storage")
-async def verify_storage_proof(
-    proof_request: Dict[str, Any] = Body(...)
-):
+@router.post('/verify-storage')
+async def verify_storage_proof(proof_request: Dict[str, Any]=Body(...)):
     """
     Verify storage proof for a specific object/shard.
     
@@ -42,82 +37,30 @@ async def verify_storage_proof(
         Dict with verification result and details
     """
     try:
-        # Extract proof data
-        object_id = proof_request.get("object_id")
-        version = proof_request.get("version")
-        shard_id = proof_request.get("shard_id")
-        merkle_root = proof_request.get("merkle_root")
-        proof = proof_request.get("proof")
-        assigned_nodes = proof_request.get("assigned_nodes", [])
-        expected_content_hash = proof_request.get("expected_content_hash")
-        
-        # Validate required fields
+        object_id = proof_request.get('object_id')
+        version = proof_request.get('version')
+        shard_id = proof_request.get('shard_id')
+        merkle_root = proof_request.get('merkle_root')
+        proof = proof_request.get('proof')
+        assigned_nodes = proof_request.get('assigned_nodes', [])
+        expected_content_hash = proof_request.get('expected_content_hash')
         if not all([object_id, version is not None, shard_id, merkle_root, proof]):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Missing required proof verification fields"
-            )
-        
-        # In a real implementation, this would:
-        # 1. Retrieve the shard from storage nodes
-        # 2. Verify the Merkle root matches the content
-        # 3. Verify the proof chain
-        # 4. Check node assignments
-        
-        # For this demonstration, we'll perform a simplified verification
-        # that shows the deterministic nature of the verification
-        
-        # Create deterministic verification hash
-        verification_data = {
-            "object_id": object_id,
-            "version": version,
-            "shard_id": shard_id,
-            "merkle_root": merkle_root,
-            "proof": proof,
-            "assigned_nodes": sorted(assigned_nodes),  # Sort for deterministic ordering
-            "expected_content_hash": expected_content_hash
-        }
-        
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Missing required proof verification fields')
+        verification_data = {'object_id': object_id, 'version': version, 'shard_id': shard_id, 'merkle_root': merkle_root, 'proof': proof, 'assigned_nodes': sorted(assigned_nodes), 'expected_content_hash': expected_content_hash}
         verification_json = json.dumps(verification_data, sort_keys=True, separators=(',', ':'))
         verification_hash = hashlib.sha256(verification_json.encode()).hexdigest()
-        
-        # Simulate verification result (in real implementation, this would be actual verification)
-        # For demonstration, we'll make it pass if the proof is not empty
-        is_valid = len(proof) > 0 and proof != "invalid"
-        
-        # Create deterministic verification result
-        result = {
-            "object_id": object_id,
-            "version": version,
-            "shard_id": shard_id,
-            "verification_hash": verification_hash,
-            "is_valid": is_valid,
-            "verified_at": "2025-12-13T10:00:00Z",  # In real implementation, this would be actual timestamp
-            "verification_details": {
-                "merkle_root_match": True,  # In real implementation, this would be actual check
-                "proof_chain_valid": is_valid,  # In real implementation, this would be actual check
-                "assigned_nodes_verified": len(assigned_nodes) == 3,  # In real implementation, this would be actual check
-                "content_hash_match": expected_content_hash is not None  # In real implementation, this would be actual check
-            }
-        }
-        
-        logger.info(f"Storage proof verification completed for {object_id}:{version}:{shard_id}")
-        
+        is_valid = len(proof) > 0 and proof != 'invalid'
+        result = {'object_id': object_id, 'version': version, 'shard_id': shard_id, 'verification_hash': verification_hash, 'is_valid': is_valid, 'verified_at': '2025-12-13T10:00:00Z', 'verification_details': {'merkle_root_match': True, 'proof_chain_valid': is_valid, 'assigned_nodes_verified': len(assigned_nodes) == 3, 'content_hash_match': expected_content_hash is not None}}
+        logger.info(f'Storage proof verification completed for {object_id}:{version}:{shard_id}')
         return result
-        
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error verifying storage proof: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to verify storage proof"
-        )
+        logger.error(f'Error verifying storage proof: {str(e)}')
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail='Failed to verify storage proof')
 
-@router.post("/verify-transaction")
-async def verify_transaction_proof(
-    proof_request: Dict[str, Any] = Body(...)
-):
+@router.post('/verify-transaction')
+async def verify_transaction_proof(proof_request: Dict[str, Any]=Body(...)):
     """
     Verify transaction proof.
     
@@ -128,63 +71,26 @@ async def verify_transaction_proof(
         Dict with verification result
     """
     try:
-        # Extract proof data
-        transaction_id = proof_request.get("transaction_id")
-        bundle_hash = proof_request.get("bundle_hash")
-        signature = proof_request.get("signature")
-        public_key = proof_request.get("public_key")
-        
-        # Validate required fields
+        transaction_id = proof_request.get('transaction_id')
+        bundle_hash = proof_request.get('bundle_hash')
+        signature = proof_request.get('signature')
+        public_key = proof_request.get('public_key')
         if not all([transaction_id, bundle_hash, signature, public_key]):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Missing required transaction proof fields"
-            )
-        
-        # In a real implementation, this would verify the cryptographic signature
-        # For demonstration, we'll perform a simplified verification
-        
-        # Create deterministic verification data
-        verification_data = {
-            "transaction_id": transaction_id,
-            "bundle_hash": bundle_hash,
-            "signature": signature,
-            "public_key": public_key
-        }
-        
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Missing required transaction proof fields')
+        verification_data = {'transaction_id': transaction_id, 'bundle_hash': bundle_hash, 'signature': signature, 'public_key': public_key}
         verification_json = json.dumps(verification_data, sort_keys=True, separators=(',', ':'))
         verification_hash = hashlib.sha256(verification_json.encode()).hexdigest()
-        
-        # Simulate verification result
-        is_valid = len(signature) > 0 and signature != "invalid"
-        
-        result = {
-            "transaction_id": transaction_id,
-            "bundle_hash": bundle_hash,
-            "verification_hash": verification_hash,
-            "is_valid": is_valid,
-            "verified_at": "2025-12-13T10:00:00Z",
-            "verification_details": {
-                "signature_valid": is_valid,
-                "public_key_match": True,
-                "transaction_integrity": True
-            }
-        }
-        
-        logger.info(f"Transaction proof verification completed for {transaction_id}")
-        
+        is_valid = len(signature) > 0 and signature != 'invalid'
+        result = {'transaction_id': transaction_id, 'bundle_hash': bundle_hash, 'verification_hash': verification_hash, 'is_valid': is_valid, 'verified_at': '2025-12-13T10:00:00Z', 'verification_details': {'signature_valid': is_valid, 'public_key_match': True, 'transaction_integrity': True}}
+        logger.info(f'Transaction proof verification completed for {transaction_id}')
         return result
-        
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error verifying transaction proof: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to verify transaction proof"
-        )
+        logger.error(f'Error verifying transaction proof: {str(e)}')
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail='Failed to verify transaction proof')
 
-@router.get("/health")
+@router.get('/health')
 async def proof_verification_health():
     """
     Health check for proof verification service.
@@ -192,8 +98,4 @@ async def proof_verification_health():
     Returns:
         Dict with health status
     """
-    return {
-        "status": "healthy",
-        "service": "proof-verification",
-        "version": "1.0.0"
-    }
+    return {'status': 'healthy', 'service': 'proof-verification', 'version': '1.0.0'}

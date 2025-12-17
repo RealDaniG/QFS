@@ -4,11 +4,8 @@ QPU_Interface.py - Pure validator for quantum entropy inputs
 Implements the QPU_Interface class as a pure validator for pre-fetched, 
 PQC-signed quantum entropy without any I/O operations.
 """
-
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
-
-# Import required modules
 from v13.libs.CertifiedMath import CertifiedMath, BigNum128
 
 @dataclass
@@ -19,7 +16,6 @@ class QuantumEntropy:
     vdf_output: Optional[bytes] = None
     metadata: Optional[Dict[str, Any]] = None
 
-
 class QPU_Interface:
     """
     Pure validator for quantum entropy inputs.
@@ -27,7 +23,7 @@ class QPU_Interface:
     Validates pre-fetched, PQC-signed quantum entropy without any I/O operations.
     All network calls and entropy generation must happen in external orchestrators.
     """
-    
+
     def __init__(self, cm_instance: CertifiedMath):
         """
         Initialize the QPU Interface validator.
@@ -37,17 +33,7 @@ class QPU_Interface:
         """
         self.cm = cm_instance
 
-    def validate_quantum_entropy(
-        self,
-        entropy: bytes,
-        vdf_proof: Optional[bytes],
-        vdf_output: Optional[bytes],
-        expected_metadata: Dict[str, Any],  # PQC-signed metadata
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-    ) -> QuantumEntropy:
+    def validate_quantum_entropy(self, entropy: bytes, vdf_proof: Optional[bytes], vdf_output: Optional[bytes], expected_metadata: Dict[str, Any], log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0) -> QuantumEntropy:
         """
         Validate quantum entropy and associated VDF proof.
         
@@ -67,44 +53,18 @@ class QPU_Interface:
         Raises:
             RuntimeError: If entropy validation fails (triggers CIR-302)
         """
-        # Validate entropy is not empty
         if not entropy or len(entropy) == 0:
-            raise RuntimeError("Empty quantum entropy - CIR-302 required")
-            
-        # Validate entropy length (should be 32 bytes for standard QRNG)
+            raise RuntimeError('Empty quantum entropy - CIR-302 required')
         if len(entropy) != 32:
-            raise RuntimeError(f"Invalid entropy length {len(entropy)} - CIR-302 required")
-            
-        # If VDF proof is provided, validate it
+            raise RuntimeError(f'Invalid entropy length {len(entropy)} - CIR-302 required')
         if vdf_proof is not None:
             if not self._validate_vdf_proof(entropy, vdf_proof, vdf_output, log_list, pqc_cid, quantum_metadata):
-                raise RuntimeError("Invalid VDF proof - CIR-302 required")
-                
-        # Create validated quantum entropy object
-        validated_entropy = QuantumEntropy(
-            raw_entropy=entropy,
-            vdf_proof=vdf_proof,
-            vdf_output=vdf_output,
-            metadata=expected_metadata
-        )
-        
-        # Log the validation
-        self._log_entropy_validation(
-            len(entropy), vdf_proof is not None, expected_metadata,
-            log_list, pqc_cid, quantum_metadata, deterministic_timestamp
-        )
-        
+                raise RuntimeError('Invalid VDF proof - CIR-302 required')
+        validated_entropy = QuantumEntropy(raw_entropy=entropy, vdf_proof=vdf_proof, vdf_output=vdf_output, metadata=expected_metadata)
+        self._log_entropy_validation(len(entropy), vdf_proof is not None, expected_metadata, log_list, pqc_cid, quantum_metadata, deterministic_timestamp)
         return validated_entropy
 
-    def _validate_vdf_proof(
-        self,
-        input_seed: bytes,
-        proof: bytes,
-        output: Optional[bytes],
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None
-    ) -> bool:
+    def _validate_vdf_proof(self, input_seed: bytes, proof: bytes, output: Optional[bytes], log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None) -> bool:
         """
         Deterministically validate VDF proof.
         
@@ -119,30 +79,12 @@ class QPU_Interface:
         Returns:
             bool: True if proof is valid, False otherwise
         """
-        # Basic validation - check that all components exist and have reasonable sizes
         if not input_seed or not proof:
             return False
-            
-        # For deterministic validation, we check basic structural properties
-        # In a real implementation, this would use a deterministic VDF verifier
-        is_valid = (
-            len(input_seed) > 0 and 
-            len(proof) > 0 and 
-            (output is None or len(output) > 0)
-        )
-        
+        is_valid = len(input_seed) > 0 and len(proof) > 0 and (output is None or len(output) > 0)
         return is_valid
 
-    def _log_entropy_validation(
-        self,
-        entropy_length: int,
-        has_vdf_proof: bool,
-        metadata: Dict[str, Any],
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-    ):
+    def _log_entropy_validation(self, entropy_length: int, has_vdf_proof: bool, metadata: Dict[str, Any], log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0):
         """
         Log the entropy validation for audit purposes.
         
@@ -155,67 +97,25 @@ class QPU_Interface:
             quantum_metadata: Quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        details = {
-            "operation": "quantum_entropy_validation",
-            "entropy_length": entropy_length,
-            "has_vdf_proof": has_vdf_proof,
-            "metadata_keys": list(metadata.keys()) if metadata else [],
-            "timestamp": deterministic_timestamp
-        }
-        
-        # Use CertifiedMath's internal logging
-        self.cm._log_operation(
-            "quantum_entropy_validation",
-            details,
-            BigNum128.from_int(entropy_length),
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
+        details = {'operation': 'quantum_entropy_validation', 'entropy_length': entropy_length, 'has_vdf_proof': has_vdf_proof, 'metadata_keys': list(metadata.keys()) if metadata else [], 'timestamp': deterministic_timestamp}
+        self.cm._log_operation('quantum_entropy_validation', details, BigNum128.from_int(entropy_length), log_list, pqc_cid, quantum_metadata)
 
-
-# Test function
 def test_qpu_interface():
     """Test the QPU_Interface implementation."""
-    print("Testing QPU_Interface...")
-    
-    # Create a CertifiedMath instance
+    print('Testing QPU_Interface...')
     cm = CertifiedMath()
-    
-    # Create QPU_Interface
     qpu = QPU_Interface(cm)
-    
-    # Create test quantum entropy
-    test_entropy = b'\x01' * 32  # 32 bytes of test data
-    test_metadata = {
-        "source": "test_qrng",
-        "timestamp": 1234567890,
-        "signature": "test_signature"
-    }
-    
+    test_entropy = b'\x01' * 32
+    test_metadata = {'source': 'test_qrng', 'timestamp': 1234567890, 'signature': 'test_signature'}
     log_list = []
-    
-    # Validate quantum entropy
     try:
-        validated_entropy = qpu.validate_quantum_entropy(
-            entropy=test_entropy,
-            vdf_proof=None,
-            vdf_output=None,
-            expected_metadata=test_metadata,
-            log_list=log_list,
-            pqc_cid="test_qpu_001",
-            deterministic_timestamp=1234567890
-        )
-        
-        print(f"Entropy validation successful!")
-        print(f"Entropy length: {len(validated_entropy.raw_entropy)}")
-        print(f"Log entries: {len(log_list)}")
-        print("✓ QPU_Interface test passed!")
-        
+        validated_entropy = qpu.validate_quantum_entropy(entropy=test_entropy, vdf_proof=None, vdf_output=None, expected_metadata=test_metadata, log_list=log_list, pqc_cid='test_qpu_001', deterministic_timestamp=1234567890)
+        print(f'Entropy validation successful!')
+        print(f'Entropy length: {len(validated_entropy.raw_entropy)}')
+        print(f'Log entries: {len(log_list)}')
+        print('✓ QPU_Interface test passed!')
     except Exception as e:
-        print(f"Entropy validation failed: {e}")
-        print("✗ QPU_Interface test failed!")
-
-
-if __name__ == "__main__":
+        print(f'Entropy validation failed: {e}')
+        print('✗ QPU_Interface test failed!')
+if __name__ == '__main__':
     test_qpu_interface()

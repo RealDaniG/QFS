@@ -1,7 +1,6 @@
 """
 Common types for QFS and ATLAS integration.
 """
-
 from dataclasses import dataclass
 from typing import Dict, Any, Optional, List
 
@@ -25,7 +24,7 @@ class Receipt:
     block_height: Optional[int] = None
     gas_used: Optional[int] = None
     events: List[Dict[str, Any]] = None
-    
+
     def __post_init__(self):
         if self.events is None:
             self.events = []

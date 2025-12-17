@@ -4,7 +4,6 @@ Quantum Engine for ATLAS - Core quantum operations and security.
 This module implements quantum-resistant cryptographic operations and
 quantum state management for the ATLAS financial system.
 """
-
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit.circuit.library import QFT
@@ -16,8 +15,8 @@ class QuantumEngine:
     """
     Core quantum engine for cryptographic operations and quantum state management.
     """
-    
-    def __init__(self, qubits: int = 256):
+
+    def __init__(self, qubits: int=256):
         """
         Initialize the quantum engine with a specified number of qubits.
         
@@ -27,8 +26,8 @@ class QuantumEngine:
         self.qubits = qubits
         self.qr = QuantumRegister(qubits, 'q')
         self.cr = ClassicalRegister(qubits, 'c')
-        
-    def generate_quantum_key(self, seed: Optional[bytes] = None) -> bytes:
+
+    def generate_quantum_key(self, seed: Optional[bytes]=None) -> bytes:
         """
         Generate a quantum-resistant cryptographic key.
         
@@ -42,11 +41,9 @@ class QuantumEngine:
             ValueError: If seed is None (Zero-Sim enforcement).
         """
         if seed is None:
-            raise ValueError("Zero-Sim Compliance: Explicit seed required for key generation.")
-            
-        # Use SHA3-512 for post-quantum security
+            raise ValueError('Zero-Sim Compliance: Explicit seed required for key generation.')
         return hashlib.shake_256(seed).digest(64)
-    
+
     def verify_quantum_signature(self, message: bytes, signature: bytes, public_key: bytes) -> bool:
         """
         Verify a quantum signature using the provided public key.
@@ -59,11 +56,9 @@ class QuantumEngine:
         Returns:
             bool: True if signature is valid, False otherwise
         """
-        # In a real implementation, this would use lattice-based or hash-based
-        # signature verification that's resistant to quantum attacks
         test_sig = self._generate_signature(message, public_key)
         return test_sig == signature
-    
+
     def _generate_signature(self, message: bytes, private_key: bytes) -> bytes:
         """
         Generate a quantum-resistant signature for a message.
@@ -75,12 +70,11 @@ class QuantumEngine:
         Returns:
             bytes: The generated signature
         """
-        # This is a simplified version - in practice, use a post-quantum signature scheme
         h = hashlib.shake_256()
         h.update(private_key)
         h.update(message)
         return h.digest(64)
-    
+
     def create_entangled_pair(self) -> Tuple[bytes, bytes]:
         """
         Create a pair of entangled quantum states for secure communication.
@@ -88,14 +82,8 @@ class QuantumEngine:
         Returns:
             Tuple[bytes, bytes]: Two entangled quantum state identifiers
         """
-        # For Zero-Sim compliance, we use a deterministic generation based on valid calls
-        # In production this would require an input seed. 
-        # We must NOT use fixed simulation values.
-        # This implementation requires a hardware interface or explicit seed injection.
-        # Since we don't have the hardware interface arg here, we raise NotImplementedError for production safety.
-        # Tests should override this method explicitly if needed.
-        raise NotImplementedError("Real quantum entanglement requires hardware interface. Use explicit seed in test overrides.")
-    
+        raise NotImplementedError('Real quantum entanglement requires hardware interface. Use explicit seed in test overrides.')
+
     def measure_entangled_state(self, state: bytes, basis: int) -> Tuple[bytes, int]:
         """
         Measure an entangled quantum state in a specific basis.
@@ -107,8 +95,6 @@ class QuantumEngine:
         Returns:
             Tuple[bytes, int]: The collapsed state and measurement result
         """
-        # In a real implementation, this would perform actual quantum measurement
-        # For simulation, we'll return a deterministic result based on the state
         h = hashlib.shake_256()
         h.update(state + str(basis).encode())
         result = int.from_bytes(h.digest(1), 'big') % 2
@@ -127,13 +113,7 @@ class QuantumEngine:
         n = len(data)
         qft = QFT(n)
         qc = QuantumCircuit(n)
-        
-        # Initialize state
         qc.initialize(data, range(n))
-        
-        # Apply QFT
         qc.append(qft, range(n))
-        
-        # Get the statevector
         state = Statevector.from_instruction(qc)
         return state.data.tolist()

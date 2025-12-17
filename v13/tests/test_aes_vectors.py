@@ -6,7 +6,6 @@ Verifies:
 2. Deterministic vector computation.
 3. Stable hashing of ArtisticVector.
 """
-
 import pytest
 from v13.policy.artistic_policy import ArtisticSignalPolicy
 from v13.policy.artistic_constants import SCALE, PHI
@@ -17,81 +16,38 @@ def policy():
 
 def test_composition_extractor(policy):
     """Test composition scoring."""
-    # Perfect Golden Ratio rectangle
-    # width 1618, height 1000 scaled
-    metadata = {
-        "width": 1618,
-        "height": 1000,
-        "elements": []
-    }
-    # Should get high score due to aspect ratio, even with no elements
-    vector = policy.compute_vector("test1", metadata, [])
-    # Aspect ratio perfect -> score near SCALE
-    # No elements -> average alignment 0? No, check logic.
-    # Logic: if elements empty, avg_alignment = 0.
-    # Aspect bonus = SCALE - deviation. Ratio 1.618 vs PHI(1.618) ~ 0 deviation.
-    # Score = (0 + SCALE) // 2 = SCALE // 2
-    assert vector.composition > (SCALE // 3)
+    metadata = {'width': 1618, 'height': 1000, 'elements': []}
+    vector = policy.compute_vector('test1', metadata, [])
+    assert vector.composition > SCALE // 3
 
 def test_vector_determinism(policy):
     """Test that same input produces identical vector hash."""
-    metadata = {
-        "width": 1000,
-        "height": 1000,
-        "palette": [{"hue": 0}, {"hue": 137507764}], # Golden Angle
-        "elements": [{"x": 500, "y": 500, "type": "circle"}]
-    }
-    
-    v1 = policy.compute_vector("content_A", metadata, ["event1"])
-    v2 = policy.compute_vector("content_A", metadata, ["event1"])
-    
+    metadata = {'width': 1000, 'height': 1000, 'palette': [{'hue': 0}, {'hue': 137507764}], 'elements': [{'x': 500, 'y': 500, 'type': 'circle'}]}
+    v1 = policy.compute_vector('content_A', metadata, ['event1'])
+    v2 = policy.compute_vector('content_A', metadata, ['event1'])
     assert v1.vector_hash == v2.vector_hash
     assert v1.composition == v2.composition
     assert v1.color_harmony == v2.color_harmony
-    
-    # Change metadata slightly
     metadata_diff = metadata.copy()
-    metadata_diff["width"] = 1001
-    v3 = policy.compute_vector("content_A", metadata_diff, ["event1"])
-    
+    metadata_diff['width'] = 1001
+    v3 = policy.compute_vector('content_A', metadata_diff, ['event1'])
     assert v1.vector_hash != v3.vector_hash
 
 def test_originality_and_resonance_decay(policy):
     """Test decay based on event count."""
     metadata = {}
-    
-    # 0 events -> max originality/resonance
-    v0 = policy.compute_vector("c1", metadata, [])
+    v0 = policy.compute_vector('c1', metadata, [])
     assert v0.originality == SCALE
     assert v0.resonance == SCALE
-    
-    # 10 events
-    v10 = policy.compute_vector("c1", metadata, ["e"]*10)
-    # Originality: SCALE - (10 * SCALE // 100) = 0.9 SCALE
-    assert v10.originality == SCALE - (10 * SCALE // 100)
-    
-    # Resonance: SCALE - (10 * SCALE // 50) = 0.8 SCALE
-    assert v10.resonance == SCALE - (10 * SCALE // 50)
+    v10 = policy.compute_vector('c1', metadata, ['e'] * 10)
+    assert v10.originality == SCALE - 10 * SCALE // 100
+    assert v10.resonance == SCALE - 10 * SCALE // 50
 
 def test_color_harmony_golden_angle(policy):
     """Test color harmony extractor explicitly."""
-    # Perfect golden angle spacing: 0, 137.5...
-    metadata = {
-        "palette": [
-            {"hue": 0}, 
-            {"hue": 137507764}
-        ]
-    }
-    v = policy.compute_vector("c_color", metadata, [])
-    # Deviation should be 0 -> Score SCALE
+    metadata = {'palette': [{'hue': 0}, {'hue': 137507764}]}
+    v = policy.compute_vector('c_color', metadata, [])
     assert v.color_harmony == SCALE
-    
-    # Bad spacing: 0, 10
-    metadata_bad = {
-        "palette": [
-            {"hue": 0},
-            {"hue": 10000000} 
-        ]
-    }
-    v_bad = policy.compute_vector("c_bad", metadata_bad, [])
+    metadata_bad = {'palette': [{'hue': 0}, {'hue': 10000000}]}
+    v_bad = policy.compute_vector('c_bad', metadata_bad, [])
     assert v_bad.color_harmony < v.color_harmony

@@ -160,6 +160,7 @@ python -c "
 import json
 import hashlib
 from datetime import datetime
+from v13.libs.deterministic_helpers import det_time_isoformat
 from v13.core.StorageEngine import StorageEngine
 from v13.libs.CertifiedMath import CertifiedMath
 
@@ -171,7 +172,7 @@ storage_engine = StorageEngine(cm)
 evidence = {
     'component': 'StorageEngine',
     'test_type': 'Deterministic Replay',
-    'timestamp': datetime.utcnow().isoformat() + 'Z',
+    'timestamp': det_time_isoformat() + 'Z',
     'replay_details': {
         'node_count': len(storage_engine.nodes),
         'object_count': len(storage_engine.objects),
@@ -195,7 +196,8 @@ evidence = {
 }
 
 # Save evidence artifact
-evidence_path = 'docs/evidence/storage/assurance/storage_replay_drill_' + datetime.utcnow().strftime('%Y%m%d') + '.json'
+# Using a fixed timestamp for deterministic behavior
+evidence_path = 'docs/evidence/storage/assurance/storage_replay_drill_20251217.json'
 with open(evidence_path, 'w') as f:
     json.dump(evidence, f, indent=2)
 

@@ -3,9 +3,7 @@ IPFS Storage Adapter for Secure Chat
 
 Production-ready IPFS integration for secure chat content storage.
 """
-
 import hashlib
-import asyncio
 from typing import Dict, Optional, Union
 import aiohttp
 import json
@@ -21,8 +19,8 @@ class IPFSStorage:
     - Distributed retrieval
     - Fallback to local cache when IPFS is unavailable
     """
-    
-    def __init__(self, ipfs_endpoint: str = "http://localhost:5001", pin=True, timeout=30):
+
+    def __init__(self, ipfs_endpoint: str='http://localhost:5001', pin=True, timeout=30):
         """
         Initialize IPFS storage adapter.
         
@@ -36,20 +34,18 @@ class IPFSStorage:
         self.timeout = timeout
         self._session: Optional[aiohttp.ClientSession] = None
         self._local_cache: Dict[str, bytes] = {}
-        
+
     async def _get_session(self) -> aiohttp.ClientSession:
         """Get or create HTTP session"""
         if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(
-                timeout=aiohttp.ClientTimeout(total=self.timeout)
-            )
+            self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout))
         return self._session
-        
+
     async def close(self):
         """Close HTTP session"""
-        if self._session and not self._session.closed:
+        if self._session and (not self._session.closed):
             await self._session.close()
-        
+
     async def store(self, content: bytes) -> str:
         """
         Store content on IPFS and return its CID.
@@ -64,58 +60,39 @@ class IPFSStorage:
             RuntimeError: If IPFS operation fails
         """
         if not content:
-            raise ValueError("Content cannot be empty")
-            
-        # Calculate SHA256 for consistency with MemoryStorage
+            raise ValueError('Content cannot be empty')
         sha256_hash = hashlib.sha256(content).hexdigest()
-        
-        # Check if already in local cache
         if sha256_hash in self._local_cache:
             return sha256_hash
-            
         try:
             session = await self._get_session()
-            
-            # Add to IPFS
             data = aiohttp.FormData()
             data.add_field('file', content, filename='secure_chat_content')
-            
-            async with session.post(f"{self.endpoint}/api/v0/add", data=data) as resp:
+            async with session.post(f'{self.endpoint}/api/v0/add', data=data) as resp:
                 if resp.status != 200:
                     error_text = await resp.text()
-                    raise RuntimeError(f"IPFS add failed: {resp.status} - {error_text}")
-                    
+                    raise RuntimeError(f'IPFS add failed: {resp.status} - {error_text}')
                 result = await resp.json()
                 cid = result.get('Hash')
-                
                 if not cid:
-                    raise RuntimeError("No CID returned from IPFS")
-                
-                # Pin if requested
+                    raise RuntimeError('No CID returned from IPFS')
                 if self.pin:
                     pin_data = aiohttp.FormData()
                     pin_data.add_field('arg', cid)
-                    
-                    async with session.post(f"{self.endpoint}/api/v0/pin/add", data=pin_data) as pin_resp:
+                    async with session.post(f'{self.endpoint}/api/v0/pin/add', data=pin_data) as pin_resp:
                         if pin_resp.status != 200:
-                            # Log warning but don't fail
                             import logging
                             logger = logging.getLogger(__name__)
-                            logger.warning(f"Failed to pin CID {cid}: {pin_resp.status}")
-                
-                # Store in local cache
+                            logger.warning(f'Failed to pin CID {cid}: {pin_resp.status}')
                 self._local_cache[sha256_hash] = content
-                
                 return sha256_hash
-                
         except aiohttp.ClientError as e:
-            # Fallback to local cache if IPFS is unavailable
             self._local_cache[sha256_hash] = content
             import logging
             logger = logging.getLogger(__name__)
-            logger.warning(f"IPFS unavailable, using local cache: {e}")
+            logger.warning(f'IPFS unavailable, using local cache: {e}')
             return sha256_hash
-        
+
     async def retrieve(self, content_hash: str) -> Optional[bytes]:
         """
         Retrieve content from IPFS by hash.
@@ -127,17 +104,12 @@ class IPFSStorage:
             bytes: Retrieved content or None if not found
         """
         if not content_hash:
-            raise ValueError("Content hash is required")
-            
-        # Check local cache first
+            raise ValueError('Content hash is required')
         if content_hash in self._local_cache:
             return self._local_cache[content_hash]
-            
         try:
             session = await self._get_session()
-            
-            # Try to retrieve from IPFS
-            async with session.get(f"{self.endpoint}/api/v0/cat", params={"arg": content_hash}) as resp:
+            async with session.get(f'{self.endpoint}/api/v0/cat', params={'arg': content_hash}) as resp:
                 if resp.status == 200:
                     content = await resp.read()
                     self._local_cache[content_hash] = content
@@ -146,14 +118,13 @@ class IPFSStorage:
                     return None
                 else:
                     error_text = await resp.text()
-                    raise RuntimeError(f"IPFS cat failed: {resp.status} - {error_text}")
-                    
+                    raise RuntimeError(f'IPFS cat failed: {resp.status} - {error_text}')
         except aiohttp.ClientError as e:
             import logging
             logger = logging.getLogger(__name__)
-            logger.warning(f"IPFS unavailable for retrieval: {e}")
+            logger.warning(f'IPFS unavailable for retrieval: {e}')
             return None
-        
+
     async def exists(self, content_hash: str) -> bool:
         """
         Check if content exists.
@@ -165,38 +136,29 @@ class IPFSStorage:
             bool: True if content exists
         """
         if not content_hash:
-            raise ValueError("Content hash is required")
-            
-        # Check local cache first
+            raise ValueError('Content hash is required')
         if content_hash in self._local_cache:
             return True
-            
         try:
             session = await self._get_session()
-            
-            # Check if object exists in IPFS
-            async with session.post(f"{self.endpoint}/api/v0/object/stat", data={"arg": content_hash}) as resp:
+            async with session.post(f'{self.endpoint}/api/v0/object/stat', data={'arg': content_hash}) as resp:
                 if resp.status == 200:
                     return True
                 elif resp.status == 404:
                     return False
                 else:
                     error_text = await resp.text()
-                    raise RuntimeError(f"IPFS stat failed: {resp.status} - {error_text}")
-                    
+                    raise RuntimeError(f'IPFS stat failed: {resp.status} - {error_text}')
         except aiohttp.ClientError as e:
             import logging
             logger = logging.getLogger(__name__)
-            logger.warning(f"IPFS unavailable for existence check: {e}")
+            logger.warning(f'IPFS unavailable for existence check: {e}')
             return False
-    
+
     async def clear_cache(self):
         """Clear local cache"""
         self._local_cache.clear()
-        
+
     def get_cache_stats(self) -> Dict[str, int]:
         """Get cache statistics"""
-        return {
-            "cached_items": len(self._local_cache),
-            "cache_size_bytes": sum(len(v) for v in self._local_cache.values())
-        }
+        return {'cached_items': len(self._local_cache), 'cache_size_bytes': sum((len(v) for v in self._local_cache.values()))}

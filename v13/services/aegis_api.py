@@ -17,8 +17,6 @@ import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 from enum import Enum
-
-# Import required components
 from ..libs.CertifiedMath import BigNum128, CertifiedMath
 from ..core.TokenStateBundle import TokenStateBundle
 from ..core.HSMF import HSMF
@@ -26,9 +24,6 @@ from ...libs.TreasuryEngine import TreasuryEngine
 from ..handlers.CIR302_Handler import CIR302_Handler
 from ..libs.PQC import PQC
 from ..core.DRV_Packet import DRV_Packet
-
-
-# === V13.6 TELEMETRY SNAPSHOT INFRASTRUCTURE ===
 
 
 class AEGISStatus(Enum):
@@ -59,14 +54,12 @@ class AEGISTelemetrySnapshot:
     This dataclass replaces live API calls to ensure bit-for-bit replay.
     """
 
-    snapshot_version: str  # "AEGIS_SNAPSHOT_V1"
+    snapshot_version: str
     block_height: int
-    snapshot_timestamp: int  # Deterministic timestamp from DRV_Packet
-    node_metrics: Dict[
-        str, Dict[str, Any]
-    ]  # node_id → {uptime_ratio, health_score, etc}
-    schema_version: str  # "NODE_METRICS_V1" - defines metrics structure
-    snapshot_hash: str = ""  # SHA-256 of entire snapshot (computed after init)
+    snapshot_timestamp: int
+    node_metrics: Dict[str, Dict[str, Any]]
+    schema_version: str
+    snapshot_hash: str = ""
 
     def compute_hash(self) -> str:
         """
@@ -75,16 +68,13 @@ class AEGISTelemetrySnapshot:
         Returns:
             str: 64-character hex hash
         """
-        # Create deterministic hash input (sorted keys)
         hash_data = {
             "snapshot_version": self.snapshot_version,
             "block_height": self.block_height,
             "snapshot_timestamp": self.snapshot_timestamp,
             "schema_version": self.schema_version,
-            "node_metrics": self.node_metrics,  # Nested dict will be sorted in JSON
+            "node_metrics": self.node_metrics,
         }
-
-        # Serialize with sorted keys for determinism
         data_json = json.dumps(hash_data, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(data_json.encode("utf-8")).hexdigest()
 
@@ -97,23 +87,16 @@ class AEGISTelemetrySnapshot:
         Returns:
             tuple[bool, Optional[str]]: (is_valid, error_message)
         """
-        # Check required fields
         if not self.snapshot_version:
-            return False, "Missing snapshot_version"
-
+            return (False, "Missing snapshot_version")
         if self.block_height < 0:
-            return False, f"Invalid block_height: {self.block_height}"
-
+            return (False, f"Invalid block_height: {self.block_height}")
         if self.snapshot_timestamp <= 0:
-            return False, f"Invalid snapshot_timestamp: {self.snapshot_timestamp}"
-
+            return (False, f"Invalid snapshot_timestamp: {self.snapshot_timestamp}")
         if not self.schema_version:
-            return False, "Missing schema_version"
-
+            return (False, "Missing schema_version")
         if not self.node_metrics or not isinstance(self.node_metrics, dict):
-            return False, "Missing or invalid node_metrics"
-
-        # Validate hash (if provided)
+            return (False, "Missing or invalid node_metrics")
         if self.snapshot_hash:
             expected_hash = self.compute_hash()
             if self.snapshot_hash != expected_hash:
@@ -121,25 +104,21 @@ class AEGISTelemetrySnapshot:
                     False,
                     f"Hash mismatch: expected {expected_hash}, got {self.snapshot_hash}",
                 )
-
-        # Validate schema version is supported
         supported_schemas = ["NODE_METRICS_V1"]
         if self.schema_version not in supported_schemas:
-            return False, f"Unsupported schema_version: {self.schema_version}"
-
-        # Validate node metrics structure (schema-specific)
+            return (False, f"Unsupported schema_version: {self.schema_version}")
         if self.schema_version == "NODE_METRICS_V1":
-            for node_id, metrics in self.node_metrics.items():
+            for node_id, metrics in sorted(self.node_metrics.items()):
                 if not isinstance(metrics, dict):
-                    return False, f"Node {node_id} metrics must be dict"
-
-                # Required fields for NODE_METRICS_V1
+                    return (False, f"Node {node_id} metrics must be dict")
                 required_fields = ["uptime_ratio", "health_score"]
                 for field in required_fields:
                     if field not in metrics:
-                        return False, f"Node {node_id} missing required field: {field}"
-
-        return True, None
+                        return (
+                            False,
+                            f"Node {node_id} missing required field: {field}",
+                        )
+        return (True, None)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert snapshot to dictionary for serialization."""
@@ -164,13 +143,11 @@ class AEGISRegistrySnapshot:
     - SHA-256 hash for integrity
     """
 
-    snapshot_version: str  # "AEGIS_REGISTRY_V1"
+    snapshot_version: str
     block_height: int
     snapshot_timestamp: int
-    nodes: Dict[
-        str, Dict[str, Any]
-    ]  # node_id → {pqc_public_key, pqc_scheme, revoked, etc}
-    schema_version: str  # "NODE_REGISTRY_V1"
+    nodes: Dict[str, Dict[str, Any]]
+    schema_version: str
     snapshot_hash: str = ""
 
     def compute_hash(self) -> str:
@@ -188,15 +165,13 @@ class AEGISRegistrySnapshot:
     def validate_completeness(self) -> tuple[bool, Optional[str]]:
         """Validate registry snapshot completeness."""
         if not self.snapshot_version:
-            return False, "Missing snapshot_version"
+            return (False, "Missing snapshot_version")
         if self.block_height < 0:
-            return False, f"Invalid block_height: {self.block_height}"
+            return (False, f"Invalid block_height: {self.block_height}")
         if not self.schema_version:
-            return False, "Missing schema_version"
+            return (False, "Missing schema_version")
         if not self.nodes or not isinstance(self.nodes, dict):
-            return False, "Missing or invalid nodes"
-
-        # Validate hash if provided
+            return (False, "Missing or invalid nodes")
         if self.snapshot_hash:
             expected_hash = self.compute_hash()
             if self.snapshot_hash != expected_hash:
@@ -204,8 +179,7 @@ class AEGISRegistrySnapshot:
                     False,
                     f"Hash mismatch: expected {expected_hash}, got {self.snapshot_hash}",
                 )
-
-        return True, None
+        return (True, None)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert snapshot to dictionary."""
@@ -256,24 +230,14 @@ class AEGIS_API:
         self.cir302_handler = CIR302_Handler(cm_instance, pqc_key_pair)
         self.quantum_metadata = {
             "component": "AEGIS_API",
-            "version": "QFS-V13.6-TELEMETRY",  # Updated for V13.6
+            "version": "QFS-V13.6-TELEMETRY",
             "timestamp": None,
             "pqc_scheme": "Dilithium-5",
         }
-
-        # === V13.6 TELEMETRY SNAPSHOT INFRASTRUCTURE ===
-        self.aegis_status = AEGISStatus.OPERATIONAL  # Track AEGIS availability
-        self.snapshot_cache: Dict[
-            int, AEGISTelemetrySnapshot
-        ] = {}  # block_height → snapshot
-        self.registry_cache: Dict[
-            int, AEGISRegistrySnapshot
-        ] = {}  # block_height → registry
-        self.aegis_offline_triggered = False  # Track if degradation policy activated
-
-    # =========================================================================
-    # TELEMETRY SNAPSHOT INFRASTRUCTURE (V13.6 - NOD-I4 COMPLIANCE)
-    # =========================================================================
+        self.aegis_status = AEGISStatus.OPERATIONAL
+        self.snapshot_cache: Dict[int, AEGISTelemetrySnapshot] = {}
+        self.registry_cache: Dict[int, AEGISRegistrySnapshot] = {}
+        self.aegis_offline_triggered = False
 
     def get_telemetry_snapshot(
         self,
@@ -304,11 +268,8 @@ class AEGIS_API:
             AEGISOfflineError: If AEGIS is offline/degraded
             ValueError: If snapshot is incomplete or invalid
         """
-        # Check if snapshot already cached (replay scenario)
         if block_height in self.snapshot_cache:
             cached_snapshot = self.snapshot_cache[block_height]
-
-            # Log cache hit
             log_list.append(
                 {
                     "operation": "aegis_snapshot_cache_hit",
@@ -317,17 +278,10 @@ class AEGIS_API:
                     "timestamp": deterministic_timestamp,
                 }
             )
-
             return cached_snapshot
-
-        # Check AEGIS status before querying
         if self.aegis_status == AEGISStatus.OFFLINE:
             raise AEGISOfflineError(f"AEGIS offline at block {block_height}")
-
-        # Query AEGIS for telemetry (STUB - in production, this would call actual AEGIS API)
         raw_telemetry = self._query_aegis_telemetry(block_height)
-
-        # Create immutable snapshot
         snapshot = AEGISTelemetrySnapshot(
             snapshot_version="AEGIS_SNAPSHOT_V1",
             block_height=block_height,
@@ -335,14 +289,9 @@ class AEGIS_API:
             node_metrics=raw_telemetry,
             schema_version="NODE_METRICS_V1",
         )
-
-        # Compute deterministic hash
         snapshot.snapshot_hash = snapshot.compute_hash()
-
-        # Validate completeness (constitutional requirement)
         is_valid, error_message = snapshot.validate_completeness()
         if not is_valid:
-            # Log validation failure
             log_list.append(
                 {
                     "operation": "aegis_snapshot_validation_failed",
@@ -352,11 +301,7 @@ class AEGIS_API:
                 }
             )
             raise ValueError(f"Incomplete AEGIS telemetry snapshot: {error_message}")
-
-        # Cache snapshot for future replay
         self.snapshot_cache[block_height] = snapshot
-
-        # Log snapshot creation
         log_list.append(
             {
                 "operation": "aegis_snapshot_created",
@@ -367,7 +312,6 @@ class AEGIS_API:
                 "timestamp": deterministic_timestamp,
             }
         )
-
         return snapshot
 
     def get_registry_snapshot(
@@ -391,18 +335,11 @@ class AEGIS_API:
             AEGISOfflineError: If AEGIS is offline
             ValueError: If snapshot is incomplete
         """
-        # Check cache
         if block_height in self.registry_cache:
             return self.registry_cache[block_height]
-
-        # Check AEGIS status
         if self.aegis_status == AEGISStatus.OFFLINE:
             raise AEGISOfflineError(f"AEGIS offline at block {block_height}")
-
-        # Query AEGIS registry (STUB)
         raw_registry = self._query_aegis_registry(block_height)
-
-        # Create snapshot
         snapshot = AEGISRegistrySnapshot(
             snapshot_version="AEGIS_REGISTRY_V1",
             block_height=block_height,
@@ -410,11 +347,7 @@ class AEGIS_API:
             nodes=raw_registry,
             schema_version="NODE_REGISTRY_V1",
         )
-
-        # Compute hash
         snapshot.snapshot_hash = snapshot.compute_hash()
-
-        # Validate
         is_valid, error_message = snapshot.validate_completeness()
         if not is_valid:
             log_list.append(
@@ -426,11 +359,7 @@ class AEGIS_API:
                 }
             )
             raise ValueError(f"Incomplete AEGIS registry snapshot: {error_message}")
-
-        # Cache
         self.registry_cache[block_height] = snapshot
-
-        # Log
         log_list.append(
             {
                 "operation": "aegis_registry_snapshot_created",
@@ -440,7 +369,6 @@ class AEGIS_API:
                 "timestamp": deterministic_timestamp,
             }
         )
-
         return snapshot
 
     def _query_aegis_telemetry(self, block_height: int) -> Dict[str, Dict[str, Any]]:
@@ -461,7 +389,6 @@ class AEGIS_API:
         Returns:
             Dict[str, Dict[str, Any]]: node_id → metrics
         """
-        # STUB: Mock telemetry data
         return {
             "node_alpha": {
                 "uptime_ratio": "0.98",
@@ -485,7 +412,6 @@ class AEGIS_API:
         Returns:
             Dict[str, Dict[str, Any]]: node_id → registry entry
         """
-        # STUB: Mock registry data
         return {
             "node_alpha": {
                 "pqc_public_key": "0x" + "a" * 64,
@@ -521,8 +447,6 @@ class AEGIS_API:
         if not self.aegis_offline_triggered:
             self.aegis_offline_triggered = True
             self.aegis_status = AEGISStatus.OFFLINE
-
-            # Log degradation event
             log_list.append(
                 {
                     "operation": "aegis_offline_policy_triggered",
@@ -531,17 +455,6 @@ class AEGIS_API:
                     "severity": "CRITICAL",
                 }
             )
-
-            # Degradation policy activated - logged to audit trail
-            # print("[AEGIS OFFLINE POLICY] System entering safe degradation mode:")
-            # print("  - NOD allocation: FROZEN")
-            # print("  - Infrastructure governance: FROZEN")
-            # print("  - User rewards: CONTINUE (cached state)")
-            # print("  - Telemetry approximation: PROHIBITED")
-
-    # =========================================================================
-    # TRANSACTION PROCESSING (ORIGINAL METHODS)
-    # =========================================================================
 
     def process_transaction_bundle(
         self, drv_packet: DRV_Packet, token_bundle: TokenStateBundle, f_atr: BigNum128
@@ -558,7 +471,6 @@ class AEGIS_API:
             APIResponse with result and finality seal
         """
         try:
-            # Validate DRV_Packet PQC signature
             if not drv_packet.verify_signature(
                 self.pqc_public_key if self.pqc_public_key else b""
             ):
@@ -569,10 +481,6 @@ class AEGIS_API:
                     finality_seal=None,
                     pqc_cid="",
                 )
-
-            # Validate DRV_Packet sequence and chain integrity
-            # For this example, we'll assume previous_packet is None (genesis packet)
-            # In a real implementation, you would pass the previous packet
             chain_validation = DRV_Packet.validate_chain(None, drv_packet)
             if not chain_validation.is_valid:
                 return APIResponse(
@@ -582,36 +490,28 @@ class AEGIS_API:
                     finality_seal=None,
                     pqc_cid="",
                 )
-
-            # Create log context for this transaction
             with CertifiedMath.LogContext() as log_list:
-                # Validate action bundle through HSMF
                 hsmf_result = self.hsmf.validate_action_bundle(
                     token_bundle=token_bundle,
                     f_atr=f_atr,
-                    drv_packet_sequence=drv_packet.sequence,  # Use sequence number
+                    drv_packet_sequence=drv_packet.sequence,
                     log_list=log_list,
                     pqc_cid=drv_packet.pqc_signature.hex()
                     if drv_packet.pqc_signature
                     else "",
-                    quantum_metadata=drv_packet.metadata,  # Use metadata as quantum metadata
+                    quantum_metadata=drv_packet.metadata,
                     raise_on_failure=False,
                 )
-
-                # Check if HSMF validation passed
                 if not hsmf_result.is_valid:
-                    # Trigger CIR-302 quarantine
                     system_state = {
                         "token_bundle": token_bundle.to_dict(),
                         "drv_packet": drv_packet.to_dict(),
                         "hsmf_errors": hsmf_result.errors,
                         "log_list": log_list,
                     }
-
                     quarantine_result = self.cir302_handler.trigger_quarantine(
                         reason="HSMF validation failed", system_state=system_state
                     )
-
                     return APIResponse(
                         success=False,
                         data=None,
@@ -619,26 +519,19 @@ class AEGIS_API:
                         finality_seal=quarantine_result.finality_seal,
                         pqc_cid=quarantine_result.pqc_cid,
                     )
-
-                # Calculate rewards through Treasury Engine
                 treasury_result = self.treasury_engine.compute_rewards(
                     hsmf_result=hsmf_result, token_bundle=token_bundle
                 )
-
-                # Check if treasury computation passed
                 if not treasury_result.is_valid:
-                    # Trigger CIR-302 quarantine
                     system_state = {
                         "token_bundle": token_bundle.to_dict(),
                         "drv_packet": drv_packet.to_dict(),
                         "treasury_errors": treasury_result.validation_errors,
                         "log_list": log_list,
                     }
-
                     quarantine_result = self.cir302_handler.trigger_quarantine(
                         reason="Treasury computation failed", system_state=system_state
                     )
-
                     return APIResponse(
                         success=False,
                         data=None,
@@ -646,17 +539,11 @@ class AEGIS_API:
                         finality_seal=quarantine_result.finality_seal,
                         pqc_cid=quarantine_result.pqc_cid,
                     )
-
-                # Generate finality seal
                 log_hash = CertifiedMath.get_log_hash(log_list)
                 pqc_cid = self._generate_pqc_cid(
                     drv_packet, token_bundle, hsmf_result, treasury_result
                 )
-
-                # Update quantum metadata
                 self.quantum_metadata["timestamp"] = str(drv_packet.ttsTimestamp)
-
-                # Create response data
                 response_data = {
                     "token_bundle": token_bundle.to_dict(),
                     "hsmf_result": {
@@ -683,10 +570,7 @@ class AEGIS_API:
                     "pqc_cid": pqc_cid,
                     "quantum_metadata": self.quantum_metadata,
                 }
-
-                # Sign the final bundle hash
                 finality_seal = self._sign_finality_seal(response_data, log_list)
-
                 return APIResponse(
                     success=True,
                     data=response_data,
@@ -694,19 +578,15 @@ class AEGIS_API:
                     finality_seal=finality_seal,
                     pqc_cid=pqc_cid,
                 )
-
         except Exception as e:
-            # Trigger CIR-302 quarantine on any unexpected error
             system_state = {
                 "token_bundle": token_bundle.to_dict() if token_bundle else {},
                 "drv_packet": drv_packet.to_dict() if drv_packet else {},
                 "error": str(e),
             }
-
             quarantine_result = self.cir302_handler.trigger_quarantine(
                 reason=f"Unexpected API error: {str(e)}", system_state=system_state
             )
-
             return APIResponse(
                 success=False,
                 data=None,
@@ -730,9 +610,7 @@ class AEGIS_API:
         """
         if not self.pqc_private_key:
             return ""
-
         try:
-            # Serialize response data for signing
             response_json = json.dumps(
                 response_data, sort_keys=True, separators=(",", ":")
             )
@@ -741,8 +619,6 @@ class AEGIS_API:
             )
             return signature.hex()
         except Exception as e:
-            # Finality seal signing failed - logged to audit trail
-            # print(f"Finality seal signing failed: {str(e)}")
             return ""
 
     def _generate_pqc_cid(
@@ -775,31 +651,19 @@ class AEGIS_API:
             else False,
             "timestamp": drv_packet.ttsTimestamp,
         }
-
         data_json = json.dumps(data_to_hash, sort_keys=True)
         return hashlib.sha256(data_json.encode()).hexdigest()[:32]
 
 
-# Test function
 def test_aegis_api():
     """Test the AEGIS_API implementation."""
-    # print("Testing AEGIS_API...")  # Removed for Zero-Sim compliance
-
-    # Create test log list and CertifiedMath instance
     with CertifiedMath.LogContext() as log_list:
         cm = CertifiedMath()
-
-    # Create test PQC key pair
     with PQC.LogContext() as pqc_log:
         keypair = PQC.generate_keypair(pqc_log)
         pqc_keypair = (bytes(keypair.private_key), keypair.public_key)
-
-    # Initialize AEGIS API
     api = AEGIS_API(cm, pqc_keypair)
-
-    # Create test DRV_Packet
     quantum_metadata = {"source": "test", "timestamp": "0", "pqc_scheme": "Dilithium-5"}
-
     drv_packet = DRV_Packet(
         ttsTimestamp=1234567890,
         sequence=1,
@@ -809,8 +673,6 @@ def test_aegis_api():
         pqc_cid="test_pqc_cid",
         quantum_metadata=quantum_metadata,
     )
-
-    # Create test token bundle
     chr_state = {
         "coherence_metric": "0.98",
         "c_holo_proxy": "0.99",
@@ -819,12 +681,10 @@ def test_aegis_api():
         "psi_sync_metric": "0.08",
         "atr_metric": "0.85",
     }
-
     parameters = {
         "beta_penalty": CertifiedMath.from_string("100000000.0"),
         "phi": CertifiedMath.from_string("1.618033988749894848"),
     }
-
     token_bundle = TokenStateBundle(
         chr_state=chr_state,
         flx_state={"flux_metric": "0.15"},
@@ -841,20 +701,8 @@ def test_aegis_api():
         c_crit=CertifiedMath.from_string("0.9"),
         parameters=parameters,
     )
-
-    # Create test f_atr value
     f_atr = CertifiedMath.from_string("0.85")
-
-    # Process transaction bundle
     result = api.process_transaction_bundle(drv_packet, token_bundle, f_atr)
-
-    # print(f"Transaction processing success: {result.success}")
-    # if result.error:
-    #     print(f"Error: {result.error}")
-    # if result.finality_seal:
-    #     print(f"Finality seal: {result.finality_seal[:32]}...")
-    # if result.pqc_cid:
-    #     print(f"PQC CID: {result.pqc_cid}")
 
 
 if __name__ == "__main__":

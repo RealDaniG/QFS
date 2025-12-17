@@ -1,10 +1,8 @@
 """
 User model for ATLAS authentication and authorization.
 """
-
 from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
-from datetime import datetime
 
 class User(BaseModel):
     """User model for ATLAS"""
@@ -16,11 +14,9 @@ class User(BaseModel):
     created_at: Optional[datetime] = None
     last_login: Optional[datetime] = None
     metadata: Optional[Dict[str, Any]] = None
-    
+
     class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat() if v else None
-        }
+        json_encoders = {datetime: lambda v: v.isoformat() if v else None}
 
 class UserCreate(BaseModel):
     """User creation model"""

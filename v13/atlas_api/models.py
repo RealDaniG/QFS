@@ -2,23 +2,17 @@
 Data models for ATLAS API Gateway
 """
 try:
-    # Try relative import first (for package usage)
     from ..libs.BigNum128 import BigNum128
 except ImportError:
-    # Fallback to absolute import (for direct execution)
     try:
         from v13.libs.BigNum128 import BigNum128
     except ImportError:
-        # Try with sys.path modification
-        # sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
         try:
             from v13.libs.BigNum128 import BigNum128
         except ImportError:
             from libs.BigNum128 import BigNum128
-
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
-
 
 @dataclass
 class FeedRequest:
@@ -26,8 +20,7 @@ class FeedRequest:
     user_id: str
     cursor: Optional[str] = None
     limit: Optional[int] = 20
-    mode: Optional[str] = "coherence"
-
+    mode: Optional[str] = 'coherence'
 
 @dataclass
 class FeedPost:
@@ -37,11 +30,8 @@ class FeedPost:
     policy_version: str
     why_this_ranking: str
     timestamp: int
-    # AEGIS advisory summary for client consumption
     aegis_advisory: Optional[dict] = None
-    # Policy hints for client consumption (new field)
     policy_hints: Optional[dict] = None
-
 
 @dataclass
 class FeedResponse:
@@ -49,7 +39,6 @@ class FeedResponse:
     posts: List[FeedPost]
     next_cursor: Optional[str] = None
     policy_metadata: Optional[dict] = None
-
 
 @dataclass
 class InteractionRequest:
@@ -59,14 +48,12 @@ class InteractionRequest:
     content: Optional[str] = None
     reason: Optional[str] = None
 
-
 @dataclass
 class GuardResults:
     """Guard evaluation results"""
     safety_guard_passed: bool
     economics_guard_passed: bool
     explanation: str
-
 
 @dataclass
 class RewardEstimate:
@@ -75,7 +62,6 @@ class RewardEstimate:
     token_type: str
     explanation: str
 
-
 @dataclass
 class InteractionResponse:
     """Response model for interaction endpoint"""
@@ -83,9 +69,7 @@ class InteractionResponse:
     event_id: Optional[str] = None
     guard_results: Optional[GuardResults] = None
     reward_estimate: Optional[RewardEstimate] = None
-    # AEGIS advisory summary for client consumption
     aegis_advisory: Optional[dict] = None
-
 
 @dataclass
 class AGIObservation:
@@ -99,9 +83,8 @@ class AGIObservation:
     explanation: str
     correlation_to_aegis: Optional[Dict[str, Any]] = None
     correlated_aegis_observations: List[str] = field(default_factory=list)
-    pqc_cid: str = ""
+    pqc_cid: str = ''
     quantum_metadata: Dict[str, Any] = field(default_factory=dict)
-
 
 @dataclass
 class ErrorResponse:

@@ -4,17 +4,12 @@ RealLedger - Deterministic ledger adapter for QFS.
 Provides a clean interface between QFS engines and underlying
 ledger implementations (MockLedger, L1/L2, etc.).
 """
-
 import json
 import hashlib
-import asyncio
-from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List, Union
 from dataclasses import dataclass, asdict
 import logging
-
 from .qfs_types import OperationBundle
-
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -27,7 +22,7 @@ class LedgerReceipt:
     block_height: Optional[int] = None
     gas_used: Optional[int] = None
     events: List[Dict[str, Any]] = None
-    
+
     def __post_init__(self):
         if self.events is None:
             self.events = []
@@ -39,14 +34,10 @@ class LedgerSnapshot:
     timestamp: str
     block_height: int
     state: Dict[str, Any]
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary with sorted keys"""
         return json.loads(json.dumps(asdict(self), sort_keys=True))
-
-# MockLedger implementation removed for Zero-Sim Compliance.
-# Tests should use detailed mocks in test/ directories if needed, 
-# but production code must rely on RealLedger adapters.
 
 class RealLedger:
     """
@@ -55,7 +46,7 @@ class RealLedger:
     Wraps underlying ledger implementations (MockLedger, L1/L2, etc.)
     and provides a consistent interface for QFS engines.
     """
-    
+
     def __init__(self, adapter):
         """
         Initialize RealLedger.
@@ -65,7 +56,7 @@ class RealLedger:
         """
         self._adapter = adapter
         self._cache: Dict[str, Any] = {}
-        
+
     async def submit_bundle(self, bundle: OperationBundle) -> LedgerReceipt:
         """
         Submit opaque bundle to underlying ledger.
@@ -80,23 +71,16 @@ class RealLedger:
             LedgerReceipt: Structured receipt
         """
         try:
-            # Store bundle for replay
             if hasattr(self._adapter, 'bundles'):
                 self._adapter.bundles[bundle.bundle_hash] = bundle
-            
-            # Submit to adapter
             receipt = await self._adapter.submit_bundle(bundle)
-            
-            # Cache receipt
-            self._cache[f"receipt:{bundle.bundle_hash}"] = receipt
-            
+            self._cache[f'receipt:{bundle.bundle_hash}'] = receipt
             return receipt
-            
         except Exception as e:
-            logger.error(f"Failed to submit bundle: {e}")
-            raise RuntimeError(f"Bundle submission failed: {e}")
-    
-    async def get_snapshot(self, state_root: Optional[str] = None) -> Dict[str, Any]:
+            logger.error(f'Failed to submit bundle: {e}')
+            raise RuntimeError(f'Bundle submission failed: {e}')
+
+    async def get_snapshot(self, state_root: Optional[str]=None) -> Dict[str, Any]:
         """
         Return deterministic state snapshot.
         
@@ -106,47 +90,37 @@ class RealLedger:
         Returns:
             Dict[str, Any]: Deterministic state
         """
-        # Get snapshot from adapter
         snapshot = await self._adapter.get_snapshot(state_root)
-        
-        # Return deterministic state
         return snapshot.state if hasattr(snapshot, 'state') else snapshot
-        
+
     async def get_bundle(self, bundle_hash: str) -> Optional[Dict[str, Any]]:
         """Get bundle by hash"""
         try:
             return await self._adapter.get_bundle(bundle_hash)
         except Exception as e:
-            logger.error(f"Failed to get bundle {bundle_hash}: {e}")
+            logger.error(f'Failed to get bundle {bundle_hash}: {e}')
             return None
-    
+
     async def get_bundle_status(self, bundle_hash: str) -> Dict[str, Any]:
         """Get bundle status"""
         try:
             return await self._adapter.get_bundle_status(bundle_hash)
         except Exception as e:
-            logger.error(f"Failed to get bundle status {bundle_hash}: {e}")
-            return {"status": "error", "error": str(e)}
-    
+            logger.error(f'Failed to get bundle status {bundle_hash}: {e}')
+            return {'status': 'error', 'error': str(e)}
+
     async def replay_bundle(self, bundle: OperationBundle) -> Dict[str, Any]:
         """Replay bundle for determinism verification"""
         try:
             return await self._adapter.replay_bundle(bundle)
         except Exception as e:
-            logger.error(f"Failed to replay bundle {bundle.bundle_hash}: {e}")
-            return {
-                "success": False,
-                "error": str(e),
-                "divergence_details": ["replay_failed"]
-            }
-    
+            logger.error(f'Failed to replay bundle {bundle.bundle_hash}: {e}')
+            return {'success': False, 'error': str(e), 'divergence_details': ['replay_failed']}
+
     def clear_cache(self):
         """Clear internal cache"""
         self._cache.clear()
-    
+
     def get_cache_stats(self) -> Dict[str, int]:
         """Get cache statistics"""
-        return {
-            "cached_items": len(self._cache),
-            "cache_size_bytes": sum(len(str(v)) for v in self._cache.values())
-        }
+        return {'cached_items': len(self._cache), 'cache_size_bytes': sum((len(str(v)) for v in self._cache.values()))}

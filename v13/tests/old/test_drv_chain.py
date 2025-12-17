@@ -1,104 +1,39 @@
 from v13.libs.DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode
 from v13.libs.PQC import generate_keypair
-
-# Test DRV_Packet chain linking
-if __name__ == "__main__":
-    # Generate a keypair for signing
+if __name__ == '__main__':
     keypair = generate_keypair()
-    private_key = keypair["private_key"]
-    public_key = keypair["public_key"]
-    
-    # Create the first packet (genesis packet)
-    print("=== Creating Genesis Packet ===")
-    genesis_packet = DRV_Packet(
-        ttsTimestamp=1700000000,
-        sequence=0,
-        seed="genesis_seed",
-        metadata={"source": "test", "type": "genesis"},
-        previous_hash=None  # No previous hash for genesis packet
-    )
-    
-    # Sign the genesis packet
-    genesis_packet.sign(private_key, pqc_cid="DRV_001", quantum_metadata={"test": "genesis"})
-    print(f"Genesis packet hash: {genesis_packet.get_hash()}")
-    print(f"Genesis packet: {genesis_packet}")
-    
-    # Validate the genesis packet (no previous packet)
-    genesis_validation = genesis_packet.is_valid(public_key, None, pqc_cid="DRV_002", quantum_metadata={"test": "validate_genesis"})
-    print(f"Genesis packet validation result: {genesis_validation}")
-    
-    # Create the second packet in the chain
-    print("\n=== Creating Second Packet ===")
-    second_packet = DRV_Packet(
-        ttsTimestamp=1700000001,
-        sequence=1,
-        seed="second_seed",
-        metadata={"source": "test", "type": "second"},
-        previous_hash=genesis_packet.get_hash()  # Link to genesis packet
-    )
-    
-    # Sign the second packet
-    second_packet.sign(private_key, pqc_cid="DRV_003", quantum_metadata={"test": "second"})
-    print(f"Second packet hash: {second_packet.get_hash()}")
-    print(f"Second packet: {second_packet}")
-    
-    # Validate the second packet with the genesis packet as previous
-    second_validation = second_packet.is_valid(public_key, genesis_packet, pqc_cid="DRV_004", quantum_metadata={"test": "validate_second"})
-    print(f"Second packet validation result: {second_validation}")
-    
-    # Create the third packet in the chain
-    print("\n=== Creating Third Packet ===")
-    third_packet = DRV_Packet(
-        ttsTimestamp=1700000002,
-        sequence=2,
-        seed="third_seed",
-        metadata={"source": "test", "type": "third"},
-        previous_hash=second_packet.get_hash()  # Link to second packet
-    )
-    
-    # Sign the third packet
-    third_packet.sign(private_key, pqc_cid="DRV_005", quantum_metadata={"test": "third"})
-    print(f"Third packet hash: {third_packet.get_hash()}")
-    print(f"Third packet: {third_packet}")
-    
-    # Validate the third packet with the second packet as previous
-    third_validation = third_packet.is_valid(public_key, second_packet, pqc_cid="DRV_006", quantum_metadata={"test": "validate_third"})
-    print(f"Third packet validation result: {third_validation}")
-    
-    # Test invalid chain linking
-    print("\n=== Testing Invalid Chain Linking ===")
-    # Create a packet with incorrect previous hash
-    invalid_packet = DRV_Packet(
-        ttsTimestamp=1700000003,
-        sequence=3,
-        seed="invalid_seed",
-        metadata={"source": "test", "type": "invalid"},
-        previous_hash="0000000000000000000000000000000000000000000000000000000000000000"  # Invalid hash
-    )
-    
-    # Sign the invalid packet
-    invalid_packet.sign(private_key, pqc_cid="DRV_007", quantum_metadata={"test": "invalid"})
-    print(f"Invalid packet hash: {invalid_packet.get_hash()}")
-    
-    # Validate the invalid packet with the third packet as previous (should fail)
-    invalid_validation = invalid_packet.is_valid(public_key, third_packet, pqc_cid="DRV_008", quantum_metadata={"test": "validate_invalid"})
-    print(f"Invalid packet validation result: {invalid_validation}")
-    
-    # Test sequence validation
-    print("\n=== Testing Sequence Validation ===")
-    # Create a packet with incorrect sequence number
-    wrong_sequence_packet = DRV_Packet(
-        ttsTimestamp=1700000004,
-        sequence=5,  # Should be 4, but we're using 5
-        seed="wrong_sequence_seed",
-        metadata={"source": "test", "type": "wrong_sequence"},
-        previous_hash=third_packet.get_hash()
-    )
-    
-    # Sign the wrong sequence packet
-    wrong_sequence_packet.sign(private_key, pqc_cid="DRV_009", quantum_metadata={"test": "wrong_sequence"})
-    print(f"Wrong sequence packet hash: {wrong_sequence_packet.get_hash()}")
-    
-    # Validate the wrong sequence packet with the third packet as previous (should fail)
-    wrong_sequence_validation = wrong_sequence_packet.is_valid(public_key, third_packet, pqc_cid="DRV_010", quantum_metadata={"test": "validate_wrong_sequence"})
-    print(f"Wrong sequence packet validation result: {wrong_sequence_validation}")
+    private_key = keypair['private_key']
+    public_key = keypair['public_key']
+    print('=== Creating Genesis Packet ===')
+    genesis_packet = DRV_Packet(ttsTimestamp=1700000000, sequence=0, seed='genesis_seed', metadata={'source': 'test', 'type': 'genesis'}, previous_hash=None)
+    genesis_packet.sign(private_key, pqc_cid='DRV_001', quantum_metadata={'test': 'genesis'})
+    print(f'Genesis packet hash: {genesis_packet.get_hash()}')
+    print(f'Genesis packet: {genesis_packet}')
+    genesis_validation = genesis_packet.is_valid(public_key, None, pqc_cid='DRV_002', quantum_metadata={'test': 'validate_genesis'})
+    print(f'Genesis packet validation result: {genesis_validation}')
+    print('\n=== Creating Second Packet ===')
+    second_packet = DRV_Packet(ttsTimestamp=1700000001, sequence=1, seed='second_seed', metadata={'source': 'test', 'type': 'second'}, previous_hash=genesis_packet.get_hash())
+    second_packet.sign(private_key, pqc_cid='DRV_003', quantum_metadata={'test': 'second'})
+    print(f'Second packet hash: {second_packet.get_hash()}')
+    print(f'Second packet: {second_packet}')
+    second_validation = second_packet.is_valid(public_key, genesis_packet, pqc_cid='DRV_004', quantum_metadata={'test': 'validate_second'})
+    print(f'Second packet validation result: {second_validation}')
+    print('\n=== Creating Third Packet ===')
+    third_packet = DRV_Packet(ttsTimestamp=1700000002, sequence=2, seed='third_seed', metadata={'source': 'test', 'type': 'third'}, previous_hash=second_packet.get_hash())
+    third_packet.sign(private_key, pqc_cid='DRV_005', quantum_metadata={'test': 'third'})
+    print(f'Third packet hash: {third_packet.get_hash()}')
+    print(f'Third packet: {third_packet}')
+    third_validation = third_packet.is_valid(public_key, second_packet, pqc_cid='DRV_006', quantum_metadata={'test': 'validate_third'})
+    print(f'Third packet validation result: {third_validation}')
+    print('\n=== Testing Invalid Chain Linking ===')
+    invalid_packet = DRV_Packet(ttsTimestamp=1700000003, sequence=3, seed='invalid_seed', metadata={'source': 'test', 'type': 'invalid'}, previous_hash='0000000000000000000000000000000000000000000000000000000000000000')
+    invalid_packet.sign(private_key, pqc_cid='DRV_007', quantum_metadata={'test': 'invalid'})
+    print(f'Invalid packet hash: {invalid_packet.get_hash()}')
+    invalid_validation = invalid_packet.is_valid(public_key, third_packet, pqc_cid='DRV_008', quantum_metadata={'test': 'validate_invalid'})
+    print(f'Invalid packet validation result: {invalid_validation}')
+    print('\n=== Testing Sequence Validation ===')
+    wrong_sequence_packet = DRV_Packet(ttsTimestamp=1700000004, sequence=5, seed='wrong_sequence_seed', metadata={'source': 'test', 'type': 'wrong_sequence'}, previous_hash=third_packet.get_hash())
+    wrong_sequence_packet.sign(private_key, pqc_cid='DRV_009', quantum_metadata={'test': 'wrong_sequence'})
+    print(f'Wrong sequence packet hash: {wrong_sequence_packet.get_hash()}')
+    wrong_sequence_validation = wrong_sequence_packet.is_valid(public_key, third_packet, pqc_cid='DRV_010', quantum_metadata={'test': 'validate_wrong_sequence'})
+    print(f'Wrong sequence packet validation result: {wrong_sequence_validation}')

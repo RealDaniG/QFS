@@ -1,0 +1,17 @@
+[
+    {
+        "model_id": "hall_v1",
+        "version": "0.1",
+        "causal_graph_hash": "sha3_512_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "training_data_fingerprint": "genesis_weights_v0",
+        "intended_use": "Phase 1 Governance Consequence Mapping (Advisory)",
+        "scope": [
+            "governance_map",
+            "reflection_panel"
+        ],
+        "constraints": {
+            "max_inference_ms": "500",
+            "determinism_level": "strict"
+        }
+    }
+]

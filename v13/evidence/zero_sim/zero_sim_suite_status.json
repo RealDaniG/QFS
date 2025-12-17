@@ -1,27 +1,47 @@
 {
+<<<<<<< HEAD
   "timestamp": "2025-12-17T12:04:12.385260",
+=======
+  "timestamp": "2025-12-17T13:46:58.841628",
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
   "suites": [
     {
       "name": "QFS Core Determinism",
       "status": "PASS",
+<<<<<<< HEAD
       "duration_seconds": 1.987698,
       "output_tail": "xture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_replay_state_determinism PASSED [ 33%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_explanation_determinism PASSED [ 66%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_missing_event_explanation PASSED [100%]\n\n============================== 3 passed in 0.95s ==============================\n"
+=======
+      "duration_seconds": 1.893887,
+      "output_tail": "xture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_replay_state_determinism PASSED [ 33%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_explanation_determinism PASSED [ 66%]\nv13/tests/deterministic/test_value_node_replay_determinism.py::test_missing_event_explanation PASSED [100%]\n\n============================== 3 passed in 0.92s ==============================\n"
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     },
     {
       "name": "Humor Slice Zero-Sim",
       "status": "PASS",
+<<<<<<< HEAD
       "duration_seconds": 1.972195,
       "output_tail": "PASSED [ 40%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_observatory_deterministic_replay PASSED [ 60%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_explainability_deterministic_replay PASSED [ 80%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_cross_module_deterministic_consistency PASSED [100%]\n\n============================== 5 passed in 0.94s ==============================\n"
+=======
+      "duration_seconds": 1.910724,
+      "output_tail": "PASSED [ 40%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_observatory_deterministic_replay PASSED [ 60%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_humor_explainability_deterministic_replay PASSED [ 80%]\nv13/tests/test_humor_deterministic_replay.py::TestHumorDeterministicReplay::test_cross_module_deterministic_consistency PASSED [100%]\n\n============================== 5 passed in 0.93s ==============================\n"
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     },
     {
       "name": "Value-Node Replay & Explainability",
       "status": "PASS",
+<<<<<<< HEAD
       "duration_seconds": 1.895148,
       "output_tail": "fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_full_fidelity_event PASSED [ 33%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_low_fidelity_event_fallback PASSED [ 66%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_replay_integration_with_explanation PASSED [100%]\n\n============================== 3 passed in 0.87s ==============================\n"
+=======
+      "duration_seconds": 1.855191,
+      "output_tail": "fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_full_fidelity_event PASSED [ 33%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_explain_low_fidelity_event_fallback PASSED [ 66%]\nv13/tests/unit/test_value_node_replay_explanation.py::test_replay_integration_with_explanation PASSED [100%]\n\n============================== 3 passed in 0.88s ==============================\n"
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     },
     {
       "name": "ATLAS Explanation E2E",
       "status": "PASS",
+<<<<<<< HEAD
       "duration_seconds": 2.59727,
       "output_tail": "lds.py:1051: PydanticDeprecatedSince20: `max_items` is deprecated and will be removed, use `max_length` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/\n    warn('`max_items` is deprecated and will be removed, use `max_length` instead', DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 2 passed, 10 warnings in 1.51s ========================\n"
     },
@@ -30,6 +50,22 @@
       "status": "PASS",
       "duration_seconds": 1.337905,
       "output_tail": "_session_rotation_ordering.py::test_session_rotation_creates_new_token PASSED [ 82%]\nv13/tests/sessions/test_session_rotation_ordering.py::test_session_rotation_preserves_metadata PASSED [ 88%]\nv13/tests/sessions/test_session_rotation_ordering.py::test_session_rotation_emits_correct_event PASSED [ 94%]\nv13/tests/sessions/test_session_rotation_ordering.py::test_multiple_rotations_generate_unique_tokens PASSED [100%]\n\n============================= 17 passed in 0.37s ==============================\n"
+=======
+      "duration_seconds": 2.580777,
+      "output_tail": "lds.py:1051: PydanticDeprecatedSince20: `max_items` is deprecated and will be removed, use `max_length` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/\n    warn('`max_items` is deprecated and will be removed, use `max_length` instead', DeprecationWarning)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================= 2 passed, 10 warnings in 1.51s ========================\n"
+    },
+    {
+      "name": "PQC Provider Consistency",
+      "status": "PASS",
+      "duration_seconds": 1.303497,
+      "output_tail": "tests/unit/test_pqc_provider_consistency_shim.py::TestPQCProviderConsistencyShim::test_signature_structure_compatibility PASSED [ 66%]\nv13/tests/unit/test_pqc_provider_consistency_shim.py::TestPQCProviderConsistencyShim::test_signature_verification_compatibility PASSED [ 83%]\nv13/tests/unit/test_pqc_provider_consistency_shim.py::TestPQCProviderConsistencyShim::test_structural_compatibility_of_keypairs PASSED [100%]\n\n============================== 6 passed in 0.37s ==============================\n"
+    },
+    {
+      "name": "HD Derivation",
+      "status": "PASS",
+      "duration_seconds": 1.18359,
+      "output_tail": "ator_keypair_testnet PASSED [ 60%]\nv13/tests/unit/test_hd_derivation.py::TestHDDerivation::test_derive_master_key PASSED [ 70%]\nv13/tests/unit/test_hd_derivation.py::TestHDDerivation::test_derive_path PASSED [ 80%]\nv13/tests/unit/test_hd_derivation.py::TestHDDerivation::test_extended_key_serialization PASSED [ 90%]\nv13/tests/unit/test_hd_derivation.py::TestHDDerivation::test_invalid_scope_raises_error PASSED [100%]\n\n============================= 10 passed in 0.27s ==============================\n"
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     }
   ],
   "overall_status": "PASS"

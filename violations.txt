@@ -1,0 +1,5 @@
+﻿­ƒÜÇ Starting V13.8 Zero-Sim Compliance Scan...
+Skipping v13\tests\simple_policy_test.py: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+Ô£à Scan Complete. Found 93 potential violations.
+Report saved to: v13\evidence/zero_sim/compliance_scan_report.json
+ÔÜá´©Å  Found 34 CRITICAL violations.

@@ -1,5 +1,4 @@
 from v13.libs.BigNum128 import BigNum128
-
 try:
     BigNum128.from_string('-1.5')
     print('Failed - should have raised ValueError')

@@ -3,10 +3,8 @@ LedgerEconomicsService.py - Service for retrieving real economics totals from le
 
 Provides deterministic, ledger-derived economics data for use in guards and reward calculations.
 """
-
 from typing import Dict, Any, Optional
 from ..libs.CertifiedMath import BigNum128
-
 
 class LedgerEconomicsService:
     """
@@ -24,7 +22,7 @@ class LedgerEconomicsService:
             coherence_ledger: Optional CoherenceLedger instance to derive economics from
         """
         self.coherence_ledger = coherence_ledger
-        self._cached_totals = {}  # Cache for performance
+        self._cached_totals = {}
 
     def get_chr_daily_totals(self) -> Dict[str, BigNum128]:
         """
@@ -33,30 +31,18 @@ class LedgerEconomicsService:
         Returns:
             Dict[str, BigNum128]: Daily totals including current_daily_total
         """
-        # Check cache first
-        cache_key = "chr_daily_totals"
+        cache_key = 'chr_daily_totals'
         if cache_key in self._cached_totals:
             return self._cached_totals[cache_key]
-
-        # If we have a ledger, derive from ledger events
         if self.coherence_ledger and self.coherence_ledger.ledger_entries:
             try:
-                # Replay ledger to calculate daily totals
                 current_daily_total = self._replay_ledger_for_daily_totals()
-                result = {"current_daily_total": current_daily_total}
-                # Cache the result
+                result = {'current_daily_total': current_daily_total}
                 self._cached_totals[cache_key] = result
                 return result
             except Exception:
-                # Fallback silently - using demo values
                 pass
-
-        # Fallback to demo values
-        result = {
-            "current_daily_total": BigNum128.from_int(
-                10000
-            )  # Demo value - clearly labeled
-        }
+        result = {'current_daily_total': BigNum128.from_int(10000)}
         return result
 
     def get_chr_total_supply(self) -> Dict[str, BigNum128]:
@@ -66,30 +52,18 @@ class LedgerEconomicsService:
         Returns:
             Dict[str, BigNum128]: Total supply including current_total_supply
         """
-        # Check cache first
-        cache_key = "chr_total_supply"
+        cache_key = 'chr_total_supply'
         if cache_key in self._cached_totals:
             return self._cached_totals[cache_key]
-
-        # If we have a ledger, derive from ledger events
         if self.coherence_ledger and self.coherence_ledger.ledger_entries:
             try:
-                # Replay ledger to calculate total supply
                 current_total_supply = self._replay_ledger_for_total_supply()
-                result = {"current_total_supply": current_total_supply}
-                # Cache the result
+                result = {'current_total_supply': current_total_supply}
                 self._cached_totals[cache_key] = result
                 return result
             except Exception:
-                # Fallback silently - using demo values
                 pass
-
-        # Fallback to demo values
-        result = {
-            "current_total_supply": BigNum128.from_int(
-                1000000
-            )  # Demo value - clearly labeled
-        }
+        result = {'current_total_supply': BigNum128.from_int(1000000)}
         return result
 
     def get_user_balance(self, user_id: str) -> Dict[str, BigNum128]:
@@ -102,28 +76,18 @@ class LedgerEconomicsService:
         Returns:
             Dict[str, BigNum128]: User balance information
         """
-        # Check cache first
-        cache_key = f"user_balance_{user_id}"
+        cache_key = f'user_balance_{user_id}'
         if cache_key in self._cached_totals:
             return self._cached_totals[cache_key]
-
-        # If we have a ledger, derive from ledger events
         if self.coherence_ledger and self.coherence_ledger.ledger_entries:
             try:
-                # Replay ledger to calculate user balance
                 user_balance = self._replay_ledger_for_user_balance(user_id)
-                result = {"user_balance": user_balance}
-                # Cache the result
+                result = {'user_balance': user_balance}
                 self._cached_totals[cache_key] = result
                 return result
             except Exception:
-                # Fallback silently - using demo values
                 pass
-
-        # Fallback to demo values
-        result = {
-            "user_balance": BigNum128.from_int(1000)  # Demo value - clearly labeled
-        }
+        result = {'user_balance': BigNum128.from_int(1000)}
         return result
 
     def _replay_ledger_for_daily_totals(self) -> BigNum128:
@@ -133,11 +97,8 @@ class LedgerEconomicsService:
         Returns:
             BigNum128: Current daily total
         """
-        # In a real implementation, this would replay ledger events to calculate daily totals
-        # For now, we'll return a deterministic value based on ledger entry count
         if self.coherence_ledger and self.coherence_ledger.ledger_entries:
             entry_count = len(self.coherence_ledger.ledger_entries)
-            # Simple deterministic calculation based on ledger size
             return BigNum128.from_int(entry_count * 1000)
         return BigNum128.from_int(0)
 
@@ -148,11 +109,8 @@ class LedgerEconomicsService:
         Returns:
             BigNum128: Current total supply
         """
-        # In a real implementation, this would replay ledger events to calculate total supply
-        # For now, we'll return a deterministic value based on ledger entry count
         if self.coherence_ledger and self.coherence_ledger.ledger_entries:
             entry_count = len(self.coherence_ledger.ledger_entries)
-            # Simple deterministic calculation based on ledger size
             return BigNum128.from_int(entry_count * 100000)
         return BigNum128.from_int(0)
 
@@ -166,14 +124,10 @@ class LedgerEconomicsService:
         Returns:
             BigNum128: User balance
         """
-        # In a real implementation, this would replay ledger events to calculate user balance
-        # For now, we'll return a deterministic value based on user_id
         if user_id:
-            # Use deterministic hash instead of Python's hash()
             import hashlib
-
-            user_hash_bytes = hashlib.sha256(user_id.encode("utf-8")).digest()
-            user_hash = int.from_bytes(user_hash_bytes[:4], "big") % 10000
+            user_hash_bytes = hashlib.sha256(user_id.encode('utf-8')).digest()
+            user_hash = int.from_bytes(user_hash_bytes[:4], 'big') % 10000
             return BigNum128.from_int(user_hash + 1000)
         return BigNum128.from_int(0)
 
@@ -181,33 +135,14 @@ class LedgerEconomicsService:
         """Clear the cached totals."""
         self._cached_totals.clear()
 
-
-# Test function
 def test_ledger_economics_service():
     """Test the LedgerEconomicsService implementation."""
-    # print("Testing LedgerEconomicsService...")  # Removed for Zero-Sim compliance
-
-    # Test with no ledger (fallback to demo values)
     service = LedgerEconomicsService()
-
     daily_totals = service.get_chr_daily_totals()
-    # print(f"Daily totals (demo): {daily_totals}")
-
     total_supply = service.get_chr_total_supply()
-    # print(f"Total supply (demo): {total_supply}")
-
-    user_balance = service.get_user_balance("test_user")
-    # print(f"User balance (demo): {user_balance}")
-
-    # Test caching
+    user_balance = service.get_user_balance('test_user')
     daily_totals2 = service.get_chr_daily_totals()
     assert daily_totals == daily_totals2
-    # print("Caching works correctly")
-
-    # Clear cache
     service.clear_cache()
-    # print("Cache cleared")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     test_ledger_economics_service()

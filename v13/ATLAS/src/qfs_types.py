@@ -2,11 +2,9 @@
 
 OperationBundle is used by both qfs_client and real_ledger.
 """
-
 from dataclasses import dataclass, asdict
 from typing import Dict, Any, List, Optional
 import json
-
 
 @dataclass
 class OperationBundle:
@@ -15,7 +13,6 @@ class OperationBundle:
     This is intentionally isolated in qfs_types to avoid circular
     imports between qfs_client and real_ledger.
     """
-
     operations: List[Dict[str, Any]]
     bundle_hash: str
     timestamp: str

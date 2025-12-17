@@ -3,7 +3,7 @@ import os
 import subprocess
 import json
 import hashlib
-from datetime import datetime
+from v13.libs.deterministic_helpers import det_time_isoformat, det_time_now, det_perf_counter
 
 # Configuration
 TEST_SUITES = [
@@ -28,8 +28,18 @@ TEST_SUITES = [
         "critical": True
     },
     {
+<<<<<<< HEAD
         "name": "Session Management Tests",
         "command": [sys.executable, "-m", "pytest", "v13/tests/sessions/", "-v"],
+=======
+        "name": "PQC Provider Consistency",
+        "command": [sys.executable, "-m", "pytest", "v13/tests/unit/test_pqc_provider_consistency_shim.py", "-v"],
+        "critical": True
+    },
+    {
+        "name": "HD Derivation",
+        "command": [sys.executable, "-m", "pytest", "v13/tests/unit/test_hd_derivation.py", "-v"],
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         "critical": True
     }
 ]
@@ -48,7 +58,7 @@ def calculate_file_hash(filepath):
 
 def run_suite():
     results = {
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": det_time_isoformat(),
         "suites": [],
         "overall_status": "PASS"
     }
@@ -58,11 +68,11 @@ def run_suite():
     for suite in TEST_SUITES:
         print(f"\n▶ Running: {suite['name']}")
         
-        start_time = datetime.now()
+        start_time = det_time_now()
         try:
             # Note: We run directly, assuming cwd is repo root
             result = subprocess.run(suite["command"], capture_output=True, text=True)
-            duration = (datetime.now() - start_time).total_seconds()
+            duration = det_perf_counter() - start_time
             
             status = "PASS" if result.returncode == 0 else "FAIL"
             if status == "FAIL" and suite["critical"]:

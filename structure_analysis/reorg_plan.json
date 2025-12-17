@@ -1,0 +1,96 @@
+{
+    "moves": [
+        {
+            "from": "tools_root/discovery_scan.py",
+            "to": "v13/tools/discovery/discovery_scan.py",
+            "safe": true,
+            "reason": "Consolidate tools"
+        },
+        {
+            "from": "tests_root/test_memory_exhaustion.py",
+            "to": "v13/tests/performance/test_memory_exhaustion.py",
+            "safe": true,
+            "reason": "Consolidate tests"
+        },
+        {
+            "from": "test_explain_api.py",
+            "to": "v13/tests/api/test_explain_api.py",
+            "safe": true,
+            "reason": "Misplaced root test"
+        },
+        {
+            "from": "check_commit_status.py",
+            "to": "v13/tools/ci/check_commit_status.py",
+            "safe": true,
+            "reason": "Root CI tool"
+        },
+        {
+            "from": "check_failing_details.py",
+            "to": "v13/tools/ci/check_failing_details.py",
+            "safe": true,
+            "reason": "Root CI tool"
+        },
+        {
+            "from": "check_pr_status.py",
+            "to": "v13/tools/ci/check_pr_status.py",
+            "safe": true,
+            "reason": "Root CI tool"
+        },
+        {
+            "from": "fix_bignum.py",
+            "to": "archive/scripts/fix_bignum.py",
+            "safe": true,
+            "reason": "One-off script"
+        },
+        {
+            "from": "fix_bignum2.py",
+            "to": "archive/scripts/fix_bignum2.py",
+            "safe": true,
+            "reason": "One-off script"
+        },
+        {
+            "from": "fix_bignum3.py",
+            "to": "archive/scripts/fix_bignum3.py",
+            "safe": true,
+            "reason": "One-off script"
+        },
+        {
+            "from": "fix_files.py",
+            "to": "archive/scripts/fix_files.py",
+            "safe": true,
+            "reason": "One-off script"
+        },
+        {
+            "from": "v13/libs_root/pqcrystals_installation_summary.md",
+            "to": "v13/docs/installation/pqcrystals_installation_summary.md",
+            "safe": true,
+            "reason": "Documentation"
+        },
+        {
+            "from": "v13/libs_root/CertifiedMath_zero_sim_report.json",
+            "to": "v13/docs/compliance/reports/CertifiedMath_zero_sim_report.json",
+            "safe": true,
+            "reason": "Compliance Artifact"
+        },
+        {
+            "from": "v13/libs_root/RewardAllocator_zero_sim_report.json",
+            "to": "v13/docs/compliance/reports/RewardAllocator_zero_sim_report.json",
+            "safe": true,
+            "reason": "Compliance Artifact"
+        },
+        {
+            "from": "v13/libs_root/TreasuryEngine_zero_sim_report.json",
+            "to": "v13/docs/compliance/reports/TreasuryEngine_zero_sim_report.json",
+            "safe": true,
+            "reason": "Compliance Artifact"
+        }
+    ],
+    "deletions": [],
+    "directories_to_clean": [
+        "v13/sdk_root",
+        "tests_root",
+        "tools_root",
+        "v13/libs_root",
+        "v13/v13"
+    ]
+}

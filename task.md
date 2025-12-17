@@ -1,7 +1,7 @@
 # QFS x ATLAS V1.0 — PRODUCTION READINESS ROADMAP
 
 **Goal:** Zero-Sim Absolute V1.0 Release (FINAL v18.9)
-**Status:** Phase 18.9 (Deterministic Session Management)
+**Status:** Phase 18.9 (Deterministic Session Management) + AEGIS UX Phase 1 Prep
 **License:** AGPL-3.0
 
 ---
@@ -127,9 +127,58 @@
 - [x] Ledger-replayable session state reconstruction
 - [x] Explain-This cryptographic proof integration
 
+---
+
+## 🎯 AEGIS UX Integration - Phase 1 Preparation
+
+**Status:** [/] IN PROGRESS (Week 1 - Foundation Specs)
+
+### Analysis & Planning (COMPLETE)
+
+- [x] Repository analysis (documentation, implementation, gaps)
+- [x] Gap analysis report (3-phase roadmap)
+- [x] Documentation update plan (37 new docs prioritized)
+- [x] Next steps guide (Week 1-4 action plan)
+
+### P0 Critical Documentation (Week 1-2)
+
+- [x] AEGIS UX Architecture Overview (`v13/docs/architecture/AEGIS_UX_ARCHITECTURE.md`)
+- [x] AEGIS Advisory Boundaries Contract (`v13/docs/compliance/AEGIS_ADVISORY_CONTRACT.md`)
+- [x] AEGIS Boundary Verification Script (`v13/scripts/verify_aegis_boundaries.py`)
+- [ ] Governance Consequence Map Specification
+- [ ] Governance API Specification
+- [ ] Economic Action Reflection Specification
+
+### P1 High Priority Documentation (Week 2-4)
+
+- [ ] Symbolic Token/Guard Map Specification
+- [ ] Sandbox Architecture Specification
+- [ ] AEGIS Service Integration Guide
+- [ ] Governance Explanation Schema (JSON)
+- [ ] What-If Simulation API Specification
+
+### Infrastructure Setup (Week 1)
+
+- [ ] Feature branch: `feature/aegis-ux-phase1`
+- [ ] AEGIS API contract meeting (external team coordination)
+- [ ] Development environment setup
+- [ ] Phase 1 sprint breakdown (2-week sprints)
+
+### Phase 1 Implementation (Months 1-4) - TBD
+
+- [ ] Governance Consequence Map API
+- [ ] Economic Action Reflection Panel
+- [ ] Symbolic Token/Guard Map
+- [ ] Frontend UI components
+- [ ] Integration tests
+- [ ] Evidence artifacts
+
+---
+
 ## 🛠️ Infrastructure Fixes (Ongoing)
 
 - [x] CI: Upgrade `upload-artifact` to v4.
 - [x] Security: Remove Hash Truncation.
 - [x] CI: Fix `AST_ZeroSimChecker.py` path (src vs v13).
 - [x] Docs: Document PQC backend strategy & production requirements.
+- [ ] CI: Add AEGIS boundary verification to daily checks

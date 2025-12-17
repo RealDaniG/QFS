@@ -2,126 +2,86 @@
 Complete audit verification script for CertifiedMath.py
 This script runs all audit compliance tests and generates a verification report.
 """
-
-import sys
 import os
+import sys
+from datetime import datetime
+from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import subprocess
 import json
-from datetime import datetime
-
-# Add the libs directory to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'libs'))
 
 def run_audit_test(test_file, description):
     """Run a specific audit test and return results."""
-    print(f"Running {description}...")
+    print(f'Running {description}...')
     try:
-        result = subprocess.run([
-            sys.executable, 
-            os.path.join(os.path.dirname(__file__), test_file)
-        ], capture_output=True, text=True, cwd=os.path.dirname(__file__))
-        
+        result = subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), test_file)], capture_output=True, text=True, cwd=os.path.dirname(__file__))
         if result.returncode == 0:
-            print(f"  ✅ {description} PASSED")
-            return True, result.stdout
+            print(f'  ✅ {description} PASSED')
+            return (True, result.stdout)
         else:
-            print(f"  ❌ {description} FAILED")
-            print(f"  Error: {result.stderr}")
-            return False, result.stderr
+            print(f'  ❌ {description} FAILED')
+            print(f'  Error: {result.stderr}')
+            return (False, result.stderr)
     except Exception as e:
-        print(f"  ❌ {description} FAILED with exception: {e}")
-        return False, str(e)
+        print(f'  ❌ {description} FAILED with exception: {e}')
+        return (False, str(e))
 
 def main():
     """Run complete CertifiedMath audit verification."""
-    print("CertifiedMath QFS V13 Phase 2/3 Zero-Simulation Audit Verification")
-    print("=" * 70)
-    print(f"Timestamp: {datetime.now().isoformat()}")
+    print('CertifiedMath QFS V13 Phase 2/3 Zero-Simulation Audit Verification')
+    print('=' * 70)
+    print(f'Timestamp: {det_time_now()}')
     print()
-    
-    # Test results tracking
     results = []
-    
-    # Run all audit tests
-    tests = [
-        ("test_certified_math_audit_compliance.py", "Core Audit Compliance Tests"),
-        ("test_certified_math_edge_cases.py", "Extreme Edge Case Tests"),
-        ("test_certified_math_performance.py", "Performance Benchmark Tests"),
-        ("test_certified_math_drv_integration.py", "DRV_Packet Integration Tests"),
-        ("test_certified_math_enhanced_audit.py", "Enhanced Cross-Cutting Audit Tests")
-    ]
-    
+    tests = [('test_certified_math_audit_compliance.py', 'Core Audit Compliance Tests'), ('test_certified_math_edge_cases.py', 'Extreme Edge Case Tests'), ('test_certified_math_performance.py', 'Performance Benchmark Tests'), ('test_certified_math_drv_integration.py', 'DRV_Packet Integration Tests'), ('test_certified_math_enhanced_audit.py', 'Enhanced Cross-Cutting Audit Tests')]
     all_passed = True
-    
     for test_file, description in tests:
         passed, output = run_audit_test(test_file, description)
-        results.append({
-            "test": description,
-            "passed": passed,
-            "output": output
-        })
+        results.append({'test': description, 'passed': passed, 'output': output})
         if not passed:
             all_passed = False
-    
-    # Generate audit report
     print()
-    print("=" * 70)
-    print("AUDIT VERIFICATION REPORT")
-    print("=" * 70)
-    
-    print(f"Module: CertifiedMath.py")
-    print(f"Standard: QFS V13 Phase 2/3 Zero-Simulation Compliance")
-    print(f"Timestamp: {datetime.now().isoformat()}")
+    print('=' * 70)
+    print('AUDIT VERIFICATION REPORT')
+    print('=' * 70)
+    print(f'Module: CertifiedMath.py')
+    print(f'Standard: QFS V13 Phase 2/3 Zero-Simulation Compliance')
+    print(f'Timestamp: {det_time_now()}')
     print()
-    
-    print("Test Results:")
+    print('Test Results:')
     for result in results:
-        status = "✅ PASS" if result["passed"] else "❌ FAIL"
+        status = '✅ PASS' if result['passed'] else '❌ FAIL'
         print(f"  {status} {result['test']}")
-    
     print()
     if all_passed:
-        print("🎉 ALL AUDIT TESTS PASSED")
+        print('🎉 ALL AUDIT TESTS PASSED')
         print()
-        print("CertifiedMath.py is verified as QFS V13 Phase 2/3 Zero-Simulation compliant:")
-        print("  ✅ Deterministic behavior across all inputs and operations")
-        print("  ✅ Audit log and chain integrity confirmed")
-        print("  ✅ Mathematical correctness and series convergence verified")
-        print("  ✅ Zero-Simulation compliance (no rounding errors, no nondeterminism)")
-        print("  ✅ PQC-verifiable system integrity confirmed")
+        print('CertifiedMath.py is verified as QFS V13 Phase 2/3 Zero-Simulation compliant:')
+        print('  ✅ Deterministic behavior across all inputs and operations')
+        print('  ✅ Audit log and chain integrity confirmed')
+        print('  ✅ Mathematical correctness and series convergence verified')
+        print('  ✅ Zero-Simulation compliance (no rounding errors, no nondeterminism)')
+        print('  ✅ PQC-verifiable system integrity confirmed')
         print()
-        print("Audit Completion Criteria:")
-        print("  ✅ All unit and integration tests pass")
-        print("  ✅ Reference deterministic hashes match for all flows")
-        print("  ✅ Truncate-only precision maintained")
-        print("  ✅ Deterministic JSON serialization used")
-        print("  ✅ PQC signatures verified correctly")
-        print("  ✅ DRV_Packet chaining validated")
-        print("  ✅ No unhandled exceptions in normal or edge-case scenarios")
-        print("  ✅ Documentation updated with constants, limits, and procedure")
+        print('Audit Completion Criteria:')
+        print('  ✅ All unit and integration tests pass')
+        print('  ✅ Reference deterministic hashes match for all flows')
+        print('  ✅ Truncate-only precision maintained')
+        print('  ✅ Deterministic JSON serialization used')
+        print('  ✅ PQC signatures verified correctly')
+        print('  ✅ DRV_Packet chaining validated')
+        print('  ✅ No unhandled exceptions in normal or edge-case scenarios')
+        print('  ✅ Documentation updated with constants, limits, and procedure')
         print()
-        print("✅ RESULT: 100% Zero-Simulation compliance, traceability, and mathematical integrity verified")
+        print('✅ RESULT: 100% Zero-Simulation compliance, traceability, and mathematical integrity verified')
     else:
-        print("❌ SOME AUDIT TESTS FAILED")
-        print("CertifiedMath.py requires further verification before QFS V13 Phase 2/3 deployment.")
-    
-    # Generate machine-readable report
-    report = {
-        "module": "CertifiedMath.py",
-        "standard": "QFS V13 Phase 2/3 Zero-Simulation Compliance",
-        "timestamp": datetime.now().isoformat(),
-        "tests": results,
-        "overall_status": "PASSED" if all_passed else "FAILED"
-    }
-    
-    # Save report
-    report_file = os.path.join(os.path.dirname(__file__), "certified_math_audit_report.json")
-    with open(report_file, "w") as f:
+        print('❌ SOME AUDIT TESTS FAILED')
+        print('CertifiedMath.py requires further verification before QFS V13 Phase 2/3 deployment.')
+    report = {'module': 'CertifiedMath.py', 'standard': 'QFS V13 Phase 2/3 Zero-Simulation Compliance', 'timestamp': det_time_now(), 'tests': results, 'overall_status': 'PASSED' if all_passed else 'FAILED'}
+    report_file = os.path.join(os.path.dirname(__file__), 'certified_math_audit_report.json')
+    with open(report_file, 'w') as f:
         json.dump(report, f, indent=2)
-    
-    print(f"\nDetailed report saved to: {report_file}")
-    
+    print(f'\nDetailed report saved to: {report_file}')
     return 0 if all_passed else 1
-
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    raise ZeroSimAbort(main())

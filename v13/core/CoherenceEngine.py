@@ -4,27 +4,19 @@ CoherenceEngine.py - QFS V13 Compliant Coherence Engine
 Implements a stateless, deterministic coherence engine that operates only on 
 canonical TokenStateBundle inputs and uses only CertifiedMath for all calculations.
 """
-
 import json
 import hashlib
 from typing import List, Dict, Any, Optional
-# import sys
-# import os
-
-# Import required components using relative imports
 try:
     from ..libs.CertifiedMath import CertifiedMath, BigNum128
     from .TokenStateBundle import TokenStateBundle
 except ImportError:
     from v13.libs.CertifiedMath import CertifiedMath, BigNum128
     from v13.core.TokenStateBundle import TokenStateBundle
-
 try:
     from v13.events.referral_events import ReferralRewarded
 except ImportError:
-    # Handle optional dependency or circular import if necessary
     ReferralRewarded = Any
-
 
 class CoherenceEngine:
     """
@@ -34,7 +26,7 @@ class CoherenceEngine:
     All calculations use only CertifiedMath and BigNum128 for deterministic fixed-point arithmetic.
     No numpy, no time, no logging, no file I/O.
     """
-    
+
     def __init__(self, cm_instance: CertifiedMath):
         """
         Initialize the QFS V13 Compliant Coherence Engine.
@@ -43,22 +35,12 @@ class CoherenceEngine:
             cm_instance: CertifiedMath instance for deterministic calculations
         """
         self.cm = cm_instance
-        # Define constants using BigNum128 for fixed-point arithmetic
-        self.GOLDEN_RATIO_RECIPROCAL = BigNum128(618033988749894848)  # 0.618 * 1e18
-        self.CLAMP_BOUND = BigNum128.from_int(10)  # K = 10.0 in fixed-point
+        self.GOLDEN_RATIO_RECIPROCAL = BigNum128(618033988749894848)
+        self.CLAMP_BOUND = BigNum128.from_int(10)
         self.ZERO = BigNum128.from_int(0)
         self.ONE = BigNum128.from_int(1)
 
-    def calculate_modulator(
-        self,
-        I_vector: List[BigNum128],
-        lambda_L: BigNum128,
-        K: Optional[BigNum128] = None,
-        log_list: Optional[List[Dict[str, Any]]] = None,
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-    ) -> BigNum128:
+    def calculate_modulator(self, I_vector: List[BigNum128], lambda_L: BigNum128, K: Optional[BigNum128]=None, log_list: Optional[List[Dict[str, Any]]]=None, pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0) -> BigNum128:
         """
         Calculate modulator using CertifiedMath only.
         
@@ -76,65 +58,26 @@ class CoherenceEngine:
         """
         if K is None:
             K = self.CLAMP_BOUND
-            
-        # Initialize log_list if not provided
         if log_list is None:
             log_list = []
-            
-        # Compute projection of I_vector (simple mean)
         proj_I = self.ZERO
         if len(I_vector) > 0:
             sum_I = self.ZERO
             for i in range(len(I_vector)):
                 val = I_vector[i]
                 sum_I = self.cm.add(sum_I, val, log_list, pqc_cid, quantum_metadata)
-            # Divide by length to get mean
             length_bn = BigNum128.from_int(len(I_vector))
             proj_I = self.cm.div(sum_I, length_bn, log_list, pqc_cid, quantum_metadata)
-        
-        # Compute λ(L) · proj(I_t(L))
         product = self.cm.mul(lambda_L, proj_I, log_list, pqc_cid, quantum_metadata)
-        
-        # Clamp to ±K bounds for dimensional consistency
-        # Since we're using unsigned BigNum128, we need to handle clamping differently
-        # We'll assume the values are already positive and clamp to [0, K]
         if self.cm.gt(product, K, log_list, pqc_cid, quantum_metadata):
             clamped_product = K
         else:
             clamped_product = product
-        
-        # Compute modulator: exp(clamp(λ(L) · proj(I_t(L)), 0, K))
-        # Use 50 iterations for deterministic exp calculation
         modulator_value = self.cm.exp(clamped_product, 50, log_list, pqc_cid, quantum_metadata)
-        
-        # Log the operation
-        self.cm._log_operation(
-            "calculate_modulator",
-            {
-                "I_vector_length": BigNum128.from_int(len(I_vector)),
-                "lambda_L": lambda_L,
-                "K": K,
-                "product": product,
-                "clamped_product": clamped_product
-            },
-            modulator_value,
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
-        
+        self.cm._log_operation('calculate_modulator', {'I_vector_length': BigNum128.from_int(len(I_vector)), 'lambda_L': lambda_L, 'K': K, 'product': product, 'clamped_product': clamped_product}, modulator_value, log_list, pqc_cid, quantum_metadata)
         return modulator_value
 
-    def update_omega(
-        self,
-        features: List[BigNum128],
-        I_vector: List[BigNum128],
-        L: str,
-        log_list: Optional[List[Dict[str, Any]]] = None,
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-    ) -> List[BigNum128]:
+    def update_omega(self, features: List[BigNum128], I_vector: List[BigNum128], L: str, log_list: Optional[List[Dict[str, Any]]]=None, pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0) -> List[BigNum128]:
         """
         Update Ω state vector using CertifiedMath only.
         
@@ -150,52 +93,31 @@ class CoherenceEngine:
         Returns:
             List[BigNum128]: Updated Ω vector
         """
-        # Initialize log_list if not provided
         if log_list is None:
             log_list = []
-            
-        # Normalize features
-        normalized_features = features  # Default to original if empty
+        normalized_features = features
         if len(features) > 0:
-            # Calculate norm: sqrt(sum(x^2))
-            # Since there's no sqrt function, we'll use pow(x, 0.5) as an approximation
             sum_squares = self.ZERO
             for i in range(len(features)):
                 val = features[i]
                 val_squared = self.cm.mul(val, val, log_list, pqc_cid, quantum_metadata)
                 sum_squares = self.cm.add(sum_squares, val_squared, log_list, pqc_cid, quantum_metadata)
-            
-            # Calculate sqrt using sqrt(sum_squares)
             norm = self.cm.sqrt(sum_squares, 50, log_list, pqc_cid, quantum_metadata)
-            
-            # Normalize if norm is not zero
             if self.cm.gt(norm, self.ZERO, log_list, pqc_cid, quantum_metadata):
                 normalized_features = []
                 for i in range(len(features)):
                     val = features[i]
                     normalized_val = self.cm.div(val, norm, log_list, pqc_cid, quantum_metadata)
                     normalized_features.append(normalized_val)
-        
-        # Calculate lambda_L (golden ratio reciprocal)
         lambda_L = self.GOLDEN_RATIO_RECIPROCAL
-        
-        # Calculate modulator with potential clamping
-        modulator = self.calculate_modulator(
-            I_vector, lambda_L, self.CLAMP_BOUND, 
-            log_list, pqc_cid, quantum_metadata, deterministic_timestamp
-        )
-        
-        # Update Ω_t(L) = Normalize(F_t) × m_t(L)
+        modulator = self.calculate_modulator(I_vector, lambda_L, self.CLAMP_BOUND, log_list, pqc_cid, quantum_metadata, deterministic_timestamp)
         updated_omega = []
         if len(normalized_features) > 0:
             for i in range(len(normalized_features)):
                 val = normalized_features[i]
                 omega_val = self.cm.mul(val, modulator, log_list, pqc_cid, quantum_metadata)
                 updated_omega.append(omega_val)
-        
-        # Log the operation if log_list is provided
         if log_list is not None:
-            # Calculate norm of updated omega for logging
             omega_norm = self.ZERO
             if len(updated_omega) > 0:
                 sum_squares = self.ZERO
@@ -203,34 +125,11 @@ class CoherenceEngine:
                     val = updated_omega[i]
                     val_squared = self.cm.mul(val, val, log_list, pqc_cid, quantum_metadata)
                     sum_squares = self.cm.add(sum_squares, val_squared, log_list, pqc_cid, quantum_metadata)
-                # Calculate sqrt using sqrt(sum_squares)
                 omega_norm = self.cm.sqrt(sum_squares, 50, log_list, pqc_cid, quantum_metadata)
-            
-            self.cm._log_operation(
-                "update_omega",
-                {
-                    "features_length": BigNum128.from_int(len(features)),
-                    "I_vector_length": BigNum128.from_int(len(I_vector)),
-                    "L": L,
-                    "modulator": modulator
-                },
-                omega_norm,  # Log the norm as result
-                log_list,
-                pqc_cid,
-                quantum_metadata
-            )
-        
+            self.cm._log_operation('update_omega', {'features_length': BigNum128.from_int(len(features)), 'I_vector_length': BigNum128.from_int(len(I_vector)), 'L': L, 'modulator': modulator}, omega_norm, log_list, pqc_cid, quantum_metadata)
         return updated_omega
 
-    def apply_hsmf_transition(
-        self,
-        current_bundle: TokenStateBundle,
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-        processed_events: Optional[List[Any]] = None,
-    ) -> TokenStateBundle:
+    def apply_hsmf_transition(self, current_bundle: TokenStateBundle, log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0, processed_events: Optional[List[Any]]=None) -> TokenStateBundle:
         """
         Apply HSMF transition to update all 5 tokens atomically.
         
@@ -244,43 +143,15 @@ class CoherenceEngine:
         Returns:
             TokenStateBundle: Updated TokenStateBundle
         """
-        # 1. Compute C_holo using CertifiedMath
         c_holo = self._compute_c_holo(current_bundle, log_list, pqc_cid, quantum_metadata, deterministic_timestamp)
-        
-        # 2. Check C_holo < C_MIN → trigger CIR511/CIR302
-        # In a real implementation, this would integrate with the CIR302 handler
-        # For now, we'll just log if it's below a threshold
-        C_MIN = BigNum128.from_int(1)  # 1.0 in fixed-point
+        C_MIN = BigNum128.from_int(1)
         if self.cm.lt(c_holo, C_MIN, log_list, pqc_cid, quantum_metadata):
-            # In a real implementation, this would trigger the CIR302 handler
             pass
-        
-        # 3. Update all 5 tokens atomically
         new_bundle = self._update_tokens(current_bundle, c_holo, log_list, pqc_cid, quantum_metadata, deterministic_timestamp, processed_events)
-        
-        # Log the operation
-        self.cm._log_operation(
-            "apply_hsmf_transition",
-            {
-                "bundle_id": current_bundle.bundle_id,
-                "timestamp": BigNum128.from_int(deterministic_timestamp)
-            },
-            c_holo,
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
-        
+        self.cm._log_operation('apply_hsmf_transition', {'bundle_id': current_bundle.bundle_id, 'timestamp': BigNum128.from_int(deterministic_timestamp)}, c_holo, log_list, pqc_cid, quantum_metadata)
         return new_bundle
 
-    def _compute_c_holo(
-        self,
-        current_bundle: TokenStateBundle,
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-    ) -> BigNum128:
+    def _compute_c_holo(self, current_bundle: TokenStateBundle, log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0) -> BigNum128:
         """
         Compute C_holo attractor logic using only the most recent TokenState snapshot.
         
@@ -294,46 +165,19 @@ class CoherenceEngine:
         Returns:
             BigNum128: C_holo value
         """
-        # Extract metrics from the bundle
         s_chr = current_bundle.get_coherence_metric()
         s_flx = current_bundle.get_flux_metric()
         s_psi_sync = current_bundle.get_psi_sync_metric()
         s_res = current_bundle.get_resonance_metric()
         s_atr = current_bundle.get_atr_metric()
-        
-        # C_holo = 1 / (1 + (s_res + s_flx + s_psi_sync))
         sum_dissonance = self.cm.add(s_res, s_flx, log_list, pqc_cid, quantum_metadata)
         sum_dissonance = self.cm.add(sum_dissonance, s_psi_sync, log_list, pqc_cid, quantum_metadata)
         one_plus_dissonance = self.cm.add(self.ONE, sum_dissonance, log_list, pqc_cid, quantum_metadata)
         c_holo = self.cm.div(self.ONE, one_plus_dissonance, log_list, pqc_cid, quantum_metadata)
-        
-        # Log the operation
-        self.cm._log_operation(
-            "compute_c_holo",
-            {
-                "s_res": s_res,
-                "s_flx": s_flx,
-                "s_psi_sync": s_psi_sync,
-                "sum_dissonance": sum_dissonance
-            },
-            c_holo,
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
-        
+        self.cm._log_operation('compute_c_holo', {'s_res': s_res, 's_flx': s_flx, 's_psi_sync': s_psi_sync, 'sum_dissonance': sum_dissonance}, c_holo, log_list, pqc_cid, quantum_metadata)
         return c_holo
 
-    def _update_tokens(
-        self,
-        current_bundle: TokenStateBundle,
-        c_holo: BigNum128,
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-        deterministic_timestamp: int = 0,
-        processed_events: Optional[List[Any]] = None,
-    ) -> TokenStateBundle:
+    def _update_tokens(self, current_bundle: TokenStateBundle, c_holo: BigNum128, log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, deterministic_timestamp: int=0, processed_events: Optional[List[Any]]=None) -> TokenStateBundle:
         """
         Update all 5 tokens atomically based on C_holo.
         
@@ -348,81 +192,20 @@ class CoherenceEngine:
         Returns:
             TokenStateBundle: Updated TokenStateBundle
         """
-        # Copy current states safely (shallow copy of dicts is usually enough if we replace values)
-        # But we need deep copy of structures if we mutate them?
-        # Here we just create new dicts.
         new_flx_state = dict(current_bundle.flx_state)
-        
-        # Apply Referral Rewards
         if processed_events:
             for event in processed_events:
-                # We check type by name to avoid strict import dependency if needed, 
-                # but isinstance is better if we have the class.
                 if hasattr(event, 'event_type') and event.event_type == 'REFERRAL_REWARDED':
-                    # It's a referral reward
                     wallet = event.referrer_wallet
-                    amount = BigNum128.from_int(event.amount_scaled) # Already scaled
-                    
-                    # specific token type?
+                    amount = BigNum128.from_int(event.amount_scaled)
                     token_type = getattr(event, 'token_type', 'FLX')
-                    
                     if token_type == 'FLX':
                         current_balance = new_flx_state.get(wallet, BigNum128.from_int(0))
-                        # Ensure current_balance is BigNum128 (it might be raw if bundle wasn't parsed strictly)
                         if not isinstance(current_balance, BigNum128):
-                             # Try to convert or default
-                             # This depends on how state is stored. 
-                             pass 
-                        
-                        # Add reward
+                            pass
                         new_balance = self.cm.add(current_balance, amount, log_list, pqc_cid, quantum_metadata)
                         new_flx_state[wallet] = new_balance
-                        
-                        # Log specific reward application
-                        self.cm._log_operation(
-                            "apply_referral_reward",
-                            {"wallet": wallet, "amount": amount},
-                            new_balance,
-                            log_list, pqc_cid, quantum_metadata
-                        )
-
-        # Log the operation
-        self.cm._log_operation(
-            "update_tokens",
-            {
-                "bundle_id": current_bundle.bundle_id,
-                "c_holo": c_holo,
-                "events_processed": len(processed_events) if processed_events else 0
-            },
-            c_holo,  # Use c_holo as result for logging
-            log_list,
-            pqc_cid,
-            quantum_metadata
-        )
-        
-        # Return a NEW bundle with updated state
-        # Helper to create new bundle from old one with changes
-        # leveraging create_token_state_bundle or just constructor if simple.
-        # We need to construct a new TokenStateBundle.
-        
-        # Note: TokenStateBundle is frozen (dataclass), so we must create new instance.
+                        self.cm._log_operation('apply_referral_reward', {'wallet': wallet, 'amount': amount}, new_balance, log_list, pqc_cid, quantum_metadata)
+        self.cm._log_operation('update_tokens', {'bundle_id': current_bundle.bundle_id, 'c_holo': c_holo, 'events_processed': len(processed_events) if processed_events else 0}, c_holo, log_list, pqc_cid, quantum_metadata)
         from v13.core.TokenStateBundle import create_token_state_bundle
-        
-        return create_token_state_bundle(
-            chr_state=current_bundle.chr_state, # Unchanged for now
-            flx_state=new_flx_state,            # Updated
-            psi_sync_state=current_bundle.psi_sync_state,
-            atr_state=current_bundle.atr_state,
-            res_state=current_bundle.res_state,
-            nod_state=current_bundle.nod_state,
-            lambda1=current_bundle.lambda1,
-            lambda2=current_bundle.lambda2,
-            c_crit=current_bundle.c_crit,
-            pqc_cid=pqc_cid or current_bundle.pqc_cid,
-            timestamp=deterministic_timestamp or current_bundle.timestamp,
-            storage_metrics=current_bundle.storage_metrics,
-            quantum_metadata=quantum_metadata or current_bundle.quantum_metadata,
-            parameters=current_bundle.parameters
-        )
-
-
+        return create_token_state_bundle(chr_state=current_bundle.chr_state, flx_state=new_flx_state, psi_sync_state=current_bundle.psi_sync_state, atr_state=current_bundle.atr_state, res_state=current_bundle.res_state, nod_state=current_bundle.nod_state, lambda1=current_bundle.lambda1, lambda2=current_bundle.lambda2, c_crit=current_bundle.c_crit, pqc_cid=pqc_cid or current_bundle.pqc_cid, timestamp=deterministic_timestamp or current_bundle.timestamp, storage_metrics=current_bundle.storage_metrics, quantum_metadata=quantum_metadata or current_bundle.quantum_metadata, parameters=current_bundle.parameters)

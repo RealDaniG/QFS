@@ -16,42 +16,27 @@ import json
 import hashlib
 from typing import Dict, Any, Optional, List, Type
 
-# Handle imports for both direct execution and package usage
 try:
     from libs.BigNum128 import BigNum128
     from libs.CertifiedMath import CertifiedMath
 except ImportError:
-    # Try absolute import as fallback
     from v13.libs.BigNum128 import BigNum128
     from v13.libs.CertifiedMath import CertifiedMath
 
+    # Import ZeroSimAbort
+    from v13.libs.fatal_errors import ZeroSimAbort, log_fatal_exception
+
 
 class CIR302_Handler:
+    # ... (skipping unchanged DocString parts for brevity in tool call, focusing on logic)
+    # ...
     """
     Deterministic Halt System for QFS V13.6.
-
-    Triggers on:
-    - HSMF validation failure, treasury computation errors, or C_holo/S_CHR violations
-    - Constitutional guard violations (EconomicsGuard, NODInvariantChecker)
-    - AEGIS node verification failures
-    - NOD transfer firewall violations
-
-    Implements immediate hard halt with no quarantine state or retries.
-    Integrates with CertifiedMath for canonical logging.
-
-    V13.6 Error Code Categories:
-    - ECON_*: Economic bound violations (EconomicsGuard)
-    - NOD_INVARIANT_*: NOD invariant violations (NODInvariantChecker)
-    - INVARIANT_VIOLATION_NOD_TRANSFER: NOD transfer firewall
-    - NODE_*: AEGIS node verification failures
-    - AEGIS_OFFLINE: AEGIS degradation/offline
+    ...
     """
 
     CIR302_CODE = BigNum128.from_int(302)
-
-    # V13.6: Constitutional error code to halt reason mappings
     GUARD_ERROR_MAPPINGS = {
-        # Economic Guard Violations
         "ECON_BOUND_VIOLATION": "Constitutional economic bound violated",
         "ECON_CHR_MAX_REWARD_EXCEEDED": "CHR reward exceeds max per action",
         "ECON_CHR_DAILY_EMISSION_CAP_EXCEEDED": "CHR daily emission cap exceeded",
@@ -67,19 +52,16 @@ class CIR302_Handler:
         "ECON_PER_ADDRESS_CAP": "Per-address reward cap exceeded",
         "ECON_DUST_THRESHOLD": "Reward below dust threshold",
         "ECON_IMMUTABLE_CONSTANT_MUTATION": "Attempted mutation of [IMMUTABLE] constant",
-        # NOD Invariant Violations
         "INVARIANT_VIOLATION_NOD_TRANSFER": "NOD transfer firewall: NOD delta outside allowed context",
         "NOD_INVARIANT_I1_VIOLATED": "NOD-I1 violated: Non-transferability (user transfer attempt)",
         "NOD_INVARIANT_I2_VIOLATED": "NOD-I2 violated: Supply conservation (unverified node or out-of-allocator creation)",
         "NOD_INVARIANT_I3_VIOLATED": "NOD-I3 violated: Voting power bounds (single node > 25%)",
         "NOD_INVARIANT_I4_VIOLATED": "NOD-I4 violated: Deterministic replay (snapshot hash mismatch)",
-        # AEGIS Node Verification Failures
         "NODE_NOT_IN_REGISTRY": "Node not found in AEGIS registry",
         "NODE_INSUFFICIENT_UPTIME": "Node uptime below threshold",
         "NODE_TELEMETRY_HASH_MISMATCH": "Telemetry hash coherence failure",
         "NODE_CRYPTOGRAPHIC_IDENTITY_INVALID": "PQC identity verification failed",
         "NODE_HEALTH_CHECK_FAILED": "Node health check failed",
-        # AEGIS System Status
         "AEGIS_OFFLINE": "AEGIS system offline or degraded",
         "AEGIS_SNAPSHOT_UNAVAILABLE": "AEGIS snapshot unavailable for deterministic replay",
         "AEGIS_SCHEMA_VERSION_MISMATCH": "AEGIS snapshot schema version mismatch",
@@ -121,7 +103,6 @@ class CIR302_Handler:
             quantum_metadata: Optional quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        # Log the violation deterministically using CertifiedMath
         self.cm._log_operation(
             "cir302_violation",
             {
@@ -141,13 +122,21 @@ class CIR302_Handler:
             pqc_cid,
             quantum_metadata,
         )
+<<<<<<< HEAD
 
         # HARD HALT — no return, no state, no quarantine
         # Exit code must be deterministically derived from the fault, not hardcoded
         exit_code = self.cm.idiv_bn(
+=======
+        exit_code = self.cm.idiv(
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
-        raise SystemExit(exit_code)  # 302 integer exit code
+
+        # Raise Deterministic Abort instead of SystemExit
+        raise ZeroSimAbort(
+            f"CIR302 HALT: {error_type} - {error_details}", exit_code=exit_code
+        )
 
     def handle_guard_violation(
         self,
@@ -174,12 +163,9 @@ class CIR302_Handler:
             quantum_metadata: Optional quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        # Map error code to halt reason
         halt_reason = self.GUARD_ERROR_MAPPINGS.get(
             error_code, f"Unknown guard violation: {error_code}"
         )
-
-        # Build structured violation payload
         violation_payload = {
             "cir": "302",
             "violation_type": "constitutional_guard",
@@ -191,8 +177,6 @@ class CIR302_Handler:
             ).to_decimal_string(),
             "context": context,
         }
-
-        # Log the violation
         self.cm._log_operation(
             "constitutional_guard_violation",
             violation_payload,
@@ -201,13 +185,9 @@ class CIR302_Handler:
             pqc_cid,
             quantum_metadata,
         )
-
-        # Generate finality seal with guard status
         finality_seal = self.generate_guard_finality_seal(
             error_code, error_message, context, deterministic_timestamp
         )
-
-        # Log finality seal generation
         log_list.append(
             {
                 "operation": "cir302_finality_seal_generated",
@@ -216,12 +196,20 @@ class CIR302_Handler:
                 "timestamp": deterministic_timestamp,
             }
         )
+<<<<<<< HEAD
 
         # HARD HALT — no return, no state, no quarantine
         exit_code = self.cm.idiv_bn(
+=======
+        exit_code = self.cm.idiv(
+>>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
-        raise SystemExit(exit_code)  # 302 integer exit code
+
+        # Raise Deterministic Abort instead of SystemExit
+        raise ZeroSimAbort(
+            f"GUARD HALT: {error_code} - {error_message}", exit_code=exit_code
+        )
 
     def generate_finality_seal(
         self,
@@ -241,7 +229,6 @@ class CIR302_Handler:
         Returns:
             str: Deterministic hash of system state
         """
-        # Create deterministic representation of system state
         seal_data = {
             "component": "CIR302_FINALITY_SEAL",
             "version": "QFS-V13.6",
@@ -253,13 +240,8 @@ class CIR302_Handler:
             else "",
             "quantum_metadata": self.quantum_metadata,
         }
-
-        # Serialize with sorted keys for deterministic output
         seal_json = json.dumps(seal_data, sort_keys=True, separators=(",", ":"))
-
-        # Generate deterministic hash
         seal_hash = hashlib.sha256(seal_json.encode("utf-8")).hexdigest()
-
         return seal_hash
 
     def generate_guard_finality_seal(
@@ -283,7 +265,6 @@ class CIR302_Handler:
         Returns:
             str: Deterministic hash of finality seal
         """
-        # Build deterministic seal payload
         seal_data = {
             "component": "AEGIS_FINALITY_SEAL",
             "version": "QFS-V13.6",
@@ -301,17 +282,10 @@ class CIR302_Handler:
             ],
             "quantum_metadata": self.quantum_metadata,
         }
-
-        # Add context fields to seal data (flatten for deterministic serialization)
-        for key, value in sorted(context.items()):  # Use sorted for deterministic iteration
+        for key, value in sorted(context.items()):
             seal_data[f"violation_context_{key}"] = str(value)
-
-        # Serialize with sorted keys for deterministic output
         seal_json = json.dumps(seal_data, sort_keys=True, separators=(",", ":"))
-
-        # Generate deterministic hash
         seal_hash = hashlib.sha256(seal_json.encode("utf-8")).hexdigest()
-
         return seal_hash
 
     def _hash_system_state(self, system_state: Dict[str, Any]) -> str:
@@ -326,7 +300,5 @@ class CIR302_Handler:
         """
         if not system_state:
             return ""
-
-        # Serialize with sorted keys for deterministic output
         state_json = json.dumps(system_state, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(state_json.encode("utf-8")).hexdigest()

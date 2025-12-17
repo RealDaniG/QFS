@@ -4,9 +4,7 @@ Secure Memory Zeroization for PQC Key Material
 
 Zero-Simulation Compliant, Side-Channel Resistant
 """
-
 from typing import Union
-
 
 class MemoryHygiene:
     """
@@ -31,12 +29,7 @@ class MemoryHygiene:
             Immutable bytes cannot be securely zeroized and will raise TypeError.
         """
         if not isinstance(private_key, bytearray):
-            raise TypeError(
-                "zeroize_private_key() requires a mutable bytearray. "
-                "Immutable bytes cannot be securely zeroized."
-            )
-
-        # constant-time loop overwrite
+            raise TypeError('zeroize_private_key() requires a mutable bytearray. Immutable bytes cannot be securely zeroized.')
         for i in range(len(private_key)):
             private_key[i] = 0
 

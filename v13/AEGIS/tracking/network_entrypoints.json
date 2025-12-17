@@ -1,0 +1,17 @@
+[
+    {
+        "module": "v13/ATLAS/src/api/routes/secure_chat.py",
+        "function": "router",
+        "purpose": "chat"
+    },
+    {
+        "module": "v13/ATLAS/src/p2p/connection_manager.py",
+        "function": "ConnectionManager",
+        "purpose": "gossip"
+    },
+    {
+        "module": "v13/ATLAS/src/api/routes/explain_p2p.py",
+        "function": "router",
+        "purpose": "rpc"
+    }
+]

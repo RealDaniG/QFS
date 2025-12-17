@@ -4,11 +4,9 @@ PQC Audit Hash Generation and Log Export
 
 Zero-Simulation Compliant, Deterministic Audit Trail
 """
-
 import json
 import hashlib
 from typing import Any, Dict, List
-
 
 class PQC_Audit:
     """
@@ -31,21 +29,15 @@ class PQC_Audit:
         Raises:
             TypeError: If log entries contain non-serializable objects
         """
-        # Phase-3: Canonicalize all entries before hashing
         from .CanonicalSerializer import CanonicalSerializer
-        
         canonical_entries = []
         for entry in log_list:
             try:
-                canonical_entries.append(
-                    CanonicalSerializer.canonicalize_for_sign(entry)
-                )
+                canonical_entries.append(CanonicalSerializer.canonicalize_for_sign(entry))
             except TypeError as e:
-                raise TypeError(f"Non-deterministic type in audit log: {e}")
-        
-        # Serialize canonical entries deterministically
+                raise TypeError(f'Non-deterministic type in audit log: {e}')
         serialized_log = json.dumps(canonical_entries, separators=(',', ':'), ensure_ascii=False)
-        return hashlib.sha3_512(serialized_log.encode("utf-8")).hexdigest()
+        return hashlib.sha3_512(serialized_log.encode('utf-8')).hexdigest()
 
     @staticmethod
     def export_log(log_list: List[Dict[str, Any]], path: str) -> None:
@@ -56,14 +48,9 @@ class PQC_Audit:
             log_list: List of log entries to export
             path: File path for export
         """
-        # Phase-3: Canonicalize before export for replay equivalence
         from .CanonicalSerializer import CanonicalSerializer
-        
         canonical_log = []
         for entry in log_list:
-            canonical_log.append(
-                json.loads(CanonicalSerializer.canonicalize_for_sign(entry))
-            )
-        
-        with open(path, "w", encoding="utf-8") as f:
+            canonical_log.append(json.loads(CanonicalSerializer.canonicalize_for_sign(entry)))
+        with open(path, 'w', encoding='utf-8') as f:
             json.dump(canonical_log, f, indent=2, ensure_ascii=False)

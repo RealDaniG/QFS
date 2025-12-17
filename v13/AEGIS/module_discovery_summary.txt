@@ -1,0 +1,32 @@
+=== QFS Module Discovery Summary ===
+
+Total files scanned: 242
+
+atlas_api_modules:
+  Files: 6
+  Sample: v13/atlas_api/__init__.py
+
+atlas_frontend_modules:
+  Files: 181
+  Sample: v13/ATLAS/src/__init__.py
+
+core_modules:
+  Files: 18
+  Sample: v13/core/AEGISNodeVerification.py
+
+economic_modules:
+  Files: 11
+  Sample: v13/libs/economics/EconomicAdversarySuite.py
+
+governance_modules:
+  Files: 6
+  Sample: v13/libs/governance/AEGIS_Node_Verification.py
+
+policy_modules:
+  Files: 19
+  Sample: v13/policy/PolicyRegistry.py
+
+tools_root_modules:
+  Files: 1
+  Sample: tools_root/discovery_scan.py
+

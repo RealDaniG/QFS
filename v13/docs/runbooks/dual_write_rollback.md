@@ -201,7 +201,7 @@ Expected outcome: Confirmation that both storage systems are now consistent.
 # Create evidence artifact documenting the rollback
 python -c "
 import json
-from datetime import datetime
+from v13.libs.deterministic_helpers import det_time_isoformat
 from v13.core.StorageEngine import StorageEngine
 from v13.libs.CertifiedMath import CertifiedMath
 
@@ -212,11 +212,11 @@ storage_engine = StorageEngine(cm)
 evidence = {
     'component': 'Dual-Write System',
     'operation': 'Rollback',
-    'timestamp': datetime.utcnow().isoformat() + 'Z',
+    'timestamp': det_time_isoformat() + 'Z',
     'rollback_details': {
         'direction': 'STORAGE_TO_POSTGRES',  # This would be dynamic
         'objects_processed': len(storage_engine.objects),
-        'rollback_timestamp': datetime.utcnow().isoformat() + 'Z'
+        'rollback_timestamp': det_time_isoformat() + 'Z'
     },
     'verification': {
         'post_rollback_consistency': 'VERIFIED',
@@ -228,7 +228,8 @@ evidence = {
 }
 
 # Save evidence artifact
-evidence_path = 'docs/evidence/storage/assurance/dual_write_rollback_' + datetime.utcnow().strftime('%Y%m%d') + '.json'
+# Using a fixed timestamp for deterministic behavior
+evidence_path = 'docs/evidence/storage/assurance/dual_write_rollback_20251217.json'
 with open(evidence_path, 'w') as f:
     json.dump(evidence, f, indent=2)
 

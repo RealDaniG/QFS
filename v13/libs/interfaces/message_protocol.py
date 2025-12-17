@@ -3,18 +3,11 @@ Message Protocol - PQC-Signed Messages for Inter-Module Communication
 
 Zero-Simulation Compliant
 """
-
 from typing import Dict, Any
 from pydantic import BaseModel, Field
-import sys
-import os
-
-# Add parent directory to path for imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
-
 from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer
 from .pqc_interface import PQCInterface
-
 
 class SignedMessage(BaseModel):
     """
@@ -27,19 +20,18 @@ class SignedMessage(BaseModel):
     - Non-repudiation: Sender cannot deny sending
     - Auditability: All messages are logged
     """
-    
     sender_qid: str = Field(..., description="Sender's QID")
-    recipient_module: str = Field(..., description="Target module name")
-    payload: Dict[str, Any] = Field(..., description="Message payload")
-    tick: int = Field(..., description="Tick number when sent", ge=0)
-    timestamp: int = Field(..., description="Deterministic timestamp", ge=0)
-    signature: bytes = Field(..., description="PQC signature")
+    recipient_module: str = Field(..., description='Target module name')
+    payload: Dict[str, Any] = Field(..., description='Message payload')
+    tick: int = Field(..., description='Tick number when sent', ge=0)
+    timestamp: int = Field(..., description='Deterministic timestamp', ge=0)
+    signature: bytes = Field(..., description='PQC signature')
     public_key: bytes = Field(..., description="Sender's public key")
-    
+
     class Config:
-        frozen = True  # Immutable
+        frozen = True
         arbitrary_types_allowed = True
-    
+
     def verify(self, pqc: PQCInterface) -> bool:
         """
         Verify message signature using PQC interface.
@@ -53,32 +45,12 @@ class SignedMessage(BaseModel):
         Deterministic Guarantee:
             Same message + same PQC → same verification result
         """
-        # Create canonical representation for signing
-        canonical_data = {
-            "sender": self.sender_qid,
-            "recipient": self.recipient_module,
-            "payload": self.payload,
-            "tick": self.tick,
-            "timestamp": self.timestamp
-        }
-        
-        # Serialize deterministically
+        canonical_data = {'sender': self.sender_qid, 'recipient': self.recipient_module, 'payload': self.payload, 'tick': self.tick, 'timestamp': self.timestamp}
         canonical_bytes = CanonicalSerializer.serialize_data(canonical_data)
-        
-        # Verify signature
         return pqc.verify(self.public_key, canonical_bytes, self.signature)
-    
+
     @staticmethod
-    def create(
-        sender_qid: str,
-        recipient_module: str,
-        payload: Dict[str, Any],
-        tick: int,
-        timestamp: int,
-        private_key: bytes,
-        public_key: bytes,
-        pqc: PQCInterface
-    ) -> "SignedMessage":
+    def create(sender_qid: str, recipient_module: str, payload: Dict[str, Any], tick: int, timestamp: int, private_key: bytes, public_key: bytes, pqc: PQCInterface) -> 'SignedMessage':
         """
         Create and sign a new message.
         
@@ -95,25 +67,7 @@ class SignedMessage(BaseModel):
         Returns:
             Signed message
         """
-        # Create canonical representation
-        canonical_data = {
-            "sender": sender_qid,
-            "recipient": recipient_module,
-            "payload": payload,
-            "tick": tick,
-            "timestamp": timestamp
-        }
-        
-        # Serialize and sign
+        canonical_data = {'sender': sender_qid, 'recipient': recipient_module, 'payload': payload, 'tick': tick, 'timestamp': timestamp}
         canonical_bytes = CanonicalSerializer.serialize_data(canonical_data)
         signature = pqc.sign(private_key, canonical_bytes)
-        
-        return SignedMessage(
-            sender_qid=sender_qid,
-            recipient_module=recipient_module,
-            payload=payload,
-            tick=tick,
-            timestamp=timestamp,
-            signature=signature,
-            public_key=public_key
-        )
+        return SignedMessage(sender_qid=sender_qid, recipient_module=recipient_module, payload=payload, tick=tick, timestamp=timestamp, signature=signature, public_key=public_key)

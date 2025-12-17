@@ -7,11 +7,11 @@ while maintaining deterministic behavior.
 
 import json
 import hashlib
-from typing import Dict, Any, Optional, List, Union
-from dataclasses import dataclass, asdict
+from typing import Dict, Any, Optional, List
+from dataclasses import dataclass
 import logging
 from .real_ledger import RealLedger
-from .types import Transaction, Receipt, DeterminismReport
+from .types import Transaction, DeterminismReport
 from .qfs_types import OperationBundle
 from libs.deterministic_helpers import det_time_isoformat
 
@@ -202,19 +202,45 @@ class QFSClient:
 
     def _sign_bundle(self, bundle: OperationBundle) -> str:
         """
-        Sign operation bundle with private key.
+        Sign operation bundle with private key using PQC.
 
         Args:
             bundle: Bundle to sign
 
         Returns:
-            str: Signature
+            str: Signature (hex encoded)
         """
-        bundle_data = json.dumps(bundle.to_dict(), sort_keys=True)
-        signature = hashlib.sha256(
-            f"{self._private_key}:{bundle_data}".encode()
-        ).hexdigest()
-        return signature
+        from libs.PQC import PQC
+
+        # We need a log context for PQC operations
+        with PQC.LogContext() as log:
+            # Ensure private key is bytes/bytearray
+            if isinstance(self._private_key, str):
+                try:
+                    # Try to parse as hex if it looks like a key
+                    key_bytes = bytearray.fromhex(self._private_key)
+                except ValueError:
+                    # Fallback for simple string secrets in legacy tests
+                    key_bytes = bytearray(self._private_key.encode())
+            elif isinstance(self._private_key, (bytes, bytearray)):
+                key_bytes = bytearray(self._private_key)
+            else:
+                raise ValueError("Private key must be string or bytes")
+
+            # Sign the bundle dictionary directly (PQC handles canonicalization)
+            # Remove signature from data-to-sign to avoid circular dependency
+            data_to_sign = bundle.to_dict()
+            if "signature" in data_to_sign:
+                del data_to_sign["signature"]
+
+            signature_bytes = PQC.sign_data(
+                private_key=key_bytes,
+                data=data_to_sign,
+                log_list=log,
+                deterministic_timestamp=0,  # Timestamp handled in bundle
+            )
+
+            return signature_bytes.hex()
 
     async def get_bundle_status(self, bundle_hash: str) -> Dict[str, Any]:
         """

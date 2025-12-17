@@ -4,6 +4,19 @@
 
 ---
 
+## 🎯 Quick Start
+
+| I want to... | Go here |
+|--------------|---------|
+| **Understand the system** | [Core Concepts](v13/docs/QFS_V13_8_FULL_ENGINE_OVERVIEW.md) · [📖 Wiki](https://github.com/RealDaniG/QFS/wiki) |
+| **Deploy to production** | [Production Deployment](v13/docs/OPERATOR_RUNBOOK_V13.8.md) |
+| **Review security** | [Security Compliance](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) |
+| **Contribute** | [Contributing](v13/docs/roadmaps/TASKS-V13.5.md) |
+| **Check status** | [Interactive Dashboard](v13/docs/qfs-v13.8-dashboard.html) |
+| **Browse documentation** | [📚 Full Wiki](v13/docs/README.md) |
+
+---
+
 ## 📊 Current Status
 
 ### V18.9 "Deterministic Session Management" (RELEASED) ✅ LIVE
@@ -27,7 +40,7 @@ This release introduces the complete deterministic session management system wit
 **Constitutional Status:** Guards enforced at all economic and governance gates  
 **Performance Target:** 2,000 TPS with full guard stack under AEGIS‑verified nodes
 
-📈 [View Real-Time Dashboard](docs/qfs-v18.9-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+📈 [View Real-Time Dashboard](v13/docs/qfs-v13.8-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
 
 ---
 

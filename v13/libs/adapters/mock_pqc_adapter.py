@@ -2,11 +2,9 @@
 MockPQCAdapter - Adapter for Mock PQC Implementation
 Implements PQCInterfaceProtocol using MockPQC from PQC.py
 """
-
 from typing import Tuple
 import hashlib
 from ..interfaces.pqc_interface import PQCInterface
-
 
 class MockPQCAdapter(PQCInterface):
     """
@@ -14,11 +12,11 @@ class MockPQCAdapter(PQCInterface):
     Implements the PQCInterface protocol for testing environments.
     NOT CRYPTOGRAPHICALLY SECURE - for integration testing only.
     """
-    
+
     def __init__(self):
         """Initialize the mock PQC adapter with a key cache."""
-        self._key_cache = {}  # Map public_key -> private_key for verify
-    
+        self._key_cache = {}
+
     def keygen(self, seed: bytes) -> Tuple[bytes, bytes]:
         """
         Generate a keypair from a seed using SHA-256 simulation.
@@ -30,14 +28,12 @@ class MockPQCAdapter(PQCInterface):
             Tuple of (private_key, public_key) as bytes
         """
         if len(seed) < 32:
-            # Pad seed to 32 bytes if needed
             seed = seed + b'\x00' * (32 - len(seed))
-        private_key = hashlib.sha256(b"private_" + seed).digest()
-        public_key = hashlib.sha256(b"public_" + seed).digest()
-        # Cache the keypair for verify operation
+        private_key = hashlib.sha256(b'private_' + seed).digest()
+        public_key = hashlib.sha256(b'public_' + seed).digest()
         self._key_cache[public_key] = private_key
-        return private_key, public_key
-    
+        return (private_key, public_key)
+
     def sign(self, private_key: bytes, message: bytes) -> bytes:
         """
         Sign a message with a private key using SHA-256 simulation.
@@ -50,7 +46,7 @@ class MockPQCAdapter(PQCInterface):
             Signature bytes
         """
         return hashlib.sha256(private_key + message).digest()
-    
+
     def verify(self, public_key: bytes, message: bytes, signature: bytes) -> bool:
         """
         Verify a signature against a message and public key using SHA-256 simulation.
@@ -63,9 +59,8 @@ class MockPQCAdapter(PQCInterface):
         Returns:
             True if signature is valid, False otherwise
         """
-        # Lookup private key from cache
         private_key = self._key_cache.get(public_key)
         if private_key is None:
-            return False  # Key not found, verification fails
+            return False
         expected = self.sign(private_key, message)
         return signature == expected

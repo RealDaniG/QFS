@@ -1,149 +1,77 @@
-#!/usr/bin/env python3
 """
 Zero-Mock Compliance Scanner for QFS V13
 Verifies that no mock usage, fixtures, or fake data exist in production paths.
 Enforces the mandatory Zero-Simulation invariant for live feeds.
 """
-
-import os
-import sys
 import re
 import json
 import ast
-from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any, Set
-
-# --- Configuration ---
-# Allow running from 'v13/' or root
-if os.path.exists("core") and os.path.isdir("core"):
-    PREFIX = ""
+if os.path.exists('core') and os.path.isdir('core'):
+    PREFIX = ''
 else:
-    PREFIX = "v13/"
-
-SCAN_ROOTS = [
-    f"{PREFIX}ATLAS",
-    f"{PREFIX}core",
-    f"{PREFIX}policy",
-]
-
-EXCLUDE_DIRS = [
-    f"{PREFIX}ATLAS/node_modules",
-    f"{PREFIX}ATLAS/.next",
-    f"{PREFIX}ATLAS/dist",
-    f"{PREFIX}ATLAS/coverage",
-    "__pycache__",
-    ".git",
-    f"{PREFIX}tests",              # Tests allowed to use mocks (internally)
-    f"{PREFIX}legacy_root",        # Legacy code exclusion
-]
-
-FORBIDDEN_KEYWORDS = [
-    "mock",
-    "fixture",
-    "fake",
-    "test_array",
-    "deterministic_mock",
-    "simulated_event",
-    "sample_events",
-    # "generated_data" # Too broad?
-]
-
-# Specifically check that Explain-This API only sources from allowed engines
-EXPLAIN_THIS_ROUTES = [
-    f"{PREFIX}ATLAS/src/api/routes/explain.py",
-]
-
-ALLOWED_EXPLAIN_SOURCES = [
-    "QFSReplaySource",
-    "ValueNodeReplayEngine.replay_events",
-    "ValueNodeReplayEngine.explain_content_ranking",
-]
-
-OUTPUT_FILE = "v13/evidence/zero_mock_scan_status.json"
+    PREFIX = 'v13/'
+SCAN_ROOTS = [f'{PREFIX}ATLAS', f'{PREFIX}core', f'{PREFIX}policy']
+EXCLUDE_DIRS = [f'{PREFIX}ATLAS/node_modules', f'{PREFIX}ATLAS/.next', f'{PREFIX}ATLAS/dist', f'{PREFIX}ATLAS/coverage', '__pycache__', '.git', f'{PREFIX}tests', f'{PREFIX}legacy_root']
+FORBIDDEN_KEYWORDS = ['mock', 'fixture', 'fake', 'test_array', 'deterministic_mock', 'simulated_event', 'sample_events']
+EXPLAIN_THIS_ROUTES = [f'{PREFIX}ATLAS/src/api/routes/explain.py']
+ALLOWED_EXPLAIN_SOURCES = ['QFSReplaySource', 'ValueNodeReplayEngine.replay_events', 'ValueNodeReplayEngine.explain_content_ranking']
+OUTPUT_FILE = 'v13/evidence/zero_mock_scan_status.json'
 
 class ZeroMockScanner:
+
     def __init__(self):
         self.violations: List[Dict[str, Any]] = []
         self.files_scanned = 0
-        self.stats = {
-            "slices": {
-                "Humor": {"mock_found": False, "files": []},
-                "ValueNode": {"mock_found": False, "files": []},
-                "Storage": {"mock_found": False, "files": []},
-                "Artistic": {"mock_found": False, "files": []},
-                "General": {"mock_found": False, "files": []}
-            }
-        }
+        self.stats = {'slices': {'Humor': {'mock_found': False, 'files': []}, 'ValueNode': {'mock_found': False, 'files': []}, 'Storage': {'mock_found': False, 'files': []}, 'Artistic': {'mock_found': False, 'files': []}, 'General': {'mock_found': False, 'files': []}}}
 
     def _get_slice_name(self, file_path: str) -> str:
         lower_path = file_path.lower()
-        if "humor" in lower_path: return "Humor"
-        if "value_node" in lower_path or "valuenode" in lower_path or "explain" in lower_path: return "ValueNode"
-        if "storage" in lower_path or "ipfs" in lower_path: return "Storage"
-        if "artistic" in lower_path or "aes" in lower_path: return "Artistic"
-        return "General"
+        if 'humor' in lower_path:
+            return 'Humor'
+        if 'value_node' in lower_path or 'valuenode' in lower_path or 'explain' in lower_path:
+            return 'ValueNode'
+        if 'storage' in lower_path or 'ipfs' in lower_path:
+            return 'Storage'
+        if 'artistic' in lower_path or 'aes' in lower_path:
+            return 'Artistic'
+        return 'General'
 
     def scan_file_contents(self, file_path: str):
         try:
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                 lines = f.readlines()
-                
             for i, line in enumerate(lines):
                 line_num = i + 1
                 for keyword in FORBIDDEN_KEYWORDS:
-                    # Case insensitive check? Or sensitive? Using sensitive to avoid false positives on 'smock' etc (unlikely).
-                    # Let's use case-insensitive but check word boundaries if possible
-                    if re.search(fr'\b{keyword}\b', line, re.IGNORECASE):
-                        # Filter comments if needed, but forbidden keywords shouldn't even be in comments in prod ideally
-                        # For now, strict: ANY usage is flagged.
-                        
-                        # Exclude self-references in this script if it scans itself (it shouldn't due to path)
-                        
-                        violation = {
-                            "file": file_path,
-                            "line": line_num,
-                            "keyword": keyword,
-                            "content": line.strip()
-                        }
+                    if re.search(f'\\b{keyword}\\b', line, re.IGNORECASE):
+                        violation = {'file': file_path, 'line': line_num, 'keyword': keyword, 'content': line.strip()}
                         self.violations.append(violation)
-                        
                         slice_name = self._get_slice_name(file_path)
-                        self.stats["slices"][slice_name]["mock_found"] = True
-                        self.stats["slices"][slice_name]["files"].append(f"{file_path}:{line_num}")
-
+                        self.stats['slices'][slice_name]['mock_found'] = True
+                        self.stats['slices'][slice_name]['files'].append(f'{file_path}:{line_num}')
         except Exception as e:
-            print(f"Error checking file {file_path}: {e}")
+            print(f'Error checking file {file_path}: {e}')
 
     def scan_directories(self):
         root_dir = os.getcwd()
-        
         for scan_path in SCAN_ROOTS:
             abs_scan_path = Path(root_dir) / scan_path
             if not abs_scan_path.exists():
-                print(f"Warning: Path not found {scan_path}")
+                print(f'Warning: Path not found {scan_path}')
                 continue
-                
             for root, dirs, files in os.walk(abs_scan_path):
-                # Apply exclusions
-                dirs[:] = [d for d in dirs if not any(x in os.path.join(root, d).replace("\\", "/") for x in EXCLUDE_DIRS)]
-                
-                # Exclude specific file extensions
+                dirs[:] = [d for d in dirs if not any((x in os.path.join(root, d).replace('\\', '/') for x in EXCLUDE_DIRS))]
                 files = [f for f in files if f.endswith(('.py', '.ts', '.tsx', '.js'))]
-                
                 for file in files:
-                    file_path = os.path.join(root, file).replace("\\", "/")
-                    
-                    # Double check exclusion for file path
-                    if any(x in file_path for x in EXCLUDE_DIRS):
+                    file_path = os.path.join(root, file).replace('\\', '/')
+                    if any((x in file_path for x in EXCLUDE_DIRS)):
                         continue
-                        
-                    # Exclude test files and directories
-                    if "/__tests__/" in file_path or "/tests/" in file_path:
+                    if '/__tests__/' in file_path or '/tests/' in file_path:
                         continue
                     if file.endswith(('.test.ts', '.spec.ts', '.test.py', '.test.js', '.spec.js', '.test.tsx')):
                         continue
-                        
                     self.files_scanned += 1
                     self.scan_file_contents(file_path)
 
@@ -155,93 +83,48 @@ class ZeroMockScanner:
         for route_file in EXPLAIN_THIS_ROUTES:
             if not os.path.exists(route_file):
                 continue
-                
             with open(route_file, 'r', encoding='utf-8') as f:
                 content = f.read()
-                
-            # Basic AST walk for Python
             if route_file.endswith('.py'):
                 try:
                     tree = ast.parse(content)
-                    # Look for array literals in function bodies decorated with @router
-                    # This is complex to implement fully robustly in a script.
-                    # Instead, we'll grep for simple array literals "events = [...]" which suggests mocks
-                    
-                    if re.search(r'events\s*=\s*\[.*\{.*\}.*\]', content, re.DOTALL):
-                         self.violations.append({
-                            "file": route_file,
-                            "line": 0,
-                            "keyword": "INLINE_MOCK_ARRAY",
-                            "content": "Found inline array assignment potentially containing mock events."
-                        })
-                        
-                    # Check if valid source is used
+                    if re.search('events\\s*=\\s*\\[.*\\{.*\\}.*\\]', content, re.DOTALL):
+                        self.violations.append({'file': route_file, 'line': 0, 'keyword': 'INLINE_MOCK_ARRAY', 'content': 'Found inline array assignment potentially containing mock events.'})
                     found_valid_source = False
                     for valid in ALLOWED_EXPLAIN_SOURCES:
                         if valid in content:
                             found_valid_source = True
-                            
-                    # If we don't find a replay engine or source, and we don't find a stub...
-                    # Actually, we want to ensure forbidden things are ABSENT.
-                    # The presence of QFSReplaySource is a "Live Source Verified" check.
-                    
                     slice_name = self._get_slice_name(route_file)
-                    # We mark live_source_verified based on this
-                    self.stats["slices"][slice_name]["live_source_verified"] = found_valid_source
-                    
+                    self.stats['slices'][slice_name]['live_source_verified'] = found_valid_source
                 except Exception as e:
-                    print(f"Error parsing {route_file}: {e}")
+                    print(f'Error parsing {route_file}: {e}')
 
     def generate_report(self):
         success = len(self.violations) == 0
-        
-        # Determine cross-slice status
         slice_reports = []
-        for name, data in self.stats["slices"].items():
-            # Zero Sim Compliant if no mocks found AND (if it's Explain-This code) source is verified
-            is_compliant = not data["mock_found"]
-            
-            # Helper logic: If it's a specific slice and we scanned it, assume passing unless flagged
-            mock_usage = data["mock_found"]
-            
-            report_item = {
-                "name": name,
-                "mock_usage_found": mock_usage,
-                "files": data["files"],
-                "live_source_verified": data.get("live_source_verified", None), # Only applies to API really
-                "zero_sim_compliant": is_compliant
-            }
+        for name, data in self.stats['slices'].items():
+            is_compliant = not data['mock_found']
+            mock_usage = data['mock_found']
+            report_item = {'name': name, 'mock_usage_found': mock_usage, 'files': data['files'], 'live_source_verified': data.get('live_source_verified', None), 'zero_sim_compliant': is_compliant}
             slice_reports.append(report_item)
-
-        report = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "scan_result": "PASS" if success else "FAIL",
-            "files_scanned": self.files_scanned,
-            "violations": self.violations,
-            "slices": slice_reports,
-            "notes": "Automated Zero-Mock Verification Scan."
-        }
-        
+        report = {'timestamp': datetime.utcnow().isoformat(), 'scan_result': 'PASS' if success else 'FAIL', 'files_scanned': self.files_scanned, 'violations': self.violations, 'slices': slice_reports, 'notes': 'Automated Zero-Mock Verification Scan.'}
         os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
         with open(OUTPUT_FILE, 'w') as f:
             json.dump(report, f, indent=2)
-            
-        return success, report
-
-if __name__ == "__main__":
-    print(">> Starting Zero-Mock Verification Scan...")
+        return (success, report)
+if __name__ == '__main__':
+    print('>> Starting Zero-Mock Verification Scan...')
     scanner = ZeroMockScanner()
     scanner.scan_directories()
     scanner.verify_explain_this_sources()
     success, report = scanner.generate_report()
-    
     if success:
-        print("[OK] ZERO-MOCK COMPLIANCE VERIFIED.")
-        print(f"Scanned {scanner.files_scanned} files across production paths.")
-        sys.exit(0)
+        print('[OK] ZERO-MOCK COMPLIANCE VERIFIED.')
+        print(f'Scanned {scanner.files_scanned} files across production paths.')
+        raise ZeroSimAbort(0)
     else:
-        print(f"[FAIL] MOCK USAGE DETECTED: {len(scanner.violations)} violations.")
+        print(f'[FAIL] MOCK USAGE DETECTED: {len(scanner.violations)} violations.')
         for v in scanner.violations[:5]:
             print(f"  - {v['file']}:{v['line']} -> found '{v['keyword']}'")
-        print(f"See full report at {OUTPUT_FILE}")
-        sys.exit(1)
+        print(f'See full report at {OUTPUT_FILE}')
+        raise ZeroSimAbort(1)

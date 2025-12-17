@@ -3,9 +3,7 @@ PQC Interface - Abstract PQC Operations for Swappable Implementations
 
 Zero-Simulation Compliant
 """
-
 from typing import Protocol, Tuple
-
 
 class PQCInterface(Protocol):
     """
@@ -14,7 +12,7 @@ class PQCInterface(Protocol):
     
     All implementations MUST be deterministic given the same seed.
     """
-    
+
     def keygen(self, seed: bytes) -> Tuple[bytes, bytes]:
         """
         Generate a keypair from a 32-byte deterministic seed.
@@ -32,7 +30,7 @@ class PQCInterface(Protocol):
             Same seed → same keypair across all runs and nodes
         """
         ...
-    
+
     def sign(self, private_key: bytes, message: bytes) -> bytes:
         """
         Sign a message with a private key.
@@ -48,7 +46,7 @@ class PQCInterface(Protocol):
             Same (private_key, message) → same signature
         """
         ...
-    
+
     def verify(self, public_key: bytes, message: bytes, signature: bytes) -> bool:
         """
         Verify a signature against a message and public key.

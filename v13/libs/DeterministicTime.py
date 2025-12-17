@@ -12,9 +12,7 @@ DESIGN CHOICES:
   - No fallbacks, no defaults, no synthetic time
   - Full alignment with PsiSync logical time model
 """
-
 from typing import Optional, Any
-
 
 class DeterministicTime:
     """
@@ -40,16 +38,12 @@ class DeterministicTime:
             ValueError: If ttsTimestamp is missing, negative, or non-integer.
         """
         if not hasattr(packet, 'ttsTimestamp'):
-            raise ValueError("DRV_Packet missing required field: ttsTimestamp")
-        
+            raise ValueError('DRV_Packet missing required field: ttsTimestamp')
         ts = packet.ttsTimestamp
-        
         if not isinstance(ts, int):
-            raise TypeError("DeterministicTime: ttsTimestamp must be int")
-        
+            raise TypeError('DeterministicTime: ttsTimestamp must be int')
         if ts < 0:
-            raise ValueError("DeterministicTime: ttsTimestamp must be non-negative")
-        
+            raise ValueError('DeterministicTime: ttsTimestamp must be non-negative')
         return ts
 
     @staticmethod
@@ -64,9 +58,8 @@ class DeterministicTime:
             int: A deterministic uint64 derived from sequence and previous hash.
         """
         prev_hash_int = int(packet.previous_hash, 16) if packet.previous_hash else 0
-        # Use lower 64 bits of hash
-        hash_mod = prev_hash_int % (2**64)
-        return (packet.sequence + hash_mod) % (2**64)
+        hash_mod = prev_hash_int % 2 ** 64
+        return (packet.sequence + hash_mod) % 2 ** 64
 
     @staticmethod
     def enforce_monotonicity(current_ts: int, prior_ts: Optional[int]) -> None:
@@ -85,17 +78,11 @@ class DeterministicTime:
             ValueError: If current_ts < prior_ts (time regression detected).
         """
         if prior_ts is None:
-            # First packet: always accepted
             return
-            
         if not isinstance(prior_ts, int) or prior_ts < 0:
-            raise ValueError("DeterministicTime: prior_ts must be valid non-negative int")
-            
+            raise ValueError('DeterministicTime: prior_ts must be valid non-negative int')
         if current_ts < prior_ts:
-            # CIR-302 violation: halt and audit
-            raise ValueError(
-                f"DeterministicTime: Time regression detected! current={current_ts}, prior={prior_ts}"
-            )
+            raise ValueError(f'DeterministicTime: Time regression detected! current={current_ts}, prior={prior_ts}')
 
     @staticmethod
     def require_timestamp(ts: int) -> None:
@@ -110,7 +97,7 @@ class DeterministicTime:
             ValueError: If timestamp is invalid.
         """
         if not isinstance(ts, int) or ts < 0:
-            raise ValueError(f"Invalid deterministic timestamp: {ts}")
+            raise ValueError(f'Invalid deterministic timestamp: {ts}')
 
     @staticmethod
     def verify_and_use(timestamp: Any) -> None:
@@ -120,10 +107,7 @@ class DeterministicTime:
         Raises:
             NotImplementedError: Always - raw timestamps are forbidden.
         """
-        raise NotImplementedError(
-            "Raw timestamp injection prohibited in Phase 3. "
-            "All time must originate from a PQC-verified DRV_Packet."
-        )
+        raise NotImplementedError('Raw timestamp injection prohibited in Phase 3. All time must originate from a PQC-verified DRV_Packet.')
 
     @staticmethod
     def verify_drv_packet(packet: Any, timestamp: int) -> None:
@@ -138,16 +122,11 @@ class DeterministicTime:
         Raises:
             ValueError: If the timestamps do not match or packet is invalid.
         """
-        # Handle both DRV_Packet objects and dict representations
         if hasattr(packet, 'ttsTimestamp'):
             packet_ts = packet.ttsTimestamp
         elif isinstance(packet, dict) and 'ttsTimestamp' in packet:
             packet_ts = packet['ttsTimestamp']
         else:
-            raise ValueError("Invalid DRV packet: missing ttsTimestamp")
-             
+            raise ValueError('Invalid DRV packet: missing ttsTimestamp')
         if packet_ts != timestamp:
-            raise ValueError(
-                f"Timestamp mismatch: Packet={packet_ts}, "
-                f"Provided={timestamp}. Time must match DRV source."
-            )
+            raise ValueError(f'Timestamp mismatch: Packet={packet_ts}, Provided={timestamp}. Time must match DRV source.')
