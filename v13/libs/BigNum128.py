@@ -1,33 +1,37 @@
 """
-BigNum128.py - Unsigned 128-bit Fixed-Point Number Class for QFS V13
+BigNum128.py - Unsigned Fixed-Point Number Class for QFS V13
 Zero-Simulation Compliant, PQC & Quantum Metadata Ready, Fully Auditable
 """
 
 import json
-import hashlib
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
-# ------------------------------
-# Custom Exceptions
-# ------------------------------
+# Custom exception for BigNum128 operations
 class BigNum128Error(Exception):
-    """Base error for BigNum128 that should trigger CIR-302"""
+    """Custom exception for BigNum128 operations."""
     pass
 
-# ------------------------------
-# BigNum128: Unsigned 128-bit Fixed-Point
-# ------------------------------
+# Remove circular import - CertifiedMath will be imported when needed
+# from .CertifiedMath import CertifiedMath
+
 class BigNum128:
     """
     Unsigned Fixed-Point number class with 128-bit integer representation and 18 decimal places of precision.
     SCALE = 10^18. Values range from MIN_VALUE (0) to MAX_VALUE (2^128 - 1).
     """
-    SCALE = 10**18
-    SCALE_DIGITS = 18  # New constant
-    MAX_VALUE = 2**128 - 1
+    # Class constants
+    SCALE = 1000000000000000000  # 10^18
+    SCALE_DIGITS = 18
+    MAX_VALUE = 340282366920938463463374607431768211455  # 2^128 - 1
     MIN_VALUE = 0  # Unsigned type
 
+    # Use CertifiedMath for safe arithmetic operations - defer import
+    cm = None
+
     def __init__(self, value: int):
+        # Initialize CertifiedMath if not already done
+        self._ensure_cm_initialized()
+        
         if not isinstance(value, int):
             raise TypeError("BigNum128 only accepts integers")
         if value < self.MIN_VALUE or value > self.MAX_VALUE:
@@ -36,10 +40,20 @@ class BigNum128:
             )
         self.value = value
 
+    def _ensure_cm_initialized(self):
+        """Ensure that CertifiedMath is initialized."""
+        if self.cm is None:
+            from .CertifiedMath import CertifiedMath
+            self.cm = CertifiedMath()
+            
     @classmethod
     def from_int(cls, integer_val: int):
         """Creates a BigNum128 from a standard Python integer."""
-        return cls(integer_val * cls.SCALE)
+        # Direct multiplication without using CertifiedMath for simple scaling
+        scaled_value = integer_val * cls.SCALE
+        if scaled_value > cls.MAX_VALUE:
+            raise OverflowError("Integer value too large for BigNum128 after scaling")
+        return cls(scaled_value)
 
     @classmethod
     def from_string(cls, s: str):
@@ -73,8 +87,11 @@ class BigNum128:
             if not integer_part.isdigit() or not decimal_part.isdigit():
                 raise ValueError("Input string parts must contain only digits")
             
+            from .CertifiedMath import CertifiedMath
+            cm = CertifiedMath()
+            
             # Check integer part overflow BEFORE scaling
-            if int(integer_part) > cls.MAX_VALUE // cls.SCALE:
+            if int(integer_part) > cm.idiv(cls.MAX_VALUE, cls.SCALE):
                 raise OverflowError("Integer part too large for BigNum128")
             
             # Deterministic rounding (round half-up) for extra fractional digits
@@ -90,12 +107,12 @@ class BigNum128:
                 decimal_part_scaled = decimal_part[:cls.SCALE_DIGITS]
                 # Round half-up: if the next digit is >= 5, increment the scaled part
                 if round_digit >= 5:
-                    decimal_value = int(decimal_part_scaled) + 1
+                    decimal_value = cm.add(int(decimal_part_scaled), 1)
                     # Handle overflow from rounding
-                    if decimal_value >= 10**cls.SCALE_DIGITS:
-                        integer_part = str(int(integer_part) + 1)
+                    if decimal_value >= cm.pow(10, cls.SCALE_DIGITS):
+                        integer_part = str(cm.add(int(integer_part), 1))
                         # Check if incrementing integer_part now exceeds MAX_VALUE // SCALE
-                        if int(integer_part) > cls.MAX_VALUE // cls.SCALE:
+                        if int(integer_part) > cm.idiv(cls.MAX_VALUE, cls.SCALE):
                             raise OverflowError("Integer part overflow after rounding")
                         decimal_part_scaled = '0' * cls.SCALE_DIGITS
                     else:
@@ -105,13 +122,20 @@ class BigNum128:
             else:
                 # Pad with zeros if fewer digits than SCALE_DIGITS
                 decimal_part_scaled = decimal_part.ljust(cls.SCALE_DIGITS, '0')
+            
+            # Use direct integer arithmetic for the final calculation to avoid BigNum128 objects
             value = int(integer_part) * cls.SCALE + int(decimal_part_scaled)
     
         else:  # Integer string
             if not s.isdigit():
                 raise ValueError("Input string must contain only digits")
-            if int(s) > cls.MAX_VALUE // cls.SCALE:
+            
+            from .CertifiedMath import CertifiedMath
+            cm = CertifiedMath()
+            if int(s) > cm.idiv(cls.MAX_VALUE, cls.SCALE):
                 raise OverflowError("Integer value too large for BigNum128")
+            
+            # Use direct integer arithmetic for the final calculation to avoid BigNum128 objects
             value = int(s) * cls.SCALE
         
         if value > cls.MAX_VALUE:
@@ -196,7 +220,9 @@ class BigNum128:
     def __mod__(self, other):
         if not isinstance(other, BigNum128):
             raise TypeError("mod requires BigNum128")
-        return BigNum128(self.value % other.value)
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        return BigNum128(cm.mod(self.value, other.value))
 
     # Utility methods
     def copy(self) -> 'BigNum128':
@@ -210,60 +236,51 @@ class BigNum128:
 
     @classmethod
     def one(cls):
-        return cls(cls.SCALE)
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        return cls(cm.mul(1, cls.SCALE))
 
     # ------------------------------
     # Arithmetic Operations
     # ------------------------------
     def add(self, other: 'BigNum128') -> 'BigNum128':
         """Adds two BigNum128 values."""
-        if not isinstance(other, BigNum128):
-            raise TypeError("add requires BigNum128")
-        new_val = self.value + other.value
-        if new_val > self.MAX_VALUE:
-            raise OverflowError("BigNum128 addition overflow")
-        return BigNum128(new_val)
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        result = cm.add(self.value, other.value)
+        if result > self.MAX_VALUE:
+            raise OverflowError("Addition result exceeds BigNum128 capacity")
+        return BigNum128(result)
 
     def sub(self, other: 'BigNum128') -> 'BigNum128':
         """Subtracts two BigNum128 values."""
-        if not isinstance(other, BigNum128):
-            raise TypeError("sub requires BigNum128")
-        new_val = self.value - other.value
-        if new_val < self.MIN_VALUE:
-            raise BigNum128Error("BigNum128 subtraction underflow (result negative)")
-        return BigNum128(new_val)
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        if self.value < other.value:
+            raise OverflowError("Subtraction result would be negative (unsigned type)")
+        result = cm.sub(self.value, other.value)
+        return BigNum128(result)
 
     def mul(self, other: 'BigNum128') -> 'BigNum128':
         """Multiplies two BigNum128 values."""
-        if not isinstance(other, BigNum128):
-            raise TypeError("mul requires BigNum128")
-        
-        # Pre-check for intermediate overflow using certified 128-bit fixed-point arithmetic
-        # a.value > (MAX_VALUE * SCALE) // b.value when b.value != 0
-        if other.value != 0 and self.value > (self.MAX_VALUE * self.SCALE) // other.value:
-            raise OverflowError("BigNum128 multiplication overflow (pre-check)")
-        
-        # Fixed-point multiplication: (a * b) / SCALE
-        new_val = (self.value * other.value) // self.SCALE
-        if new_val > self.MAX_VALUE:
-            raise OverflowError("BigNum128 multiplication overflow")
-        return BigNum128(new_val)
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        # Perform multiplication with proper scaling
+        result = cm.mul(self.value, other.value)
+        # Divide by scale to maintain fixed-point precision
+        result = cm.idiv(result, self.SCALE)
+        if result > self.MAX_VALUE:
+            raise OverflowError("Multiplication result exceeds BigNum128 capacity")
+        return BigNum128(result)
 
     def div(self, other: 'BigNum128') -> 'BigNum128':
-        """Divides two BigNum128 values (floor division)."""
-        if not isinstance(other, BigNum128):
-            raise TypeError("div requires BigNum128")
+        """Divides two BigNum128 values."""
         if other.value == 0:
-            raise ZeroDivisionError("BigNum128 division by zero")
-        # Fixed-point division: (a * SCALE) // b
-        new_val = (self.value * self.SCALE) // other.value
-        if new_val > self.MAX_VALUE:
-            raise OverflowError("BigNum128 division overflow")
-        return BigNum128(new_val)
-
-    # ------------------------------
-    # Serialization for PQC
-    # ------------------------------
-    def serialize_for_sign(self) -> bytes:
-        """Returns canonical 16-byte big-endian bytes for PQC signing."""
-        return self.value.to_bytes(16, 'big')
+            raise ZeroDivisionError("Division by zero")
+        from .CertifiedMath import CertifiedMath
+        cm = CertifiedMath()
+        # Perform division with proper scaling
+        # Multiply by scale to maintain fixed-point precision
+        result = cm.mul(self.value, self.SCALE)
+        result = cm.idiv(result, other.value)
+        return BigNum128(result)

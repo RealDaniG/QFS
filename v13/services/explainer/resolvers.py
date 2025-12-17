@@ -4,6 +4,7 @@ resolvers.py - Type-specific explanation resolvers
 
 from typing import Dict, Any, List
 from ...libs.CertifiedMath import CertifiedMath
+from ...libs.BigNum128 import BigNum128
 
 
 class BaseResolver:
@@ -23,7 +24,7 @@ class RewardResolver(BaseResolver):
     ) -> Dict[str, Any]:
         # Find the reward event
         reward_event = None
-        for event in ledger_events:
+        for event in sorted(ledger_events, key=lambda x: str(x.get('id', '')) + str(x.get('type', ''))):
             if event.get("id") == entity_id and event.get("type") == "REWARD":
                 reward_event = event
                 break
@@ -34,6 +35,21 @@ class RewardResolver(BaseResolver):
         # Mock computation - use integers for Zero-Sim compliance
         base_reward = reward_event.get("amount", 100)
         coherence_multiplier_scaled = 120  # 1.2 * 100 (scaled by 100)
+
+        # Ensure base_reward is a BigNum128
+        if not isinstance(base_reward, BigNum128):
+            base_reward = BigNum128.from_int(base_reward)
+        
+        # Ensure coherence_multiplier_scaled is a BigNum128
+        if not isinstance(coherence_multiplier_scaled, BigNum128):
+            coherence_multiplier_scaled = BigNum128.from_int(coherence_multiplier_scaled)
+
+        # Create CertifiedMath instance for calculations
+        cm = CertifiedMath()
+        
+        # Perform calculations
+        multiplied_reward = cm.mul(base_reward, coherence_multiplier_scaled)
+        final_reward = cm.idiv(multiplied_reward, 100)
 
         return {
             "inputs": [
@@ -49,11 +65,9 @@ class RewardResolver(BaseResolver):
                 },
             ],
             "computation": {
-                "base_reward": base_reward,
-                "coherence_multiplier_scaled": coherence_multiplier_scaled,
-                "final_reward": CertifiedMath.idiv(
-                    base_reward * coherence_multiplier_scaled, 100
-                ),
+                "base_reward": base_reward.to_decimal_string(),  # Convert to string for JSON serialization
+                "coherence_multiplier_scaled": coherence_multiplier_scaled.to_decimal_string(),  # Convert to string for JSON serialization
+                "final_reward": final_reward.to_decimal_string(),  # Convert to string for JSON serialization
             },
         }
 

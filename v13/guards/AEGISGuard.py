@@ -1,49 +1,27 @@
 """
-AEGISGuard.py - Meta-guard orchestrator for QFS V13
+AEGISGuard.py - Meta-Guard Orchestrator for QFS V13 P2
 
-Implements the AEGIS Guard as a meta-guard that orchestrates SafetyGuard and EconomicsGuard,
-enforcing a clear threat model and producing QFS-specific security test coverage.
-
-V13.6 ENHANCEMENTS:
-- Deterministic telemetry analysis
-- Zero-Sim compliant implementation
-- Advisory gate with block_suggested and severity fields
-- Advisory blocking capability for unsafe content and economic violations
+Implements the AEGISGuard class as a meta-guard orchestrator that
+coordinates SafetyGuard and EconomicsGuard evaluations.
 """
 
 import json
 import hashlib
 from typing import Dict, Any, Optional, List
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-# Import required components
+# Handle imports for both direct execution and package usage
 try:
-    from ..libs.CertifiedMath import BigNum128, CertifiedMath
-    from ..libs.economics.EconomicsGuard import EconomicsGuard
-    from ..libs.core.SafetyGuard import SafetyGuard
-    from ..core.TokenStateBundle import TokenStateBundle
+    from v13.libs.CertifiedMath import BigNum128, CertifiedMath
+    from v13.libs.economics.EconomicsGuard import EconomicsGuard
+    from v13.libs.core.SafetyGuard import SafetyGuard
+    from v13.core.TokenStateBundle import TokenStateBundle
 except ImportError:
-    # Fallback to absolute imports
-    try:
-        from v13.libs.CertifiedMath import BigNum128, CertifiedMath
-        from v13.libs.economics.EconomicsGuard import EconomicsGuard
-        from v13.libs.core.SafetyGuard import SafetyGuard
-        from v13.core.TokenStateBundle import TokenStateBundle
-    except ImportError:
-        # Try with sys.path modification
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-        try:
-            from v13.libs.CertifiedMath import BigNum128, CertifiedMath
-            from v13.libs.economics.EconomicsGuard import EconomicsGuard
-            from v13.libs.core.SafetyGuard import SafetyGuard
-            from v13.core.TokenStateBundle import TokenStateBundle
-        except ImportError:
-            from libs.CertifiedMath import BigNum128, CertifiedMath
-            from libs.economics.EconomicsGuard import EconomicsGuard
-            from libs.core.SafetyGuard import SafetyGuard
-            from core.TokenStateBundle import TokenStateBundle
+    # Try direct imports as fallback
+    from libs.CertifiedMath import BigNum128, CertifiedMath
+    from libs.economics.EconomicsGuard import EconomicsGuard
+    from libs.core.SafetyGuard import SafetyGuard
+    from core.TokenStateBundle import TokenStateBundle
 
 
 @dataclass
@@ -228,94 +206,63 @@ class AEGISGuard:
         for key, value in inputs.items():
             if hasattr(value, 'to_decimal_string'):
                 serializable_inputs[key] = value.to_decimal_string()
-            elif isinstance(value, dict):
-                # Recursively convert nested dictionaries
-                serializable_inputs[key] = {}
-                for sub_key, sub_value in value.items():
-                    if hasattr(sub_value, 'to_decimal_string'):
-                        serializable_inputs[key][sub_key] = sub_value.to_decimal_string()
-                    else:
-                        serializable_inputs[key][sub_key] = sub_value
             else:
-                serializable_inputs[key] = value
+                serializable_inputs[key] = str(value)
         
+        # Create deterministic observation ID using hash of inputs and timestamp
         observation_data = {
             "event_type": event_type,
             "inputs": serializable_inputs,
             "timestamp": deterministic_timestamp
         }
         observation_json = json.dumps(observation_data, sort_keys=True)
-        observation_id = hashlib.sha256(observation_json.encode('utf-8')).hexdigest()[:32]
+        observation_id = hashlib.sha256(observation_json.encode()).hexdigest()[:32]
         
-        # Generate PQC correlation ID
-        pqc_cid = self._generate_pqc_cid(observation_data, deterministic_timestamp)
-        
-        # Derive block_suggested and severity from guard results
-        block_suggested = False
-        severity = "info"
-        
-        # Check for safety violations using CertifiedMath for deterministic comparisons
-        safety_risk_score_bn = BigNum128(0)
-        if safety_result and "risk_score" in safety_result:
-            try:
-                safety_risk_score_bn = BigNum128.from_string(safety_result["risk_score"])
-            except (ValueError, TypeError):
-                safety_risk_score_bn = BigNum128(0)
-        
-        # Define thresholds using BigNum128 for deterministic comparisons
-        high_risk_threshold = BigNum128.from_string("0.7")
-        medium_risk_threshold = BigNum128.from_string("0.5")
-        
-        # Check for economics violations
-        economics_failed = economics_result and not economics_result.get("passed", True)
-        
-        # Determine if blocking is suggested using CertifiedMath comparisons
-        if self.cm.gt(safety_risk_score_bn, high_risk_threshold, []):  # High risk content
-            block_suggested = True
-            severity = "critical"
-        elif self.cm.gt(safety_risk_score_bn, medium_risk_threshold, []):  # Medium risk content
-            block_suggested = True
-            severity = "warning"
-        elif economics_failed:  # Economics violation
-            block_suggested = True
-            severity = "warning"
-        
-        # Make AEGIS decision based on guard results
-        aegis_decision = "observe"  # Default to observation mode
-        explanation = "Event observed and logged for analysis"
-        
-        # If both guards pass, we might allow the action in non-observation mode
-        # For now, we'll stay in observation mode as per P1 requirements
-        if safety_result.get("passed", False) and economics_result.get("passed", False):
-            aegis_decision = "observe"  # Could be "allow" in future phases
-            explanation = "Both safety and economics guards passed - event approved for observation"
-        elif not safety_result.get("passed", True) or not economics_result.get("passed", True):
-            aegis_decision = "observe"  # Still in observation mode but flagged
-            explanation = "One or more guards flagged concerns - event observed for analysis"
-        
-        # Create observation record with serializable inputs to avoid JSON serialization issues
+        # Create observation record
         observation = AEGISObservation(
             observation_id=observation_id,
             timestamp=deterministic_timestamp,
             event_type=event_type,
-            inputs=serializable_inputs,  # Store serializable inputs to avoid JSON issues
+            inputs=serializable_inputs,
             safety_guard_result=safety_result,
             economics_guard_result=economics_result,
-            aegis_decision=aegis_decision,
-            explanation=explanation,
-            pqc_cid=pqc_cid,
-            quantum_metadata=self.quantum_metadata.copy(),
-            block_suggested=block_suggested,
-            severity=severity
+            aegis_decision="observe",  # In P2, we only observe
+            explanation=f"AEGIS observation for {event_type}",
+            pqc_cid=f"aegis_obs_{deterministic_timestamp}",
+            quantum_metadata=self.quantum_metadata.copy()
         )
         
-        # Add to observations
+        # Store observation
         self.observations.append(observation)
         
         return observation
+    
+    def _generate_observation_hash(self, event_type: str, inputs: Dict[str, Any], timestamp: int) -> str:
+        """
+        Generate a deterministic hash for an observation.
         
-    def _generate_pqc_cid(self, observation_data: Dict[str, Any], timestamp: int) -> str:
-        """Generate deterministic PQC correlation ID."""
+        Args:
+            event_type: Type of event
+            inputs: Event inputs
+            timestamp: Deterministic timestamp
+            
+        Returns:
+            str: Deterministic hash
+        """
+        # Make inputs JSON serializable
+        serializable_inputs = {}
+        for key, value in inputs.items():
+            if hasattr(value, 'to_decimal_string'):
+                serializable_inputs[key] = value.to_decimal_string()
+            else:
+                serializable_inputs[key] = str(value)
+        
+        # Create deterministic hash
+        observation_data = {
+            "event_type": event_type,
+            "inputs": serializable_inputs
+        }
+        
         data_to_hash = {
             "observation_data": observation_data,
             "timestamp": timestamp
@@ -326,9 +273,16 @@ class AEGISGuard:
         
     def get_observations_summary(self) -> Dict[str, Any]:
         """Get a summary of AEGIS observations."""
+        # Create a deterministic list of event types by sorting them
+        event_types = []
+        for obs in self.observations:
+            if obs.event_type not in event_types:
+                event_types.append(obs.event_type)
+        event_types.sort()  # Sort for deterministic output
+        
         return {
             "total_observations": len(self.observations),
-            "event_types_observed": list(set(obs.event_type for obs in self.observations)),
+            "event_types_observed": event_types,
             "latest_timestamp": self.observations[-1].timestamp if self.observations else 0,
             "observation_mode": "observation_only"  # Indicates we're in observation mode
         }

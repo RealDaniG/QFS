@@ -5,8 +5,6 @@ Contains shared data structures for reward calculations to avoid circular depend
 between TreasuryEngine and RewardAllocator.
 """
 
-# import sys
-# import oshashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
@@ -19,14 +17,8 @@ except ImportError:
     try:
         from v13.libs.CertifiedMath import BigNum128
     except ImportError:
-        # Try with sys.path modification
-        import sys
-        import os
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-        try:
-            from v13.libs.CertifiedMath import BigNum128
-        except ImportError:
-            from libs.CertifiedMath import BigNum128
+        # For Zero-Sim compliance, use direct import without sys.path modification
+        from libs.CertifiedMath import BigNum128
 
 
 @dataclass

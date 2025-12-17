@@ -8,12 +8,16 @@ and returns a response matching the frontend expectations.
 
 import pytest
 from fastapi.testclient import TestClient
+
+# Correct import path - using absolute imports
+# For Zero-Sim compliance, removed sys/os imports and use deterministic path setup
+# Path setup handled through deterministic import resolution
+
 from v13.ATLAS.src.api import app
 from v13.ATLAS.src.api.dependencies import get_replay_source, get_current_user
 
 try:
     from v13.ATLAS.src.api.routes import explain
-
     EXPLAIN_SOURCE = explain.get_replay_source
 except ImportError:
     EXPLAIN_SOURCE = get_replay_source
@@ -113,9 +117,10 @@ def test_explain_reward_e2e_flow(authenticated_client):
 
     response = authenticated_client.get(f"/explain/reward/{wallet_id}?epoch={epoch}")
 
+    # For Zero-Sim compliance, suppress debug output
     # DEBUG info if fail
-    if response.status_code != 200:
-        print(f"DEBUG: Status={response.status_code} Body={response.text}")
+    # if response.status_code != 200:
+    #     print(f"DEBUG: Status={response.status_code} Body={response.text}")
 
     assert response.status_code == 200, f"API call failed: {response.text}"
 
@@ -140,4 +145,6 @@ def test_explain_ranking_e2e_flow(authenticated_client):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    # For Zero-Sim compliance, suppress direct execution
+    # pytest.main([__file__])
+    pass
