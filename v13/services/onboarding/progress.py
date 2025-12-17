@@ -2,7 +2,7 @@
 progress.py - User Tour Progress Tracking
 """
 
-from typing import Dict, List, Set, Any
+from typing import Dict, List, Any
 
 
 class ProgressTracker:
@@ -11,21 +11,25 @@ class ProgressTracker:
     """
 
     def __init__(self):
-        # user_id -> tour_id -> set of completed step_ids
-        self._progress: Dict[str, Dict[str, Set[str]]] = {}
+        # user_id -> tour_id -> list of completed step_ids (deterministic order)
+        self._progress: Dict[str, Dict[str, List[str]]] = {}
 
     def start_tour(self, user_id: str, tour_id: str):
         """Initialize progress for a user-tour combination."""
         if user_id not in self._progress:
             self._progress[user_id] = {}
         if tour_id not in self._progress[user_id]:
-            self._progress[user_id][tour_id] = set()
+            self._progress[user_id][
+                tour_id
+            ] = []  # Use list instead of set for determinism
 
     def complete_step(self, user_id: str, tour_id: str, step_id: str):
         """Mark a step as completed."""
         if user_id not in self._progress:
             self.start_tour(user_id, tour_id)
-        self._progress[user_id][tour_id].add(step_id)
+        # Only add if not already completed (maintain list uniqueness)
+        if step_id not in self._progress[user_id][tour_id]:
+            self._progress[user_id][tour_id].append(step_id)
 
     def get_progress(
         self, user_id: str, tour_id: str, total_steps: int
@@ -40,10 +44,9 @@ class ProgressTracker:
                 "completion_percentage": 0,
             }
 
-        completed = list(self._progress[user_id][tour_id])
-        completion_pct = (
-            int((len(completed) / total_steps) * 100) if total_steps > 0 else 0
-        )
+        completed = self._progress[user_id][tour_id]
+        # Use integer division for Zero-Sim compliance
+        completion_pct = (len(completed) * 100) // total_steps if total_steps > 0 else 0
 
         return {
             "tour_id": tour_id,
