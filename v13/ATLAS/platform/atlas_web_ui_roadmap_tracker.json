@@ -1,0 +1,553 @@
+{
+  "metadata": {
+    "tracker": "ATLAS Web UI – Full Feature Overview (Window into QFS)",
+    "version": "1.0",
+    "generated": "2025-12-14",
+    "scope": "UI roadmap + backend API alignment; no protocol-level economics changes",
+    "non_negotiable_invariants": [
+      "QFS is the single source of truth for all value, rewards, and balances.",
+      "ATLAS UI never mutates economic state directly; it only constructs governed transactions.",
+      "All economic views are read-only representations derived from deterministic replay.",
+      "Every visible number must have a why/explain path.",
+      "Privacy-preserving by default (secure chat, encrypted storage, metadata-minimal ledger logging)."
+    ],
+    "status_files": {
+      "secure_chat": "secure_chat_status.json",
+      "value_node": "v13_8_value_node_status.json",
+      "test_coverage": "../../v13_test_coverage_status.json",
+      "storage_invariants": "../docs/STORAGEENGINE_INVARIANTS.md",
+      "storage_interface_spec": "../docs/STORAGEENGINE_INTERFACE_SPEC.md",
+      "storage_risk_register": "../docs/STORAGEENGINE_RISK_REGISTER.md",
+      "humor_explanation_schema": "../docs/HUMOR_EXPLANATION_SCHEMA.json"
+    },
+    "current_code_surfaces": {
+      "ui_shell": [
+        "src/app/layout.tsx",
+        "src/app/page.tsx"
+      ],
+      "ui_components": [
+        "src/components/ContentComposer.tsx",
+        "src/components/DiscoveryInterface.tsx",
+        "src/components/DistributedFeed.tsx",
+        "src/components/Feed.tsx",
+        "src/components/GovernanceInterface.tsx",
+        "src/components/GuardsList.tsx",
+        "src/components/MessagingInterface.tsx",
+        "src/components/ProfileEditor.tsx",
+        "src/components/WalletInterface.tsx"
+      ],
+      "backend_api_routes": [
+        "src/api/routes/wallets.py",
+        "src/api/routes/transactions.py",
+        "src/api/routes/metrics.py",
+        "src/api/routes/proofs.py",
+        "src/api/routes/secure_chat.py",
+        "src/api/routes/quantum.py"
+      ],
+      "python_tests": [
+        "src/tests/test_atlas_api_wallets_auth_and_policy.py",
+        "src/tests/test_metrics_and_proofs_endpoints.py",
+        "src/tests/test_qfs_client.py",
+        "src/secure_chat/tests/test_secure_chat_api.py"
+      ]
+    }
+  },
+  "stages": [
+    {
+      "stage_id": "S0",
+      "name": "Trust Shell + Determinism Badges",
+      "objective": "Make read-only vs governed vs replayable explicit everywhere; baseline explainability wiring.",
+      "tasks": [
+        {
+          "id": "S0_T1_shell_trust_badges",
+          "title": "Add global trust indicators (Replayable / Governed / Policy-Bound) to UI shell",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/app/layout.tsx",
+            "src/app/page.tsx"
+          ],
+          "acceptance": [
+            "Every major view shows a badge indicating data provenance.",
+            "Public vs private sections are visually separated.",
+            "No numeric KPI is displayed without a link/action to explanation panel (even if stubbed)."
+          ]
+        },
+        {
+          "id": "S0_T2_wallet_session_indicator",
+          "title": "Wallet-based session indicator (PQC-ready) with AEGIS verification placeholder",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/hooks/useAuth.ts",
+            "src/components/WalletInterface.tsx"
+          ],
+          "acceptance": [
+            "UI shows DID/wallet identity state.",
+            "AEGIS status shown as Verified/Unverified (read-only; data comes from QFS query once available)."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S1",
+      "name": "Value-Node Replay & Explainability",
+      "status": "completed",
+      "completion_date": "2025-12-14",
+      "description": "Deterministic replay and 'Explain-This' layer for user-friendly economic insights.",
+      "acceptance_criteria": [
+        "Replay guarantees bit-exact state reconstruction",
+        "Explanation generation is deterministic",
+        "Zero-Simulation compliant (no float/random)",
+        "Frontend types defined"
+      ]
+    },
+    {
+      "stage_id": "S1",
+      "name": "Identity, Roles & Permissions",
+      "objective": "Role-aware surfaces without allowing UI-side economic mutation.",
+      "tasks": [
+        {
+          "id": "S1_T1_identity_snapshot",
+          "title": "Public identity snapshot panel (ATR reputation, ΨSync/coherence, governance footprint, infra roles)",
+          "status": "MISSING",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/ProfileEditor.tsx",
+            "src/hooks/useProfile.ts",
+            "src/lib/profile/*"
+          ],
+          "acceptance": [
+            "All fields are sourced from ledger replay/query.",
+            "No PII stored in ledger; snapshot uses pseudonymous IDs."
+          ]
+        },
+        {
+          "id": "S1_T2_role_gating",
+          "title": "Role gating for governance/infra/moderation panels",
+          "status": "PARTIAL",
+          "priority": "MEDIUM",
+          "target_files": [
+            "src/hooks/useAuth.ts",
+            "src/app/page.tsx"
+          ],
+          "acceptance": [
+            "Role-only routes/components are hidden unless permitted.",
+            "All role checks are explainable and ledger-backed."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S2",
+      "name": "Public Feed + Content Creation (Deterministic)",
+      "objective": "Deterministic ranking surfaces with explainable ranking and content submission that emits governed tx only.",
+      "tasks": [
+        {
+          "id": "S2_T1_feed_deterministic_ranking",
+          "title": "Deterministic feed ranking with coherence/topic/time filters + why-this-ranking",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/components/DistributedFeed.tsx",
+            "src/components/Feed.tsx",
+            "src/hooks/useQFSFeed.ts"
+          ],
+          "acceptance": [
+            "Ranking is reproducible given the same ledger snapshot.",
+            "Each item has a 'Why this ranking?' explainer (stub acceptable initially)."
+          ]
+        },
+        {
+          "id": "S2_T2_content_submit_content_id",
+          "title": "Content creation emits content_id and ledger event (no immediate reward mutation)",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/ContentComposer.tsx",
+            "src/hooks/useContentPublisher.ts",
+            "src/lib/content/*"
+          ],
+          "acceptance": [
+            "Submission produces deterministic content_id (canonical serialization + hash).",
+            "Submission path constructs governed transaction only; UI does not modify balances."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S3",
+      "name": "Content-as-NFT View + Value Contribution Graph",
+      "objective": "Content detail page with version history, reward history, signal vectors, and replayable value flow graph.",
+      "tasks": [
+        {
+          "id": "S3_T1_content_detail_page",
+          "title": "Content detail page (content_id, author, versions, interactions, rewards, signals, governance tags)",
+          "status": "MISSING",
+          "priority": "HIGH",
+          "target_files": [
+            "src/lib/content/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
+          "acceptance": [
+            "All metrics derived from ledger replay.",
+            "Every number has 'why' path to contributing events/policies."
+          ]
+        },
+        {
+          "id": "S3_T2_value_contribution_graph",
+          "title": "Replayable value contribution graph visualization",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/lib/ledger/*",
+            "src/lib/qfs/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
+          "acceptance": [
+            "Graph can be time-sliced/replayed deterministically.",
+            "Graph is read-only; no state mutation."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S4",
+      "name": "User-as-Value-Node Dashboard (V13.8)",
+      "objective": "User dashboard driven by deterministic replay and value node model.",
+      "tasks": [
+        {
+          "id": "S4_T1_value_node_overview",
+          "title": "User overview (total value, ATR/FLX balances, coherence/ΨSync, governance footprint)",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/WalletInterface.tsx",
+            "src/hooks/useTreasury.ts",
+            "v13_8_value_node_status.json"
+          ],
+          "acceptance": [
+            "UI shows ledger-backed totals and links to explanation.",
+            "Replay controls available for time slicing (stub acceptable initially)."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S5",
+      "name": "Explain-This System (Critical)",
+      "status": "COMPLETED",
+      "completion_date": "2025-12-14",
+      "objective": "Explain reward and ranking for any displayed value.",
+      "tasks": [
+        {
+          "id": "S5_T1_explain_reward_panel",
+          "title": "Explain reward panel: base, bonuses, caps, guards, policy version (plain+technical)",
+          "status": "COMPLETED",
+          "priority": "CRITICAL",
+          "target_files": [
+            "src/components/WalletInterface.tsx",
+            "src/lib/economics/*",
+            "src/api/routes/proofs.py"
+          ],
+          "acceptance": [
+            "Panel enumerates contributing ledger events and policy identifiers.",
+            "Deterministic output for same ledger snapshot."
+          ]
+        },
+        {
+          "id": "S5_T2_explain_ranking_panel",
+          "title": "Explain ranking panel: coherence, signals, guards, neighbor comparison",
+          "status": "COMPLETED",
+          "priority": "CRITICAL",
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/lib/qfs/*"
+          ],
+          "acceptance": [
+            "Shows why-above/below neighbor explanations.",
+            "No opaque ranking sources; deterministic calculations."
+          ]
+        },
+        {
+          "id": "S5_T3_explain_humor_panel",
+          "title": "Explain humor panel: 7-dimensional breakdown, confidence, bonus components, reason codes",
+          "status": "PLANNED",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/DiscoveryInterface.tsx",
+            "src/lib/qfs/*"
+          ],
+          "acceptance": [
+            "Panel shows 7-dimensional humor vector with individual scores and weights.",
+            "Displays reason codes (HUMOR_DISABLED, RECOGNITION_ONLY, HUMOR_CAP_APPLIED).",
+            "Includes deterministic explanation hash for verification.",
+            "Schema defined in docs/HUMOR_EXPLANATION_SCHEMA.json."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S6",
+      "name": "Secure Chat & Private Channels",
+      "objective": "E2EE secure chat, content-addressed storage, governance/appeals channels (hash-only ledger logging).",
+      "tasks": [
+        {
+          "id": "S6_T1_secure_dm_ui",
+          "title": "Secure DMs UI wired to secure-chat API",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/MessagingInterface.tsx",
+            "secure_chat_status.json"
+          ],
+          "acceptance": [
+            "UI never displays server-side plaintext storage.",
+            "Threads/messages show crypto status and content-address hashes."
+          ]
+        },
+        {
+          "id": "S6_T2_ipfs_adapter",
+          "title": "Implement IPFS storage adapter + client-side encryption flow",
+          "status": "MISSING",
+          "priority": "HIGH",
+          "target_files": [
+            "src/lib/ipfs-client.ts",
+            "src/secure_chat/storage/ipfs_storage.py"
+          ],
+          "acceptance": [
+            "Deterministic CID generation for identical bytes.",
+            "No plaintext stored in server DB; only hashes/metadata."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S7",
+      "name": "Governance UI",
+      "objective": "Proposal creation + voting + history with replay/audit trails.",
+      "tasks": [
+        {
+          "id": "S7_T1_governance_portal",
+          "title": "Governance portal: proposals (weights/caps/thresholds) + vote casting + receipts",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/GovernanceInterface.tsx",
+            "src/lib/governance/*"
+          ],
+          "acceptance": [
+            "Voting power shown with explainable breakdown.",
+            "Actions emit governed tx only; no direct economic mutation."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S8",
+      "name": "Signal Observatory + Policy Simulation",
+      "objective": "Analytics and what-if sliders that never mutate live state.",
+      "tasks": [
+        {
+          "id": "S8_T1_signal_analytics",
+          "title": "Signal analytics dashboards (humor/artistic distributions, abuse indicators)",
+          "status": "MISSING",
+          "priority": "MEDIUM",
+          "target_files": [
+            "src/lib/qfs/*",
+            "src/lib/economics/*",
+            "src/components/DiscoveryInterface.tsx"
+          ],
+          "acceptance": [
+            "Analytics derived from replayed events.",
+            "Anomaly detection surfaces are explainable and deterministic."
+          ]
+        },
+        {
+          "id": "S8_T2_platform_constraints",
+          "title": "Platform constraints documentation",
+          "status": "MISSING",
+          "priority": "LOW",
+          "target_files": [
+            "docs/platform_constraints.md"
+          ],
+          "acceptance": [
+            "Constraints are documented in a single source of truth.",
+            "Constraints are versioned and auditable."
+          ]
+        },
+        {
+          "id": "S8_T3_platform_constraints_review",
+          "title": "Review and update platform constraints",
+          "status": "MISSING",
+          "priority": "LOW",
+          "target_files": [
+            "docs/platform_constraints.md"
+          ],
+          "acceptance": [
+            "Constraints are reviewed and updated regularly.",
+            "Constraints are aligned with QFS and ATLAS policies.",
+            "Constraints are reviewed by the community."
+          ]
+        }
+      ]
+    },
+    {
+      "stage_id": "S9",
+      "name": "Compliance, Transparency & Audit",
+      "objective": "Ledger explorer, hash verification, replay controls, audit artifacts.",
+      "tasks": [
+        {
+          "id": "S9_T1_ledger_explorer",
+          "title": "Ledger explorer with filterable event log + hash verification + replay controls",
+          "status": "PARTIAL",
+          "priority": "HIGH",
+          "target_files": [
+            "src/components/Feed.tsx",
+            "src/lib/ledger/*"
+          ],
+          "acceptance": [
+            "Users can filter events deterministically.",
+            "Hashes are verifiable from canonical serialized event data."
+          ]
+        }
+      ]
+    }
+  ],
+  "phase_b_recent_progress": {
+    "status": "COMPLETED",
+    "notes": [
+      "ATLAS API boundary tests added for wallets/metrics/proofs.",
+      "Wallet route response schema corrected to match models (no protocol semantics changed)."
+    ],
+    "new_tests": [
+      "src/tests/test_atlas_api_wallets_auth_and_policy.py",
+      "src/tests/test_metrics_and_proofs_endpoints.py"
+    ],
+    "updated_modules": [
+      "src/api/routes/wallets.py",
+      "src/api/routes/metrics.py",
+      "src/api/routes/proofs.py"
+    ]
+  },
+  "phase_c_recent_progress": {
+    "status": "COMPLETED",
+    "notes": [
+      "Transactions API boundary tests added (401/4xx/403/2xx) without changing QFS economics or guard semantics.",
+      "Read-only economic view helper added as a pure mapping layer for UI view models.",
+      "Read-only UI hooks added to consume ATLAS endpoints (no client-side balance mutation)."
+    ],
+    "new_files": [
+      "src/tests/test_transactions_api_boundary.py",
+      "src/core/economic_views.py",
+      "src/tests/test_economic_views.py",
+      "src/hooks/useTransactions.ts",
+      "src/hooks/useWalletView.ts"
+    ],
+    "updated_modules": [
+      "src/api/routes/transactions.py"
+    ]
+  },
+  "p0_ci_constraints": {
+    "status": "COMPLETED",
+    "notes": [
+      "Added CI workflow to prevent ATLAS violations: forbidden economic imports, frontend balance mutations, economic Prisma fields.",
+      "CI enforces platform constraints automatically on pushes/PRs to atlas/master."
+    ],
+    "new_files": [
+      ".github/workflows/ci-constraints.yml"
+    ]
+  },
+  "p0_explain_this": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented read-only ExplainThisPanel component for reward/ranking breakdowns using replay-derived data only.",
+      "Panel is pure UI; no economic state mutation."
+    ],
+    "new_files": [
+      "src/components/ExplainThisPanel.tsx"
+    ]
+  },
+  "p1_storage_dashboard": {
+    "status": "COMPLETED",
+    "notes": [
+      "Built read-only StorageDashboard consuming compute_storage_metrics_from_events: node health, replication visibility, proof reliability.",
+      "All metrics are replay-derived; no economics shown."
+    ],
+    "new_files": [
+      "src/components/StorageDashboard.tsx"
+    ]
+  },
+  "p1_value_node_views": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented ValueNodeView as a pure projection from ledger events, no minting/tokens.",
+      "Component accepts pre-fetched data via props; no side effects."
+    ],
+    "new_files": [
+      "src/components/ValueNodeView.tsx"
+    ]
+  },
+  "p1_draft_storage_policies": {
+    "status": "COMPLETED",
+    "notes": [
+      "Drafted (inactive) storage policy templates for reliability weighting, proof thresholds, and future NOD reward formulas.",
+      "Templates are non-enforced until governance activation."
+    ],
+    "new_files": [
+      "src/governance/templates/storage_policies.md"
+    ]
+  },
+  "p0_e2e_explain_reward": {
+    "status": "COMPLETED",
+    "notes": [
+      "Added end-to-end 'Explain This reward' flow using real ATLAS API endpoints and ExplainThisPanel.",
+      "Flow is read-only; API returns deterministic stub data matching ExplainThisPanel schema.",
+      "Added ExplainRewardFlow component to Ledger tab for demo."
+    ],
+    "new_files": [
+      "src/api/routes/explain.py",
+      "src/hooks/useExplainReward.ts",
+      "src/components/ExplainRewardFlow.tsx"
+    ],
+    "updated_files": [
+      "src/api/__init__.py",
+      "src/app/page.tsx"
+    ]
+  },
+  "p3_aes_signal": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented ArtisticSignalAddon (V13.8) with 5 dimensions and AEGIS reputation weighting.",
+      "Integrated into Explain-This framework for reward transparency."
+    ],
+    "new_files": [
+      "src/signals/artistic.py",
+      "src/policy/artistic_policy.py"
+    ]
+  },
+  "p4_storage_explain": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented deterministic storage placement replay and explanation.",
+      "Added UI panel for storage proofs verification."
+    ],
+    "new_files": [
+      "src/core/storage_explainability.py",
+      "src/components/StorageExplainPanel.tsx"
+    ]
+  },
+  "p5_governance_audit": {
+    "status": "COMPLETED",
+    "notes": [
+      "Implemented immutable audit logging with integrity hash chaining.",
+      "Added GovernanceAuditDashboard for operational transparency."
+    ],
+    "new_files": [
+      "src/components/GovernanceAuditDashboard.tsx",
+      "src/core/audit_integrity.py",
+      "src/api/routes/governance.py"
+    ]
+  }
+}
