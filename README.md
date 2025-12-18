@@ -1,4 +1,4 @@
-# Quantum Financial System (QFS) V18.9 – Deterministic Session Management
+# Quantum Financial System (QFS) V18.x – Deterministic Management
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
 
@@ -55,8 +55,8 @@ QFS V18.9 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 │          (Censorship-Resistant P2P/TOR Network)         │
 └─────────────────────────────────────────────────────────┘
                            ↓
-┌─────────────────────────────────────────────────────────┐
-│                   QFS V18.9 Engine                      │
+┌────────────────────────────────────────────────────────┐
+│                   QFS V18.9 Engine                     │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │Constitutional│  │  Zero-Sim    │  │ ExplainThis  │  │
 │  │    Guards    │  │    Replay    │  │    Audit     │  │
@@ -65,11 +65,11 @@ QFS V18.9 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 │  │   6-Token    │  │    AEGIS     │  │     PQC      │  │
 │  │  Economics   │  │Verification  │  │ Signatures   │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
-│  ┌──────────────┐                                     │
-│  │   Sessions   │                                     │
-│  │  Management  │                                     │
-│  └──────────────┘                                     │
-└─────────────────────────────────────────────────────────┘
+│  ┌──────────────┐                                      │
+│  │   Sessions   │                                      │
+│  │  Management  │                                      │
+│  └──────────────┘                                      │
+└────────────────────────────────────────────────────────┘
 
 ```
 

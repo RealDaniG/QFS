@@ -27,6 +27,9 @@ class ChatMessage(BaseModel):
     sequence_number: int
     content_encrypted: str  # Hex-encoded ciphertext
     pqc_signature: str  # Signature over (session_id+seq+content_encrypted)
+    references: List[str] = Field(
+        default_factory=list
+    )  # IDs of referenced Spaces/Posts
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
@@ -39,6 +42,7 @@ class ChatSessionState(BaseModel):
     status: str = "active"  # 'active', 'ended', 'archived'
     participants: Dict[str, ChatParticipant] = Field(default_factory=dict)
     messages: List[ChatMessage] = Field(default_factory=list)
+    ttl_seconds: int = 0  # 0 means infinite/no-TTL
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
     @property

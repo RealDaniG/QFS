@@ -5,22 +5,23 @@ Minimal implementation for test validation.
 """
 
 from typing import Dict, Any, List
-from dataclasses import dataclass
 
 try:
     from ...libs.BigNum128 import BigNum128
     from ...libs.CertifiedMath import CertifiedMath
-    from .spaces_manager import Space
+
+    # Removed Space import to fix circular dependency
     from ..economic_event import EconomicEvent
 except ImportError:
     from v13.libs.BigNum128 import BigNum128
     from v13.libs.CertifiedMath import CertifiedMath
-    from v13.atlas.spaces.spaces_manager import Space
+
+    # Removed Space import
     from v13.atlas.economic_event import EconomicEvent
 
 
 def emit_space_created(
-    space: Space, cm: CertifiedMath, log_list: List[Dict[str, Any]], pqc_cid: str = ""
+    space: Any, cm: CertifiedMath, log_list: List[Dict[str, Any]], pqc_cid: str = ""
 ) -> EconomicEvent:
     """Emit space_created event"""
     event = EconomicEvent(
@@ -89,7 +90,7 @@ def emit_space_spoke(
 
 
 def emit_space_ended(
-    space: Space,
+    space: Any,
     end_timestamp: int,
     cm: CertifiedMath,
     log_list: List[Dict[str, Any]],

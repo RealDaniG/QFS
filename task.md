@@ -373,3 +373,15 @@ QFS (Economic Authority) → value decisions, state mutations
 - [x] Docs: Document PQC backend strategy & production requirements.
 - [ ] CI: Add AEGIS boundary verification to daily checks
 - [ ] CI: Add Zero-Sim prevention gate enforcement
+
+---
+
+## 📚 Wiki Migration (Dec 2025)
+
+**Status:** [ ] IN PROGRESS
+
+- [x] Create/Migrate System Overview Pages.
+- [x] Create NOD Token Specification (`docs/NOD_TOKEN_SPECIFICATION.md`).
+- [ ] Migrate Economic Events Mapping.
+- [ ] Add Phase V Roadmap Page.
+- [ ] Cross-link from README.

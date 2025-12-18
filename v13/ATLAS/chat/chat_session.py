@@ -37,6 +37,8 @@ class ChatSessionManager:
         timestamp: int,
         log_list: List[Dict[str, Any]],
         pqc_cid: str = "",
+        initial_members: Optional[List[str]] = None,
+        ttl_seconds: int = 0,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> ChatSessionState:
         """
@@ -58,11 +60,23 @@ class ChatSessionManager:
             wallet_id=owner_wallet, joined_at=timestamp, role="owner"
         )
 
+        participants = {owner_wallet: owner_participant}
+
+        # Add initial members if any
+        if initial_members:
+            for member_wallet in initial_members:
+                if member_wallet == owner_wallet:
+                    continue
+                participants[member_wallet] = ChatParticipant(
+                    wallet_id=member_wallet, joined_at=timestamp, role="member"
+                )
+
         session = ChatSessionState(
             session_id=session_id,
             created_at=timestamp,
             owner_wallet=owner_wallet,
-            participants={owner_wallet: owner_participant},
+            participants=participants,
+            ttl_seconds=ttl_seconds,
             metadata=metadata or {},
         )
 
@@ -72,9 +86,54 @@ class ChatSessionManager:
                 "operation": "chat_session_created",
                 "session_id": session_id,
                 "owner": owner_wallet,
+                "timestamp": timestamp,
+                "ttl_seconds": ttl_seconds,
+                "initial_member_count": len(participants),
             }
         )
         return session
+
+    def remove_participant(
+        self,
+        session_id: str,
+        target_wallet: str,
+        req_wallet: str,
+        log_list: List[Dict[str, Any]],
+    ) -> None:
+        """
+        Remove a participant from the session. Only owner can remove others.
+        Participant can remove themselves (leave).
+        """
+        if session_id not in self.active_sessions:
+            raise ValueError(f"Session {session_id} not found")
+
+        session = self.active_sessions[session_id]
+        if session.status != "active":
+            raise ValueError(f"Session {session_id} is not active")
+
+        if target_wallet not in session.participants:
+            raise ValueError(f"Participant {target_wallet} not in session")
+
+        # Permission check
+        # 1. Owner can remove anyone
+        # 2. User can remove themselves
+        if req_wallet != session.owner_wallet and req_wallet != target_wallet:
+            raise PermissionError("Only owner can remove other participants")
+
+        if target_wallet == session.owner_wallet:
+            raise ValueError(
+                "Owner cannot be removed from session (must end session instead)"
+            )
+
+        session.participants.pop(target_wallet)
+        log_list.append(
+            {
+                "operation": "chat_participant_removed",
+                "session_id": session_id,
+                "wallet_id": target_wallet,
+                "removed_by": req_wallet,
+            }
+        )
 
     def join_session(
         self,
@@ -123,11 +182,15 @@ class ChatSessionManager:
         pqc_signature: str,
         log_list: List[Dict[str, Any]],
         pqc_cid: str = "",
+        references: Optional[List[str]] = None,
     ) -> ChatMessage:
         """
         Send a message to the chat.
         Requires sender to be a participant.
         """
+        if references is None:
+            references = []
+
         if session_id not in self.active_sessions:
             raise ValueError(f"Session {session_id} not found")
 
@@ -139,6 +202,16 @@ class ChatSessionManager:
             raise ValueError(
                 f"User {sender_wallet} is not a participant in session {session_id}"
             )
+
+        # TTL Enforcement
+        if session.ttl_seconds > 0:
+            if timestamp > session.created_at + session.ttl_seconds:
+                raise ValueError("Session has expired (TTL)")
+
+        # TTL Enforcement
+        if session.ttl_seconds > 0:
+            if timestamp > session.created_at + session.ttl_seconds:
+                raise ValueError("Session has expired (TTL)")
 
         # Deterministic Message ID: session_id:sender:sequence:timestamp
         seq_num = len(session.messages) + 1
@@ -158,6 +231,7 @@ class ChatSessionManager:
             sequence_number=seq_num,
             content_encrypted=content_encrypted,
             pqc_signature=pqc_signature,
+            references=references,
         )
 
         session.messages.append(msg)
@@ -166,6 +240,7 @@ class ChatSessionManager:
                 "operation": "chat_message_dist",
                 "session_id": session_id,
                 "message_id": message_id,
+                "references": references,
             }
         )
         return msg

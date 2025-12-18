@@ -371,6 +371,7 @@ class TestSpacesIntegration:
     def test_full_space_lifecycle_with_events(self, spaces_manager, cm, log_list):
         """Test complete space lifecycle with event emission"""
         # Create space
+        # Create space - Manager emits event
         space = spaces_manager.create_space(
             host_wallet="host",
             title="Integration Test Space",
@@ -378,10 +379,7 @@ class TestSpacesIntegration:
             log_list=log_list,
         )
 
-        event1 = emit_space_created(space, cm, log_list)
-        assert event1.event_type == "space_created"
-
-        # Join space
+        # Join space - Manager emits event
         spaces_manager.join_space(
             space_id=space.space_id,
             participant_wallet="participant_1",
@@ -390,43 +388,22 @@ class TestSpacesIntegration:
             log_list=log_list,
         )
 
-        event2 = emit_space_joined(
-            space_id=space.space_id,
-            participant_wallet="participant_1",
-            timestamp=1000100,
-            cm=cm,
-            log_list=log_list,
-        )
-        assert event2.event_type == "space_joined"
-
-        # Record speaking
+        # Record speaking - Manager emits event
         spaces_manager.record_speak_time(
             space_id=space.space_id,
             participant_wallet="participant_1",
             duration_seconds=600,  # 10 minutes
-            log_list=log_list,
-        )
-
-        event3 = emit_space_spoke(
-            space_id=space.space_id,
-            participant_wallet="participant_1",
-            speak_duration_seconds=600,
             timestamp=1000700,
-            cm=cm,
             log_list=log_list,
         )
-        assert event3.event_type == "space_spoke"
 
-        # End space
+        # End space - Manager emits event
         ended_space = spaces_manager.end_space(
             space_id=space.space_id,
             host_wallet="host",
             timestamp=1002000,
             log_list=log_list,
         )
-
-        event4 = emit_space_ended(ended_space, 1002000, cm, log_list)
-        assert event4.event_type == "space_ended"
 
         # Verify all events logged
         event_logs = [

@@ -5,22 +5,23 @@ Handles rewards and economic tracking for Wall Post engagements.
 """
 
 from typing import Dict, Any, List
-from dataclasses import dataclass
 
 try:
     from ...libs.BigNum128 import BigNum128
     from ...libs.CertifiedMath import CertifiedMath
-    from .wall_posts import WallPost
+
+    # Removed WallPost import
     from ..economic_event import EconomicEvent
 except ImportError:
     from v13.libs.BigNum128 import BigNum128
     from v13.libs.CertifiedMath import CertifiedMath
-    from v13.atlas.spaces.wall_posts import WallPost
+
+    # Removed WallPost import
     from v13.atlas.economic_event import EconomicEvent
 
 
 def emit_post_created(
-    post: WallPost, cm: CertifiedMath, log_list: List[Dict[str, Any]], pqc_cid: str = ""
+    post: Any, cm: CertifiedMath, log_list: List[Dict[str, Any]], pqc_cid: str = ""
 ) -> EconomicEvent:
     """Emit wall_post_created event - Reward author"""
     # Reward for creating content: e.g., 0.5 FLX
@@ -84,7 +85,7 @@ def emit_post_liked(
 
 
 def emit_post_replied(
-    reply_post: WallPost,
+    reply_post: Any,
     parent_author_wallet: str,
     cm: CertifiedMath,
     log_list: List[Dict[str, Any]],
