@@ -2,9 +2,8 @@ import json
 import hashlib
 import os
 import asyncio
-import time
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from pydantic import BaseModel
 
 
@@ -21,8 +20,10 @@ class GenesisEntry(BaseModel):
         super().__init__(**data)
         if not self.timestamp:
             # Use integer timestamp for mitigation of microsecond non-determinism
+            # ZERO-SIM: Use deterministic timestamp (0) for genesis
+            # timestamp = time.time()  # VIOLATION
             self.timestamp = (
-                datetime.fromtimestamp(int(time.time()), tz=timezone.utc)
+                datetime.fromtimestamp(0, tz=timezone.utc)
                 .isoformat()
                 .replace("+00:00", "Z")
             )

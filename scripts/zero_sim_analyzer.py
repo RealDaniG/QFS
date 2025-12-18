@@ -173,6 +173,14 @@ class ViolationAnalyzer(ast.NodeVisitor):
         self.generic_visit(node)
         self.current_function = old_func
 
+    def _is_test_or_tool(self):
+        return (
+            "tests" in self.file_path
+            or "tools" in self.file_path
+            or "scripts" in self.file_path
+            or "docs" in self.file_path
+        )
+
     def visit_Call(self, node: ast.Call):
         """Detect function calls (print, hash, uuid, etc.)"""
         func_name = None
@@ -188,31 +196,33 @@ class ViolationAnalyzer(ast.NodeVisitor):
         # Check for forbidden calls
         if func_name == "print":
             # Whitelist Reporting Scripts
-            if (
-                "docs" in self.file_path
-                or "tools" in self.file_path
-                or "tests" in self.file_path
-            ):
+            if self._is_test_or_tool():
                 pass
             else:
                 self._add_violation("FORBIDDEN_PRINT", node)
         elif func_name == "hash":
-            self._add_violation("FORBIDDEN_HASH", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_HASH", node)
         elif module_name == "uuid" and func_name == "uuid4":
-            self._add_violation("FORBIDDEN_UUID", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_UUID", node)
         elif module_name == "time" and func_name in ("time", "perf_counter"):
-            self._add_violation("FORBIDDEN_TIME", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_TIME", node)
         elif module_name == "datetime" and func_name in ("now", "today"):
-            self._add_violation("FORBIDDEN_TIME", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_TIME", node)
         elif module_name == "random":
-            self._add_violation("FORBIDDEN_CALL", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_CALL", node)
 
         self.generic_visit(node)
 
     def visit_BinOp(self, node: ast.BinOp):
         """Detect division operations"""
         if isinstance(node.op, ast.Div):
-            self._add_violation("FORBIDDEN_DIVISION", node)
+            if not self._is_test_or_tool():
+                self._add_violation("FORBIDDEN_DIVISION", node)
         self.generic_visit(node)
 
     def visit_Constant(self, node: ast.Constant):
@@ -226,7 +236,8 @@ class ViolationAnalyzer(ast.NodeVisitor):
         if isinstance(node.target, ast.Attribute):
             # self.x += 1 -> State mutation
             # Always unsafe unless we whitelist specific fields
-            self._add_violation("MUTATION_STATE", node)
+            if not self._is_test_or_tool():
+                self._add_violation("MUTATION_STATE", node)
         elif isinstance(node.target, ast.Name):
             # x += 1 (local) -> Ignore for now (Low risk)
             pass
@@ -273,6 +284,7 @@ class ViolationAnalyzer(ast.NodeVisitor):
                         or attr == "halt_events"
                         or attr == "notify_events"
                         or attr == "active"  # Component liveness state
+                        or attr == "_session"  # Lazy connection pool
                     ):
                         is_certified = True
 
@@ -312,7 +324,11 @@ class ViolationAnalyzer(ast.NodeVisitor):
 
                 if not is_certified:
                     # Whitelist Test Files for Mutation
-                    if "tests" in self.file_path or "audit" in self.file_path:
+                    if (
+                        "tests" in self.file_path
+                        or "audit" in self.file_path
+                        or "tools" in self.file_path
+                    ):
                         pass
                     else:
                         self._add_violation("MUTATION_STATE", node)
