@@ -42,12 +42,16 @@ jobs:
 
       - name: Run Zero-Sim Analyzer (Strict Enforcement)
         run: |
-          # Using new analyzer with strict filtering for critical categories
-          python scripts/zero_sim_analyzer.py --dir v13 --exclude legacy_root node_modules --output violation_report.json --fail-on-violation
-          if [ $? -ne 0 ]; then
-            echo "❌ Zero-Simulation violation detected"
+          # Using analyzer with strict filtering for critical categories
+          python v13/scripts/zero_sim_analyzer.py --dir v13 --exclude legacy_root node_modules --output violation_report.json
+          # Check if violations were found
+          VIOLATION_COUNT=$(python -c "import json; data=json.load(open('violation_report.json')); print(data.get('total_violations', 0))")
+          if [ "$VIOLATION_COUNT" -gt "0" ]; then
+            echo "❌ Zero-Simulation violations detected: $VIOLATION_COUNT"
+            echo "See violation_report.json for details"
             exit 1
           fi
+          echo "✅ No Zero-Sim violations found"
 
       - name: Lint Check
         run: |
