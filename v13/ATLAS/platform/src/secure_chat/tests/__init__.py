@@ -1,0 +1,3 @@
+"""
+Secure Chat Tests Module
+"""

@@ -1,0 +1,47 @@
+name: Secure Chat Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/secure_chat/**'
+      - 'tests/secure_chat/**'
+      - 'SECURE_CHAT_INTEGRATION_SPEC.md'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/secure_chat/**'
+      - 'tests/secure_chat/**'
+      - 'SECURE_CHAT_INTEGRATION_SPEC.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+        
+    - name: Run secure chat tests
+      run: |
+        pytest src/secure_chat/tests/test_secure_chat_engine.py -v --cov=src/secure_chat --cov-report=xml
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: secure-chat
+        name: secure-chat-coverage

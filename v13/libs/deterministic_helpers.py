@@ -130,3 +130,16 @@ class DeterministicID:
         data = f"{cls._seed}-{cls._counter}"
         # Return 32-char hex string to match uuid4().hex length
         return hashlib.sha256(data.encode()).hexdigest()[:32]
+
+    @classmethod
+    def from_string(cls, data: str) -> str:
+        """
+        Generate deterministic ID from input string using SHA-256.
+
+        Args:
+            data: Input string to hash
+
+        Returns:
+            str: Deterministic 32-character hex ID
+        """
+        return hashlib.sha256(data.encode()).hexdigest()[:32]

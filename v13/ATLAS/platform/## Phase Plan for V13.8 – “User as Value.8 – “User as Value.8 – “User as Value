@@ -1,0 +1,241 @@
+## Phase Plan for V13.8 – “User as Value Node” & Content‑NFT Verification
+
+Below is a concrete plan aligned to your steps, focused on *verification* (specs, tests, wiring, telemetry) without touching core economics/guards.
+
+---
+
+### Phase 1 – Formalize Models (Spec & Event Taxonomy)
+
+- **1.1 Create/extend spec file**
+  - Add `specs/QFS_V13_8_VALUE_NODE_MODEL.md` (or extend if present) with:
+    - **User as value node**
+      - Canonical state structure:
+        - Identity / pseudonymous ID.
+        - Balances (per asset), ATR/FLX positions.
+        - Coherence / ΨSync metrics (per user).
+        - Governance footprint (roles, proposals authored, votes cast).
+      - Event classes that modify this state:
+        - `ContentCreated`, `CommentCreated`, `CurationEvent`, `InteractionCreated`.
+        - `GovernanceProposalCreated`, `GovernanceVoteCast`.
+        - Reward-related events: `RewardAllocated`, `CoherenceUpdated`, etc.
+    - **Content as NFT-style object**
+      - ID model: `content_id = f(content_type, creator_id, hash(payload, metadata))`.
+      - Canonical payload vs. metadata.
+      - Versioning rules (e.g. `content_id` immutable, `version` monotonic).
+      - Content addressing (CID/IPFS hash) + link to storage layer.
+- **1.2 Enumerate ledger events**
+  - Build a table in the spec:
+    - Columns: `event_type`, `actor(s)`, `primary_keys` (user_id, content_id), `state_fields_updated`.
+  - Cross‑link each event to:
+    - Implementation module.
+    - Test file(s).
+    - Guard / policy modules that must approve it.
+
+---
+
+### Phase 2 – Content‑NFT Handling & Addressing Verification
+
+- **2.1 Inspect content creation pipeline**
+  - Locate content APIs / services feeding QFS:
+    - ATLAS content endpoints (posts, media, comments).
+    - QFS side handlers that emit `ContentCreated` and related events.
+  - Verify:
+    - Deterministic hashing:
+      - Same payload + normalized metadata → same `content_id`/hash.
+      - Include canonical serialization rules in spec (field order, encoding).
+    - Ledger event payload for `ContentCreated` includes:
+      - `content_id`, `creator_id`, `version`, `cid`/hash, timestamp, content_type, basic policy flags.
+
+- **2.2 Add tests**
+  - **Unit / integration tests** in QFS layer:
+    - Generate several content payloads with fixed fixtures.
+    - Assert:
+      - `content_id` stable across runs.
+      - Replay of the same event trace yields identical content‑NFT metadata state.
+    - For `ContentUpdated`:
+      - Verify new version and version history.
+      - Old versions remain verifiable (if design requires).
+  - Ensure tests treat storage hash/CID as opaque string; no dependence on live IPFS.
+
+- **2.3 Storage determinism**
+  - Confirm the IPFS (or storage) integration:
+    - QFS state only stores content hashes/addresses, never live fetched content.
+    - Any external fetch is outside consensus and marked as such.
+  - Add tests that:
+    - Use a fake/mock IPFS client:
+      - Verify `store(content)` → deterministic CID for the same bytes.
+      - But economics / value model rely solely on CID, not fetch result.
+
+---
+
+### Phase 3 – User as Deterministic Value Node
+
+- **3.1 Map canonical user state**
+  - Identify:
+    - Where account state is stored (RealLedger state layout; user/account tables).
+    - Which modules update:
+      - Balances (TreasuryEngine, RewardAllocator).
+      - ATR/FLX positions.
+      - Coherence/ΨSync (CoherenceEngine/SignalAddon/HumorAddon).
+      - Governance footprint (GovEngine/PolicyRegistry).
+  - Document in spec:
+    - `UserState = { balances, atr, flx, coherence, governance, last_update }`.
+
+- **3.2 Contribution → state mapping**
+  - For each action type:
+    - `Post`, `Comment`, `CurationEvent`, `Interaction`, `GovernanceVote`:
+      - Trace: ATLAS API → QFS event(s) → economics/guards → final `UserState`.
+    - Create a matrix in the spec:
+      - Rows: action types.
+      - Columns: events emitted, engines touched (CoherenceEngine, TreasuryEngine…), state fields impacted.
+
+- **3.3 Integration tests**
+  - Add tests (likely in a `tests/value_node/` or similar) that:
+    - Create a synthetic user with clean initial state.
+    - Run scripted sequences:
+      - Sequence A: content creation + modest engagement.
+      - Sequence B: content + high‑coherence interactions.
+      - Sequence C: governance actions only.
+    - After each sequence:
+      - Query user state.
+      - Assert:
+        - ATR/FLX/rewards changed exactly per existing economics rules (using constants/params already defined; do *not* alter them).
+        - Replaying the same ledger trace yields identical final state.
+
+---
+
+### Phase 4 – Economics & Guards Integration for Content‑NFTs
+
+- **4.1 Map economics hooks**
+  - Locate:
+    - Where content‑linked events flow into TreasuryEngine/RewardAllocator.
+    - How coherence/ΨSync metrics are computed from engagement & content.
+    - Where Humor/SignalAddon (if enabled) changes reward multipliers or bonuses.
+  - Update the spec with:
+    - “Content‑to‑Value” pipeline diagram:
+      - `ContentEvent` → `CoherenceEngine` → `RewardAllocator` → ledger `RewardAllocated` events → user state.
+
+- **4.2 Guard/Aegis integration tests**
+  - For fixed scenarios (e.g.:
+    - A high‑reward content piece.
+    - A borderline/harmful piece blocked by Safety/EconomicsGuard.
+  ):
+    - Build tests that:
+      - Emit a fixed trace of content/interaction events.
+      - Assert:
+        - Reward outcomes (per event type and parameters) are deterministic.
+        - EconomicsGuard/AEGISGuard decisions match policies:
+          - Approve, flag, or block.
+        - No path adjusts user value or content status without going through the documented guard and economics flows.
+
+- **4.3 Sanity on “no hidden rewards”**
+  - Grep & review for reward/ATR updates:
+    - Confirm all reward‑changing operations are driven by ledger events listed in the spec.
+  - Optionally, add a static assertion test:
+    - A whitelist of modules allowed to mutate balance/ATR/FLX state.
+    - Tests assert that any new code paths modifying those fields must reference one of the whitelisted modules.
+
+---
+
+### Phase 5 – Privacy, Transparency & Explain‑This
+
+- **5.1 Transparency surfaces**
+  - Identify or (minimally) extend:
+    - APIs for:
+      - Per‑user ledger history (value node state + contributing events).
+      - Per‑content NFT history (versions, engagement, reward events).
+  - Ensure these APIs:
+    - Expose event IDs, timestamps, policy references—not raw personal data.
+    - Are deterministic views over ledger state.
+
+- **5.2 Privacy checks**
+  - Verify:
+    - QFS core only handles pseudonymous IDs and content hashes.
+    - No direct PII is stored in ledger events.
+  - Add tests:
+    - On representative events, assert no fields match disallowed patterns (simple checks to catch accidental PII fields).
+
+- **5.3 Explain‑This tests**
+  - Implement/verify an internal “explain” function or API:
+    - Input: `user_id` or `content_id`.
+    - Output: structured explanation object:
+      - `events_used`, `policies_applied`, `guards_consulted`, `computed_metrics`, `final_state`.
+  - Add tests that:
+    - Build a small synthetic trace.
+    - Call explain.
+    - Assert:
+      - Each explanation step corresponds to actual ledger events & policies.
+      - No unexplained deltas in value or content status.
+
+---
+
+### Phase 6 – Zero‑Sim & Replay
+
+- **6.1 Zero‑Sim sweep**
+  - Run the AST/Zero‑Sim checker over:
+    - Value node update modules.
+    - Content‑NFT creation/processing.
+    - Reward and guard logic touching these.
+  - Confirm:
+    - No `datetime.now()`, `random`, or similar in consensus paths.
+    - Any clocks used are injected/test‑controlled, not global.
+
+- **6.2 Deterministic replay tests**
+  - Create a “value node replay” suite:
+    - Fixed initial snapshot.
+    - Fixed ordered event log (covering typical user/content scenarios).
+    - Two independent replays:
+      - Compute final user and content‑NFT states.
+      - Assert bit‑for‑bit equality (on hashes, balances, ATR, coherence).
+
+---
+
+### Phase 7 – ATLAS Integration Checks
+
+- **7.1 ATLAS surfaces**
+  - Verify ATLAS APIs/UI:
+    - For a user:
+      - Show value node metrics (balances, ATR/FLX, coherence) driven directly by QFS queries, not local heuristics.
+    - For content:
+      - Display content ID/CID, version history, and status linked to QFS state.
+  - Ensure documented ATLAS endpoints match QFS’s spec (no divergence in terminology).
+
+- **7.2 ATLAS integration tests / smoke tests**
+  - Via ATLAS test harness:
+    - Simulate user flows (create content, interact, govern).
+    - Check:
+      - Responses show ledger‑backed IDs and states.
+      - Value evolution and content treatment correspond to QFS’s explanation and spec.
+
+---
+
+### Final Output Structure
+
+When the above is implemented and verified, generate a machine‑readable summary like:
+
+```json
+{
+  "value_node_model_verified": true,
+  "content_nft_verified": {
+    "status": true,
+    "id_model": "hash(canonical_payload, metadata)",
+    "versioning": "immutable content_id, monotonic version",
+    "addressing": "CID/IPFS; QFS depends only on hashes"
+  },
+  "economics_integration": {
+    "description": "Content and interactions emit ledger events that feed CoherenceEngine and RewardAllocator; resulting RewardAllocated events deterministically update user ATR/FLX and balances."
+  },
+  "guards_aegis_integration": {
+    "description": "EconomicsGuard, SafetyGuard, and AEGISGuard inspect content and value-node effects before rewards/state updates; decisions are recorded and replayable."
+  },
+  "zero_sim_replay_status": {
+    "zero_sim_pass": true,
+    "replay_tests_pass": true
+  },
+  "atlas_integration_status": {
+    "ledger_driven_value_nodes": true,
+    "ledger_backed_content_nfts": true,
+    "explain_surfaces_available": true
+  }
+}
+```
