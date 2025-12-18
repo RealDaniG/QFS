@@ -2,7 +2,7 @@
 Final test to verify PQC.py implementation without requiring the actual PQC library.
 This test patches the Dilithium5 import to allow testing the structure and logic.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -22,13 +22,13 @@ class MockDilithium5:
     @staticmethod
     def verify(public_key, data, signature):
         return True
-import libs.PQC
+import v13.libs.PQC
 libs.PQC.Dilithium5Impl = MockDilithium5
 
 def test_pqc_implementation():
     """Test the PQC implementation structure and logic"""
     try:
-        from libs.PQC import PQC, KeyPair, ValidationResult
+        from v13.libs.PQC import PQC, KeyPair, ValidationResult
         print('✅ Successfully imported PQC module')
         print(f'✅ DILITHIUM5 constant: {PQC.DILITHIUM5}')
         print(f'✅ ZERO_HASH length: {len(PQC.ZERO_HASH)}')

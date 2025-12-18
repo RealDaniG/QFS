@@ -1,7 +1,7 @@
 """
 Test script to verify policy engine integration in feed generation
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 from v13.atlas_api.models import FeedRequest
 from v13.atlas_api.gateway import AtlasAPIGateway
 from unittest.mock import Mock

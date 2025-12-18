@@ -4,41 +4,44 @@ DRV_Packet.py - Deterministic Replayable Validation Packet for QFS V13
 Implements the DRV_Packet class for creating deterministic, replayable validation packets
 that are compliant with Zero-Simulation requirements and Post-Quantum Cryptography.
 """
+
 import hashlib
 import json
 from typing import Dict, Any, Optional, NamedTuple, List
+
 try:
     from ..libs.PQC import PQC
 except ImportError:
     try:
         from v13.libs.PQC import PQC
     except ImportError:
-        from libs.PQC import PQC
+        from v13.libs.PQC import PQC
+
 
 class DRVError(Exception):
     """Base exception for DRV_Packet operations."""
 
     pass
 
+
 class DRVSerializationError(DRVError):
     """Raised when serialization or deserialization fails."""
 
     pass
+
 
 class DRVValidationError(DRVError):
     """Raised when validation of packet data fails."""
 
     pass
 
+
 class DRVChainError(DRVError):
     """Raised when chain validation or linking fails."""
 
     pass
-_ZERO_HASH = '0' * 64
 
-<<<<<<< HEAD
 
-# Constants
 _ZERO_HASH = "0" * 64
 
 
@@ -50,9 +53,6 @@ def _log_drv_packet_operation(
     quantum_metadata: Optional[Dict[str, Any]] = None,
     timestamp: Optional[int] = None,
 ):
-=======
-def _log_drv_packet_operation(log_list: List[Dict[str, Any]], operation: str, details: Dict[str, Any], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None, timestamp: Optional[int]=None):
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     """
     Log a DRV_Packet operation to the audit trail with enhanced audit fields.
 
@@ -65,47 +65,30 @@ def _log_drv_packet_operation(log_list: List[Dict[str, Any]], operation: str, de
         timestamp: Deterministic timestamp (optional)
     """
     log_index = len(log_list)
-<<<<<<< HEAD
-
-    # Get previous hash
     prev_hash = log_list[-1]["entry_hash"] if log_list else _ZERO_HASH
-
     entry = {
         "log_index": log_index,
         "operation": operation,
-        "timestamp": timestamp
-        if timestamp is not None
-        else 0,  # Use 0 as default for deterministic behavior
+        "timestamp": timestamp if timestamp is not None else 0,
         "details": details,
         "pqc_cid": pqc_cid,
         "quantum_metadata": quantum_metadata,
         "prev_hash": prev_hash,
     }
-
-    # Calculate entry hash (excluding prev_hash to avoid circular dependency)
     entry_for_hash = entry.copy()
     entry_for_hash.pop("prev_hash", None)
     entry_for_hash.pop("entry_hash", None)
     serialized_entry = json.dumps(entry_for_hash, sort_keys=True, separators=(",", ":"))
     entry_hash = hashlib.sha256(serialized_entry.encode("utf-8")).hexdigest()
     entry["entry_hash"] = entry_hash
-
-=======
-    prev_hash = log_list[-1]['entry_hash'] if log_list else _ZERO_HASH
-    entry = {'log_index': log_index, 'operation': operation, 'timestamp': timestamp if timestamp is not None else 0, 'details': details, 'pqc_cid': pqc_cid, 'quantum_metadata': quantum_metadata, 'prev_hash': prev_hash}
-    entry_for_hash = entry.copy()
-    entry_for_hash.pop('prev_hash', None)
-    entry_for_hash.pop('entry_hash', None)
-    serialized_entry = json.dumps(entry_for_hash, sort_keys=True, separators=(',', ':'))
-    entry_hash = hashlib.sha256(serialized_entry.encode('utf-8')).hexdigest()
-    entry['entry_hash'] = entry_hash
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     log_list.append(entry)
+
 
 class ValidationResult(NamedTuple):
     is_valid: bool
     error_code: Optional[int] = None
     error_message: Optional[str] = None
+
 
 class ValidationErrorCode:
     OK = 0
@@ -115,6 +98,7 @@ class ValidationErrorCode:
     INVALID_CHAIN = 4
     VERSION_MISMATCH = 5
 
+
 class DRV_Packet:
     """
     Deterministic Replayable Validation Packet.
@@ -122,7 +106,6 @@ class DRV_Packet:
     Contains ttsTimestamp, sequence number, seed, and PQC signature for
     deterministic validation and replayability.
     """
-<<<<<<< HEAD
 
     VERSION = "1.0"
 
@@ -137,11 +120,6 @@ class DRV_Packet:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ):
-=======
-    VERSION = '1.0'
-
-    def __init__(self, ttsTimestamp: int, sequence: int, seed: str, log_list: Optional[List[Dict[str, Any]]]=None, metadata: Optional[Dict[str, Any]]=None, previous_hash: Optional[str]=None, pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None):
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Initialize a DRV packet.
 
@@ -155,52 +133,25 @@ class DRV_Packet:
             pqc_cid: PQC correlation ID for audit trail
             quantum_metadata: Quantum metadata for audit trail
         """
-<<<<<<< HEAD
-        # Input Validation (Zero-Simulation Compliance Check)
-        if (
-            not isinstance(ttsTimestamp, int) or ttsTimestamp < 0
-        ):  # Or check against TTS_MIN/MAX
+        if not isinstance(ttsTimestamp, int) or ttsTimestamp < 0:
             raise ValueError("ttsTimestamp must be a non-negative integer")
         if not isinstance(sequence, int) or sequence < 0:
             raise ValueError("sequence must be a non-negative integer")
-        if not isinstance(seed, str) or not seed:  # Validate seed is a non-empty string
-            raise ValueError("seed must be a non-empty string")
-        # Convert seed to bytes for PQC operations
-        self.seed_bytes = seed.encode("utf-8")
-        if metadata is not None and not isinstance(metadata, dict):
-            raise ValueError("metadata must be a dictionary or None")
-        if previous_hash is not None and not isinstance(previous_hash, str):
-            raise ValueError("previous_hash must be a string or None")
-
-        self.version = self.VERSION
-        self.ttsTimestamp = ttsTimestamp
-        self.sequence = sequence
-        self.seed = seed  # Store as string
-        self.seed_bytes = seed.encode("utf-8")  # Store as bytes for PQC operations
-=======
-        if not isinstance(ttsTimestamp, int) or ttsTimestamp < 0:
-            raise ValueError('ttsTimestamp must be a non-negative integer')
-        if not isinstance(sequence, int) or sequence < 0:
-            raise ValueError('sequence must be a non-negative integer')
         if not isinstance(seed, str) or not seed:
-            raise ValueError('seed must be a non-empty string')
-        self.seed_bytes = seed.encode('utf-8')
+            raise ValueError("seed must be a non-empty string")
+        self.seed_bytes = seed.encode("utf-8")
         if metadata is not None and (not isinstance(metadata, dict)):
-            raise ValueError('metadata must be a dictionary or None')
+            raise ValueError("metadata must be a dictionary or None")
         if previous_hash is not None and (not isinstance(previous_hash, str)):
-            raise ValueError('previous_hash must be a string or None')
+            raise ValueError("previous_hash must be a string or None")
         self.version = self.VERSION
         self.ttsTimestamp = ttsTimestamp
         self.sequence = sequence
         self.seed = seed
-        self.seed_bytes = seed.encode('utf-8')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
+        self.seed_bytes = seed.encode("utf-8")
         self.metadata = metadata or {}
         self.previous_hash = previous_hash
         self.pqc_signature: Optional[bytes] = None
-<<<<<<< HEAD
-
-        # Log the packet creation
         if log_list is not None:
             _log_drv_packet_operation(
                 log_list,
@@ -218,12 +169,6 @@ class DRV_Packet:
             )
 
     def serialize(self, include_signature: bool = True) -> str:
-=======
-        if log_list is not None:
-            _log_drv_packet_operation(log_list, 'create', {'ttsTimestamp': ttsTimestamp, 'sequence': sequence, 'seed': seed, 'metadata': metadata, 'previous_hash': previous_hash}, pqc_cid, quantum_metadata, ttsTimestamp)
-
-    def serialize(self, include_signature: bool=True) -> str:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Serialize the packet to a deterministic string representation.
 
@@ -233,7 +178,6 @@ class DRV_Packet:
         Returns:
             JSON string representation of the packet
         """
-<<<<<<< HEAD
         data = {
             "version": self.version,
             "ttsTimestamp": self.ttsTimestamp,
@@ -242,27 +186,13 @@ class DRV_Packet:
             "metadata": self.metadata,
             "previous_hash": self.previous_hash,
         }
-
         if include_signature and self.pqc_signature is not None:
-            # Convert bytes signature to hex string for JSON
             data["pqc_signature"] = self.pqc_signature.hex()
-
-        # Deterministic JSON serialization with sorted keys (Section 4.2)
         return json.dumps(data, sort_keys=True, separators=(",", ":"))
 
     def get_canonical_bytes(self) -> bytes:
         """Return the exact bytes that are PQC-signed."""
         return self.serialize(include_signature=False).encode("utf-8")
-=======
-        data = {'version': self.version, 'ttsTimestamp': self.ttsTimestamp, 'sequence': self.sequence, 'seed': self.seed, 'metadata': self.metadata, 'previous_hash': self.previous_hash}
-        if include_signature and self.pqc_signature is not None:
-            data['pqc_signature'] = self.pqc_signature.hex()
-        return json.dumps(data, sort_keys=True, separators=(',', ':'))
-
-    def get_canonical_bytes(self) -> bytes:
-        """Return the exact bytes that are PQC-signed."""
-        return self.serialize(include_signature=False).encode('utf-8')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
 
     def get_hash(self) -> str:
         """
@@ -274,7 +204,6 @@ class DRV_Packet:
         """
         return hashlib.sha256(self.get_canonical_bytes()).hexdigest()
 
-<<<<<<< HEAD
     def sign(
         self,
         private_key_bytes: bytes,
@@ -282,9 +211,6 @@ class DRV_Packet:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
-=======
-    def sign(self, private_key_bytes: bytes, log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None) -> None:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Sign the packet with a private key using the configured PQC provider.
 
@@ -295,31 +221,21 @@ class DRV_Packet:
             quantum_metadata: Quantum metadata for audit trail
         """
         data_to_sign = self.to_dict(include_signature=False)
-<<<<<<< HEAD
-
-        # Use PQC library only for deterministic serialization
-        serialized_data = PQC.serialize_data(data_to_sign)
-
-        # Use the configured PQC provider for the actual signing operation
-        from ..libs.pqc_provider import get_pqc_provider
-
-        provider = get_pqc_provider()
-
-        # Sign the serialized bytes
-        signature = provider.sign(
-            private_key_bytes, serialized_data, algo_id="dilithium2"
+        temp_log = []
+        signature = PQC.sign_data(
+            private_key_bytes,
+            data_to_sign,
+            temp_log,
+            pqc_cid,
+            quantum_metadata,
+            self.ttsTimestamp,
         )
-
-        # Store the signature as bytes inside the packet
         self.pqc_signature = signature
-
-        # Log the signing operation
         _log_drv_packet_operation(
             log_list,
             "sign",
             {
                 "packet_hash": self.get_hash(),
-                "provider": provider.name,
                 "signature_length": len(signature) if signature else 0,
             },
             pqc_cid,
@@ -334,14 +250,6 @@ class DRV_Packet:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> bool:
-=======
-        temp_log = []
-        signature = PQC.sign_data(private_key_bytes, data_to_sign, temp_log, pqc_cid, quantum_metadata, self.ttsTimestamp)
-        self.pqc_signature = signature
-        _log_drv_packet_operation(log_list, 'sign', {'packet_hash': self.get_hash(), 'signature_length': len(signature) if signature else 0}, pqc_cid, quantum_metadata, self.ttsTimestamp)
-
-    def verify_signature(self, public_key_bytes: bytes, log_list: List[Dict[str, Any]], pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None) -> bool:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Verify the packet's signature with a public key using the configured PQC provider.
 
@@ -355,7 +263,6 @@ class DRV_Packet:
             bool: True if signature is valid, False otherwise
         """
         if self.pqc_signature is None:
-<<<<<<< HEAD
             _log_drv_packet_operation(
                 log_list,
                 "verify",
@@ -368,64 +275,42 @@ class DRV_Packet:
                 quantum_metadata,
                 self.ttsTimestamp if hasattr(self, "ttsTimestamp") else 0,
             )
-=======
-            _log_drv_packet_operation(log_list, 'verify', {'packet_hash': self.get_hash(), 'result': False, 'error': 'No signature to verify'}, pqc_cid, quantum_metadata, self.ttsTimestamp if hasattr(self, 'ttsTimestamp') else 0)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             return False
         data_to_verify = self.to_dict(include_signature=False)
-<<<<<<< HEAD
-        serialized_data = PQC.serialize_data(data_to_verify)
-
-        # Use the configured PQC provider for verification
-        from ..libs.pqc_provider import get_pqc_provider
-
-        provider = get_pqc_provider()
-
-        result = provider.verify(
-            public_key_bytes, serialized_data, self.pqc_signature, algo_id="dilithium2"
+        temp_log = []
+        validation_result = PQC.verify_signature(
+            public_key_bytes,
+            data_to_verify,
+            self.pqc_signature,
+            temp_log,
+            pqc_cid,
+            quantum_metadata,
+            self.ttsTimestamp,
         )
-
-        # Log the verification operation
+        result = validation_result.is_valid
         _log_drv_packet_operation(
             log_list,
             "verify",
-            {
-                "packet_hash": self.get_hash(),
-                "provider": provider.name,
-                "result": result,
-            },
+            {"packet_hash": self.get_hash(), "result": result},
             pqc_cid,
             quantum_metadata,
             self.ttsTimestamp if hasattr(self, "ttsTimestamp") else 0,
         )
-
-=======
-        temp_log = []
-        validation_result = PQC.verify_signature(public_key_bytes, data_to_verify, self.pqc_signature, temp_log, pqc_cid, quantum_metadata, self.ttsTimestamp)
-        result = validation_result.is_valid
-        _log_drv_packet_operation(log_list, 'verify', {'packet_hash': self.get_hash(), 'result': result}, pqc_cid, quantum_metadata, self.ttsTimestamp if hasattr(self, 'ttsTimestamp') else 0)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         return result
 
     def validate_sequence(self) -> ValidationResult:
         """Validate sequence number is non-negative."""
         if self.sequence < 0:
-<<<<<<< HEAD
             return ValidationResult(
                 False,
                 ValidationErrorCode.INVALID_SEQUENCE,
                 f"Sequence {self.sequence} is negative",
             )
-=======
-            return ValidationResult(False, ValidationErrorCode.INVALID_SEQUENCE, f'Sequence {self.sequence} is negative')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         return ValidationResult(True, ValidationErrorCode.OK)
 
     def validate_ttsTimestamp(self) -> ValidationResult:
         """Validate ttsTimestamp is within a reasonable range."""
-<<<<<<< HEAD
-        # Checks for a valid 64-bit unsigned integer range (max unix time)
-        if not (0 <= self.ttsTimestamp <= 9223372036854775807):  # MAX_INT64
+        if not 0 <= self.ttsTimestamp <= 9223372036854775807:
             return ValidationResult(
                 False,
                 ValidationErrorCode.INVALID_TTS_TIMESTAMP,
@@ -440,57 +325,35 @@ class DRV_Packet:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> ValidationResult:
-=======
-        if not 0 <= self.ttsTimestamp <= 9223372036854775807:
-            return ValidationResult(False, ValidationErrorCode.INVALID_TTS_TIMESTAMP, f'ttsTimestamp {self.ttsTimestamp} out of range')
-        return ValidationResult(True, ValidationErrorCode.OK)
-
-    @staticmethod
-    def validate_chain(previous_packet: Optional['DRV_Packet'], current_packet: 'DRV_Packet', pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None) -> ValidationResult:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """Validate hash chain integrity and sequence monotonicity."""
         if previous_packet is None:
             result = ValidationResult(True, ValidationErrorCode.OK)
             return result
         if current_packet.previous_hash != previous_packet.get_hash():
-<<<<<<< HEAD
             result = ValidationResult(
                 False,
                 ValidationErrorCode.INVALID_CHAIN,
                 f"Chain hash mismatch: got {current_packet.previous_hash}, expected {previous_packet.get_hash()}",
             )
-=======
-            result = ValidationResult(False, ValidationErrorCode.INVALID_CHAIN, f'Chain hash mismatch: got {current_packet.previous_hash}, expected {previous_packet.get_hash()}')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             return result
         if current_packet.sequence != previous_packet.sequence + 1:
-<<<<<<< HEAD
             result = ValidationResult(
                 False,
                 ValidationErrorCode.INVALID_SEQUENCE,
                 f"Sequence non-monotonic: got {current_packet.sequence}, expected {previous_packet.sequence + 1}",
             )
-=======
-            result = ValidationResult(False, ValidationErrorCode.INVALID_SEQUENCE, f'Sequence non-monotonic: got {current_packet.sequence}, expected {previous_packet.sequence + 1}')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             return result
         result = ValidationResult(True, ValidationErrorCode.OK)
         return result
 
-<<<<<<< HEAD
     def is_valid(
         self,
-        public_key_bytes: bytes,  # Pass public key for verification
-        log_list: List[Dict[str, Any]],  # Pass log list for audit trail
-        previous_packet: Optional[
-            "DRV_Packet"
-        ] = None,  # Pass previous packet for chain validation
+        public_key_bytes: bytes,
+        log_list: List[Dict[str, Any]],
+        previous_packet: Optional["DRV_Packet"] = None,
         pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,  # Audit trail parameters
+        quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> ValidationResult:
-=======
-    def is_valid(self, public_key_bytes: bytes, log_list: List[Dict[str, Any]], previous_packet: Optional['DRV_Packet']=None, pqc_cid: Optional[str]=None, quantum_metadata: Optional[Dict[str, Any]]=None) -> ValidationResult:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Validate the packet for coherence and integrity.
         This check is performed by the receiving layer (SDK/API).
@@ -507,7 +370,6 @@ class DRV_Packet:
         """
         result = self.validate_ttsTimestamp()
         if not result.is_valid:
-<<<<<<< HEAD
             _log_drv_packet_operation(
                 log_list,
                 "validate",
@@ -521,13 +383,9 @@ class DRV_Packet:
                 quantum_metadata,
                 self.ttsTimestamp,
             )
-=======
-            _log_drv_packet_operation(log_list, 'validate', {'packet_hash': self.get_hash(), 'result': False, 'error_code': result.error_code, 'error_message': result.error_message}, pqc_cid, quantum_metadata, self.ttsTimestamp)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             return result
         result = self.validate_sequence()
         if not result.is_valid:
-<<<<<<< HEAD
             _log_drv_packet_operation(
                 log_list,
                 "validate",
@@ -541,14 +399,10 @@ class DRV_Packet:
                 quantum_metadata,
                 self.ttsTimestamp,
             )
-=======
-            _log_drv_packet_operation(log_list, 'validate', {'packet_hash': self.get_hash(), 'result': False, 'error_code': result.error_code, 'error_message': result.error_message}, pqc_cid, quantum_metadata, self.ttsTimestamp)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             return result
         if previous_packet is not None:
             result = DRV_Packet.validate_chain(previous_packet, self)
             if not result.is_valid:
-<<<<<<< HEAD
                 _log_drv_packet_operation(
                     log_list,
                     "validate_chain",
@@ -566,8 +420,6 @@ class DRV_Packet:
                     self.ttsTimestamp,
                 )
                 return result
-
-        # Verify PQC signature
         if not self.verify_signature(
             public_key_bytes, log_list, pqc_cid, quantum_metadata
         ):
@@ -590,8 +442,6 @@ class DRV_Packet:
                 self.ttsTimestamp,
             )
             return result
-
-        # All checks passed
         _log_drv_packet_operation(
             log_list,
             "validate",
@@ -600,15 +450,6 @@ class DRV_Packet:
             quantum_metadata,
             self.ttsTimestamp,
         )
-=======
-                _log_drv_packet_operation(log_list, 'validate_chain', {'packet_hash': self.get_hash(), 'previous_packet_hash': previous_packet.get_hash() if previous_packet else None, 'result': False, 'error_code': result.error_code, 'error_message': result.error_message}, pqc_cid, quantum_metadata, self.ttsTimestamp)
-                return result
-        if not self.verify_signature(public_key_bytes, log_list, pqc_cid, quantum_metadata):
-            result = ValidationResult(False, ValidationErrorCode.INVALID_SIGNATURE, 'PQC signature verification failed')
-            _log_drv_packet_operation(log_list, 'validate', {'packet_hash': self.get_hash(), 'result': False, 'error_code': result.error_code, 'error_message': result.error_message}, pqc_cid, quantum_metadata, self.ttsTimestamp)
-            return result
-        _log_drv_packet_operation(log_list, 'validate', {'packet_hash': self.get_hash(), 'result': True}, pqc_cid, quantum_metadata, self.ttsTimestamp)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         return ValidationResult(True, ValidationErrorCode.OK)
 
     @classmethod
@@ -616,34 +457,26 @@ class DRV_Packet:
         """
         Create packet from dictionary representation.
         """
-        version = data.get('version', '1.0')
+        version = data.get("version", "1.0")
         if version != cls.VERSION:
-<<<<<<< HEAD
             raise ValueError(
                 f"Unsupported DRV_Packet version: {version}. Expected {cls.VERSION}"
             )
-
         ttsTimestamp = data["ttsTimestamp"]
         sequence = data["sequence"]
-        seed = data["seed"]  # Load as string
-        previous_hash = data.get("previous_hash")  # Load as optional string
-        metadata = data.get("metadata")  # Load as optional dict
-
+        seed = data["seed"]
+        previous_hash = data.get("previous_hash")
+        metadata = data.get("metadata")
         packet = cls(
             ttsTimestamp=ttsTimestamp,
             sequence=sequence,
-            seed=seed,  # Pass string
-            previous_hash=previous_hash,  # Pass optional string
-            metadata=metadata,  # Pass optional dict
+            seed=seed,
+            previous_hash=previous_hash,
+            metadata=metadata,
         )
-
-        # Load signature from hex string (if present) and convert it back to bytes (Section 4.3)
         sig_hex = data.get("pqc_signature")
         if sig_hex:
-            packet.pqc_signature = bytes.fromhex(
-                sig_hex
-            )  # Convert hex string back to bytes
-
+            packet.pqc_signature = bytes.fromhex(sig_hex)
         return packet
 
     def to_dict(self, include_signature: bool = False) -> Dict[str, Any]:
@@ -651,49 +484,19 @@ class DRV_Packet:
         Convert packet to dictionary representation.
         """
         data = {
-            "version": self.version,  # Assuming self.version is set in __init__
+            "version": self.version,
             "ttsTimestamp": self.ttsTimestamp,
             "sequence": self.sequence,
-            "seed": self.seed,  # Store as string
-            "metadata": self.metadata,  # Store as dict
-            "previous_hash": self.previous_hash,  # Store as optional string
+            "seed": self.seed,
+            "metadata": self.metadata,
+            "previous_hash": self.previous_hash,
         }
-
-=======
-            raise ValueError(f'Unsupported DRV_Packet version: {version}. Expected {cls.VERSION}')
-        ttsTimestamp = data['ttsTimestamp']
-        sequence = data['sequence']
-        seed = data['seed']
-        previous_hash = data.get('previous_hash')
-        metadata = data.get('metadata')
-        packet = cls(ttsTimestamp=ttsTimestamp, sequence=sequence, seed=seed, previous_hash=previous_hash, metadata=metadata)
-        sig_hex = data.get('pqc_signature')
-        if sig_hex:
-            packet.pqc_signature = bytes.fromhex(sig_hex)
-        return packet
-
-    def to_dict(self, include_signature: bool=False) -> Dict[str, Any]:
-        """
-        Convert packet to dictionary representation.
-        """
-        data = {'version': self.version, 'ttsTimestamp': self.ttsTimestamp, 'sequence': self.sequence, 'seed': self.seed, 'metadata': self.metadata, 'previous_hash': self.previous_hash}
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         if include_signature and self.pqc_signature is not None:
-            data['pqc_signature'] = self.pqc_signature.hex()
+            data["pqc_signature"] = self.pqc_signature.hex()
         return data
 
     def __repr__(self) -> str:
         """String representation of the packet."""
         sig_repr = f"b'{self.pqc_signature.hex()}'" if self.pqc_signature else None
-<<<<<<< HEAD
         meta_repr = self.metadata if self.metadata is not None else "None"
-        return (
-            f"DRV_Packet(version={self.version}, ttsTimestamp={self.ttsTimestamp}, "  # Use self.version
-            f"sequence={self.sequence}, seed='{self.seed}', "  # seed is now a string
-            f"pqc_signature={sig_repr}, metadata={meta_repr}, "
-            f"previous_hash={self.previous_hash})"
-        )
-=======
-        meta_repr = self.metadata if self.metadata is not None else 'None'
         return f"DRV_Packet(version={self.version}, ttsTimestamp={self.ttsTimestamp}, sequence={self.sequence}, seed='{self.seed}', pqc_signature={sig_repr}, metadata={meta_repr}, previous_hash={self.previous_hash})"
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)

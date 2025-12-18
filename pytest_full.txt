@@ -1,0 +1,184 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+benchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+configfile: pytest.ini
+plugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 85 items / 8 errors
+
+=================================== ERRORS ====================================
+____________ ERROR collecting v13/tests/unit/test_bignum_fixes.py _____________
+v13\tests\unit\test_bignum_fixes.py:1: in <module>
+    sys.path.append('.')
+    ^^^
+E   NameError: name 'sys' is not defined. Did you forget to import 'sys'?
+___________ ERROR collecting v13/tests/unit/test_community_model.py ___________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_community_model.py:5: in <module>
+    from v13.services.community.manager import GuildManager
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\services\community\manager.py", line 4
+E       <<<<<<< HEAD
+E       ^^
+E   SyntaxError: invalid syntax
+____________ ERROR collecting v13/tests/unit/test_drv_timestamp.py ____________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_drv_timestamp.py:2: in <module>
+    from v13.core.DRV_Packet import DRV_Packet, ValidationErrorCode
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\core\DRV_Packet.py", line 39
+E       <<<<<<< HEAD
+E       ^^
+E   SyntaxError: invalid syntax
+____________ ERROR collecting v13/tests/unit/test_hd_derivation.py ____________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_hd_derivation.py:8: in <module>
+    from v13.libs.crypto.derivation import (
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\crypto\derivation.py", line 328
+E       path: Optional derivation path (defaults to m/44'/9999'/0'/0/0)
+E                                                                ^
+E   SyntaxError: unterminated string literal (detected at line 328)
+__________ ERROR collecting v13/tests/unit/test_pqc_malleability.py ___________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_pqc_malleability.py:3: in <module>
+    from v13.core.DRV_Packet import DRV_Packet
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\core\DRV_Packet.py", line 39
+E       <<<<<<< HEAD
+E       ^^
+E   SyntaxError: invalid syntax
+____ ERROR collecting v13/tests/unit/test_pqc_provider_consistency_shim.py ____
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_pqc_provider_consistency_shim.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_pqc_provider_consistency_shim.py:9: in <module>
+    from v13.libs.pqc.ConcretePQCProvider import ConcretePQCProvider, MockPQCProvider
+v13\libs\pqc\ConcretePQCProvider.py:11: in <module>
+    from ..PQC import Dilithium5Impl
+E   ImportError: cannot import name 'Dilithium5Impl' from 'v13.libs.PQC' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\PQC.py)
+________ ERROR collecting v13/tests/unit/test_system_creator_wallet.py ________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_system_creator_wallet.py:8: in <module>
+    from v13.libs.crypto.derivation import derive_creator_keypair
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\crypto\derivation.py", line 328
+E       path: Optional derivation path (defaults to m/44'/9999'/0'/0/0)
+E                                                                ^
+E   SyntaxError: unterminated string literal (detected at line 328)
+____ ERROR collecting v13/tests/unit/test_value_node_replay_explanation.py ____
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+v13\tests\unit\test_value_node_replay_explanation.py:10: in <module>
+    from v13.policy.value_node_replay import ValueNodeReplayEngine
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\policy\value_node_replay.py", line 17
+E       <<<<<<< HEAD
+E       ^^
+E   SyntaxError: invalid syntax
+=========================== short test summary info ===========================
+ERROR v13/tests/unit/test_bignum_fixes.py - NameError: name 'sys' is not defi...
+ERROR v13/tests/unit/test_community_model.py
+ERROR v13/tests/unit/test_drv_timestamp.py
+ERROR v13/tests/unit/test_hd_derivation.py
+ERROR v13/tests/unit/test_pqc_malleability.py
+ERROR v13/tests/unit/test_pqc_provider_consistency_shim.py
+ERROR v13/tests/unit/test_system_creator_wallet.py
+ERROR v13/tests/unit/test_value_node_replay_explanation.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 8 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 8 errors in 7.44s ==============================

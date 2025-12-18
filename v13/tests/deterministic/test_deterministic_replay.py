@@ -2,7 +2,7 @@
 Deterministic Replay Test for QFS V13
 Verifies that identical inputs produce identical outputs across runs.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 

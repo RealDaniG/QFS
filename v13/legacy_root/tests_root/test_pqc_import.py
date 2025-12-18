@@ -1,6 +1,6 @@
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 try:
-    from libs.PQC import PQC
+    from v13.libs.PQC import PQC
     print('✅ PQC module imported successfully')
     print('✅ PQC.DILITHIUM5 constant:', PQC.DILITHIUM5)
     print('✅ PQC library is ready for production use')

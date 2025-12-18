@@ -9,7 +9,7 @@ from typing import List, Dict, Any, Optional
 from ..ui_contracts.schemas import ProofVectorRef
 from .evidence_models import ProofVector
 from v13.core.QFSReplaySource import QFSReplaySource
-from libs.deterministic_helpers import det_time_isoformat
+from v13.libs.deterministic_helpers import det_time_isoformat
 
 
 def _proof_vector_to_ref(pv: ProofVector) -> ProofVectorRef:

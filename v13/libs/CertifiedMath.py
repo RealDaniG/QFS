@@ -21,6 +21,13 @@ except ImportError:
     from BigNum128 import BigNum128
 
 
+def _is_bignum(obj: Any) -> bool:
+    """Robust check for BigNum128 instance, handling dual-imports."""
+    if isinstance(obj, BigNum128):
+        return True
+    return hasattr(obj, "value") and type(obj).__name__ == "BigNum128"
+
+
 def get_LN2():
     """Get LN2 constant, initializing it if needed."""
     if not hasattr(get_LN2, "_cached"):
@@ -431,12 +438,20 @@ class CertifiedMath:
         return CertifiedMath._safe_mul(
             a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata
         )
-
-        """Multiply int * BigNum128 safely."""
-        a_bn = BigNum128.from_int(a_int)
         return CertifiedMath._safe_mul(
             a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata
         )
+
+    def imul_bn(
+        self,
+        a_int: int,
+        b: BigNum128,
+        log_list: Optional[List[Dict[str, Any]]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> BigNum128:
+        """Multiply int * BigNum128 safely. Alias for legacy compliance."""
+        return self.imul(a_int, b, log_list, pqc_cid, quantum_metadata)
 
     def idiv(
         self,
@@ -451,6 +466,17 @@ class CertifiedMath:
         return CertifiedMath._safe_div(
             a, b_bn, log_list or self.log_list, pqc_cid, quantum_metadata
         )
+
+    def idiv_bn(
+        self,
+        a: BigNum128,
+        b_int: int,
+        log_list: Optional[List[Dict[str, Any]]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> BigNum128:
+        """Divide BigNum128 / int safely. Alias for legacy compliance."""
+        return self.idiv(a, b_int, log_list, pqc_cid, quantum_metadata)
 
     def imax(
         self,
@@ -799,9 +825,9 @@ class CertifiedMath:
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> BigNum128:
         # Ensure both a and b are BigNum128 objects
-        if not isinstance(a, BigNum128):
+        if not _is_bignum(a):
             a = BigNum128(a)
-        if not isinstance(b, BigNum128):
+        if not _is_bignum(b):
             b = BigNum128(b)
 
         result_value = a.value + b.value
@@ -998,9 +1024,11 @@ class CertifiedMath:
     ) -> bool:
         # Ensure both a and b are BigNum128 objects
 
-        if not isinstance(a, BigNum128):
+        # Ensure both a and b are BigNum128 objects
+
+        if not _is_bignum(a):
             a = BigNum128(a)
-        if not isinstance(b, BigNum128):
+        if not _is_bignum(b):
             b = BigNum128(b)
 
         result = a.value != b.value

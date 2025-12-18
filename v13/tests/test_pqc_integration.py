@@ -1,6 +1,6 @@
 import unittest
 import asyncio
-from libs.PQC import PQC, KeyPair, ValidationResult
+from v13.libs.PQC import PQC, KeyPair, ValidationResult
 from ATLAS.src.qfs_client import QFSClient
 from ATLAS.src.qfs_types import OperationBundle
 from unittest.mock import MagicMock

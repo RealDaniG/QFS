@@ -12,8 +12,8 @@ import hashlib
 from unittest.mock import patch, MagicMock
 from typing import List, Dict, Any
 from handlers.CIR302_Handler import CIR302_Handler
-from libs.CertifiedMath import CertifiedMath
-from libs.BigNum128 import BigNum128
+from v13.libs.CertifiedMath import CertifiedMath
+from v13.libs.BigNum128 import BigNum128
 
 class TestCIR302Handler:
     """

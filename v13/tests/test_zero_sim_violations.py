@@ -2,7 +2,7 @@
 Test file with Zero-Simulation violations to verify AST_ZeroSimChecker detects them.
 This file should FAIL the Zero-Sim check.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import math
 
 class TestClass:

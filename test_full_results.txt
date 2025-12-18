@@ -1,0 +1,54 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+configfile: pytest.ini
+plugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 107 items / 3 errors
+
+=================================== ERRORS ====================================
+____________ ERROR collecting v13/tests/unit/test_certifiedmath.py ____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_certifiedmath.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_certifiedmath.py:22: in <module>
+    from CertifiedMath import CertifiedMath, BigNum128
+E   ModuleNotFoundError: No module named 'CertifiedMath'
+___________ ERROR collecting v13/tests/unit/test_community_model.py ___________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_community_model.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_community_model.py:5: in <module>
+    from v13.services.community.manager import GuildManager
+v13\services\community\manager.py:6: in <module>
+    from v13.libs.deterministic_hash import deterministic_uuid
+v13\libs\deterministic_hash.py:8: in <module>
+    from CertifiedMath import BigNum128
+E   ModuleNotFoundError: No module named 'CertifiedMath'
+_______ ERROR collecting v13/tests/unit/test_openagi_dm_integration.py ________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_openagi_dm_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_openagi_dm_integration.py:7: in <module>
+    from v13.integrations.openagi_dm_adapter import OpenAGIDMAdapter
+v13\integrations\openagi_dm_adapter.py:10: in <module>
+    from v13.libs.deterministic_hash import deterministic_hash
+v13\libs\deterministic_hash.py:8: in <module>
+    from CertifiedMath import BigNum128
+E   ModuleNotFoundError: No module named 'CertifiedMath'
+=========================== short test summary info ===========================
+ERROR v13/tests/unit/test_certifiedmath.py
+ERROR v13/tests/unit/test_community_model.py
+ERROR v13/tests/unit/test_openagi_dm_integration.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 3 errors in 7.44s ==============================

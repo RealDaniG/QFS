@@ -14,7 +14,7 @@ Success Criteria:
 
 Evidence Artifact: evidence/v13.6/economic_bounds_verification.json
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 from typing import Dict, Any
 from v13.libs.BigNum128 import BigNum128

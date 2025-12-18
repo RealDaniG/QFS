@@ -2,7 +2,7 @@
 PQC Integrity Validation Tool for QFS V13
 Ensures PQC keys exist and are generated deterministically.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 import pathlib

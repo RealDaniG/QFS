@@ -1,5 +1,5 @@
 """
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 Refactored HumorSignalAddon Implementation for QFS V13.7
 
 This module implements the 7-dimensional comedic signal addon that conforms to 

@@ -1,7 +1,7 @@
 """
 Test to debug AEGIS guard functionality
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 from v13.guards.AEGISGuard import AEGISGuard
 from v13.libs.CertifiedMath import CertifiedMath, BigNum128
 from v13.core.TokenStateBundle import create_token_state_bundle

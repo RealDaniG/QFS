@@ -22,7 +22,8 @@ if os.environ.get("QFS_FORCE_MOCK_PQC") != "1":
         import oqs
 
         _OQS_AVAILABLE = True
-    except ImportError:
+    except (ImportError, SystemExit, RuntimeError) as e:
+        logger.warning(f"LibOQS not available (error: {e}). Using Mock adapter.")
         pass
     except Exception as e:
         logger.error(f"Failed to import liboqs: {e}")

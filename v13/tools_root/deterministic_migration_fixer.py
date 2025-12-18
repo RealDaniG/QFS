@@ -19,8 +19,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]  # points to v13/
 sys.path.append(str(ROOT))
 
 try:
-    from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
-    from libs.fatal_errors import EconomicInvariantBreach, GovernanceGuardFailure
+    from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+    from v13.libs.fatal_errors import EconomicInvariantBreach, GovernanceGuardFailure
     HELPERS_AVAILABLE = True
 except ImportError:
     print("[WARN] Could not import deterministic helpers, will skip adding imports")
@@ -398,15 +398,15 @@ def add_imports_if_needed(source: str, needs_imports: bool, changes_made: List[s
     
     # Check for QAmount usage
     if any("QAmount" in change for change in changes_made):
-        imports_needed.add("from libs.economics.QAmount import QAmount")
+        imports_needed.add("from v13.libs.economics.QAmount import QAmount")
     
     # Check for deterministic helpers usage
     if any("deterministic helper" in change or "det_" in change or "qnum" in change for change in changes_made):
-        imports_needed.add("from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum")
+        imports_needed.add("from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum")
     
     # Check for fatal error usage
     if any("ZeroSimAbort" in change for change in changes_made):
-        imports_needed.add("from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure")
+        imports_needed.add("from v13.libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure")
     
     # Check if imports are already present and need to be updated
     existing_import_lines = []
@@ -444,38 +444,38 @@ def add_imports_if_needed(source: str, needs_imports: bool, changes_made: List[s
     updated_lines = set()
     for i, existing_line in sorted(existing_import_lines):
         # Check if this is a deterministic helpers import that needs to be expanded
-        if "from libs.deterministic_helpers import" in existing_line:
+        if "from v13.libs.deterministic_helpers import" in existing_line:
             # Check if it's missing any of the required functions
             required_functions = {"ZeroSimAbort", "det_time_now", "det_perf_counter", "det_random", "det_time_isoformat", "qnum"}
-            existing_functions = set(existing_line.replace("from libs.deterministic_helpers import ", "").split(", "))
+            existing_functions = set(existing_line.replace("from v13.libs.deterministic_helpers import ", "").split(", "))
             missing_functions = required_functions - existing_functions
             
             if missing_functions:
                 # Update the existing import line
                 all_functions = existing_functions | required_functions
                 function_list = sorted(list(all_functions))
-                new_import_line = "from libs.deterministic_helpers import " + ", ".join(function_list)
+                new_import_line = "from v13.libs.deterministic_helpers import " + ", ".join(function_list)
                 lines[i] = new_import_line
                 updated_lines.add(i)
                 seen_imports.discard(existing_line)
                 seen_imports.add(new_import_line)
         # Check if this is a QAmount import that's already present
-        elif "from libs.economics.QAmount import QAmount" in existing_line:
+        elif "from v13.libs.economics.QAmount import QAmount" in existing_line:
             # Remove this from imports_needed since it's already present
-            imports_needed.discard("from libs.economics.QAmount import QAmount")
+            imports_needed.discard("from v13.libs.economics.QAmount import QAmount")
         # Check if this is a fatal errors import that's already present
-        elif "from libs.fatal_errors import ZeroSimAbort" in existing_line:
+        elif "from v13.libs.fatal_errors import ZeroSimAbort" in existing_line:
             # Remove this from imports_needed since it's already present
-            imports_needed.discard("from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure")
+            imports_needed.discard("from v13.libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure")
     
     # Filter out imports that are already present or updated
     new_imports = set()
     for import_needed in sorted(imports_needed):
         # Skip deterministic helpers import if we already updated an existing one
-        if "from libs.deterministic_helpers import" in import_needed:
+        if "from v13.libs.deterministic_helpers import" in import_needed:
             # Check if we already have a deterministic helpers import
-            has_deterministic_import = any("from libs.deterministic_helpers import" in line for _, line in existing_import_lines)
-            if has_deterministic_import and any(i in updated_lines for i, _ in existing_import_lines if "from libs.deterministic_helpers import" in _):
+            has_deterministic_import = any("from v13.libs.deterministic_helpers import" in line for _, line in existing_import_lines)
+            if has_deterministic_import and any(i in updated_lines for i, _ in existing_import_lines if "from v13.libs.deterministic_helpers import" in _):
                 continue
         # Only add if not already present
         if import_needed not in seen_imports:

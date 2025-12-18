@@ -16,7 +16,7 @@ The audit follows these phases:
 
 Each phase produces raw test logs, hash-based verification proof, and a structured audit report.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 import base64

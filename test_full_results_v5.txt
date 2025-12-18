@@ -1,0 +1,156 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+configfile: pytest.ini
+plugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 118 items
+
+v13\tests\unit\test_appeals_workflow.py .FFF                             [  3%]
+v13\tests\unit\test_bignum_fixes.py ...                                  [  5%]
+v13\tests\unit\test_certified_math_import.py F                           [  6%]
+v13\tests\unit\test_certified_math_proofvectors.py ..................... [ 24%]
+.....                                                                    [ 28%]
+v13\tests\unit\test_certified_math_v13.py .                              [ 29%]
+v13\tests\unit\test_coherence_referral_integration.py F                  [ 30%]
+v13\tests\unit\test_community_model.py ..                                [ 32%]
+v13\tests\unit\test_debug_trivial.py .                                   [ 33%]
+v13\tests\unit\test_dm_integration.py ..F.                               [ 36%]
+v13\tests\unit\test_explain_this_system.py ......                        [ 41%]
+v13\tests\unit\test_gateway_explain.py ...                               [ 44%]
+v13\tests\unit\test_hd_derivation.py ..........                          [ 52%]
+v13\tests\unit\test_memory_hygiene.py .......                            [ 58%]
+v13\tests\unit\test_onboarding_tours.py ....                             [ 61%]
+v13\tests\unit\test_openagi_dm_integration.py FFF..FF.F                  [ 69%]
+v13\tests\unit\test_pqc_malleability.py s                                [ 70%]
+v13\tests\unit\test_pqc_provider.py .....                                [ 74%]
+v13\tests\unit\test_pqc_provider_consistency_shim.py ......              [ 79%]
+v13\tests\unit\test_referral_ledger_sync.py .                            [ 80%]
+v13\tests\unit\test_referral_system.py .......F.                         [ 88%]
+v13\tests\unit\test_reward_system.py ...                                 [ 90%]
+v13\tests\unit\test_system_creator_wallet.py F...FFF.                    [ 97%]
+v13\tests\unit\test_value_node_replay_explanation.py ...                 [100%]
+
+================================== FAILURES ===================================
+___________________________ test_appeal_resolution ____________________________
+v13\tests\unit\test_appeals_workflow.py:25: in test_appeal_resolution
+    appeal = mgr.submit_appeal("0xUser", "event_123", "ipfs://Qm123", "...")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: AppealManager.submit_appeal() missing 1 required positional argument: 'timestamp'
+____________________________ test_invalid_decision ____________________________
+v13\tests\unit\test_appeals_workflow.py:35: in test_invalid_decision
+    appeal = mgr.submit_appeal("0xUser", "event_123", "ipfs://Qm123", "...")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: AppealManager.submit_appeal() missing 1 required positional argument: 'timestamp'
+______________________________ test_list_pending ______________________________
+v13\tests\unit\test_appeals_workflow.py:43: in test_list_pending
+    mgr.submit_appeal("0xUser2", "e2", "cid2", "r2")
+E   TypeError: AppealManager.submit_appeal() missing 1 required positional argument: 'timestamp'
+_______________ TestCertifiedMathSmoke.test_import_and_basic_op _______________
+v13\tests\unit\test_certified_math_import.py:38: in test_import_and_basic_op
+    pi = get_PI()
+         ^^^^^^
+E   NameError: name 'get_PI' is not defined
+---------------------------- Captured stdout call -----------------------------
+
+[Smoke] CertifiedMath imported successfully.
+[Smoke] _safe_add verified.
+[Smoke] _safe_mul verified: 20000000000000000000000
+______ TestCoherenceReferralIntegration.test_referral_reward_application ______
+v13\tests\unit\test_coherence_referral_integration.py:26: in test_referral_reward_application
+    for log in sorted(log_list):
+               ^^^^^^^^^^^^^^^^
+E   TypeError: '<' not supported between instances of 'dict' and 'dict'
+_____________________________ test_messaging_flow _____________________________
+v13\tests\unit\test_dm_integration.py:41: in test_messaging_flow
+    service.identity_mgr.publish_identity(recipient, "pubR", "proofR")
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+_____________________ test_simulation_role_create_thread ______________________
+v13\tests\unit\test_openagi_dm_integration.py:12: in test_simulation_role_create_thread
+    dm_service.identity_mgr.publish_identity('sim_user_1', 'pk1', 'proof1')
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+______________________ test_simulation_role_send_message ______________________
+v13\tests\unit\test_openagi_dm_integration.py:25: in test_simulation_role_send_message
+    dm_service.identity_mgr.publish_identity('sim_user_1', 'pubkey1', 'proof1')
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+_____________________ test_aegis_content_flag_blocks_send _____________________
+v13\tests\unit\test_openagi_dm_integration.py:38: in test_aegis_content_flag_blocks_send
+    assert 'reason' in result
+E   AssertionError: assert 'reason' in {'error': 'CONTENT_FLAGGED'}
+__________________________ test_dm_event_determinism __________________________
+v13\tests\unit\test_openagi_dm_integration.py:57: in test_dm_event_determinism
+    dm_service.identity_mgr.publish_identity('user_a', 'pk_a', 'proof_a')
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+___________________ test_simulated_events_are_ledger_shaped ___________________
+v13\tests\unit\test_openagi_dm_integration.py:67: in test_simulated_events_are_ledger_shaped
+    dm_service.identity_mgr.publish_identity('user_1', 'pk1', 'proof1')
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+___________________ test_production_mode_no_simulation_tag ____________________
+v13\tests\unit\test_openagi_dm_integration.py:84: in test_production_mode_no_simulation_tag
+    dm_service.identity_mgr.publish_identity('user_1', 'pk1', 'proof1')
+E   TypeError: IdentityManager.publish_identity() missing 1 required positional argument: 'timestamp'
+___________________ TestReferralSystem.test_referral_tiers ____________________
+v13\tests\unit\test_referral_system.py:127: in test_referral_tiers
+    check_tier(5, 5000000000)
+v13\tests\unit\test_referral_system.py:124: in check_tier
+    assert reward_arg.amount_scaled == expected_reward
+E   AssertionError: assert 8000000000 == 5000000000
+E    +  where 8000000000 = ReferralRewarded(referrer_wallet='0xRef', referee_wallet='0xUser', token_type='FLX', amount_scaled=8000000000, epoch=100, reason='REFERRAL_TIER_6', guard_cir_code='CIR_PASS', event_type='REFERRAL_REWARDED').amount_scaled
+_______________________ test_derive_creator_keypair_dev _______________________
+v13\tests\unit\test_system_creator_wallet.py:24: in test_derive_creator_keypair_dev
+    assert addr == EXPECTED_ADDRESS_DEV
+E   AssertionError: assert '0x63fa31570c...dd23c817d6bec' == '0x40d1b50e2b...10e9995d72dc9'
+E     
+E     - 0x40d1b50e2b950b1e933b286108335ce73553af2a16b338d408210e9995d72dc9
+E     + 0x63fa31570c028096d639db7f3bc35f031e54aecdad6fdaae9fcdd23c817d6bec
+_____________________ test_keystore_manager_save_and_get ______________________
+v13\tests\unit\test_system_creator_wallet.py:52: in test_keystore_manager_save_and_get
+    ks = KeystoreManager(str(ks_file))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\libs\keystore\manager.py:16: in __init__
+    self._load()
+v13\libs\keystore\manager.py:19: in _load
+    if os.path.exists(self.key_file):
+       ^^
+E   NameError: name 'os' is not defined. Did you forget to import 'os'?
+___________________________ test_keystore_conflict ____________________________
+v13\tests\unit\test_system_creator_wallet.py:68: in test_keystore_conflict
+    ks = KeystoreManager(str(ks_file))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\libs\keystore\manager.py:16: in __init__
+    self._load()
+v13\libs\keystore\manager.py:19: in _load
+    if os.path.exists(self.key_file):
+       ^^
+E   NameError: name 'os' is not defined. Did you forget to import 'os'?
+___________________________ test_ledger_writer_emit ___________________________
+v13\tests\unit\test_system_creator_wallet.py:83: in test_ledger_writer_emit
+    assert os.path.exists(ledger_file)
+           ^^
+E   NameError: name 'os' is not defined. Did you forget to import 'os'?
+============================== warnings summary ===============================
+v13/tests/unit/test_system_creator_wallet.py::test_ledger_writer_emit
+  D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\ledger\genesis_ledger.py:53: PydanticDeprecatedSince20: The `json` method is deprecated; use `model_dump_json` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    f.write(entry.json() + "\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED v13/tests/unit/test_appeals_workflow.py::test_appeal_resolution - Type...
+FAILED v13/tests/unit/test_appeals_workflow.py::test_invalid_decision - TypeE...
+FAILED v13/tests/unit/test_appeals_workflow.py::test_list_pending - TypeError...
+FAILED v13/tests/unit/test_certified_math_import.py::TestCertifiedMathSmoke::test_import_and_basic_op
+FAILED v13/tests/unit/test_coherence_referral_integration.py::TestCoherenceReferralIntegration::test_referral_reward_application
+FAILED v13/tests/unit/test_dm_integration.py::test_messaging_flow - TypeError...
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_simulation_role_create_thread
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_simulation_role_send_message
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_aegis_content_flag_blocks_send
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_dm_event_determinism
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_simulated_events_are_ledger_shaped
+FAILED v13/tests/unit/test_openagi_dm_integration.py::test_production_mode_no_simulation_tag
+FAILED v13/tests/unit/test_referral_system.py::TestReferralSystem::test_referral_tiers
+FAILED v13/tests/unit/test_system_creator_wallet.py::test_derive_creator_keypair_dev
+FAILED v13/tests/unit/test_system_creator_wallet.py::test_keystore_manager_save_and_get
+FAILED v13/tests/unit/test_system_creator_wallet.py::test_keystore_conflict
+FAILED v13/tests/unit/test_system_creator_wallet.py::test_ledger_writer_emit
+============ 17 failed, 100 passed, 1 skipped, 1 warning in 7.35s =============

@@ -1,11 +1,11 @@
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def test_hsmf_constants():
     """Test that HSMF constants are correctly defined"""
     try:
         from core.HSMF import HSMF
-        from libs.CertifiedMath import CertifiedMath, BigNum128
+        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
         cm = CertifiedMath()
         hsmf = HSMF(cm)
         print('Testing HSMF constants...')
@@ -31,7 +31,7 @@ def test_hsmf_imports():
     """Test that HSMF imports are correct"""
     try:
         from core.HSMF import HSMF, ValidationResult
-        from libs.CertifiedMath import CertifiedMath, BigNum128
+        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
         from handlers.CIR302_Handler import CIR302_Handler
         print('✅ HSMF imports verified successfully!')
         return True

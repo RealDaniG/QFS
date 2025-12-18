@@ -41,7 +41,7 @@ except ImportError:
                 MIN_DUST_THRESHOLD,
             )
         except ImportError:
-            from libs.CertifiedMath import CertifiedMath, BigNum128
+            from v13.libs.CertifiedMath import CertifiedMath, BigNum128
             from core.reward_types import RewardBundle
             from economics.EconomicsGuard import EconomicsGuard, ValidationResult
             from economics.economic_constants import (

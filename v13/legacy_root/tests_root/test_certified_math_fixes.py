@@ -1,5 +1,5 @@
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
-from libs.CertifiedMath import CertifiedMath, BigNum128
+from v13.libs.CertifiedMath import CertifiedMath, BigNum128
 
 def test_ln_improved_convergence():
     """Test that ln uses improved convergence range"""

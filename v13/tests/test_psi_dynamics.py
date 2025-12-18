@@ -2,7 +2,7 @@
 Test suite for ψ-Dynamics validation
 Verifies ψ-field calculation, density, gradient, and curl computations
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 from v13.libs.economics.PsiFieldEngine import DiscretePsiField, create_secure_psi_field

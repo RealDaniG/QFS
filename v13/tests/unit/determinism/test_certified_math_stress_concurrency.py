@@ -1,7 +1,7 @@
 """
 Stress and concurrency verification for CertifiedMath.py to confirm determinism under high load
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 import concurrent.futures

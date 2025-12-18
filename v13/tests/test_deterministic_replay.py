@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 try:
     from atlas_api.gateway import AtlasAPIGateway
     from atlas_api.models import FeedRequest, InteractionRequest
-    from libs.CertifiedMath import CertifiedMath, BigNum128
+    from v13.libs.CertifiedMath import CertifiedMath, BigNum128
     from core.TokenStateBundle import TokenStateBundle
 except ImportError:
     try:
@@ -18,7 +18,7 @@ except ImportError:
     except ImportError:
         from atlas_api.gateway import AtlasAPIGateway
         from atlas_api.models import FeedRequest, InteractionRequest
-        from libs.CertifiedMath import CertifiedMath, BigNum128
+        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
         from core.TokenStateBundle import TokenStateBundle
 
 class TestDeterministicReplay:

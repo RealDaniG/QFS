@@ -3,7 +3,7 @@ import json
 import base64
 import asyncio
 from typing import Dict, Optional, Tuple
-from libs.PQC import PQC, KeyPair
+from v13.libs.PQC import PQC, KeyPair
 from .secure_message_v2 import SecureMessageV2, MessageSequenceManager
 from .aegis_bootstrap import AEGISDIDBootstrap
 
@@ -172,7 +172,7 @@ class ConnectionManager:
         # For this MVP, we will send plaintext+signature wrapped in SecureMessageV2 structure (mocking encryption).
         mock_nonce = b"00000000"
         # We need a proper timestamp QAmount
-        from libs.economics.QAmount import QAmount
+        from v13.libs.economics.QAmount import QAmount
 
         msg = SecureMessageV2(
             ciphertext=payload,  # Mock: sending plaintext as ciphertext

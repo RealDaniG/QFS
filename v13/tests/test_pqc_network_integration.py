@@ -3,7 +3,7 @@ import base64
 import json
 import asyncio
 from unittest.mock import MagicMock, AsyncMock, patch
-from libs.PQC import PQC, KeyPair
+from v13.libs.PQC import PQC, KeyPair
 from ATLAS.src.core.pqc_session import pqc_session_manager
 
 # Local definition to avoid importing secure_chat.py which triggers Pydantic recursion in test env

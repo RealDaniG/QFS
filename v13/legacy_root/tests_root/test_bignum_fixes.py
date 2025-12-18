@@ -1,10 +1,10 @@
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def test_bignum_to_decimal_string():
     """Test the fixed BigNum128.to_decimal_string method"""
     try:
-        from libs.BigNum128 import BigNum128
+        from v13.libs.BigNum128 import BigNum128
         print('Testing BigNum128.to_decimal_string fix...')
         bn1 = BigNum128(100)
         result1 = bn1.to_decimal_string()
@@ -31,7 +31,7 @@ def test_bignum_to_decimal_string():
 def test_certified_math_bignum_to_decimal_string():
     """Test the fixed BigNum128.to_decimal_string method in CertifiedMath"""
     try:
-        from libs.CertifiedMath import BigNum128
+        from v13.libs.CertifiedMath import BigNum128
         print('Testing CertifiedMath BigNum128.to_decimal_string fix...')
         bn1 = BigNum128(100)
         result1 = bn1.to_decimal_string()

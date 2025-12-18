@@ -1,7 +1,7 @@
 """
 Comprehensive AST checker for QFS V13 with proper exclusion handling
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import ast
 import pathlib
 from typing import List, Tuple, Set, Optional

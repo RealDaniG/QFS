@@ -1,11 +1,11 @@
 """
 Test script for HSMF.py to verify the implementation works correctly.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 try:
-    from libs.BigNum128 import BigNum128
-    from libs.CertifiedMath import CertifiedMath
+    from v13.libs.BigNum128 import BigNum128
+    from v13.libs.CertifiedMath import CertifiedMath
     from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
     from handlers.CIR302_Handler import CIR302_Handler
     from core.HSMF import HSMF

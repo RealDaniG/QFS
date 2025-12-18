@@ -1,6 +1,6 @@
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 try:
-    from libs.PQC import PQC, KeyPair
+    from v13.libs.PQC import PQC, KeyPair
     print('✅ PQC module imported successfully')
 
     def test_log_context_chain_integrity():

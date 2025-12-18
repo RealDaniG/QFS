@@ -1,14 +1,14 @@
 """
 Test specifically for the LogContext chain integrity implementation.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 class MockDilithium5:
     pass
-import libs.PQC
+import v13.libs.PQC
 libs.PQC.Dilithium5Impl = MockDilithium5
 
 def create_mock_log_entry(index, operation, entry_hash):
@@ -19,7 +19,7 @@ def create_mock_log_entry(index, operation, entry_hash):
 def test_log_context_chain_integrity():
     """Test the LogContext chain integrity implementation"""
     try:
-        from libs.PQC import PQC
+        from v13.libs.PQC import PQC
         print('✅ Successfully imported PQC module')
         print('\n--- Testing LogContext Chain Integrity ---')
         with PQC.LogContext() as log:

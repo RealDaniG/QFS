@@ -1,11 +1,11 @@
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum
 Transaction Processor for ATLAS
 
 This module handles the processing of financial transactions with quantum security.
 """
 from typing import Dict, List, Optional, Tuple
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 import hashlib
 import json
 from dataclasses import dataclass, asdict

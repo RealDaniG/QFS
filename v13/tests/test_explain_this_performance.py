@@ -7,7 +7,7 @@ Verifies:
 3. Determinism under load
 """
 from fractions import Fraction
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import pytest
 from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy

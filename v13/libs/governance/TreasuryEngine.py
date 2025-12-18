@@ -31,7 +31,7 @@ except ImportError:
             from v13.libs.economics.economic_constants import FLX_REWARD_FRACTION
             from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
         except ImportError:
-            from libs.CertifiedMath import CertifiedMath, BigNum128
+            from v13.libs.CertifiedMath import CertifiedMath, BigNum128
             from core.TokenStateBundle import TokenStateBundle
             from core.reward_types import RewardBundle
             from economics.economic_constants import FLX_REWARD_FRACTION

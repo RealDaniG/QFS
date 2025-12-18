@@ -7,7 +7,7 @@ QFS V13.7 SignalAddon contract and Zero-Sim invariants.
 
 from typing import Dict, Any
 from .base import SignalAddon, SignalResult
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 import hashlib
 import json
 import re

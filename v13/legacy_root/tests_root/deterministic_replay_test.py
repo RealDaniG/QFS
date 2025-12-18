@@ -2,13 +2,13 @@
 Deterministic Replay Test for QFS V13
 Runs the same sequence of operations twice and verifies identical results
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 from src.libs.CertifiedMath import CertifiedMath, BigNum128
 from src.core.HSMF import HSMF
 from src.core.TokenStateBundle import TokenStateBundle
-from libs.UtilityOracleInterface import UtilityOracleInterface
-from libs.TreasuryEngine import TreasuryEngine
+from v13.libs.UtilityOracleInterface import UtilityOracleInterface
+from v13.libs.TreasuryEngine import TreasuryEngine
 from src.core.DRV_Packet import DRV_Packet
 sys.path.insert(0, os.path.dirname(__file__))
 

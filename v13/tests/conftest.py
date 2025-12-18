@@ -12,9 +12,11 @@ _REPO_ROOT = os.path.abspath(os.path.join(_V13_ROOT, ".."))
 _V13_LIBS = os.path.join(_V13_ROOT, "libs")
 _V13_CORE = os.path.join(_V13_ROOT, "core")
 _V13_UTILS = os.path.join(_V13_ROOT, "utils")
-for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
-    if p not in sys.path:
-        sys.path.insert(0, p)
+# for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
+#     if p not in sys.path:
+#         sys.path.insert(0, p)
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
 try:
     import v13.core.TokenStateBundle as _tsb_mod
 

@@ -1,0 +1,55 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+configfile: pytest.ini
+plugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 9 items
+
+v13\tests\unit\test_value_node_replay_explanation.py FFF                 [ 33%]
+v13\tests\unit\test_reward_system.py ...                                 [ 66%]
+v13\tests\unit\test_bignum_fixes.py ...                                  [100%]
+
+================================== FAILURES ===================================
+______________________ test_explain_full_fidelity_event _______________________
+v13\tests\unit\test_value_node_replay_explanation.py:50: in test_explain_full_fidelity_event
+    explanation = engine.explain_specific_reward("full_fid_1", [event])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\policy\value_node_replay.py:84: in explain_specific_reward
+    explanation = self.explainability_helper.explain_value_node_reward(
+v13\policy\value_node_explainability.py:117: in explain_value_node_reward
+    total_reward = self._calculate_total_reward(
+v13\policy\value_node_explainability.py:302: in _calculate_total_reward
+    final_val_bn = cm.idiv_bn(
+                   ^^^^^^^^^^
+E   AttributeError: 'CertifiedMath' object has no attribute 'idiv_bn'
+__________________ test_explain_low_fidelity_event_fallback ___________________
+v13\tests\unit\test_value_node_replay_explanation.py:72: in test_explain_low_fidelity_event_fallback
+    explanation = engine.explain_specific_reward("low_fid_1", [event])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\policy\value_node_replay.py:84: in explain_specific_reward
+    explanation = self.explainability_helper.explain_value_node_reward(
+v13\policy\value_node_explainability.py:117: in explain_value_node_reward
+    total_reward = self._calculate_total_reward(
+v13\policy\value_node_explainability.py:302: in _calculate_total_reward
+    final_val_bn = cm.idiv_bn(
+                   ^^^^^^^^^^
+E   AttributeError: 'CertifiedMath' object has no attribute 'idiv_bn'
+__________________ test_replay_integration_with_explanation ___________________
+v13\tests\unit\test_value_node_replay_explanation.py:96: in test_replay_integration_with_explanation
+    expl = engine.explain_specific_reward("r1", events)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\policy\value_node_replay.py:84: in explain_specific_reward
+    explanation = self.explainability_helper.explain_value_node_reward(
+v13\policy\value_node_explainability.py:117: in explain_value_node_reward
+    total_reward = self._calculate_total_reward(
+v13\policy\value_node_explainability.py:302: in _calculate_total_reward
+    final_val_bn = cm.idiv_bn(
+                   ^^^^^^^^^^
+E   AttributeError: 'CertifiedMath' object has no attribute 'idiv_bn'
+=========================== short test summary info ===========================
+FAILED v13/tests/unit/test_value_node_replay_explanation.py::test_explain_full_fidelity_event
+FAILED v13/tests/unit/test_value_node_replay_explanation.py::test_explain_low_fidelity_event_fallback
+FAILED v13/tests/unit/test_value_node_replay_explanation.py::test_replay_integration_with_explanation
+========================= 3 failed, 6 passed in 6.89s =========================

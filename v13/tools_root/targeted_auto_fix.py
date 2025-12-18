@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]  # points to v13/
 sys.path.append(str(ROOT))
 
 try:
-    from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+    from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
     HELPERS_AVAILABLE = True
 except ImportError:
     print("[WARN] Could not import deterministic helpers, will skip adding imports")
@@ -191,7 +191,7 @@ def add_imports_if_needed(source: str, needs_imports: bool) -> str:
         return source
     
     # Check if imports are already present
-    if "from libs.deterministic_helpers import" in source:
+    if "from v13.libs.deterministic_helpers import" in source:
         return source
     
     # Add imports after the module docstring if present
@@ -207,7 +207,7 @@ def add_imports_if_needed(source: str, needs_imports: bool) -> str:
                 break
     
     # Insert the import statement
-    import_line = "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum"
+    import_line = "from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum"
     lines.insert(insert_pos, import_line)
     
     return '\n'.join(lines)

@@ -1,5 +1,5 @@
-from libs.deterministic_helpers import det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum
-from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure
+from v13.libs.deterministic_helpers import det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum
+from v13.libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure
 from typing import Dict, List, Tuple, Set, Any, Optional, TYPE_CHECKING
 try:
     from v13.core.TokenStateBundle import TokenStateBundle

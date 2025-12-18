@@ -1,7 +1,7 @@
 """
 Test to verify SafetyGuard integration in AtlasAPIGateway
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import hashlib
 from v13.atlas_api.gateway import AtlasAPIGateway

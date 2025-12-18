@@ -9,7 +9,7 @@ sys.setrecursionlimit(1000)
 ROOT = pathlib.Path(__file__).resolve().parents[1]  # points to v13/
 # Import our deterministic helper functions
 sys.path.append(str(ROOT))
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 PROHIBITED_IMPORTS: Set[str] = {
     "sys", "os", "time", "datetime", "random", "threading", "asyncio",
 }

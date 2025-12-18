@@ -1,7 +1,7 @@
 """
 Audit Verification Script for QFS V13 Compliance & Determinism
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 sys.path.insert(0, 'libs')
 from CertifiedMath import CertifiedMath, BigNum128, LogContext, MathOverflowError

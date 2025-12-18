@@ -5,7 +5,7 @@ This tool provides a command-line interface for operators to inspect
 humor signal statistics, distributions, and anomalies.
 """
 from fractions import Fraction
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 import argparse
 from typing import Dict, Any, List

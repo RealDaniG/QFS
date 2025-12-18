@@ -12,7 +12,7 @@ Success Criteria:
 
 Evidence Artifact: evidence/v13.6/performance_benchmark.json
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import json
 from typing import Dict, Any, List
 import statistics

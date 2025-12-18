@@ -4,10 +4,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 class MockDilithium5:
     pass
-import libs.PQC
+import v13.libs.PQC
 libs.PQC.Dilithium5Impl = MockDilithium5
 try:
-    from libs.PQC import PQC
+    from v13.libs.PQC import PQC
     print('✅ PQC module structure verified successfully')
 
     def test_constants():

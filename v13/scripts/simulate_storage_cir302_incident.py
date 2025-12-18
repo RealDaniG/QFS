@@ -26,10 +26,10 @@ from typing import Dict, Any
 from unittest.mock import patch
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from core.StorageEngine import StorageEngine
-from libs.CertifiedMath import CertifiedMath
-from libs.BigNum128 import BigNum128
+from v13.libs.CertifiedMath import CertifiedMath
+from v13.libs.BigNum128 import BigNum128
 from handlers.CIR302_Handler import CIR302_Handler
-from libs.deterministic_helpers import det_time_isoformat
+from v13.libs.deterministic_helpers import det_time_isoformat
 
 class CIR302IncidentSimulator:
     """Simulates CIR-302 critical incident scenarios for the storage system."""

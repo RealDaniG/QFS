@@ -17,7 +17,7 @@ except ImportError:
     try:
         from v13.libs.CertifiedMath import BigNum128, CertifiedMath
     except ImportError:
-        from libs.CertifiedMath import BigNum128, CertifiedMath
+        from v13.libs.CertifiedMath import BigNum128, CertifiedMath
 
 
 @dataclass
@@ -118,7 +118,7 @@ class TokenStateBundle:
                 from v13.libs.PQC import PQC
             except ImportError:
                 try:
-                    from libs.PQC import PQC
+                    from v13.libs.PQC import PQC
                 except ImportError:
                     return False
         try:

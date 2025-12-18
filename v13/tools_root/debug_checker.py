@@ -10,7 +10,7 @@ from typing import List, Tuple, Set, Optional
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
 try:
-    from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+    from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 except ImportError:
     # Create dummy classes/functions for the checker
     class ZeroSimAbort(Exception):

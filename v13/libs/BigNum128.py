@@ -25,10 +25,16 @@ class BigNum128:
     MIN_VALUE = 0
     cm = None
 
-    def __init__(self, value: int):
+    def __init__(self, value: Union[int, "BigNum128"]):
         self._ensure_cm_initialized()
+
+        # If value is a BigNum128 but for a different import path (shadowing),
+        # extract its raw value.
+        if hasattr(value, "value") and not isinstance(value, int):
+            value = value.value
+
         if not isinstance(value, int):
-            raise TypeError("BigNum128 only accepts integers")
+            raise TypeError(f"BigNum128 only accepts integers, got {type(value)}")
         if value < self.MIN_VALUE or value > self.MAX_VALUE:
             raise OverflowError(
                 f"BigNum128 value {value} out of bounds [{self.MIN_VALUE}, {self.MAX_VALUE}]"
@@ -211,7 +217,9 @@ class BigNum128:
         from .CertifiedMath import CertifiedMath
 
         cm = CertifiedMath()
-        return cls(cm.mul(1, cls.SCALE))
+        res = cm.mul(1, cls.SCALE)
+        print(f"DEBUG one(): res={res} type={type(res)}")
+        return cls(res)
 
     def add(self, other: "BigNum128") -> "BigNum128":
         """Adds two BigNum128 values."""

@@ -1,7 +1,7 @@
 """
 Test runner for the CertifiedMath extensions.
 """
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 import subprocess
 
 def run_certified_math_extensions_tests():

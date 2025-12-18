@@ -1,4 +1,4 @@
-from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
+from v13.libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum
 if __name__ == '__main__':
     try:
         from v13.tests.test_hsmf_certifiedmath_integration import test_hsmf_with_certified_math, test_public_api
