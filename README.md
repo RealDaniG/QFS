@@ -8,14 +8,22 @@
 
 | I want to... | Go here |
 |--------------|---------|
-| **Understand the system** | [Core Concepts](v13/docs/QFS_V13_8_FULL_ENGINE_OVERVIEW.md) · [📖 Wiki](https://github.com/RealDaniG/QFS/wiki) |
-| **Deploy to production** | [Production Deployment](v13/docs/OPERATOR_RUNBOOK_V13.8.md) |
+| **Understand the system** | [Core Concepts](docs/QFS_OPEN_AGI_ATLAS_INTEGRATION.md) · [📖 Wiki](https://github.com/RealDaniG/QFS/wiki) |
+| **Deploy to production** | [Production Deployment](v13/docs/deployment_checklist.md) |
 | **Review security** | [Security Compliance](v13/docs/ZERO_SIM_QFS_ATLAS_CONTRACT.md) |
-| **Contribute** | [Contributing](v13/docs/roadmaps/TASKS-V13.5.md) |
+| **Collaborating** | [Join the Team](https://www.patreon.com/cw/QFSxATLAS) |
 | **Check status** | [Interactive Dashboard](v13/docs/qfs-v13.8-dashboard.html) |
-| **Browse documentation** | [📚 Full Wiki](v13/docs/README.md) |
+| **Browse documentation** | [📚 Full Wiki](docs/repo_structure.md) |
 
 ---
+
+## 🔑 Key Documents (Current)
+
+- Executive summary: [`docs/EXECUTIVE_SUMMARY.md`](docs/EXECUTIVE_SUMMARY.md)
+- Investor one-pager: [`docs/INVESTOR_ONE_PAGER.md`](docs/INVESTOR_ONE_PAGER.md)
+- Integration architecture: [`docs/QFS_OPEN_AGI_ATLAS_INTEGRATION.md`](docs/QFS_OPEN_AGI_ATLAS_INTEGRATION.md)
+- Zero-Sim automation: [`docs/ZERO_SIM_AUTOMATION.md`](docs/ZERO_SIM_AUTOMATION.md)
+- Phase IV deployment: [`v13/docs/phase4_walkthrough.md`](v13/docs/phase4_walkthrough.md)
 
 ## 📊 Current Status
 
@@ -302,7 +310,7 @@ All verification evidence is in `v13/evidence/`:
 
 ## 🤝 Contributing
 
-### Current Focus: QFS v18.9 "Deterministic Session Management"
+### Current Focus: Phase V Deployment
 
 We're moving from verified baseline → live production with:
 
@@ -311,15 +319,16 @@ We're moving from verified baseline → live production with:
 3. Ledger-replayable session state reconstruction
 4. Explain-This cryptographic proof integration
 
-📋 [View Open Tasks](v13/docs/roadmaps/TASKS-V13.5.md)
+- Current task board & roadmap: [`task.md`](task.md)
+- Phase overview & milestones: [`v13/docs/phase4_walkthrough.md`](v13/docs/phase4_walkthrough.md)
 
 ### How to Contribute
 
 1. **Understand current state**  
-   Read [`QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json`](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
+   Read [`docs/EXECUTIVE_SUMMARY.md`](docs/EXECUTIVE_SUMMARY.md)
 
 2. **Pick a task**  
-   Check [`TASKS-V13.5.md`](v13/docs/roadmaps/TASKS-V13.5.md) for current priorities
+   Check [`task.md`](task.md) for current priorities
 
 3. **Follow evidence-first principle**  
    All work must generate evidence artifacts in `v13/evidence/`
@@ -368,7 +377,7 @@ We're moving from verified baseline → live production with:
 - **Phase 4**: Fuzzing, static analysis, governance procedures
 - **Phase 5** (Days 301-365): Final certification, 100% compliance
 
-📅 [Full Roadmap](v13/docs/roadmaps/ROADMAP-V13.5-REMEDIATION.md)
+📅 [Full Roadmap](task.md)
 
 ---
 

@@ -1,3 +1,7 @@
+> ⚠️ Historical Document (Archived)
+> This file describes QFS V13.5 / V13.7 / V13.8 behavior and is **not** representative of the current Phase IV/V implementation.
+> For up-to-date information, see `v13/docs/phase4_walkthrough.md`, `task.md`, and `docs/EXECUTIVE_SUMMARY.md`.
+
 # QFS V13.7 HumorSignalAddon Specification
 
 ## Overview
@@ -15,6 +19,7 @@ The HumorSignalAddon is a pure signal provider that evaluates content across 7 h
 ## Architecture
 
 ### Signal Interface
+
 ```
 Input:
 - content: str (text content to evaluate)
@@ -40,6 +45,7 @@ Output:
 ```
 
 ### Policy Interface
+
 ```
 Input:
 - dimensions: Dict[str, float] (7-dimensional humor vector)
@@ -57,21 +63,25 @@ Output:
 ## Test Coverage
 
 ### Policy Tests
+
 - `test_all_mode_combinations_with_boundary_values` - Covers all policy modes with boundary values
 - `test_daily_cap_edge_cases` - Tests exact cap, cap+ε, and multiple user scenarios
 - `test_negative_or_malformed_vectors_safely_handled` - Ensures graceful handling of invalid inputs
 
 ### Observability Tests
+
 - `test_histogram_realistic_distributions` - Verifies histogram calculation with realistic data distributions
 - `test_anomaly_detection_spike_scenarios` - Tests anomaly flagging in crafted spike scenarios
 - `test_policy_version_hash_correctness` - Ensures policy version/hash correctness in outputs
 
 ### Explainability Tests
+
 - `test_reason_code_combinations` - Tests various reason-code combinations
 - `test_explanation_hash_stability` - Verifies explanation hash stability under replay
 - `test_api_response_shapes` - Ensures proper API response shapes
 
 ### Compliance Tests
+
 - `test_no_ledger_adapters_in_humor_modules` - Verifies no TreasuryEngine/ledger adapter usage
 - `test_no_network_io_in_humor_modules` - Ensures no network I/O in humor modules
 - `test_no_filesystem_io_in_humor_modules` - Ensures no filesystem I/O in humor modules
@@ -79,6 +89,7 @@ Output:
 ## Verification Evidence
 
 See `evidence/humor/humor_slice_evidence.json` for comprehensive evidence bundle including:
+
 - All 47 tests passing
 - Static analysis confirming no forbidden imports or I/O
 - Deterministic replay verification

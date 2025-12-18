@@ -1,3 +1,7 @@
+> ⚠️ Historical Document (Archived)
+> This file describes QFS V13.5 / V13.7 / V13.8 behavior and is **not** representative of the current Phase IV/V implementation.
+> For up-to-date information, see `v13/docs/phase4_walkthrough.md`, `task.md`, and `docs/EXECUTIVE_SUMMARY.md`.
+
 # QFS V13.8 Value-Node Economics Specification
 
 ## Overview
@@ -15,6 +19,7 @@ The Value-Node Economics slice provides deterministic, replayable explanations f
 ## Architecture
 
 ### Replay Interface
+
 ```
 Input:
 - events: List[Dict[str, Any]] (ledger-like events)
@@ -25,6 +30,7 @@ Output:
 ```
 
 ### Explainability Interface
+
 ```
 Input:
 - wallet_id: str (target wallet identifier)
@@ -45,6 +51,7 @@ Output:
 ## Test Coverage
 
 ### Replay Tests
+
 - `test_value_node_replay_is_deterministic` - Core deterministic replay test
 - `test_complex_event_trace_deterministic` - Complex event trace deterministic test
 - `test_empty_event_trace` - Empty event trace handling
@@ -58,6 +65,7 @@ Output:
 - `test_boundary_timestamp_values` - Boundary timestamp values handling
 
 ### Explainability Tests
+
 - `test_explain_value_node_reward` - Core reward explanation generation
 - `test_explanation_deterministic_hash` - Explanation hash determinism
 - `test_explanation_consistency_verification` - Explanation consistency verification
@@ -77,6 +85,7 @@ Output:
 ## Verification Evidence
 
 See `evidence/value_node/value_node_slice_evidence.json` for comprehensive evidence bundle including:
+
 - All 28 tests passing
 - Static analysis confirming no forbidden imports or I/O
 - Deterministic replay verification

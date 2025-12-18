@@ -1,3 +1,7 @@
+> ⚠️ Historical Document (Archived)
+> This file describes QFS V13.5 / V13.7 / V13.8 behavior and is **not** representative of the current Phase IV/V implementation.
+> For up-to-date information, see `v13/docs/phase4_walkthrough.md`, `task.md`, and `docs/EXECUTIVE_SUMMARY.md`.
+
 # ATLAS V13.8 Operator Runbook
 
 ## 1. System Overview

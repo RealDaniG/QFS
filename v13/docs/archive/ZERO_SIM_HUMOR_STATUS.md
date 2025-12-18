@@ -1,3 +1,7 @@
+> ⚠️ Historical Document (Archived)
+> This file describes QFS V13.5 / V13.7 / V13.8 behavior and is **not** representative of the current Phase IV/V implementation.
+> For up-to-date information, see `v13/docs/phase4_walkthrough.md`, `task.md`, and `docs/EXECUTIVE_SUMMARY.md`.
+
 # Zero-Simulation & Compliance Status for HumorSignalAddon
 
 ## Overview
@@ -11,39 +15,46 @@ This document summarizes the Zero-Simulation compliance and deterministic behavi
 ## Checked Items
 
 ### 1. Deterministic Execution
+
 - **Verified by**: `tests/test_humor_deterministic_replay.py`
 - **Tests**: Bit-for-bit reproducibility with fixed fixtures
 - **Status**: ✅ PASSING - All cross-module deterministic consistency tests passing
 
 ### 2. No External I/O
+
 - **Verified by**: `tests/test_humor_compliance.py`
-- **Tests**: 
+- **Tests**:
   - `test_no_network_io_in_humor_modules` - No network I/O in any humor modules
   - `test_no_filesystem_io_in_humor_modules` - No filesystem I/O in any humor modules
 - **Status**: ✅ PASSING - No forbidden I/O operations detected
 
 ### 3. No TreasuryEngine/Ledger Access
+
 - **Verified by**: `tests/test_humor_compliance.py`
 - **Tests**: `test_no_ledger_adapters_in_humor_modules`
 - **Method**: Static analysis of source code for forbidden imports/usage
 - **Status**: ✅ PASSING - No TreasuryEngine, RealLedger, or TokenStateBundle usage detected
 
 ### 4. No Floating-Point Operations
+
 - **Verified by**: Manual code review and static analysis
 - **Method**: Review of arithmetic operations in all humor modules
 - **Status**: ✅ COMPLIANT - All arithmetic uses integer math with scaling
 
 ### 5. No Random Values
+
 - **Verified by**: Manual code review
 - **Method**: Search for random/entropy-related imports and functions
 - **Status**: ✅ COMPLIANT - No random value generation in any humor modules
 
 ### 6. No Wall-Clock Timestamps
+
 - **Verified by**: Manual code review
 - **Method**: Search for time-related imports and functions
 - **Status**: ✅ COMPLIANT - No wall-clock timestamp usage in any humor modules
 
 ### 7. Replayable from Ledger Events
+
 - **Verified by**: `tests/test_humor_deterministic_replay.py`
 - **Tests**: Replay testing with ledger-derived context
 - **Status**: ✅ PASSING - All replay tests passing with deterministic outputs
@@ -69,6 +80,7 @@ This document summarizes the Zero-Simulation compliance and deterministic behavi
 ## Compliance Summary
 
 The HumorSignalAddon slice is fully compliant with Zero-Simulation requirements and maintains all required invariants:
+
 - Pure signal provider with no direct economic effects
 - Fully deterministic and replayable
 - No external dependencies or I/O
