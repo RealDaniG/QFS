@@ -1,8 +1,9 @@
-# Zero-Simulation QFS × ATLAS Contract (v1.3)
+# Zero-Simulation QFS × ATLAS Contract (v1.4)
 
 > **Authority:** This document supersedes all local slice-level configuration.  
 > **Enforcement:** Verified by `run_zero_sim_suite.py` and strictly enforced by CI.  
-> **Effective:** 2025-12-14
+> **Effective:** 2025-12-18  
+> **Changes in v1.4:** Codifies ATLAS v14 social-layer determinism, economic wiring, canonical contracts, and unified social regression requirements.
 
 ***
 
@@ -27,6 +28,7 @@ Every component in the critical path (Logic → Economics → Explanation) must 
   - Deterministic PRNG seeded by `SHA-3(content_hash || ledger_state)`.
   - PQC key generation (one-time, externally signed, logged to ledger).
   - **Client-side optimistic UUIDs** IF and ONLY IF replaced by ledger-assigned canonical IDs upon ingestion.
+- **Example (ATLAS v14):** Uses deterministic `DeterministicID.from_string(seed)` to derive `space_id`, `post_id`, and `message_id`; no random UUIDs are allowed in these paths.
 
 ### 2.2 No Wall-Clock Time
 
@@ -36,6 +38,7 @@ Every component in the critical path (Logic → Economics → Explanation) must 
   - `block_height` or `epoch_counter`.
   - Event timestamps passed explicitly from ledger.
   - **Metadata-only timestamps** (e.g., server ingestion time) that are **never used for ordering, caps, or economics**.
+- **Example (ATLAS v14):** Spaces/Wall/Chat tests and regression scripts pass timestamps explicitly; no use of `time.time()` inside economic or ordering logic.
 
 ### 2.3 No Floating Point Economics
 
@@ -44,6 +47,7 @@ Every component in the critical path (Logic → Economics → Explanation) must 
   - `BigNum128`, `Decimal` with fixed precision (e.g., 18 decimals for ATR).
   - Integer-scaled arithmetic (e.g., micro-ATR: `1 ATR = 10^6 units`).
   - Floating point **only** for display formatting, clearly marked.
+- **Example (ATLAS v14):** All social rewards (FLX/CHR) are computed via `BigNum128` and `CertifiedMath`; floats are used only for display or documentation, never in ledger-facing code.
 
 ### 2.4 No External I/O in Consensus
 
@@ -139,6 +143,33 @@ All economic events and explanations must be cryptographically verifiable.
 - **Proof Replay:** Storage proofs must be verifiable against the QFS ledger history.
 - **AEGIS Node Verification:** Only AEGIS-verified nodes can participate in storage replication and proof generation.
 
+### 5.4 ATLAS Social Layer (Spaces, Wall, Chat) – v14
+
+- **Deterministic IDs Only**
+  - Space IDs, Wall Post IDs, and Chat Message IDs must be derived from deterministic functions of input parameters (e.g., SHA-256/UUIDv5 over `space_id:wallet:timestamp:content_head`).
+  - No `uuid4` or similar random IDs are permitted in ATLAS surfaces that participate in economics or ordering.
+
+- **Economically Aware vs Neutral Actions**
+  - All social actions that affect value (balances, rewards, costs) MUST emit a corresponding `EconomicEvent` (e.g., `space_created`, `space_joined`, `space_spoke`, `wall_post_created`, `wall_post_liked`, `chat_session_created`, `chat_message_sent`).
+  - Neutral actions (0-cost, 0-reward) such as:
+    - `space_role_changed`, `space_member_kicked`, `space_member_muted`, `wall_post_pinned` / `wall_post_unpinned`
+    MUST be explicitly documented as neutral and MUST NOT modify balances or mint/burn tokens.
+
+- **Cross-Surface Linking**
+  - Recap posts (`is_recap=True`) MUST link to Spaces via `space_id` (or `linked_space_id`) using deterministic IDs only.
+  - Chat messages MAY reference Spaces or Wall Posts via a `references` list of IDs; these references are structural only and MUST NOT introduce hidden economics or non-deterministic ordering.
+
+- **Social Regression Requirement**
+  - A unified social regression script (currently `phase_v14_social_full.py`) MUST:
+    - Execute a full lifecycle scenario across Spaces, Wall, and Chat using a single log.
+    - Produce a stable SHA-256 hash over the canonical log representation.
+  - CI MUST fail if this hash changes without an approved contract update, as this constitutes a behavior change of the social layer.
+
+- **Canonical Contracts**
+  - ATLAS v14 defines canonical Pydantic contracts (`AtlasSpace`, `AtlasWallPost`, `AtlasChatSession`, `AtlasChatMessage` in `v13/atlas/contracts.py`) as the **only** supported external schema for social data.
+  - Internal structures (e.g., internal participant maps, muted/banned sets) MUST NOT be relied upon by external clients and MAY change without contract version bumps.
+  - All explanation and replay tooling MUST project to these canonical contracts when presenting social state.
+
 ***
 
 ## 6. Explanation & Transparency
@@ -165,6 +196,7 @@ All economic events and explanations must be cryptographically verifiable.
 - **No Direct Effects:** AI recommendations (content moderation, signal enhancements) must route through PolicyRegistry → TreasuryEngine.
 - **Bounded Outputs:** AI outputs must be discrete scalars (e.g., `safety_score: 0.0-1.0`), never direct token amounts.
 - **Human-in-Loop:** High-stakes AI recommendations (ban, reward >1000 ATR) require governance approval.
+- **ATLAS v14 Social Features:** Spaces recommendations, Wall ranking, Chat suggestions MAY use AI/OpenAGI to propose actions or sort views, but AI outputs MUST NEVER directly create EconomicEvents or bypass the deterministic reward formulas defined for the social layer.
 
 ### 7.3 Frontend is View + Intent Only
 
