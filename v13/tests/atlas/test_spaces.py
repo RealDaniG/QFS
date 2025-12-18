@@ -9,12 +9,14 @@ from typing import List, Dict, Any
 
 from v13.libs.BigNum128 import BigNum128
 from v13.libs.CertifiedMath import CertifiedMath
-from v13.atlas.spaces import (
+from v13.atlas.spaces.spaces_manager import (
     SpacesManager,
     Space,
     Participant,
     SpaceStatus,
     ParticipantRole,
+)
+from v13.atlas.spaces.spaces_events import (
     emit_space_created,
     emit_space_joined,
     emit_space_spoke,
