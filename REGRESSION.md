@@ -2,7 +2,22 @@
 
 **Version**: v14.0-social-layer  
 **Date**: 2025-12-18  
-**Status**: Production Hardening
+**Status**: FROZEN CHECKPOINT
+
+## v14 Freeze Notice
+
+**v14.0-social-layer is the frozen social baseline.**
+
+Any behavioral change to v14 modules (Spaces, Wall, Chat) requires:
+
+1. Updating the regression hash (`v14_regression_hash.txt`)
+2. Updating Zero-Sim contract version (v1.4 → v1.4.1+)
+3. Documenting the change in this file
+4. PR review with explicit "behavioral change" label
+
+v14 is a replayable checkpoint. Changes must be intentional and documented.
+
+---
 
 ## Regression Hash
 
