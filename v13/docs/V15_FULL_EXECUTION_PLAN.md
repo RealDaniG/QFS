@@ -1,8 +1,7 @@
 # QFS × ATLAS — v15 Full Execution Plan
 
 **Version**: v15.0  
-**Date**: 2025-12-18  
-**Status**: Planning  
+**Status**: Protocol Planning  
 **Foundation**: v14.0 (frozen, replayable checkpoint)
 
 ---
@@ -13,21 +12,21 @@ v15 is an **additive validation and reward layer**.
 
 - It does **NOT** alter, reinterpret, or override any v14 semantic, economic, or social rule.
 - All v14 behavior remains valid, replayable, and economically identical with v15 fully disabled.
-- v15 introduces:
-  - A **Living Posts** engagement reward layer (HSMF-validated helpfulness)
-  - A **Deterministic Developer Reward System** (bounties + ATR boosts)
+- v15 introduces two parallel layers:
+  - **Living Posts Layer** – HSMF-validated positive engagement rewards
+  - **Developer Rewards Layer** – Deterministic bounties and ATR reputation boosts
 
-Both are **parallel to v14** and consume only **pre-bounded treasuries**.
+Both layers consume only **pre-bounded treasuries** and are structurally read-only over v14.
 
 ---
 
-## I. Hard Invariants (Non-Negotiable)
+## I. Hard Invariants
 
 ### I.1 Semantic Invariance
 
 v15 **must NOT**:
 
-- Modify v14 math (CertifiedMath, BigNum128, HSMF)
+- Modify v14 math (`CertifiedMath`, `BigNum128`, HSMF core)
 - Modify v14 event meanings (Spaces, Wall, Chat)
 - Modify v14 reward formulas (CHR/FLX for social actions)
 - Modify v14 ledger state transitions
@@ -38,144 +37,105 @@ v15 **may ONLY**:
 - Observe v14 events (read-only)
 - Derive additional deterministic state (parallel)
 - Emit **new additive events** (v15-specific)
-- Distribute rewards from **isolated pools** (social FLX pools, dev rewards treasury)
+- Distribute rewards from **isolated pools** (epoch FLX pools, Dev Rewards Treasury)
 
-### I.2 Determinism Invariance
+### I.2 Determinism & Zero-Sim
 
 Every v15 output must be:
 
 - **Deterministic and replayable** from logs
 - **Integer-math only** (`CertifiedMath`, `BigNum128`)
-- **Free of wall-clock dependence** (epoch-based, not time-based)
+- **Free of wall-clock dependence** (epoch-based, not timestamp-based)
 - **Free of randomness** or probabilistic scoring
 
 ### I.3 Economic Isolation
 
-- **Living Posts**: Draw only from `FLX_POST_POOL[epoch]`
-- **Developer Rewards**: Draw only from `Dev Rewards Treasury`
-- **Neither** modifies v14 social rewards or baseline emission schedules
-- **No minting** introduced by v15; only redistribution from pre-funded pools
+- **Living Posts** draw only from `FLX_POST_POOL[epoch]`
+- **Developer Rewards** draw only from `DevRewardsTreasury`
+- Neither layer modifies v14 social rewards or emission schedules
+- v15 introduces **no minting**; it only redistributes from pre-funded pools
 
 ---
 
-## II. v15 Conceptual Model
+## II. Conceptual Model: Two Parallel v15 Layers
 
 ### II.1 Parallel State Layers
 
-v15 introduces **two parallel layers**:
+v15 consists of two additive layers over v14:
 
-```
-v14 (Frozen Baseline)
-  ↓ (read-only)
-v15 Layer A: Living Posts
-  - Post-level helpfulness scores
-  - Epoch-based FLX rewards
-  - HSMF-validated engagement
-  
-v15 Layer B: Developer Rewards
-  - Bounty-based FLX/CHR payouts
-  - ATR reputation boosts
-  - Bounded Dev Rewards Treasury
-```
+**Living Posts Layer**:
+
+- Post-level helpfulness state and scores
+- Epoch-based FLX rewards from fixed pools
+- HSMF-validated engagement quality
+- State machine: `NEW → ACTIVE → TAPERING → ARCHIVED`
+
+**Developer Rewards Layer**:
+
+- Bounty-based FLX/CHR payouts
+- ATR boosts via `ContributorProfile`
+- Bounded Dev Rewards Treasury
+- State machine: `OPEN → CLAIMED → SUBMITTED → VERIFIED → PAID` (+ failure states)
 
 **Both layers**:
 
 - Consume v14 events and governance decisions
-- Maintain their own state (scores, bounty status, treasury balance, contributor profiles)
+- Maintain their own state (scores, lifecycle, bounty status, treasury balances, contributor profiles)
 - **Never write back** into v14 state
-
-### II.2 State Isolation Diagram
-
-```mermaid
-graph TD
-    V14[v14 Core: Spaces, Wall, Chat] -->|Events| LP[Living Posts Layer]
-    V14 -->|Events| DR[Developer Rewards Layer]
-    V14 -->|Events| GOV[Governance]
-    
-    LP -->|FLX_POST_POOL| POOL1[Epoch FLX Pool]
-    DR -->|Dev Rewards| POOL2[Dev Treasury]
-    
-    GOV -->|Configure| LP
-    GOV -->|Configure| DR
-    GOV -->|Refill| POOL1
-    GOV -->|Refill| POOL2
-    
-    LP -.->|No Write| V14
-    DR -.->|No Write| V14
-```
 
 ---
 
-## III. Core v15 Primitive A: Living Posts
+## III. Living Posts Layer
 
-### III.1 Definition
+### III.1 Helpfulness State \(H_p\)
 
-A **Living Post** is a v14 `WallPost` with an associated v15 "helpfulness" state that can accrue rewards over multiple epochs.
-
-- It is **NOT** a new post type
-- It is a **v15 analytical overlay**
-- v14 posts remain unchanged
-
-### III.2 Post Helpfulness Vector
-
-For each post \( p \), v15 maintains:
+For each v14 `WallPost` \( p \), v15 maintains:
 
 $$
-H_p = \{ engagement\_score, coherence\_score, reputation\_weight \}
+H_p = \{ engagement\_score,\ coherence\_score,\ reputation\_weight \}
 $$
 
-**Computed solely from**:
+**Computed only from**:
 
-- Logged v14 events (replies, likes, references)
+- v14 events (likes, replies, references)
 - HSMF coherence outputs
 - ATR / AEGIS tiers
-- Epoch counters
+- Deterministic epoch counters
 
 **Properties**:
 
-- **Monotonic in evidence**: More valid engagement → equal or higher components
+- **Monotonic in evidence**: More valid engagement → higher or equal components
 - **NOT monotonic in time**: Old posts can still earn if helpful
-- **Integer-scaled**: Stored outside `WallPost` in v15 state
+- **Stored as integer-scaled v15 state**, separate from `WallPost`
 
-### III.3 Deterministic Scoring Function
+### III.2 Deterministic Scoring Function
 
 $$
-score_p = f(engagement\_score, coherence\_score, reputation\_weight)
+score_p = f(engagement\_score,\ coherence\_score,\ reputation\_weight)
 $$
 
-**Constraints**:
+**Constraints on \( f \)**:
 
 - Uses `CertifiedMath` + `BigNum128`
-- **No floats**, no hidden normalization
-- **Composable and order-independent**
-- Inputs strictly limited to:
-  - v14 events: replies, likes, references
-  - ATR / AEGIS tiers
-  - HSMF coherence outputs
-  - Epoch counters
+- No floats, no hidden normalization on external aggregates
+- Composable and order-independent
+- Inputs limited to: v14 social events, ATR/AEGIS tiers, HSMF coherence metrics, epoch counters
 - **No time-since-creation** or velocity metrics
 
-**Candidate Form** (to be formalized):
+**Example candidate form** (to be formalized):
 
 $$
-score_p = \text{CertifiedMath.imul}(
-  engagement\_score,
-  \text{CertifiedMath.imul}(coherence\_score, reputation\_weight)
-)
+score_p = engagement\_score \times coherence\_score \times reputation\_weight
 $$
 
-With:
+with each component defined on capped integer scales.
 
-- `engagement_score = sum(valid_replies * 10 + valid_likes * 1)`
-- `coherence_score = HSMF_coherence_output` (0-1000 scale)
-- `reputation_weight = min(1000, ATR / 10)` (capped)
+### III.3 Epoch FLX Pools
 
-### III.4 Epoch FLX Pools
-
-For each epoch \( E \):
+For each epoch \(E\):
 
 - `FLX_POST_POOL[E]` is a **fixed, pre-allocated amount**
-- Post reward:
+- For each eligible post:
 
 $$
 reward_{p,E} = FLX\_POST\_POOL[E] \times \frac{score_{p,E}}{\sum_j score_{j,E}}
@@ -183,546 +143,321 @@ $$
 
 **Guarantees**:
 
-- Pool is **hard-capped** and governance-configurable
-- Total FLX per epoch is **fixed**; no unbounded growth
-- Posts can earn across **many epochs**, but cumulatively bounded by pool sums
-- **No inflation**: Pools are pre-funded, not minted
+- Per-epoch emission is **hard-capped** and governance-configurable
+- Total FLX emitted over all epochs is bounded by \(\sum_E FLX\_POST\_POOL[E]\)
+- Posts can earn across many epochs but cannot cause unbounded inflation
 
-### III.5 Post Lifecycle State Machine
+### III.4 PostRewardStateMachine
 
 **States**: `NEW → ACTIVE → TAPERING → ARCHIVED`
 
 **Drivers**:
 
-- Event counts (not time)
+- Engagement counts and composition
 - Epoch progression
-- HSMF validation outputs
+- HSMF engagement validation outputs
 
 **Behavior**:
 
-- **NEW**: Collects evidence, no rewards (first epoch)
-- **ACTIVE**: Eligible for full proportional rewards
-- **TAPERING**: Deterministically decays `score_p` to prevent permanent dominance
-  - Decay formula: `score_p_new = score_p * TAPER_FACTOR` (e.g., 0.9 per epoch)
-  - Prevents old posts from dominating forever
-- **ARCHIVED**: No further rewards, state remains for replay
+- **NEW**: Evidence collection, no rewards
+- **ACTIVE**: Full participation in proportional reward allocation
+- **TAPERING**: Deterministic decay of `score_p` to prevent permanent dominance
+- **ARCHIVED**: No further rewards; state retained for replay and analytics
 
-**Transition Triggers**:
+**Transition triggers** are deterministic formulas over counts/epochs, not wall-clock thresholds.
 
-- `NEW → ACTIVE`: After first epoch with engagement
-- `ACTIVE → TAPERING`: After N epochs (e.g., 10) or M total engagement (e.g., 1000)
-- `TAPERING → ARCHIVED`: When `score_p < ARCHIVE_THRESHOLD` (e.g., 10)
+### III.5 HSMF Engagement Validation
+
+HSMF validates **engagement quality**, not content truth:
+
+- Uses ATR-weighted influence, AEGIS tier gating, and deterministic graph analysis to downweight farmed or low-trust interactions
+- Enforces the invariant:
+
+> Invalid or low-quality engagement **cannot increase rewards**; it can only reduce its own effective weight.
+
+Living Posts reward logic always uses **HSMF-filtered engagement metrics**, not raw counts.
 
 ---
 
-## IV. Core v15 Primitive B: Developer Bounties
+## IV. Developer Rewards Layer
 
-### IV.1 Bounty Schema (✅ Implemented)
+### IV.1 Implemented Foundations
 
-**Location**: `v13/policy/bounties/bounty_schema.py`
+**Existing components**:
 
-**Components**:
+`v13/policy/bounties/bounty_schema.py`:
 
-- `Bounty` dataclass:
-  - Deterministic fields: `bounty_id`, `scope`, `acceptance_criteria`
-  - Fixed rewards: `reward_flx`, `reward_chr`
-  - Anti-spam: `res_stake_required`
-  - Impact tier: `minor` / `feature` / `core`
-- `BountySubmission`:
-  - Tracks: `contributor_wallet`, `pr_number`, `commit_hash`
-  - Status: `PENDING` / `APPROVED` / `REJECTED`
-- `ContributorProfile`:
-  - Tracks: `total_atr`, `bounties_completed`, `contribution_history`
+- `Bounty` dataclass (id, scope, acceptance criteria, fixed FLX/CHR reward, RES stake, impact tier)
+- `BountySubmission` (contributor wallet, PR/commit links, status)
+- `ContributorProfile` (ATR total, bounty history)
 
-**Impact Tiers → ATR Boosts**:
-
-- `minor` (docs, small fixes): **+10 ATR**
-- `feature` (modules, services): **+50 ATR**
-- `core` (math, Zero-Sim, governance): **+100 ATR**
-
-### IV.2 Developer Events (✅ Implemented)
-
-**Location**: `v13/policy/bounties/bounty_events.py`
-
-**Event Types**:
+`v13/policy/bounties/bounty_events.py`:
 
 - `dev_bounty_paid` – Deterministic reward payment
-- `atr_boost_applied` – Non-transferable reputation increase
-- `bounty_claimed` – RES stake lock event
+- `atr_boost_applied` – ATR reputation increase (non-transferable)
+- `bounty_claimed` – RES stake lock
 - `res_stake_returned` – Stake unlock/refund
-- `bounty_rejected` – Failure path with stake outcome
-- `treasury_refill` – Governance-approved top-up
+- `bounty_rejected` – Explicit rejection outcome
+- `treasury_refill` – Governance-approved refill
 
-**All events**:
+`v13/policy/treasury/dev_rewards_treasury.py`:
 
-- v15-only (do not affect v14)
-- Append-only (replayable)
-- Include `bounty_id` + `commit_hash` for determinism
+- Bounded reserves (e.g., 10,000 FLX + 5,000 CHR)
+- Deterministic payouts with full event logging
+- Depletion alerts at configured thresholds
+- Governance-controlled refills
 
-### IV.3 Dev Rewards Treasury (✅ Implemented)
+**Impact tiers → ATR boosts** (configurable mapping):
 
-**Location**: `v13/policy/treasury/dev_rewards_treasury.py`
+- `minor` → +10 ATR
+- `feature` → +50 ATR
+- `core` → +100 ATR
 
-**Features**:
+All are **v15-only, append-only, and replayable**.
 
-- **Bounded reserves**: Default 10,000 FLX + 5,000 CHR
-- **Deterministic payment**: Executes with `dev_bounty_paid` event
-- **Depletion alerts**: 20% (low), 10% (critical)
-- **Full history**: All payments and refills logged
-- **Governance refill**: Requires approval + `treasury_refill` event
+### IV.2 BountyStateMachine
 
-**Constitutional Compliance**:
+**Core lifecycle**:
+`OPEN → CLAIMED → SUBMITTED → VERIFIED → PAID`
 
-- ✅ Bounded (no unbounded minting)
-- ✅ Explainable (bounty ID + commit hash)
-- ✅ Deterministic (fixed rewards)
-- ✅ Zero-Sim compliant (replayable)
+**Failure states**: `REJECTED`, `EXPIRED`
 
-### IV.4 Bounty Lifecycle State Machine
+**Deterministic transitions**:
 
-**States**: `OPEN → CLAIMED → SUBMITTED → VERIFIED → PAID`
+1. **OPEN → CLAIMED**: RES stake locked (`bounty_claimed`)
+2. **CLAIMED → SUBMITTED**: PR/commit linked to the bounty
+3. **SUBMITTED → VERIFIED**: CI green + acceptance criteria met + HSMF/guard checks
+4. **VERIFIED → PAID**:
+   - `dev_bounty_paid` from Dev Rewards Treasury
+   - `atr_boost_applied` according to impact tier
+   - `res_stake_returned` (or slashed for abuse, per explicit rules)
 
-**Failure Paths**: `REJECTED`, `EXPIRED`
+All criteria are **explicit and testable**; no subjective or hidden steps.
 
-**Transitions**:
+### IV.3 Developer HSMF Validation
 
-1. **OPEN → CLAIMED**: Contributor stakes RES
-   - Event: `bounty_claimed`
-   - RES locked
-2. **CLAIMED → SUBMITTED**: PR opened
-   - Links: `pr_number`, `commit_hash`
-3. **SUBMITTED → VERIFIED**: CI green + acceptance criteria met
-   - HSMF validation (Phase 2)
-   - Manual review (Phase 1)
-4. **VERIFIED → PAID**: Payment executed
-   - Event: `dev_bounty_paid`
-   - Event: `atr_boost_applied`
-   - Event: `res_stake_returned`
+HSMF validates bounty completion:
 
-**Rejection Path**:
+- CI status and Zero-Sim compliance
+- Regression hash requirements (if the bounty touches protected paths)
+- Constitutional constraints (no v14 semantic drift)
 
-- **SUBMITTED → REJECTED**: Criteria not met
-  - Event: `bounty_rejected`
-  - Event: `res_stake_returned` (good faith) or slashed (spam)
+Validation returns a deterministic `ValidationResult` that gates `VERIFIED → PAID`. This ensures developer rewards remain aligned with protocol safety guarantees.
 
 ---
 
-## V. HSMF Integration
+## V. Governance & Parameters
 
-### V.1 Engagement Validation Layer
-
-**HSMF validates engagement quality, NOT content**:
-
-**Filters using**:
-
-- **ATR-weighted influence**: Higher ATR = more weight
-- **AEGIS tier gating**: Tier 0 (banned) = 0 weight
-- **Deterministic graph analysis**: Downweight farmed engagement (e.g., bot clusters)
-
-**Invariant**:
-> Invalid or low-quality engagement **cannot increase rewards**; at best, its own weight is discounted.
-
-**Example**:
-
-- User A (1000 ATR) likes Post P: `+10` engagement score
-- User B (10 ATR, Tier 0) likes Post P: `+0` engagement score (filtered)
-- User C (100 ATR, in bot cluster) likes Post P: `+1` engagement score (downweighted)
-
-### V.2 HSMF Bounty Validation (Phase 2)
-
-**Validates bounty completion**:
-
-- **CI status**: All checks green (tests, Zero-Sim, regression)
-- **Acceptance criteria**: Deterministic checks met
-- **Constitutional compliance**: No v14 semantics changed
-
-**Validation Rules** (`v13/policy/governance/hsmf_bounty_rules.py`):
-
-```python
-def validate_bounty_verification(
-    bounty_id: str,
-    pr_number: int,
-    ci_status: Dict
-) -> ValidationResult:
-    """Validate bounty completion"""
-    # Check CI green
-    if not ci_status["all_checks_passed"]:
-        return ValidationResult(valid=False, reason="CI failed")
-    
-    # Check Zero-Sim compliance
-    if ci_status["zero_sim_violations"] > 0:
-        return ValidationResult(valid=False, reason="Zero-Sim violations")
-    
-    # Check regression hash (if applicable)
-    if bounty_requires_regression_check(bounty_id):
-        if not ci_status["regression_hash_verified"]:
-            return ValidationResult(valid=False, reason="Regression hash mismatch")
-    
-    return ValidationResult(valid=True)
-```
-
----
-
-## VI. Economic Isolation & Safety
-
-### VI.1 Pool Isolation
+### V.1 Governable Parameters
 
 **Living Posts**:
 
-- Draw only from `FLX_POST_POOL[epoch]`
-- No access to v14 social rewards
-- No access to Dev Rewards Treasury
+- `FLX_POST_POOL[epoch]` (per-epoch pool sizes)
+- Coefficients and caps in \( f(H_p) \)
+- PostRewardStateMachine thresholds (ACTIVE/TAPERING/ARCHIVED)
 
 **Developer Rewards**:
 
-- Draw only from `Dev Rewards Treasury`
-- No access to v14 social rewards
-- No access to Living Posts pools
+- Dev Rewards Treasury refill amounts and policies
+- ATR boost mapping per impact tier
+- Rules for when bounties require governance vs maintainer approval
 
-**v14 Social Rewards**:
-
-- Unchanged (Spaces, Wall, Chat events)
-- No access to v15 pools
-
-### VI.2 No Minting
-
-- All v15 pools are **pre-funded**
-- No new FLX/CHR minted by v15
-- Refills require **governance approval**
-- Refills emit `treasury_refill` or `pool_refill` events
-
-### VI.3 Bounded Growth
-
-**Living Posts**:
-
-- Total FLX per epoch: `FLX_POST_POOL[E]` (fixed)
-- Total FLX across all epochs: `sum(FLX_POST_POOL[E])` (bounded by governance)
-
-**Developer Rewards**:
-
-- Total FLX available: `Dev Rewards Treasury.flx_reserve`
-- Total CHR available: `Dev Rewards Treasury.chr_reserve`
-- Depletion alerts prevent over-allocation
-
----
-
-## VII. Zero-Sim Contract v1.5
-
-### VII.1 Extensions to v1.4
-
-v1.5 **adds** to v1.4 (does not replace):
-
-**Parallel State**:
-
-- Living Posts state (`H_p`, `score_p`, lifecycle)
-- Developer Rewards state (bounties, submissions, contributor profiles, treasury)
-
-**Epoch Pools**:
-
-- `FLX_POST_POOL[epoch]` configuration and distribution
-- Bounded FLX emissions for posts
-
-**Dev Rewards Treasury**:
-
-- Treasury balance and payment history
-- Bounty lifecycle and verification
-
-**Replay Guarantees**:
-Given:
-
-- v14 event logs
-- v15 configuration (epoch pools, treasury balances, scoring parameters)
-- Governance changes
-
-The system can **recompute exactly**:
-
-- All `H_p` and `score_p` values
-- All `post_helpfulness_updated` / `post_reward_distributed` events
-- All bounty and dev reward events
-- All treasury balances
-
-### VII.2 New Determinism Requirements
-
-**Living Posts**:
-
-- `f(H_p)` must be:
-  - Integer-only (`CertifiedMath`, `BigNum128`)
-  - Order-independent (can process events in any order)
-  - Composable (can split/merge computations)
-- Epoch boundaries must be deterministic (block-based, not time-based)
-
-**Developer Rewards**:
-
-- Bounty rewards must be fixed at creation time
-- Acceptance criteria must be deterministic and testable
-- ATR boosts must be deterministic (impact tier → fixed delta)
-
----
-
-## VIII. Governance Integration
-
-### VIII.1 Governable Parameters
-
-**Living Posts**:
-
-- `FLX_POST_POOL[epoch]` - Pool size per epoch
-- Scoring coefficients in `f(H_p)` - Weight of engagement vs coherence vs reputation
-- PostRewardStateMachine thresholds:
-  - `ACTIVE → TAPERING` trigger (epoch count or engagement threshold)
-  - `TAPER_FACTOR` (decay rate)
-  - `ARCHIVE_THRESHOLD` (minimum score)
-
-**Developer Rewards**:
-
-- Dev Rewards Treasury refill amounts and triggers
-- ATR boost mappings for `impact_tier` (currently 10/50/100)
-- Bounty approval process (maintainers vs governance)
-
-### VIII.2 Governance Process
+### V.2 Governance Process
 
 **All changes**:
 
-1. Are **proposals** processed by `GovernanceStateMachine`
-2. Emit **governance EconomicEvents**
-3. Have **explicit activation epochs** (not immediate)
-4. Are **logged and auditable**
-
-**Example Proposal**:
-
-```python
-Proposal(
-    proposal_id="PROP-2025-001",
-    title="Increase FLX_POST_POOL to 5000 per epoch",
-    changes={
-        "FLX_POST_POOL": 5000  # Up from 3000
-    },
-    activation_epoch=150,  # Activates at epoch 150
-    proposer="wallet_xyz",
-    required_votes=100  # NOD threshold
-)
-```
+- Are proposed through `GovernanceStateMachine`
+- Emit governance EconomicEvents (proposal created, voted, enacted)
+- Activate at explicit epochs or "parameter snapshots", never retroactively
+- Are auditable and replayable
 
 ---
 
-## IX. Implementation Roadmap
+## VI. Zero-Sim Contract v1.5
 
-### Phase 1: Manual Bounty System (v14.1) ✅ IN PROGRESS
+v1.5 **extends v1.4** by formalizing v15 behavior:
 
-**Timeline**: 2-3 weeks | **Effort**: 18 hours
+**Parallel v15 state**:
 
-**Status**: Foundation complete (schema, events, treasury)
+- Living Posts (vectors \(H_p\), scores, lifecycles)
+- Developer Rewards (bounty state, treasury, contributor profiles)
 
-**Remaining**:
+**Pool semantics**:
 
-- [ ] Create `BOUNTIES.md` registry
-- [ ] Create `CONTRIBUTORS.md` tracking
-- [ ] Write Phase 1 tests
-- [ ] Document bounty process
-- [ ] Launch first test bounty
+- FLX epoch pools for posts
+- Bounded Dev Rewards Treasury
 
-**Deliverables**:
+**Replay guarantees**:
 
-- ✅ Bounty schema
-- ✅ Economic events
-- ✅ Dev Rewards Treasury
-- ⏳ BOUNTIES.md
-- ⏳ Tests (100% coverage)
-- ⏳ Documentation
+Given:
 
-### Phase 2: Living Posts Foundation (v15.0-alpha)
+- v14 event logs
+- v15 configuration
+- Governance events
 
-**Timeline**: 4-6 weeks | **Effort**: 40 hours
+The system can recompute:
 
-**Components**:
+- All `H_p` and `score_p` values
+- All `post_helpfulness_updated` / `post_reward_distributed` events
+- All bounty events, treasury balances, and ATR boosts
 
-- [ ] Define `H_p` vector schema
-- [ ] Implement `f(H_p)` scoring function
-- [ ] Create `FLX_POST_POOL` management
-- [ ] Implement PostRewardStateMachine
-- [ ] Add HSMF engagement validation
-- [ ] Write multi-epoch regression tests
-
-**Deliverables**:
-
-- Living Posts state layer
-- Epoch-based FLX distribution
-- HSMF engagement filters
-- Regression scenarios
-- Zero-Sim v1.5 contract update
-
-### Phase 3: Governance Automation (v15.0-beta)
-
-**Timeline**: 4-6 weeks | **Effort**: 26 hours
-
-**Components**:
-
-- [ ] Add bounty transitions to GovernanceStateMachine
-- [ ] Implement HSMF bounty validation rules
-- [ ] Automate bounty verification
-- [ ] Integrate with CI
-- [ ] Add governance parameter updates
-
-**Deliverables**:
-
-- Automated bounty processing
-- HSMF-validated verification
-- Governance-driven configuration
-- Full integration tests
-
-### Phase 4: NOD Integration (v16.0)
-
-**Timeline**: 2-3 weeks | **Effort**: 17 hours
-
-**Components**:
-
-- [ ] Implement NOD multipliers for contributors
-- [ ] Add multiplier tracking
-- [ ] Integrate with validation
-- [ ] Test bounded rewards
-
-**Deliverables**:
-
-- Contributor NOD multipliers
-- Validation integration
-- Phase 3 tests
+**No v15 feature may be considered complete** unless it satisfies these replay constraints.
 
 ---
 
-## X. Regression & Safety
+## VII. Verification & Regression
 
-### X.1 v14 Regression (Unchanged)
+Two families of regression scenarios are required:
 
-**Requirement**: v14 regression hashes must remain **unchanged** with v15 disabled
+### VII.1 Living Posts Regression
 
-**Verification**:
+**Multi-epoch scenario** with:
 
-```bash
-# Disable v15
-export V15_ENABLED=false
+- Several posts with varied engagement
+- HSMF-filtered interactions
+- Lifecycle transitions (NEW → ACTIVE → TAPERING → ARCHIVED)
 
-# Run v14 regression
-python v13/tests/regression/phase_v14_social_full.py > v14_trace.log
-sha256sum v14_trace.log
+**Validates**:
 
-# Must match: v14_regression_hash.txt
-```
+- Scores, lifecycle transitions, reward allocations
 
-### X.2 v15 Regression Scenarios
+**Asserts**:
 
-**Living Posts Regression** (`phase_v15_living_posts.py`):
+- \(\sum\) per-epoch rewards = `FLX_POST_POOL[epoch]`
+- Replay produces identical v15 state
 
-- Multi-epoch scenario (10 epochs)
-- Evolving engagement over time
-- Post lifecycle transitions (NEW → ACTIVE → TAPERING → ARCHIVED)
-- Deterministic reward distribution
-- Verify: `sum(rewards) == sum(FLX_POST_POOL[E])`
+### VII.2 Developer Rewards Regression
 
-**Developer Rewards Regression** (`phase_v15_dev_rewards.py`):
+**Bounty lifecycle** from OPEN to PAID, including failure paths:
 
-- Bounty lifecycle (claim → submit → verify → pay)
-- RES stake lock/unlock
-- ATR boost application
-- Treasury balance tracking
-- Verify: `treasury.total_paid == sum(bounty.reward)`
+- RES staking
+- ATR boosts
+- Treasury debits and refills
 
-### X.3 Safety Assertions
+**Asserts**:
 
-**Cross-Pool Leakage**:
+- Sum of payouts ≤ initial treasury + refills
+- Replay with the same events reproduces all balances and states
 
-```python
-assert v14_ledger.flx_balance == v14_initial_flx  # v14 unchanged
-assert living_posts_pool.total_distributed <= sum(FLX_POST_POOL)
-assert dev_treasury.total_paid_flx <= dev_treasury_initial_flx
-```
+### VII.3 v14 Invariance
 
-**Replay Stability**:
+**Separately**:
 
-```python
-# Run twice with same events
-state1 = replay_v15(events)
-state2 = replay_v15(events)
-assert state1 == state2  # Deterministic
-```
-
-**No v14 Behavior Change**:
-
-```python
-v14_events_only = filter_v14_events(all_events)
-v14_state_with_v15 = replay_with_v15_enabled(v14_events_only)
-v14_state_without_v15 = replay_with_v15_disabled(v14_events_only)
-assert v14_state_with_v15 == v14_state_without_v15  # v15 is additive
-```
+- v14 regression hashes must remain **unchanged** with v15 disabled
+- Replaying v14 events with and without v15 enabled must yield **identical v14 state**
 
 ---
 
-## XI. Final Guarantees
+## VIII. Standing Autonomous Continuation Plan
 
-v15 **guarantees**:
+From this plan, an autonomous executor can safely:
 
-### For Living Posts
+### Workstream A: Living Posts Layer
 
-- ✅ Posts are "living" in a **bounded, deterministic way**
-- ✅ Ongoing helpfulness yields ongoing FLX from **fixed epoch pools**
-- ✅ No unbounded growth (pools are pre-funded, capped)
-- ✅ No time-based decay (only engagement-based transitions)
-- ✅ HSMF validates engagement quality (not content truth)
+**Extend the Living Posts Layer**:
 
-### For Developer Rewards
+- Formalize and implement \( f(H_p) \)
+  - Define candidate forms
+  - Implement using `CertifiedMath` + `BigNum128`
+  - Test order-independence and composability
+- Implement `H_p` persistence
+  - Schema for storing vectors
+  - Update logic on v14 events
+  - Epoch-based snapshots
+- Implement PostRewardStateMachine
+  - State transitions (NEW → ACTIVE → TAPERING → ARCHIVED)
+  - Deterministic triggers
+  - Decay formulas for TAPERING
+- Wire HSMF engagement validation
+  - ATR-weighted influence
+  - AEGIS tier gating
+  - Graph analysis for farmed engagement
+- Implement epoch pools
+  - Pool allocation per epoch
+  - Proportional reward distribution
+  - Governance configuration
 
-- ✅ Developers rewarded **deterministically** for real work
-- ✅ Bounties have **fixed rewards** at creation time
-- ✅ ATR boosts are **non-transferable reputation**
-- ✅ Treasury is **bounded** (no unbounded minting)
-- ✅ All events are **replayable** (bounty ID + commit hash)
+### Workstream B: Developer Rewards Layer
 
-### For v14 Integrity
+**Extend the Developer Rewards Layer**:
 
-- ✅ v14 remains **untouched** as the constitutional baseline
-- ✅ Same math, same semantics, same social behavior if v15 is turned off
-- ✅ v14 regression hashes **unchanged**
-- ✅ No cross-layer coupling or state mutation
+- Complete ATR boost integration to `ContributorProfile`
+  - Wire `atr_boost_applied` events to ledger
+  - Track ATR history per contributor
+  - Implement governance weight calculation
+- Add `BOUNTIES.md` / `CONTRIBUTORS.md` as canonical registries
+  - Template for bounty creation
+  - Active/completed bounty tracking
+  - Contributor ATR and history
+- Implement full BountyStateMachine transitions
+  - Use existing events and treasury logic
+  - Add HSMF validation gates
+  - Implement failure paths (REJECTED, EXPIRED)
+  - Add CI integration for automated verification
 
-### For Zero-Sim Compliance
+### Workstream C: Governance Integration
 
-- ✅ All v15 state is **deterministic and replayable**
-- ✅ Integer-only math (`CertifiedMath`, `BigNum128`)
-- ✅ No floats, no randomness, no wall-clock dependence
-- ✅ Full explainability (why you earned this)
+**Wire Governance**:
 
-### For Constitutional Soundness
+- Add proposal types for all governable parameters
+  - Living Posts: pool sizes, scoring coefficients, thresholds
+  - Developer Rewards: treasury refills, ATR mappings, approval rules
+- Ensure parameter changes are logged
+  - Emit governance events
+  - Track activation epochs
+  - Maintain parameter history
+- Implement deterministic activation
+  - Epoch-based activation (not immediate)
+  - Snapshot-based parameter application
+  - Replay compatibility
 
-- ✅ **Non-speculative**: Utility-only tokens, no speculation
-- ✅ **Bounded**: No unbounded minting or inflation
-- ✅ **Explainable**: All rewards traceable to events + criteria
-- ✅ **Auditable**: Full event logs and state history
+### Workstream D: Verification & Testing
+
+**At every step, maintain**:
+
+- **v14 invariants and regression hashes**
+  - Run v14 regression suite
+  - Verify hashes unchanged
+  - Test v14 state isolation
+- **Zero-Sim compliance**
+  - No new violations
+  - All v15 code passes analyzer
+  - Deterministic event emission
+- **Economic isolation**
+  - No cross-pool leakage
+  - No minting
+  - Treasury balance assertions
+- **Full explainability**
+  - Trace all rewards to events
+  - Document all state transitions
+  - Provide audit trails
 
 ---
 
-## XII. Next Steps
+## IX. Implementation Readiness
 
-### Immediate (This Week)
+This yields a **timeless, implementation-ready v15 protocol layer** that unifies Living Posts and Developer Rewards without compromising the deterministic, constitutional core of QFS × ATLAS.
 
-1. ✅ Complete Phase 1 foundation (schema, events, treasury)
-2. ⏳ Create BOUNTIES.md and CONTRIBUTORS.md
-3. ⏳ Write Phase 1 tests
-4. ⏳ Launch first test bounty
+**Current Status**:
 
-### Short-Term (Next Sprint)
+- ✅ Developer Rewards foundation implemented (schema, events, treasury)
+- ⏳ Living Posts foundation (design complete, implementation pending)
+- ⏳ Governance integration (design complete, implementation pending)
+- ⏳ Regression scenarios (design complete, implementation pending)
 
-5. Design `f(H_p)` scoring function
-6. Create Living Posts state schema
-7. Implement epoch pool management
-8. Write multi-epoch regression scenario
+**Autonomous Continuation**:
 
-### Medium-Term (v15.0)
+An autonomous executor can proceed with any workstream independently, as long as:
 
-9. Implement PostRewardStateMachine
-10. Add HSMF engagement validation
-11. Integrate GovernanceStateMachine
-12. Full regression testing
+1. v14 invariants are preserved
+2. Zero-Sim compliance is maintained
+3. Economic isolation is enforced
+4. All changes are replayable and explainable
+
+**No timelines, no phases** – only protocol-level intent and standing workstreams that can be executed in any order while maintaining constitutional guarantees.
 
 ---
 
-**Status**: Phase 1 in progress, v15 plan approved  
-**Next Review**: After Phase 1 completion  
-**Target**: v15.0 release in 8-12 weeks
+**Status**: Protocol specification complete  
+**Foundation**: v14.0 (frozen, replayable)  
+**Next**: Execute workstreams autonomously
