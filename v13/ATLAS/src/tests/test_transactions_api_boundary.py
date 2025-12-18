@@ -1,3 +1,4 @@
+from fractions import Fraction
 from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
@@ -29,13 +30,13 @@ def test_transactions_rejects_invalid_payload(client: TestClient) -> None:
     assert response.status_code != 500
 
 def test_transactions_minimal_happy_path(client: TestClient) -> None:
-    payload = {'sender': 'ignored_by_server', 'receiver': 'user_456', 'amount': 1.25, 'asset': 'QFS', 'metadata': {'purpose': 'phase-c'}}
+    payload = {'sender': 'ignored_by_server', 'receiver': 'user_456', 'amount': Fraction(5, 4), 'asset': 'QFS', 'metadata': {'purpose': 'phase-c'}}
     response = client.post('/api/v1/transactions/', json=payload, headers=_auth_headers())
     assert response.status_code == 201
     body = response.json()
     assert 'tx_id' in body
     assert body['receiver'] == 'user_456'
-    assert body['amount'] == 1.25
+    assert body['amount'] == Fraction(5, 4)
     assert body['asset'] == 'QFS'
     assert body['status'] in ('pending', 'confirmed')
 

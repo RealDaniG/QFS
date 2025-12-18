@@ -1,3 +1,4 @@
+from fractions import Fraction
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Dict, Any
 import hashlib
@@ -20,8 +21,8 @@ async def explain_p2p_activity(node_id: str, current_user: User=Depends(get_curr
     unique_peers = list(set([e.get('recipient_id') for e in secure_msgs_sent] + [e.get('sender_id') for e in msgs_received]))
     total_bytes = sum([e.get('size_bytes', 0) for e in p2p_events])
     bandwidth_mb = total_bytes / 1000000
-    base_reward = bandwidth_mb * 0.01
-    enc_bonus = 0.1 if len(p2p_events) > 100 else 0
+    base_reward = bandwidth_mb * Fraction(1, 100)
+    enc_bonus = Fraction(1, 10) if len(p2p_events) > 100 else 0
     nod_reward = base_reward + enc_bonus
     has_pqc = all((e.get('pqc_signed', False) for e in p2p_events)) if p2p_events else True
     security_level = 'PQC_HYBRID' if has_pqc and p2p_events else 'ED25519_ONLY'

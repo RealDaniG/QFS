@@ -1,3 +1,4 @@
+from fractions import Fraction
 from pathlib import Path
 _THIS_FILE = Path(__file__).resolve()
 _ATLAS_ROOT = None
@@ -18,10 +19,10 @@ def test_build_wallet_summary_view_deterministic() -> None:
     assert v1.total == 12
 
 def test_build_wallet_summary_view_total_fallback() -> None:
-    payload = {'balance': 3.5, 'locked': 1.5}
+    payload = {'balance': Fraction(7, 2), 'locked': Fraction(3, 2)}
     v = build_wallet_summary_view(payload, did='did:test', asset='QFS')
-    assert v.available == 3.5
-    assert v.locked == 1.5
+    assert v.available == Fraction(7, 2)
+    assert v.locked == Fraction(3, 2)
     assert v.total == 5
 
 def test_build_transaction_list_view_pure_mapping() -> None:

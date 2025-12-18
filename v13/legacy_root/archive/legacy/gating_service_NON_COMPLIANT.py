@@ -1,3 +1,4 @@
+from fractions import Fraction
 import time
 from typing import Dict, Any, Optional
 import json
@@ -59,7 +60,7 @@ class GatingService:
             n = geometric_eigenvalues.get('n', 1)
             l = geometric_eigenvalues.get('l', 0)
             m = geometric_eigenvalues.get('m', 0)
-            s = geometric_eigenvalues.get('s', 0.5)
+            s = geometric_eigenvalues.get('s', Fraction(1, 2))
             
             # Calculate alignment based on quantum number harmonics
             # Higher quantum numbers should align better with curvature
@@ -92,7 +93,7 @@ class GatingService:
         """
         # Check dual thresholds: BOTH CS ≥ 0.80 AND GAS ≥ 0.99 must be met for unlocked state
         # Lock if either condition is not met
-        should_lock = coherence_stability < 0.80 or gas < 0.99
+        should_lock = coherence_stability < Fraction(4, 5) or gas < Fraction(99, 100)
         
         if should_lock and not self.memory_locked:
             self.memory_locked = True
@@ -117,7 +118,7 @@ class GatingService:
             bool: True if Safe Mode activated, False otherwise
         """
         # Safe Mode triggers: RSI < 0.65 or GAS < 0.90
-        should_trigger = rsi < 0.65 or gas < 0.90
+        should_trigger = rsi < Fraction(13, 20) or gas < Fraction(9, 10)
         
         if should_trigger and not self.safe_mode_active:
             self.safe_mode_active = True
@@ -211,15 +212,15 @@ if __name__ == "__main__":
         'n': 3,
         'l': 2,
         'm': 1,
-        's': 0.5
+        's': Fraction(1, 2)
     }
     
     # Calculate metrics
     metrics = gating_service.get_current_metrics(
         R_Omega_tensor=R_Omega,
         geometric_eigenvalues=eigenvalues,
-        coherence_stability=0.95,
-        rsi=0.85
+        coherence_stability=Fraction(19, 20),
+        rsi=Fraction(17, 20)
     )
     
     print(f"GAS: {metrics.gas:.4f}")

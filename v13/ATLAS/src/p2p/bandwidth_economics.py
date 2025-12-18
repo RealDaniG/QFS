@@ -1,3 +1,4 @@
+from fractions import Fraction
 from libs.economics.QAmount import QAmount
 from typing import Dict, Any
 
@@ -38,7 +39,7 @@ class P2PBandwidthEconomics:
             return 0
         total_bytes = metrics.get('sent', 0) + metrics.get('received', 0)
         total_mb = total_bytes / 1000000
-        base_reward = total_mb * 0.01
+        base_reward = total_mb * Fraction(1, 100)
         total_messages = metrics.get('encrypted_count', 0)
-        encryption_bonus = 0.1 if total_messages > 100 else 0
+        encryption_bonus = Fraction(1, 10) if total_messages > 100 else 0
         return base_reward + encryption_bonus

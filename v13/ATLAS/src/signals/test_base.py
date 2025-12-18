@@ -1,6 +1,7 @@
 """
 Test suite for SignalAddon base class
 """
+from fractions import Fraction
 import unittest
 from .base import SignalAddon, SignalResult
 
@@ -9,10 +10,10 @@ class TestSignalAddonBase(unittest.TestCase):
 
     def test_signal_result_creation(self):
         """Test that SignalResult is created correctly."""
-        result = SignalResult(addon_id='test_addon', score=0.85, confidence=0.92, metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
+        result = SignalResult(addon_id='test_addon', score=Fraction(17, 20), confidence=Fraction(23, 25), metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
         self.assertEqual(result.addon_id, 'test_addon')
-        self.assertEqual(result.score, 0.85)
-        self.assertEqual(result.confidence, 0.92)
+        self.assertEqual(result.score, Fraction(17, 20))
+        self.assertEqual(result.confidence, Fraction(23, 25))
         self.assertEqual(result.metadata, {'test': 'data'})
         self.assertEqual(result.content_hash, 'abc123')
         self.assertEqual(result.context_hash, 'def456')
@@ -21,8 +22,8 @@ class TestSignalAddonBase(unittest.TestCase):
 
     def test_signal_result_deterministic_hash(self):
         """Test that SignalResult generates deterministic hashes."""
-        result1 = SignalResult(addon_id='test_addon', score=0.85, confidence=0.92, metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
-        result2 = SignalResult(addon_id='test_addon', score=0.85, confidence=0.92, metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
+        result1 = SignalResult(addon_id='test_addon', score=Fraction(17, 20), confidence=Fraction(23, 25), metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
+        result2 = SignalResult(addon_id='test_addon', score=Fraction(17, 20), confidence=Fraction(23, 25), metadata={'test': 'data'}, content_hash='abc123', context_hash='def456', result_hash='')
         self.assertEqual(result1.result_hash, result2.result_hash)
 
     def test_signal_addon_abstract_methods(self):
@@ -40,7 +41,7 @@ class TestSignalAddonBase(unittest.TestCase):
         class TestAddon(SignalAddon):
 
             def _evaluate_content(self, content: str, context: dict):
-                return (0.5, 0.8, {'test': 'data'})
+                return (Fraction(1, 2), Fraction(4, 5), {'test': 'data'})
         addon = TestAddon('test_addon')
         result = addon.evaluate('test content', {'test': 'context'})
         self.assertIsInstance(result, SignalResult)

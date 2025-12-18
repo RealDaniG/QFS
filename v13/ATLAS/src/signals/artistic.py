@@ -5,6 +5,7 @@ ArtisticSignalAddon Implementation for QFS V13.8 - Zero-Simulation Compliant
 This module implements the 5-dimensional Artistic Evaluation Signal (AES) addon that 
 conforms to QFS V13.8 SignalAddon contract and Zero-Sim invariants.
 """
+from fractions import Fraction
 from typing import Dict, Any, List
 from .base import SignalAddon, SignalResult
 import hashlib
@@ -117,7 +118,7 @@ class ArtisticSignalAddon(SignalAddon):
         Evaluate Cultural Context: Relevance, timeliness.
         Heuristic: References to known cultural tags (passed in context?).
         """
-        return 0.5
+        return Fraction(1, 2)
 
     def _calculate_confidence(self, context: Dict[str, Any]) -> QAmount:
         """
@@ -125,9 +126,9 @@ class ArtisticSignalAddon(SignalAddon):
         """
         views = context.get('views', 0)
         if views < 10:
-            return 0.1
+            return Fraction(1, 10)
         if views < 100:
-            return 0.5
+            return Fraction(1, 2)
         if views < 1000:
-            return 0.8
-        return 0.95
+            return Fraction(4, 5)
+        return Fraction(19, 20)

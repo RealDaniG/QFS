@@ -9,6 +9,7 @@ core economics engines or guards.
 """
 
 from __future__ import annotations
+from fractions import Fraction
 
 from dataclasses import dataclass, replace
 from typing import Dict, Any, List
@@ -132,7 +133,7 @@ def simple_event_trace() -> List[Dict[str, Any]]:
             "block": 2,
             "user_id": "user_1",
             "content_id": "cid_1",
-            "delta": 1.5,
+            "delta": Fraction(3, 2),
         },
         {
             "type": "RewardAllocated",
@@ -170,14 +171,14 @@ def complex_event_trace() -> List[Dict[str, Any]]:
             "block": 2,
             "user_id": "user_1",
             "content_id": "cid_1",
-            "delta": 1.5,
+            "delta": Fraction(3, 2),
         },
         {
             "type": "InteractionCreated",
             "block": 2,
             "user_id": "user_1",
             "content_id": "cid_2",
-            "delta": 0.8,
+            "delta": Fraction(4, 5),
         },
         {
             "type": "RewardAllocated",
@@ -225,7 +226,7 @@ def test_value_node_state_fields_updated_as_expected(simple_user_state: UserStat
     assert final_state.governance_footprint["content_created"] == ["cid_1"]
 
     # Coherence engagement metric should be updated
-    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == 1.5
+    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == Fraction(3, 2)
 
     # Balances and ATR/FLX should reflect reward allocations
     assert final_state.balances["ATR"] == 10
@@ -251,7 +252,7 @@ def test_complex_event_trace_fields_updated(simple_user_state: UserState, comple
     assert set(final_state.governance_footprint["content_created"]) == {"cid_1", "cid_2"}
 
     # Engagement should be sum of deltas
-    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == 2.3
+    assert pytest.approx(final_state.coherence_metrics.get("engagement", 0)) == Fraction(23, 10)
 
     # Balances should reflect all reward allocations
     assert final_state.balances["ATR"] == 25  # 10 + 15

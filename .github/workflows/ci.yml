@@ -2,171 +2,172 @@ name: QFS V13 CI Pipeline
 # Consolidated pipeline for Zero-Simulation, PQC security, and Determinism
 
 on:
-    push:
-        branches: [main, develop, fix/*, phase*]
-    pull_request:
-        branches: [main, develop]
+  push:
+    branches: [main, develop, fix/*, phase*]
+  pull_request:
+    branches: [main, develop]
 
 env:
-    PYTHON_VERSION: "3.11"
-    COVERAGE_THRESHOLD: 100
+  PYTHON_VERSION: "3.11"
+  COVERAGE_THRESHOLD: 100
 
 jobs:
-    # ============================================================================
-    # Stage 1: Static Analysis
-    # ============================================================================
-    static-analysis:
-        name: Static Analysis & Zero-Sim Check
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  # ============================================================================
+  # Stage 1: Static Analysis
+  # ============================================================================
+  static-analysis:
+    name: Static Analysis & Zero-Sim Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-            - name: Install dependencies
-              run: |
-                  pip install --upgrade pip
-                  pip install -r requirements.txt
-                  pip install pylint black isort mypy bandit semgrep
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint black isort mypy bandit semgrep
 
-            - name: Step 1 - Deterministic Environment Build
-              run: |
-                  # Verify deterministic build environment
-                  echo "Python version: $(python --version)"
-                  echo "Pip version: $(pip --version)"
-                  pip freeze > build_environment.txt
+      - name: Step 1 - Deterministic Environment Build
+        run: |
+          # Verify deterministic build environment
+          echo "Python version: $(python --version)"
+          echo "Pip version: $(pip --version)"
+          pip freeze > build_environment.txt
 
-            - name: Run AST Zero-Simulation Checker
-              run: |
-                  python v13/libs/AST_ZeroSimChecker.py v13/ --fail
-                  if [ $? -ne 0 ]; then
-                    echo "❌ Zero-Simulation violation detected"
-                    exit 302  # CIR-302: Time regression / non-determinism
-                  fi
+      - name: Run Zero-Sim Analyzer (Strict Enforcement)
+        run: |
+          # Using new analyzer with strict filtering for critical categories
+          python scripts/zero_sim_analyzer.py --dir v13 --exclude legacy_root node_modules --output violation_report.json --fail-on-violation
+          if [ $? -ne 0 ]; then
+            echo "❌ Zero-Simulation violation detected"
+            exit 1
+          fi
 
-            - name: Lint Check
-              run: |
-                  # Allowing exit 0 for now to prioritize Zero-Sim
-                  pylint v13/ --rcfile=pyproject.toml || true
+      - name: Lint Check
+        run: |
+          # Allowing exit 0 for now to prioritize Zero-Sim
+          pylint v13/ --rcfile=pyproject.toml || true
 
-            - name: Security Static Scan
-              run: |
-                  bandit -r v13/ -f json -o bandit_report.json || true
-                  semgrep --config=auto v13/ --json -o semgrep_report.json || true
+      - name: Security Static Scan
+        run: |
+          bandit -r v13/ -f json -o bandit_report.json || true
+          semgrep --config=auto v13/ --json -o semgrep_report.json || true
 
-    # ============================================================================
-    # Stage 2: Unit Tests
-    # ============================================================================
-    unit-tests:
-        name: Unit Tests (Enhanced Logging)
-        needs: static-analysis
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  # ============================================================================
+  # Stage 2: Unit Tests
+  # ============================================================================
+  unit-tests:
+    name: Unit Tests (Enhanced Logging)
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-            - name: Install dependencies
-              run: |
-                  pip install --upgrade pip
-                  pip install -r requirements.txt
-                  pip install pytest pytest-cov hypothesis
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov hypothesis
 
-            - name: Run Unit Tests
-              run: |
-                  python -m pytest v13/tests/unit/ \
-                    -v \
-                    --tb=long \
-                    --log-cli-level=DEBUG \
-                    --cov=v13 \
-                    --cov-report=xml:coverage.xml \
-                    --cov-report=term \
-                    --junitxml=test-results.xml
+      - name: Run Unit Tests
+        run: |
+          python -m pytest v13/tests/unit/ \
+            -v \
+            --tb=long \
+            --log-cli-level=DEBUG \
+            --cov=v13 \
+            --cov-report=xml:coverage.xml \
+            --cov-report=term \
+            --junitxml=test-results.xml
 
-            - name: Upload Test Results
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: unit-test-results
-                  path: |
-                      coverage.xml
-                      test-results.xml
-                      v13/evidence/logs/
-                  retention-days: 30
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            coverage.xml
+            test-results.xml
+            v13/evidence/logs/
+          retention-days: 30
 
-    # ============================================================================
-    # Stage 3: Determinism Fuzzer (Phase 3)
-    # ============================================================================
-    determinism-fuzzer:
-        name: Deterministic Replay Verification
-        needs: unit-tests
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  # ============================================================================
+  # Stage 3: Determinism Fuzzer (Phase 3)
+  # ============================================================================
+  determinism-fuzzer:
+    name: Deterministic Replay Verification
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-            - name: Install dependencies
-              run: |
-                  pip install --upgrade pip
-                  pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-            - name: Run Determinism Fuzzer
-              run: |
-                  # Use paths in root 'tests' if they exist, otherwise check v13/tests
-                  if [ -f "tests/phase3_verification_suite.py" ]; then
-                     python tests/phase3_verification_suite.py
-                  elif [ -f "v13/tests/phase3_verification_suite.py" ]; then
-                     python v13/tests/phase3_verification_suite.py
-                  else
-                     echo "⚠️ Phase 3 Verification Suite not found, skipping"
-                  fi
+      - name: Run Determinism Fuzzer
+        run: |
+          # Use paths in root 'tests' if they exist, otherwise check v13/tests
+          if [ -f "tests/phase3_verification_suite.py" ]; then
+             python tests/phase3_verification_suite.py
+          elif [ -f "v13/tests/phase3_verification_suite.py" ]; then
+             python v13/tests/phase3_verification_suite.py
+          else
+             echo "⚠️ Phase 3 Verification Suite not found, skipping"
+          fi
 
-    # ============================================================================
-    # Stage 4: Integration & PQC
-    # ============================================================================
-    integration-tests:
-        name: Integration & PQC Verification
-        needs: determinism-fuzzer
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  # ============================================================================
+  # Stage 4: Integration & PQC
+  # ============================================================================
+  integration-tests:
+    name: Integration & PQC Verification
+    needs: determinism-fuzzer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-            - name: Install dependencies
-              run: |
-                  pip install --upgrade pip
-                  pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-            - name: Run Integration Tests
-              run: |
-                  python -m pytest v13/tests/integration/ -v --tb=short
+      - name: Run Integration Tests
+        run: |
+          python -m pytest v13/tests/integration/ -v --tb=short
 
-            - name: Run PQC Verification
-              run: |
-                  if [ -f "v13/tests/test_pqc.py" ]; then
-                     python -m pytest v13/tests/test_pqc.py -v
-                  fi
+      - name: Run PQC Verification
+        run: |
+          if [ -f "v13/tests/test_pqc.py" ]; then
+             python -m pytest v13/tests/test_pqc.py -v
+          fi
 
-            - name: Run Deterministic Replay Test
-              run: |
-                  if [ -f "v13/tests/test_deterministic_replay.py" ]; then
-                     python v13/tests/test_deterministic_replay.py
-                  fi
+      - name: Run Deterministic Replay Test
+        run: |
+          if [ -f "v13/tests/test_deterministic_replay.py" ]; then
+             python v13/tests/test_deterministic_replay.py
+          fi

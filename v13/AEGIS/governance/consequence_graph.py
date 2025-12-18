@@ -77,7 +77,7 @@ def build_aegis_consequence_graph(model_id: str, version: str) -> AEGISConsequen
         # 3. UI/Feature Nodes derived from Scope
         # Static mapping of Scope -> UI features
         ui_features = _get_downstream_features(scope)
-        for feature, desc in ui_features.items():
+        for feature, desc in sorted(ui_features.items()):
             feature_node_id = f"ui:{feature}"
             if not any(n.node_id == feature_node_id for n in nodes):
                 nodes.append(

@@ -1,6 +1,7 @@
 """
 Test suite for HumorSignalAddon
 """
+from fractions import Fraction
 import unittest
 import pytest
 from .humor import HumorSignalAddon
@@ -19,7 +20,7 @@ class TestHumorSignalAddon(unittest.TestCase):
     def test_evaluate_deterministic(self):
         """Test that evaluations are deterministic."""
         content = "Why don't scientists trust atoms? Because they make up everything!"
-        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': 0.8}
+        context = {'views': 100, 'laughs': 50, 'saves': 20, 'replays': 30, 'author_reputation': Fraction(4, 5)}
         result1 = self.addon.evaluate(content, context)
         result2 = self.addon.evaluate(content, context)
         self.assertEqual(result1.score, result2.score)
@@ -30,7 +31,7 @@ class TestHumorSignalAddon(unittest.TestCase):
     def test_dimensions_structure(self):
         """Test that the result contains the correct dimension structure."""
         content = 'This is a test post with some humor content.'
-        context = {'views': 50, 'laughs': 10, 'saves': 5, 'replays': 15, 'author_reputation': 0.6}
+        context = {'views': 50, 'laughs': 10, 'saves': 5, 'replays': 15, 'author_reputation': Fraction(3, 5)}
         result = self.addon.evaluate(content, context)
         self.assertIn('signal', result.metadata)
         self.assertIn('version', result.metadata)
@@ -51,20 +52,20 @@ class TestHumorSignalAddon(unittest.TestCase):
     def test_ledger_context(self):
         """Test that ledger context is preserved."""
         content = 'Funny content here!'
-        context = {'views': 123, 'laughs': 45, 'saves': 12, 'replays': 67, 'author_reputation': 0.75}
+        context = {'views': 123, 'laughs': 45, 'saves': 12, 'replays': 67, 'author_reputation': Fraction(3, 4)}
         result = self.addon.evaluate(content, context)
         ledger_context = result.metadata['ledger_context']
         self.assertEqual(ledger_context['views'], 123)
         self.assertEqual(ledger_context['laughs'], 45)
         self.assertEqual(ledger_context['saves'], 12)
         self.assertEqual(ledger_context['replays'], 67)
-        self.assertEqual(ledger_context['author_reputation'], 0.75)
+        self.assertEqual(ledger_context['author_reputation'], Fraction(3, 4))
 
     def test_confidence_calculation(self):
         """Test confidence calculation with different engagement levels."""
         content = 'Test content'
-        low_context = {'views': 10, 'laughs': 2, 'saves': 1, 'replays': 3, 'author_reputation': 0.5}
-        high_context = {'views': 1000, 'laughs': 200, 'saves': 100, 'replays': 300, 'author_reputation': 0.9}
+        low_context = {'views': 10, 'laughs': 2, 'saves': 1, 'replays': 3, 'author_reputation': Fraction(1, 2)}
+        high_context = {'views': 1000, 'laughs': 200, 'saves': 100, 'replays': 300, 'author_reputation': Fraction(9, 10)}
         low_result = self.addon.evaluate(content, low_context)
         high_result = self.addon.evaluate(content, high_context)
         self.assertGreater(high_result.confidence, low_result.confidence)
@@ -76,7 +77,7 @@ class TestHumorSignalAddon(unittest.TestCase):
     def test_zero_engagement(self):
         """Test behavior with zero engagement metrics."""
         content = 'Test content'
-        context = {'views': 0, 'laughs': 0, 'saves': 0, 'replays': 0, 'author_reputation': 0.5}
+        context = {'views': 0, 'laughs': 0, 'saves': 0, 'replays': 0, 'author_reputation': Fraction(1, 2)}
         result = self.addon.evaluate(content, context)
         self.assertIsInstance(result.score, float)
         self.assertIsInstance(result.confidence, float)

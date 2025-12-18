@@ -1,0 +1,37 @@
+{
+  "total_violations": 1,
+  "by_type": {
+    "FORBIDDEN_CALL": 1
+  },
+  "by_severity": {
+    "High": 1
+  },
+  "auto_fixable": 0,
+  "manual_review": 1,
+  "files_affected": 1,
+  "top_offenders": [
+    {
+      "file": "v13\\tools_root\\test_violations_simple.py",
+      "count": 1
+    }
+  ],
+  "violations": [
+    {
+      "type": "FORBIDDEN_CALL",
+      "line": 13,
+      "col": 15,
+      "rule": {
+        "code": "FORBIDDEN_CALL",
+        "name": "Non-deterministic Call",
+        "pattern": "random.randint(), np.random.*, etc.",
+        "severity": "High",
+        "auto_fixable": false,
+        "fix_strategy": "seed_based_or_deterministic_alternative",
+        "risk_level": "High",
+        "reason": "Randomness breaks reproducibility; seed or refactor"
+      },
+      "context": "random.random()",
+      "file": "v13\\tools_root\\test_violations_simple.py"
+    }
+  ]
+}

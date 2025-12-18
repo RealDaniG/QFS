@@ -1,3 +1,4 @@
+from fractions import Fraction
 from typing import List, Dict, Any, Optional
 import sys
 import os
@@ -176,13 +177,13 @@ if __name__ == "__main__":
     
     # Example vectors
     features = np.array([1, 2, 3, 4, 5])
-    I_vector = np.array([0.1, 0.15, 0.2, 0.25, 0.3])
+    I_vector = np.array([Fraction(1, 10), Fraction(3, 20), Fraction(1, 5), Fraction(1, 4), Fraction(3, 10)])
     
     # Update Ω state
     updated_omega = coherence_engine.update_omega(features, I_vector, "L_Phi")
     print(f"Updated Ω norm: {np.linalg.norm(updated_omega):.4f}")
     
     # Test Safe Mode clamping
-    gating_service.check_safe_mode_trigger(0.5, 0.8)  # This should activate Safe Mode
+    gating_service.check_safe_mode_trigger(Fraction(1, 2), Fraction(4, 5))  # This should activate Safe Mode
     modulator_clamped = coherence_engine.calculate_modulator(I_vector, 0.618)
     print(f"Modulator with Safe Mode: {modulator_clamped:.4f}")

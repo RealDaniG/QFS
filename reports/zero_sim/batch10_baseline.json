@@ -1,0 +1,75 @@
+{
+  "total_violations": 3,
+  "by_type": {
+    "FORBIDDEN_FLOAT_LITERAL": 3
+  },
+  "by_severity": {
+    "Medium": 3
+  },
+  "auto_fixable": 3,
+  "manual_review": 0,
+  "files_affected": 2,
+  "top_offenders": [
+    {
+      "file": "v13\\economics\\test_economics_violations.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\policy\\humor_explainability.py",
+      "count": 1
+    }
+  ],
+  "violations": [
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 11,
+      "col": 5,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "3.14159",
+      "file": "v13\\economics\\test_economics_violations.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 12,
+      "col": 15,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "1e-18",
+      "file": "v13\\economics\\test_economics_violations.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 108,
+      "col": 76,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "1e-10",
+      "file": "v13\\policy\\humor_explainability.py"
+    }
+  ]
+}

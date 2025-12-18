@@ -1,6 +1,7 @@
 """
 Integration test for SignalAddon and HumorSignalAddon
 """
+from fractions import Fraction
 import unittest
 from .base import SignalAddon, SignalResult
 from .humor import HumorSignalAddon
@@ -12,7 +13,7 @@ class TestSignalAddonIntegration(unittest.TestCase):
         """Test that HumorSignalAddon integrates correctly with SignalAddon base."""
         addon = HumorSignalAddon()
         content = "Why don't scientists trust atoms? Because they make up everything! 😂"
-        context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': 0.9}
+        context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150, 'author_reputation': Fraction(9, 10)}
         result = addon.evaluate(content, context)
         self.assertIsInstance(result, SignalResult)
         self.assertEqual(result.addon_id, 'humor_signal_addon')
@@ -43,7 +44,7 @@ class TestSignalAddonIntegration(unittest.TestCase):
         self.assertEqual(ledger_context['laughs'], 800)
         self.assertEqual(ledger_context['saves'], 200)
         self.assertEqual(ledger_context['replays'], 150)
-        self.assertEqual(ledger_context['author_reputation'], 0.9)
+        self.assertEqual(ledger_context['author_reputation'], Fraction(9, 10))
         result2 = addon.evaluate(content, context)
         self.assertEqual(result.result_hash, result2.result_hash)
         self.assertEqual(result.metadata, result2.metadata)

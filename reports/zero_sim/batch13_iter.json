@@ -1,0 +1,1144 @@
+{
+  "total_violations": 64,
+  "by_type": {
+    "NONDETERMINISTIC_ITERATION": 64
+  },
+  "by_severity": {
+    "High": 64
+  },
+  "auto_fixable": 64,
+  "manual_review": 0,
+  "files_affected": 40,
+  "top_offenders": [
+    {
+      "file": "v13\\core\\TokenStateBundle.py",
+      "count": 11
+    },
+    {
+      "file": "v13\\libs\\economics\\GenesisHarmonicState.py",
+      "count": 3
+    },
+    {
+      "file": "v13\\libs\\economics\\HarmonicEconomics.py",
+      "count": 3
+    },
+    {
+      "file": "v13\\docs\\audit\\qfs_v13_full_audit.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\guards\\AEGISGuard.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\libs\\economics\\EconomicAdversarySuite.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\libs\\governance\\NODAllocator.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\libs\\governance\\RewardAllocator.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\libs\\integration\\StateTransitionEngine.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\policy\\artistic_policy.py",
+      "count": 2
+    }
+  ],
+  "violations": [
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 80,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for feature, desc in ui_features.items():\n    feature_node_id = f'ui:{feature}'\n",
+      "file": "v13\\AEGIS\\governance\\consequence_graph.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 163,
+      "col": 16,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for wallet_id, reward_data in event['rewards'].items():\n    user_id = wallet_id\n",
+      "file": "v13\\ATLAS\\src\\value_graph_ref.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 52,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for node_id, node in storage_engine.nodes.items():\n    node_metrics[node_id] = {",
+      "file": "v13\\ATLAS\\src\\api\\routes\\metrics.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 59,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for score in dimensions.values():\n    total_score += score",
+      "file": "v13\\ATLAS\\src\\signals\\humor_zerosim.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 87,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dim_value in dimensions.values():\n    self.assertIsInstance(dim_value, float",
+      "file": "v13\\ATLAS\\src\\signals\\test_humor.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 64,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dim_value in dimensions.values():\n    self.assertIsInstance(dim_value, float",
+      "file": "v13\\ATLAS\\src\\signals\\test_integration.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 184,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.chr_state.items():\n    if hasattr(value, 'to_decimal_stri",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 190,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.flx_state.items():\n    if isinstance(value, list):\n      ",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 205,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.psi_sync_state.items():\n    if hasattr(value, 'to_decimal",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 211,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.atr_state.items():\n    if hasattr(value, 'to_decimal_stri",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 217,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.res_state.items():\n    if hasattr(value, 'to_decimal_stri",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 223,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.nod_state.items():\n    if hasattr(value, 'to_decimal_stri",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 229,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.storage_metrics.items():\n    if isinstance(value, dict):\n",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 232,
+      "col": 16,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for nested_key, nested_value in value.items():\n    if hasattr(nested_value, 'to_",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 243,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in self.parameters.items():\n    if hasattr(value, 'to_decimal_str",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 329,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in bundle_data['parameters'].items():\n    parameters[key] = BigNu",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 336,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for node_id, value in storage_metrics['storage_bytes_stored'].items():\n    if is",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 397,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for test_name, bundle in self.evidence_bundles.items():\n    evidence_hashes.appe",
+      "file": "v13\\docs\\audit\\qfs_v13_autonomous_audit.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 219,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for requirement, details in compliance_mapping.items():\n    print(f'    {require",
+      "file": "v13\\docs\\audit\\qfs_v13_full_audit.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 255,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for suite, result in test_suites.items():\n    print(f'    {suite}: {result}')",
+      "file": "v13\\docs\\audit\\qfs_v13_full_audit.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 121,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in inputs.items():\n    if hasattr(value, 'to_decimal_string'):\n  ",
+      "file": "v13\\guards\\AEGISGuard.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 146,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in inputs.items():\n    if hasattr(value, 'to_decimal_string'):\n  ",
+      "file": "v13\\guards\\AEGISGuard.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 301,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in state.__dict__.items():\n    setattr(new_obj, key, self._deep_c",
+      "file": "v13\\libs\\economics\\EconomicAdversarySuite.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 545,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key in result1.keys():\n    if not self._compare_attack_results(result1[key],",
+      "file": "v13\\libs\\economics\\EconomicAdversarySuite.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 31,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard_id, allocations in shards.items():\n    chr_amount = allocations['CHR']",
+      "file": "v13\\libs\\economics\\GenesisHarmonicState.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 48,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard, neighbors in graph.items():\n    if len(neighbors) < CONST.MIN_CONNECT",
+      "file": "v13\\libs\\economics\\GenesisHarmonicState.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 162,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for node in FOUNDING_NODE_REGISTRY.values():\n    _validate_pqc_key_format(node['",
+      "file": "v13\\libs\\economics\\GenesisHarmonicState.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 106,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard_id in new_shards.keys():\n    shard = new_shards[shard_id]\n    old_shar",
+      "file": "v13\\libs\\economics\\HarmonicEconomics.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 224,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard_id, shard in shards.items():\n    if shard['ATR'] < 0:\n        violatio",
+      "file": "v13\\libs\\economics\\HarmonicEconomics.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 234,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for (src, dst), flow in flow_matrix.items():\n    if dst == shard_id:\n        inf",
+      "file": "v13\\libs\\economics\\HarmonicEconomics.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 87,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard, neighbors in self.graph.items():\n    degree = len(neighbors)\n    if d",
+      "file": "v13\\libs\\economics\\PsiFieldEngine.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 78,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for component_name, component in self._phase3_components.items():\n    if compone",
+      "file": "v13\\libs\\economics\\SystemRecoveryProtocol.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 68,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for s in raw_node_scores.values():\n    total_score += int(s)",
+      "file": "v13\\libs\\economics\\TreasuryDistributionEngine.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 102,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for key, value in obj.items():\n    if not isinstance(key, (str, int)):\n        r",
+      "file": "v13\\libs\\encoding\\canonical.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 311,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for node_id, result in results.items():\n    pass",
+      "file": "v13\\libs\\governance\\AEGIS_Node_Verification.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 127,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for score in verified_nodes.values():\n    total_verified_contribution = self.cm.",
+      "file": "v13\\libs\\governance\\NODAllocator.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 162,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for score in node_contributions.values():\n    total_contribution = self.cm.add(t",
+      "file": "v13\\libs\\governance\\NODAllocator.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 168,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for node_id, node_balance in node_balances.items():\n    voting_power_ratio = sel",
+      "file": "v13\\libs\\governance\\NODInvariantChecker.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 142,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for weight in allocation_weights.values():\n    weight_sum = self.cm.add(weight_s",
+      "file": "v13\\libs\\governance\\RewardAllocator.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 181,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for address, alloc in allocated_rewards.items():\n    pass",
+      "file": "v13\\libs\\governance\\RewardAllocator.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 129,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for alloc in allocated_rewards.values():\n    if token_type == 'CHR':\n        rew",
+      "file": "v13\\libs\\integration\\StateTransitionEngine.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 167,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for nod_amount in nod_allocations.values():\n    total_nod = self.cm.add(total_no",
+      "file": "v13\\libs\\integration\\StateTransitionEngine.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 37,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for k in data.keys():\n    if not isinstance(k, (str, int)):\n        raise TypeEr",
+      "file": "v13\\libs\\pqc\\CanonicalSerializer.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 58,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for d, v in s.dimensions.items():\n    dim_sums[d] += v\n    dim_counts[d] += 1",
+      "file": "v13\\policy\\artistic_observatory.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 113,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dim, score in dimensions.items():\n    w = weights.get(dim, 0)\n    weighted_s",
+      "file": "v13\\policy\\artistic_policy.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 125,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dim, score in dimensions.items():\n    if dim not in self.observation_stats.d",
+      "file": "v13\\policy\\artistic_policy.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 82,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dimension, score in snapshot.dimensions.items():\n    dimension_sums[dimensio",
+      "file": "v13\\policy\\humor_observatory.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 107,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dimension, score in dimensions.items():\n    weight = self.policy.dimension_w",
+      "file": "v13\\policy\\humor_policy.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 119,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dimension, score in dimensions.items():\n    self.observation_stats.dimension",
+      "file": "v13\\policy\\humor_policy.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 111,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for shard_id, node_list in replica_sets.items():\n    nodes.update(node_list)",
+      "file": "v13\\policy\\storage_explainability.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 115,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for ftype, count in failure_summary.items():\n    md_report += f'- **{ftype}**: {",
+      "file": "v13\\scripts\\autonomous_fix_analyzer.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 118,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for label, pat in patterns.items():\n    if re.search(pat, text):\n        hits.ap",
+      "file": "v13\\scripts\\run_autonomous_audit.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 286,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for name, content in baseline.items():\n    if isinstance(content, dict):\n       ",
+      "file": "v13\\scripts\\run_autonomous_audit.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 102,
+      "col": 20,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for pattern_family, funcs in patterns_to_check.items():\n    if func_name in func",
+      "file": "v13\\scripts\\run_autonomous_audit_v2.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 105,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for name, data in self.stats['slices'].items():\n    is_compliant = not data['moc",
+      "file": "v13\\scripts\\scan_zero_mock_compliance.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 47,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for session_id, token in sessions.items():\n    if block_number >= token.issued_a",
+      "file": "v13\\services\\sessions\\replay_helper.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 39,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dimension, avg in report.dimension_averages.items():\n    print(f'  {dimensio",
+      "file": "v13\\tools\\humor_observatory_cli.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 51,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for dimension, distribution in report.dimension_distributions.items():\n    print",
+      "file": "v13\\tools\\humor_observatory_cli.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 295,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for ttype, count in stats['transforms_by_type'].items():\n    print(f'  {ttype}: ",
+      "file": "v13\\tools\\phase3_batch4_set_removal.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 89,
+      "col": 4,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for category, path in SCAN_PATHS.items():\n    print(f'Scanning {category}: {path",
+      "file": "v13\\tools\\discovery\\discovery_scan.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 181,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for filepath, errors in results.items():\n    print(f'\\nFile: {filepath}')\n    fo",
+      "file": "v13\\tools_root\\ast_checker.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 120,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for filepath, errors in results.items():\n    print(f'\\nFile: {filepath}')\n    fo",
+      "file": "v13\\tools_root\\comprehensive_checker.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 152,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for filepath, errors in results.items():\n    print(f'\\nFile: {filepath}')\n    fo",
+      "file": "v13\\tools_root\\debug_checker.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 189,
+      "col": 8,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for filepath, errors in results.items():\n    print(f'\\nFile: {filepath}')\n    fo",
+      "file": "v13\\tools_root\\safe_ast_checker.py"
+    }
+  ]
+}

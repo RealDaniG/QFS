@@ -5,6 +5,7 @@ Refactored HumorSignalAddon Implementation for QFS V13.7
 This module implements the 7-dimensional comedic signal addon that conforms to 
 QFS V13.7 SignalAddon contract and Zero-Sim invariants.
 """
+from fractions import Fraction
 from typing import Dict, Any
 from .base import SignalAddon, SignalResult
 import hashlib
@@ -41,7 +42,7 @@ class HumorSignalAddon(SignalAddon):
         """
         dimensions = {'chronos': self._evaluate_timing(content, context), 'lexicon': self._evaluate_wordplay(content, context), 'surreal': self._evaluate_absurdity(content, context), 'empathy': self._evaluate_relatability(content, context), 'critique': self._evaluate_satire(content, context), 'slapstick': self._evaluate_physical_comedy(content, context), 'meta': self._evaluate_meta_humor(content, context)}
         confidence = self._calculate_confidence(context)
-        metadata = {'signal': 'comedic_value', 'version': 'v1', 'dimensions': dimensions, 'ledger_context': {'views': context.get('views', 0), 'laughs': context.get('laughs', 0), 'saves': context.get('saves', 0), 'replays': context.get('replays', 0), 'author_reputation': context.get('author_reputation', 0.5)}}
+        metadata = {'signal': 'comedic_value', 'version': 'v1', 'dimensions': dimensions, 'ledger_context': {'views': context.get('views', 0), 'laughs': context.get('laughs', 0), 'saves': context.get('saves', 0), 'replays': context.get('replays', 0), 'author_reputation': context.get('author_reputation', Fraction(1, 2))}}
         composite_score = sum(dimensions.values()) / len(dimensions)
         return (composite_score, confidence, metadata)
 

@@ -1,6 +1,7 @@
 """
 Wallet API endpoints for the ATLAS system.
 """
+from fractions import Fraction
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Dict, List, Optional
 import logging
@@ -50,7 +51,7 @@ async def get_wallet(wallet_id: str, current_user: dict=Depends(lambda: {'userna
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Wallet not found')
     if wallet['owner_id'] != current_user['id']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Not authorized to view this wallet')
-    balances = [{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': 0.5, 'locked': 0, 'total': 0.5}]
+    balances = [{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': Fraction(1, 2), 'locked': 0, 'total': Fraction(1, 2)}]
     return WalletResponse(**wallet, balances=balances)
 
 @router.get('/{wallet_id}/balance', response_model=List[WalletBalance])
@@ -71,7 +72,7 @@ async def get_wallet_balances(wallet_id: str, asset: Optional[str]=None, current
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Wallet not found')
     if wallet['owner_id'] != current_user['id']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Not authorized to view this wallet')
-    all_balances = [{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': 0.5, 'locked': 0, 'total': 0.5}]
+    all_balances = [{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': Fraction(1, 2), 'locked': 0, 'total': Fraction(1, 2)}]
     if asset:
         return [b for b in all_balances if b['asset'] == asset]
     return all_balances
@@ -88,4 +89,4 @@ async def list_wallets(current_user: dict=Depends(lambda: {'username': 'demo_use
         List[WalletResponse]: List of user's wallets
     """
     user_wallets = [w for w in wallets.values() if w['owner_id'] == current_user['id']]
-    return [WalletResponse(**wallet, balances=[{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': 0.5, 'locked': 0, 'total': 0.5}]) for wallet in user_wallets]
+    return [WalletResponse(**wallet, balances=[{'asset': 'QFS', 'balance': 1000, 'locked': 0, 'total': 1000}, {'asset': 'BTC', 'balance': Fraction(1, 2), 'locked': 0, 'total': Fraction(1, 2)}]) for wallet in user_wallets]
