@@ -1,5 +1,6 @@
 name: QFS V13 CI Pipeline
 # Consolidated pipeline for Zero-Simulation, PQC security, and Determinism
+# IMPROVED: Structured logging, fail-fast, minimal permissions
 
 on:
   push:
@@ -11,95 +12,171 @@ env:
   PYTHON_VERSION: "3.11"
   COVERAGE_THRESHOLD: 100
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   # ============================================================================
   # Stage 1: Static Analysis
   # ============================================================================
   static-analysis:
-    name: Static Analysis & Zero-Sim Check
+    name: "[STAGE 1] Static Analysis & Zero-Sim Check"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: "[SETUP] Install dependencies"
         run: |
+          set -euo pipefail
+          echo "::group::Installing Dependencies"
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install pylint black isort mypy bandit semgrep
+          echo "::endgroup::"
 
-      - name: Step 1 - Deterministic Environment Build
+      - name: "[SETUP] Deterministic Environment Build"
         run: |
-          # Verify deterministic build environment
+          set -euo pipefail
+          echo "::group::Environment Verification"
           echo "Python version: $(python --version)"
           echo "Pip version: $(pip --version)"
           pip freeze > build_environment.txt
+          echo "::endgroup::"
 
-      - name: Run Zero-Sim Analyzer (Strict Enforcement)
+      - name: "[ZERO-SIM] Run Analyzer (Strict Enforcement)"
         id: zero-sim-check
         run: |
-          # Using analyzer with strict filtering for critical categories
-          python v13/scripts/zero_sim_analyzer.py --dir v13 --exclude legacy_root node_modules --output violation_report.json
-          # Check if violations were found
-          VIOLATION_COUNT=$(python -c "import json; data=json.load(open('violation_report.json')); print(data.get('total_violations', 0))")
-          if [ "$VIOLATION_COUNT" -gt "0" ]; then
-            echo "❌ Zero-Simulation violations detected: $VIOLATION_COUNT"
-            echo "See violation_report.json for details"
-            exit 1
-          fi
-          echo "✅ No Zero-Sim violations found"
+          set -euo pipefail
+          echo "::group::Zero-Sim Analysis"
+          START_TIME=$(date +%s)
 
-      - name: Lint Check (Required)
+          python v13/scripts/zero_sim_analyzer.py \
+            --dir v13 \
+            --exclude legacy_root node_modules \
+            --output violation_report.json
+
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[ZERO-SIM] Check Violations & Print Summary"
         run: |
-          # Lint is now required for production readiness
+          set -euo pipefail
+          python - << 'EOF'
+          import json
+          import sys
+
+          data = json.load(open("violation_report.json"))
+          total = data.get("total_violations", 0)
+
+          print("\n" + "="*60)
+          print("ZERO-SIM COMPLIANCE SUMMARY")
+          print("="*60)
+          print(f"Total Violations: {total}")
+
+          by_category = data.get("by_category", {})
+          if by_category:
+              print("\nBy Category:")
+              for category, count in sorted(by_category.items()):
+                  print(f"  {category}: {count}")
+
+          by_severity = data.get("by_severity", {})
+          if by_severity:
+              print("\nBy Severity:")
+              for severity, count in sorted(by_severity.items()):
+                  print(f"  {severity}: {count}")
+
+          print("="*60 + "\n")
+
+          if total > 0:
+              print(f"❌ Zero-Simulation violations detected: {total}")
+              print("See violation_report.json for details")
+              sys.exit(1)
+
+          print("✅ No Zero-Sim violations found")
+          EOF
+
+      - name: "[LINT] Pylint Check (Required)"
+        run: |
+          set -euo pipefail
+          echo "::group::Pylint Analysis"
+          START_TIME=$(date +%s)
+
           pylint v13/ --rcfile=pyproject.toml --fail-under=8.0
 
-      - name: Security Static Scan (Required)
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[SECURITY] Static Scan (Required)"
         run: |
-          # Security scans are now required
+          set -euo pipefail
+          echo "::group::Security Scanning"
+          START_TIME=$(date +%s)
+
           bandit -r v13/ -f json -o bandit_report.json --severity-level medium
           semgrep --config=auto v13/ --json -o semgrep_report.json --error
 
-      - name: Upload Analysis Reports
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[ARTIFACTS] Upload Analysis Reports"
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
           name: static-analysis-reports
           path: |
             violation_report.json
             bandit_report.json
             semgrep_report.json
+            build_environment.txt
           retention-days: 30
 
   # ============================================================================
   # Stage 2: Unit Tests
   # ============================================================================
   unit-tests:
-    name: Unit Tests (Enhanced Logging)
+    name: "[STAGE 2] Unit Tests"
     needs: static-analysis
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: "[SETUP] Install dependencies"
         run: |
+          set -euo pipefail
+          echo "::group::Installing Dependencies"
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov hypothesis
+          echo "::endgroup::"
 
-      - name: Run Unit Tests
+      - name: "[TESTS] Run Unit Tests"
         run: |
+          set -euo pipefail
+          echo "::group::Unit Test Execution"
+          START_TIME=$(date +%s)
+
           python -m pytest v13/tests/unit/ \
             -v \
             --tb=long \
@@ -109,9 +186,42 @@ jobs:
             --cov-report=term \
             --junitxml=test-results.xml
 
-      - name: Upload Test Results
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[TESTS] Print Test Summary"
         if: always()
-        uses: actions/upload-artifact@v4
+        run: |
+          set -euo pipefail
+          python - << 'EOF'
+          import xml.etree.ElementTree as ET
+
+          try:
+              tree = ET.parse("test-results.xml")
+              root = tree.getroot()
+              
+              tests = int(root.attrib.get("tests", 0))
+              failures = int(root.attrib.get("failures", 0))
+              errors = int(root.attrib.get("errors", 0))
+              skipped = int(root.attrib.get("skipped", 0))
+              
+              print("\n" + "="*60)
+              print("UNIT TEST SUMMARY")
+              print("="*60)
+              print(f"Total Tests: {tests}")
+              print(f"Passed: {tests - failures - errors - skipped}")
+              print(f"Failed: {failures}")
+              print(f"Errors: {errors}")
+              print(f"Skipped: {skipped}")
+              print("="*60 + "\n")
+          except Exception as e:
+              print(f"Could not parse test results: {e}")
+          EOF
+
+      - name: "[ARTIFACTS] Upload Test Results"
+        if: always()
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
           name: unit-test-results
           path: |
@@ -124,67 +234,117 @@ jobs:
   # Stage 3: Determinism Fuzzer (Phase 3)
   # ============================================================================
   determinism-fuzzer:
-    name: Deterministic Replay Verification
+    name: "[STAGE 3] Deterministic Replay Verification"
     needs: unit-tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: "[SETUP] Install dependencies"
         run: |
+          set -euo pipefail
+          echo "::group::Installing Dependencies"
           pip install --upgrade pip
           pip install -r requirements.txt
+          echo "::endgroup::"
 
-      - name: Run Determinism Fuzzer
+      - name: "[DETERMINISM] Run Fuzzer (Required)"
         run: |
-          # Use paths in root 'tests' if they exist, otherwise check v13/tests
+          set -euo pipefail
+          echo "::group::Determinism Verification"
+          START_TIME=$(date +%s)
+
+          # Check for phase3 verification suite
           if [ -f "tests/phase3_verification_suite.py" ]; then
-             python tests/phase3_verification_suite.py
+            python tests/phase3_verification_suite.py
           elif [ -f "v13/tests/phase3_verification_suite.py" ]; then
-             python v13/tests/phase3_verification_suite.py
+            python v13/tests/phase3_verification_suite.py
+          elif [ -f "v13/tests/regression/phase_v14_social_full.py" ]; then
+            # Use v14 regression as determinism check
+            python v13/tests/regression/phase_v14_social_full.py > /dev/null
+            echo "✅ v14 regression scenario executed successfully"
           else
-             echo "⚠️ Phase 3 Verification Suite not found, skipping"
+            echo "❌ No determinism verification suite found"
+            echo "Expected: tests/phase3_verification_suite.py or v13/tests/regression/phase_v14_social_full.py"
+            exit 1
           fi
+
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
 
   # ============================================================================
   # Stage 4: Integration & PQC
   # ============================================================================
   integration-tests:
-    name: Integration & PQC Verification
+    name: "[STAGE 4] Integration & PQC Verification"
     needs: determinism-fuzzer
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: "[SETUP] Install dependencies"
         run: |
+          set -euo pipefail
+          echo "::group::Installing Dependencies"
           pip install --upgrade pip
           pip install -r requirements.txt
+          echo "::endgroup::"
 
-      - name: Run Integration Tests
+      - name: "[INTEGRATION] Run Integration Tests"
         run: |
+          set -euo pipefail
+          echo "::group::Integration Test Execution"
+          START_TIME=$(date +%s)
+
           python -m pytest v13/tests/integration/ -v --tb=short
 
-      - name: Run PQC Verification
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[PQC] Run PQC Verification"
         run: |
+          set -euo pipefail
+          echo "::group::PQC Verification"
+
           if [ -f "v13/tests/test_pqc.py" ]; then
-             python -m pytest v13/tests/test_pqc.py -v
+            python -m pytest v13/tests/test_pqc.py -v
+            echo "✅ PQC verification passed"
+          else
+            echo "⚠️ PQC verification test not found, skipping"
           fi
 
-      - name: Run Deterministic Replay Test
+          echo "::endgroup::"
+
+      - name: "[DETERMINISM] Run Replay Test"
         run: |
+          set -euo pipefail
+          echo "::group::Deterministic Replay Test"
+
           if [ -f "v13/tests/test_deterministic_replay.py" ]; then
-             python v13/tests/test_deterministic_replay.py
+            python v13/tests/test_deterministic_replay.py
+            echo "✅ Deterministic replay test passed"
+          else
+            echo "⚠️ Deterministic replay test not found, skipping"
           fi
+
+          echo "::endgroup::"
