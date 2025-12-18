@@ -50,8 +50,9 @@
 | `v13/docs/V15_GOVERNANCE_HSMF_ROADMAP.md` | v15 governance roadmap | ✅ Current |
 | `v13/docs/V15_NON_GOALS.md` | v14 protected areas for v15 | ✅ Current |
 | `v13/docs/DEVELOPER_REWARDS_GAP_ANALYSIS.md` | Developer rewards gap analysis | ✅ Current |
-| `v13/docs/V15_LIVING_POSTS_SPEC.md` | Living Posts specification | 🔄 To create |
-| `v13/docs/V15_DEVELOPER_REWARDS_SPEC.md` | Developer Rewards specification | 🔄 To create |
+| `v13/docs/V15_EVENT_SCHEMAS.md` | Canonical v15 event registry | ✅ Current |
+| `v13/docs/V15_LIVING_POSTS_SPEC.md` | Living Posts specification | ✅ Current |
+| `v13/docs/V15_DEVELOPER_REWARDS_SPEC.md` | Developer Rewards specification | ✅ Current |
 | `v13/docs/V15_GOVERNANCE_PARAMS.md` | Governable parameters | 🔄 To create |
 | `v13/docs/V15_REGRESSION.md` | v15 regression scenarios | 🔄 To create |
 
