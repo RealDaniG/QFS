@@ -11,26 +11,12 @@ try:
     from ...libs.BigNum128 import BigNum128
     from ...libs.CertifiedMath import CertifiedMath
     from .wall_posts import WallPost
+    from ..economic_event import EconomicEvent
 except ImportError:
     from v13.libs.BigNum128 import BigNum128
     from v13.libs.CertifiedMath import CertifiedMath
     from v13.atlas.spaces.wall_posts import WallPost
-
-
-@dataclass
-class EconomicEvent:
-    """Economic event for QFS integration (Duplicate definition for independence or import from spaces_events)
-    Ideally should import common definition, but defining locally to match pattern if not shared in common lib yet.
-    """
-
-    event_id: str
-    event_type: str
-    wallet_id: str
-    token_type: str
-    amount: str
-    timestamp: int
-    metadata: Dict[str, Any]
-    pqc_signature: str
+    from v13.atlas.economic_event import EconomicEvent
 
 
 def emit_post_created(

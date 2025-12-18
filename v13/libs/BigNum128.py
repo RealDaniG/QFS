@@ -238,11 +238,13 @@ class BigNum128:
         from .CertifiedMath import CertifiedMath
 
         cm = CertifiedMath()
-        result = cm.mul(self.value, other.value)
-        result = cm.idiv(result, self.SCALE)
-        if result > self.MAX_VALUE:
+        # CertifiedMath.mul handles the fixed-point scaling ((a*b)/SCALE)
+        # We must pass the BigNum128 objects themselves, not raw values
+        result = cm.mul(self, other)
+        # Result is already a BigNum128 with the correct scale, no further division needed
+        if result.value > self.MAX_VALUE:
             raise OverflowError("Multiplication result exceeds BigNum128 capacity")
-        return BigNum128(result)
+        return result
 
     def div(self, other: "BigNum128") -> "BigNum128":
         """Divides two BigNum128 values."""

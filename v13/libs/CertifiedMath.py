@@ -844,12 +844,6 @@ class CertifiedMath:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> BigNum128:
-        """
-        Multiply two BigNum128 values with comprehensive overflow protection.
-
-        Enhancement 1: Added pre-multiplication overflow guard to ensure intermediate
-        product never exceeds safe bounds, even in constrained Python implementations.
-        """
         if not isinstance(a, BigNum128):
             a = BigNum128(a)
         if not isinstance(b, BigNum128):

@@ -11,24 +11,12 @@ try:
     from ...libs.BigNum128 import BigNum128
     from ...libs.CertifiedMath import CertifiedMath
     from .spaces_manager import Space
+    from ..economic_event import EconomicEvent
 except ImportError:
     from v13.libs.BigNum128 import BigNum128
     from v13.libs.CertifiedMath import CertifiedMath
     from v13.atlas.spaces.spaces_manager import Space
-
-
-@dataclass
-class EconomicEvent:
-    """Economic event for QFS integration"""
-
-    event_id: str
-    event_type: str
-    wallet_id: str
-    token_type: str
-    amount: str
-    timestamp: int
-    metadata: Dict[str, Any]
-    pqc_signature: str
+    from v13.atlas.economic_event import EconomicEvent
 
 
 def emit_space_created(
@@ -84,7 +72,7 @@ def emit_space_spoke(
     """Emit space_spoke event"""
     minutes = speak_duration_seconds // 60
     reward_per_min = BigNum128.from_string("50000000000000000")  # 0.05 CHR/min
-    speaker_reward = cm.imul(reward_per_min, minutes, log_list=log_list)
+    speaker_reward = cm.imul(minutes, reward_per_min, log_list=log_list)
 
     event = EconomicEvent(
         event_id=f"space_spoke_{space_id}_{participant_wallet}_{timestamp}",
@@ -113,7 +101,7 @@ def emit_space_ended(
 
     bonus_per_minute = BigNum128.from_string("10000000000000000")  # 0.01 CHR
     duration_bonus = cm.imul(
-        bonus_per_minute, min(duration_minutes, 1000), log_list=log_list
+        min(duration_minutes, 1000), bonus_per_minute, log_list=log_list
     )
 
     event = EconomicEvent(
