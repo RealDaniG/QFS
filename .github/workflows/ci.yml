@@ -41,6 +41,7 @@ jobs:
           pip freeze > build_environment.txt
 
       - name: Run Zero-Sim Analyzer (Strict Enforcement)
+        id: zero-sim-check
         run: |
           # Using analyzer with strict filtering for critical categories
           python v13/scripts/zero_sim_analyzer.py --dir v13 --exclude legacy_root node_modules --output violation_report.json
@@ -53,15 +54,27 @@ jobs:
           fi
           echo "✅ No Zero-Sim violations found"
 
-      - name: Lint Check
+      - name: Lint Check (Required)
         run: |
-          # Allowing exit 0 for now to prioritize Zero-Sim
-          pylint v13/ --rcfile=pyproject.toml || true
+          # Lint is now required for production readiness
+          pylint v13/ --rcfile=pyproject.toml --fail-under=8.0
 
-      - name: Security Static Scan
+      - name: Security Static Scan (Required)
         run: |
-          bandit -r v13/ -f json -o bandit_report.json || true
-          semgrep --config=auto v13/ --json -o semgrep_report.json || true
+          # Security scans are now required
+          bandit -r v13/ -f json -o bandit_report.json --severity-level medium
+          semgrep --config=auto v13/ --json -o semgrep_report.json --error
+
+      - name: Upload Analysis Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-analysis-reports
+          path: |
+            violation_report.json
+            bandit_report.json
+            semgrep_report.json
+          retention-days: 30
 
   # ============================================================================
   # Stage 2: Unit Tests

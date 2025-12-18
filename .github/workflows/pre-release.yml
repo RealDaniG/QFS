@@ -1,0 +1,165 @@
+name: Pre-Release Verification
+
+on:
+    push:
+        tags:
+            - "v*"
+
+env:
+    PYTHON_VERSION: "3.11"
+
+jobs:
+    verify-regression:
+        name: Regression Hash Verification
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run regression scenario
+              run: |
+                  if [ -f "v13/tests/regression/phase_v14_social_full.py" ]; then
+                    python v13/tests/regression/phase_v14_social_full.py > v14_trace.log
+                    sha256sum v14_trace.log > v14_regression_hash_new.txt
+                  else
+                    echo "⚠️ Regression scenario not found, skipping"
+                    exit 0
+                  fi
+
+            - name: Verify regression hash
+              run: |
+                  if [ -f "v14_regression_hash.txt" ]; then
+                    diff v14_regression_hash.txt v14_regression_hash_new.txt
+                    if [ $? -ne 0 ]; then
+                      echo "❌ Regression hash mismatch!"
+                      echo "Expected:"
+                      cat v14_regression_hash.txt
+                      echo "Got:"
+                      cat v14_regression_hash_new.txt
+                      exit 1
+                    fi
+                    echo "✅ Regression hash verified"
+                  else
+                    echo "⚠️ No baseline regression hash found"
+                    echo "Generated hash:"
+                    cat v14_regression_hash_new.txt
+                  fi
+
+            - name: Upload regression artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: regression-verification
+                  path: |
+                      v14_trace.log
+                      v14_regression_hash_new.txt
+                  retention-days: 90
+
+    full-test-suite:
+        name: Full Test Suite
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install pytest pytest-cov
+
+            - name: Run all tests
+              run: |
+                  python -m pytest v13/tests/ \
+                    -v \
+                    --tb=long \
+                    --cov=v13 \
+                    --cov-report=xml:coverage.xml \
+                    --cov-report=term \
+                    --junitxml=test-results.xml
+
+            - name: Check test pass rate
+              run: |
+                  # Fail if any tests failed
+                  if grep -q "failed" test-results.xml; then
+                    echo "❌ Some tests failed"
+                    exit 1
+                  fi
+                  echo "✅ All tests passed"
+
+            - name: Upload test results
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test-results
+                  path: |
+                      coverage.xml
+                      test-results.xml
+                  retention-days: 90
+
+    zero-sim-verification:
+        name: Zero-Sim Compliance
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run Zero-Sim analyzer
+              run: |
+                  python v13/scripts/zero_sim_analyzer.py \
+                    --dir v13 \
+                    --exclude legacy_root node_modules \
+                    --output violation_report.json
+
+                  VIOLATION_COUNT=$(python -c "import json; data=json.load(open('violation_report.json')); print(data.get('total_violations', 0))")
+
+                  if [ "$VIOLATION_COUNT" -gt "0" ]; then
+                    echo "❌ Zero-Sim violations detected: $VIOLATION_COUNT"
+                    cat violation_report.json
+                    exit 1
+                  fi
+
+                  echo "✅ Zero-Sim compliance verified (0 violations)"
+
+            - name: Upload violation report
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: zero-sim-report
+                  path: violation_report.json
+                  retention-days: 90
+
+    release-gate:
+        name: Release Gate
+        needs: [verify-regression, full-test-suite, zero-sim-verification]
+        runs-on: ubuntu-latest
+        steps:
+            - name: All checks passed
+              run: |
+                  echo "✅ All pre-release checks passed"
+                  echo "Release is ready for production deployment"
