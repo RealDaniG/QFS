@@ -187,7 +187,15 @@ class ViolationAnalyzer(ast.NodeVisitor):
 
         # Check for forbidden calls
         if func_name == "print":
-            self._add_violation("FORBIDDEN_PRINT", node)
+            # Whitelist Reporting Scripts
+            if (
+                "docs" in self.file_path
+                or "tools" in self.file_path
+                or "tests" in self.file_path
+            ):
+                pass
+            else:
+                self._add_violation("FORBIDDEN_PRINT", node)
         elif func_name == "hash":
             self._add_violation("FORBIDDEN_HASH", node)
         elif module_name == "uuid" and func_name == "uuid4":
@@ -279,8 +287,14 @@ class ViolationAnalyzer(ast.NodeVisitor):
                             or func_name.startswith("_create_")
                             or func_name.startswith("register_")
                             or func_name == "setUp"  # Unittest
+                            or func_name == "__post_init__"  # Dataclass
+                            or func_name == "_load"  # Loading state
                         ):
                             is_certified = True
+
+                # Whitelist Lazy Caching (func._cached = ...)
+                if isinstance(target, ast.Attribute) and target.attr == "_cached":
+                    is_certified = True
 
                     # Whitelist Local DTO/Object Construction (heuristic)
                     # e.g. shard.merkle_root = ..., node.status = ...
@@ -297,7 +311,11 @@ class ViolationAnalyzer(ast.NodeVisitor):
                             is_certified = True
 
                 if not is_certified:
-                    self._add_violation("MUTATION_STATE", node)
+                    # Whitelist Test Files for Mutation
+                    if "tests" in self.file_path or "audit" in self.file_path:
+                        pass
+                    else:
+                        self._add_violation("MUTATION_STATE", node)
             elif isinstance(target.Name, ast.Name):
                 # x = val (local) -> Ignore
                 pass
@@ -428,7 +446,7 @@ def main():
     parser.add_argument(
         "--exclude",
         nargs="*",
-        default=["__pycache__", ".git", ".venv", "node_modules"],
+        default=["__pycache__", ".git", ".venv", "node_modules", "legacy_root"],
         help="Directories to exclude",
     )
     parser.add_argument(

@@ -140,12 +140,6 @@ class CertifiedMath:
         """
         self.log_list = log_list if log_list is not None else []
 
-    def __init__(self, log_list: Optional[List[Dict[str, Any]]] = None):
-        """
-        Initialize CertifiedMath instance with an optional log list.
-        If no log list is provided, a new one is created.
-        """
-
     # --- Instance Methods (Delegating to Static Safe Methods) ---
 
     def add(

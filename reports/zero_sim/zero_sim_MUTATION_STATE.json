@@ -1,0 +1,1263 @@
+{
+  "total_violations": 71,
+  "by_type": {
+    "MUTATION_STATE": 71
+  },
+  "by_severity": {
+    "Medium": 71
+  },
+  "auto_fixable": 0,
+  "manual_review": 71,
+  "files_affected": 34,
+  "top_offenders": [
+    {
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py",
+      "count": 8
+    },
+    {
+      "file": "v13\\tests\\test_humor_deterministic_replay.py",
+      "count": 6
+    },
+    {
+      "file": "v13\\tests\\test_humor_compliance.py",
+      "count": 4
+    },
+    {
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py",
+      "count": 4
+    },
+    {
+      "file": "v13\\libs\\CertifiedMath.py",
+      "count": 3
+    },
+    {
+      "file": "v13\\libs\\keystore\\manager.py",
+      "count": 3
+    },
+    {
+      "file": "v13\\tests\\test_real_storage_wiring.py",
+      "count": 3
+    },
+    {
+      "file": "v13\\core\\storage_explainability.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\core\\TokenStateBundle.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\tests\\phase3_audit_suite.py",
+      "count": 2
+    }
+  ],
+  "violations": [
+    {
+      "type": "MUTATION_STATE",
+      "line": 30,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.events = []",
+      "file": "v13\\ATLAS\\src\\types.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 41,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.t",
+      "file": "v13\\ATLAS\\src\\secure_chat\\storage\\ipfs_storage.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 27,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.integrity_hash = self._calculate_integrity_hash()",
+      "file": "v13\\core\\storage_explainability.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 29,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.explanation_hash = self._calculate_explanation_hash()",
+      "file": "v13\\core\\storage_explainability.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 56,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.parameters = {'beta_penalty': BigNum128.from_int(100000000), 'phi': BigNum1",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 61,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.storage_metrics = {'storage_bytes_stored': {}, 'storage_uptime_bucket': {},",
+      "file": "v13\\core\\TokenStateBundle.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 33,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.passed = False",
+      "file": "v13\\docs\\audit\\phase_a_module_audit.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 29,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "get_LN2._cached = BigNum128(693147180559945309)",
+      "file": "v13\\libs\\CertifiedMath.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 38,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "get_LN10._cached = BigNum128(2302585092994045684)",
+      "file": "v13\\libs\\CertifiedMath.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 47,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "get_PI._cached = BigNum128(3141592653589793238)",
+      "file": "v13\\libs\\CertifiedMath.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 22,
+      "col": 20,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.store = json.load(f)",
+      "file": "v13\\libs\\keystore\\manager.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 24,
+      "col": 16,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.store = {}",
+      "file": "v13\\libs\\keystore\\manager.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 26,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.store = {}",
+      "file": "v13\\libs\\keystore\\manager.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 35,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.hash = self._calculate_hash()",
+      "file": "v13\\policy\\artistic_policy.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 31,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.vector_hash = self.compute_hash()",
+      "file": "v13\\policy\\artistic_vector.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 31,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.hash = self._calculate_hash()",
+      "file": "v13\\policy\\humor_policy.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 23,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.passed += 1",
+      "file": "v13\\tests\\phase3_audit_suite.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 25,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.failed += 1",
+      "file": "v13\\tests\\phase3_audit_suite.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = CertifiedMath()",
+      "file": "v13\\tests\\test_aegis_advisory_exposure.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_aegis_advisory_exposure.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = CertifiedMath()",
+      "file": "v13\\tests\\test_aegis_advisory_gate.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 17,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.aegis_guard = AEGISGuard(self.cm)",
+      "file": "v13\\tests\\test_aegis_advisory_gate.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 14,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.router = AtlasAPIRouter()",
+      "file": "v13\\tests\\test_agi_observation_endpoint.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_agi_observation_endpoint.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 29,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = CertifiedMath()",
+      "file": "v13\\tests\\test_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 30,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = CertifiedMath()",
+      "file": "v13\\tests\\test_feed_aegis_advisory_exposure.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_feed_aegis_advisory_exposure.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_gateway_aegis_integration.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 13,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.router = AtlasAPIRouter()",
+      "file": "v13\\tests\\test_governance_dashboard.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 18,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_addon = HumorSignalAddon()",
+      "file": "v13\\tests\\test_humor_compliance.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 19,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rew",
+      "file": "v13\\tests\\test_humor_compliance.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 20,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.observatory = HumorSignalObservatory()",
+      "file": "v13\\tests\\test_humor_compliance.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 21,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.explainability = HumorExplainabilityHelper(self.humor_policy)",
+      "file": "v13\\tests\\test_humor_compliance.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 19,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.fixed_content = \"Why don't scientists trust atoms? Because they make up eve",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 20,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.fixed_context = {'views': 1000, 'laughs': 800, 'saves': 200, 'replays': 150",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 21,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_addon = HumorSignalAddon()",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 22,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rew",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 23,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.observatory = HumorSignalObservatory()",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 24,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.explainability = HumorExplainabilityHelper(self.humor_policy)",
+      "file": "v13\\tests\\test_humor_deterministic_replay.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 13,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.observatory = HumorSignalObservatory()",
+      "file": "v13\\tests\\test_humor_observatory.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 14,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_policy = HumorSignalPolicy(policy=HumorPolicy(enabled=True, mode='rew",
+      "file": "v13\\tests\\test_humor_policy.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_humor_signal_integration.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.humor_addon = HumorSignalAddon()",
+      "file": "v13\\tests\\test_humor_signal_integration.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 14,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.router = AtlasAPIRouter()",
+      "file": "v13\\tests\\test_observation_correlation.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.gateway = AtlasAPIGateway()",
+      "file": "v13\\tests\\test_observation_correlation.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 12,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.policy_engine = PolicyEngine()",
+      "file": "v13\\tests\\test_policy_engine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 18,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.query_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 23,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.get_metadata_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 34,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.get_content_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 15,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = CertifiedMath()",
+      "file": "v13\\tests\\test_storage_engine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.storage_engine = StorageEngine(self.cm)",
+      "file": "v13\\tests\\test_storage_engine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 14,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.cm = None",
+      "file": "v13\\tests\\test_token_state_bundle_storage.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 19,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.call_count += 1",
+      "file": "v13\\tests\\test_token_state_extension.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 20,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.last_user_id = user_id",
+      "file": "v13\\tests\\test_token_state_extension.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 36,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.total_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 37,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.passed_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 40,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.total_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 41,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.failed_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 45,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.total_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 46,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.overflow_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 49,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.total_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 50,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.underflow_cases += 1",
+      "file": "v13\\tests\\property\\test_bignum128_fuzz.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 18,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.simulator = CIR302IncidentSimulator()",
+      "file": "v13\\tests\\scripts\\test_cir302_simulation.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 16,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.test_dir = tempfile.mkdtemp()",
+      "file": "v13\\tests\\tools\\test_evidence_indexer.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 17,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.evidence_dir = os.path.join(self.test_dir, 'evidence')",
+      "file": "v13\\tests\\tools\\test_evidence_indexer.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 55,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.inside_function = True",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 56,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.function_depth += 1",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 58,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.function_depth -= 1",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 60,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.inside_function = False",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 29,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.exit_code = 302",
+      "file": "v13\\tools\\test_cir302_handler.py"
+    }
+  ]
+}

@@ -18,12 +18,12 @@ class TestCertifiedMathSmoke(unittest.TestCase):
         print("\n[Smoke] CertifiedMath imported successfully.")
 
         # 2. Verify Basic Ops
-        a = BigNum128(100)
-        b = BigNum128(200)
+        a = BigNum128.from_int(100)
+        b = BigNum128.from_int(200)
 
         # Test safe add
         res_add = CertifiedMath._safe_add(a, b, [], None, None)
-        self.assertEqual(res_add.value, 300)
+        self.assertEqual(res_add.value, 300 * BigNum128.SCALE)
         print("[Smoke] _safe_add verified.")
 
         # Test safe mul
