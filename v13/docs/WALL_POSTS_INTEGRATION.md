@@ -56,3 +56,17 @@ Wall Posts mirror the "User as Value" verification model used in Spaces.
 ## Integration
 
 Posts are linked to spaces via `space_id`. The system supports posting to both `ACTIVE` and `ENDED` spaces, creating a permanent record ("Wall") for the event.
+
+## Implementation Notes & Critical Constraints
+
+### BigNum128 & CertifiedMath Interaction
+
+During implementation Phase V, strict typing requirements were enforced in the math core:
+
+1. **`CertifiedMath` Ops**: All inputs to methods like `mul`, `imul`, `div` must be properly typed. `imul` specifically requires `(int, BigNum128)` order.
+2. **`BigNum128` Scaling**: `BigNum128.mul` now delegates raw integer multiplication to `CertifiedMath` without redundant division-by-scale, as `CertifiedMath` handles fixed-point adjustments. This prevents value collapse.
+
+### Testing Requirements
+
+- **Real Math Only**: Unit tests (`v13/tests/test_wall_posts.py`) must use real `CertifiedMath` instances, not mocks, to verify economic correctness.
+- **Deep Determinism**: Tests enforce that re-running a post creation with identical inputs results in a physically identical `EconomicEvent` object (same ID, same metadata, same amount).
