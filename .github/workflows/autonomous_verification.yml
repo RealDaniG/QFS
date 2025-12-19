@@ -1,0 +1,50 @@
+name: Autonomous Verification Loop
+
+on:
+    schedule:
+        - cron: "0 2 * * *" # Nightly at 2 AM UTC
+    push:
+        tags:
+            - "v*"
+    workflow_dispatch: # Manual trigger
+
+jobs:
+    autonomous-verification:
+        name: "Autonomous Verification"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run Autonomous Verification Agent
+              run: |
+                  python autonomous_verification.py
+
+            - name: Upload verification status
+              uses: actions/upload-artifact@v3
+              with:
+                  name: verification-status
+                  path: |
+                      LATEST_VERIFICATION_STATUS.md
+                      PIPELINE_STATUS.md
+                      AUDIT_RESULTS.json
+                      AUDIT_RESULTS_SUMMARY.md
+
+            - name: Commit verification status
+              if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add LATEST_VERIFICATION_STATUS.md
+                  git add ci_artifacts/
+                  git commit -m "chore: Update verification status [skip ci]" || echo "No changes"
+                  git push
