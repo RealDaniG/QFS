@@ -1,6 +1,6 @@
 # Release: v16 Evergreen Baseline
 
-> **Tag:** `v16-evergreen-baseline`  
+> **Tag:** `v16.0.0-evergreen-baseline`  
 > **Date:** December 19, 2025  
 > **Codename:** "Zero-Sim"
 

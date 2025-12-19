@@ -1,0 +1,557 @@
+{
+  "files_analyzed": 358,
+  "files_with_violations": 15,
+  "total_violations": 32,
+  "standard_violations": 32,
+  "mockqpc_violations": 0,
+  "critical_violations": 0,
+  "violations": {
+    "standard": [
+      {
+        "type": "FORBIDDEN_DIVISION",
+        "line": 18,
+        "col": 29,
+        "rule": {
+          "code": "FORBIDDEN_DIVISION",
+          "name": "Float Division",
+          "pattern": "a / b (where result is float)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_floor_or_certified",
+          "risk_level": "Medium",
+          "reason": "Floating-point precision varies; use // or CertifiedMath.idiv()"
+        },
+        "context": "self.root / 'ci_artifacts' / self.commit_sha",
+        "file": ".\\run_pipeline.py"
+      },
+      {
+        "type": "FORBIDDEN_DIVISION",
+        "line": 18,
+        "col": 29,
+        "rule": {
+          "code": "FORBIDDEN_DIVISION",
+          "name": "Float Division",
+          "pattern": "a / b (where result is float)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_floor_or_certified",
+          "risk_level": "Medium",
+          "reason": "Floating-point precision varies; use // or CertifiedMath.idiv()"
+        },
+        "context": "self.root / 'ci_artifacts'",
+        "file": ".\\run_pipeline.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 21,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Starting Stage 5 Integration Test...')",
+        "file": ".\\test_stage_5_integration.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 9,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Testing Wallet...')",
+        "file": ".\\test_wallet.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 25,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_1_emission_cap.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 26,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Testnet Scenario 1: Change Emission Cap')",
+        "file": ".\\scenarios\\scenario_1_emission_cap.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 27,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Goal: Increase VIRAL_POOL_CAP from 1B to 1.5B CHR')",
+        "file": ".\\scenarios\\scenario_1_emission_cap.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 28,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_1_emission_cap.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 31,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('\\n[INIT] Initializing governance components...')",
+        "file": ".\\scenarios\\scenario_1_emission_cap.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 25,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_2_stress_test.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 26,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Testnet Scenario 2: Multi-Proposal Stress Test')",
+        "file": ".\\scenarios\\scenario_2_stress_test.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 27,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Goal: Execute 50 sequential proposals')",
+        "file": ".\\scenarios\\scenario_2_stress_test.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 28,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_2_stress_test.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 31,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('\\n[INIT] Initializing governance components...')",
+        "file": ".\\scenarios\\scenario_2_stress_test.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 25,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_3_rollback.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 26,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Testnet Scenario 3: Emergency Rollback')",
+        "file": ".\\scenarios\\scenario_3_rollback.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 27,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Goal: Rollback to previous parameter snapshot')",
+        "file": ".\\scenarios\\scenario_3_rollback.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 28,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_3_rollback.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 31,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('\\n[INIT] Initializing governance components...')",
+        "file": ".\\scenarios\\scenario_3_rollback.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 25,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_4_reward_multiplier.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 26,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Testnet Scenario 4: Reward Multiplier Adjustment')",
+        "file": ".\\scenarios\\scenario_4_reward_multiplier.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 27,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Goal: Change VIRAL_REWARD_MULTIPLIER from 1.0 to 1.2')",
+        "file": ".\\scenarios\\scenario_4_reward_multiplier.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 28,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('=' * 80)",
+        "file": ".\\scenarios\\scenario_4_reward_multiplier.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 31,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('\\n[INIT] Initializing governance components...')",
+        "file": ".\\scenarios\\scenario_4_reward_multiplier.py"
+      },
+      {
+        "type": "MUTATION_GLOBAL",
+        "line": 49,
+        "col": 4,
+        "rule": {
+          "code": "MUTATION_GLOBAL",
+          "name": "Global State Mutation",
+          "pattern": "global x; x = ...",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "remove_global_state",
+          "risk_level": "High",
+          "reason": "Global state kills parallelism and determinism"
+        },
+        "context": "global _REGISTRY_CACHE",
+        "file": ".\\v13\\AEGIS\\governance\\model_registry.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 41,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.t",
+        "file": ".\\v13\\atlas\\platform\\src\\secure_chat\\storage\\ipfs_storage.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 41,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.t",
+        "file": ".\\v13\\atlas\\src\\secure_chat\\storage\\ipfs_storage.py"
+      },
+      {
+        "type": "FORBIDDEN_TIME",
+        "line": 25,
+        "col": 43,
+        "rule": {
+          "code": "FORBIDDEN_TIME",
+          "name": "Time Dependency",
+          "pattern": "time.time(), datetime.now(), etc.",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "inject_deterministic_clock",
+          "risk_level": "High",
+          "reason": "Non-deterministic; requires mock clock or state injection"
+        },
+        "context": "time.time()",
+        "file": ".\\v13\\ledger\\genesis_ledger.py"
+      },
+      {
+        "type": "MUTATION_GLOBAL",
+        "line": 31,
+        "col": 4,
+        "rule": {
+          "code": "MUTATION_GLOBAL",
+          "name": "Global State Mutation",
+          "pattern": "global x; x = ...",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "remove_global_state",
+          "risk_level": "High",
+          "reason": "Global state kills parallelism and determinism"
+        },
+        "context": "global _LN2_CACHE",
+        "file": ".\\v13\\libs\\CertifiedMath.py"
+      },
+      {
+        "type": "NONDETERMINISTIC_ITERATION",
+        "line": 37,
+        "col": 12,
+        "rule": {
+          "code": "NONDETERMINISTIC_ITERATION",
+          "name": "Non-deterministic Iteration",
+          "pattern": "for x in dict/set (unordered)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "wrap_with_sorted",
+          "risk_level": "Low",
+          "reason": "Dict/set iteration order non-deterministic; use sorted()"
+        },
+        "context": "for k in data.keys():\n    if not isinstance(k, (str, int)):\n        raise TypeEr",
+        "file": ".\\v13\\libs\\pqc\\CanonicalSerializer.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 50,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.processed_events_count += len(events)",
+        "file": ".\\v13\\policy\\value_node_replay.py"
+      },
+      {
+        "type": "FORBIDDEN_TIME",
+        "line": 39,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_TIME",
+          "name": "Time Dependency",
+          "pattern": "time.time(), datetime.now(), etc.",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "inject_deterministic_clock",
+          "risk_level": "High",
+          "reason": "Non-deterministic; requires mock clock or state injection"
+        },
+        "context": "time.time()",
+        "file": ".\\v13\\policy\\bounties\\bounty_events.py"
+      }
+    ],
+    "mockqpc": []
+  }
+}

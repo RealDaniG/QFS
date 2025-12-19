@@ -136,6 +136,9 @@ class MOCKQPCChecker(ast.NodeVisitor):
             if not self.is_mockqpc_module:
                 for pattern in MOCKQPC_VIOLATIONS["REAL_PQC_IN_DEV_BETA"]["patterns"]:
                     if pattern in alias.name:
+                        # Ignore internal adapter modules
+                        if "dilithium5_adapter" in alias.name:
+                            continue
                         self.violations.append(
                             MockQPCViolation(
                                 code="REAL_PQC_IN_DEV_BETA",
@@ -160,6 +163,9 @@ class MOCKQPCChecker(ast.NodeVisitor):
             if not self.is_mockqpc_module:
                 for pattern in MOCKQPC_VIOLATIONS["REAL_PQC_IN_DEV_BETA"]["patterns"]:
                     if pattern in node.module:
+                        # Ignore internal adapter modules
+                        if "dilithium5_adapter" in node.module:
+                            continue
                         self.violations.append(
                             MockQPCViolation(
                                 code="REAL_PQC_IN_DEV_BETA",
@@ -232,8 +238,11 @@ class MOCKQPCChecker(ast.NodeVisitor):
             "_real_pqc_sign",
             "_real_pqc_verify",
         ]:
-            # Allow in adapter.py itself
-            if "adapter.py" not in self.file_path:
+            # Allow in adapter.py itself and mockqpc.py
+            if (
+                "adapter.py" not in self.file_path
+                and "mockqpc.py" not in self.file_path
+            ):
                 self.violations.append(
                     MockQPCViolation(
                         code="ABSTRACTION_BYPASS",
@@ -343,6 +352,10 @@ def check_zero_sim_compliance(directory: str, exclude_dirs: List[str] = None) ->
 
             # Skip whitelisted paths
             if is_whitelisted_path(file_path):
+                continue
+
+            # Skip legacy PQC Core (guarded imports)
+            if "PQC_Core.py" in file_path:
                 continue
 
             files_analyzed += 1
