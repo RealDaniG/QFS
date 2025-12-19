@@ -52,4 +52,4 @@ This is a **baseline definition release**. It does not require a database migrat
 2. Run `pip install -r requirements.txt`.
 3. Ensure `ENV=dev` is set in their local environment.
 
-**Full Changelog**: [Compare v15.5...v16-baseline](https://github.com/RealDaniG/QFS/compare/v15.5...v16-baseline)
+**Full Changelog**: [Compare v15.5...v16.0.0-evergreen-baseline](https://github.com/RealDaniG/QFS/compare/v15.5...v16.0.0-evergreen-baseline)
