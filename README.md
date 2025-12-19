@@ -1,4 +1,4 @@
-# Quantum Financial System (QFS) V18.9 – Deterministic Session Management
+# Quantum Financial System (QFS) V14.0 – Deterministic Session Management
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
 
@@ -19,14 +19,15 @@
 
 ## 📊 Current Status
 
-### V18.9 "Deterministic Session Management" (RELEASED) ✅ LIVE
+### V14.0 "Deterministic Session Management" (RELEASED) ✅ LIVE
 
-This release introduces the complete deterministic session management system with challenge-response authentication, ledger-replayable state reconstruction, and Explain-This cryptographic proof integration.
+This release delivers the complete deterministic session management system with challenge-response authentication, ledger-replayable state reconstruction, and Explain-This cryptographic proof integration. It also marks the activation of the **Autonomous Validation Framework**.
 
 | Component | Status | Tests | Coverage |
 |-----------|--------|-------|----------|
 | Constitutional Guards | ✅ Deployed | 937 lines | 100% |
-| Zero-Mock Compliance | ✅ Verified | 0 violations | Production |
+| **Autonomous Validation**| ✅ Live | Phase 0/2 | 100% |
+| Zero-Sim Compliance | ✅ Verified | 0 violations | Production |
 | **PQC Provider** | ✅ Integrated | Mock/Real | 100% |
 | **Observability** | ✅ Verified | Trace Analysis | End-to-End |
 | Pipeline Compliance | ✅ Verified | 0 violations | Production |
@@ -36,8 +37,8 @@ This release introduces the complete deterministic session management system wit
 | **Trust Loop** | ✅ Verified | v13/scripts/L-001 | Passed |
 | **Session Management** | ✅ RELEASED | Deterministic | 100% |
 
-**Release Date:** 2025‑12‑17  
-**Constitutional Status:** Guards enforced at all economic and governance gates  
+**Release Date:** 2025‑12-19
+**Constitutional Status:** Guards enforced at all economic and governance gates
 **Performance Target:** 2,000 TPS with full guard stack under AEGIS‑verified nodes
 
 📈 [View Real-Time Dashboard](v13/docs/qfs-v13.8-dashboard.html) | 📋 [Full Compliance Report](QFS_V13_FULL_COMPLIANCE_AUDIT_REPORT.json)
@@ -65,7 +66,7 @@ pytest v13/tests/
 
 ## 🏗️ Architecture Overview
 
-QFS V18.9 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
+QFS V14.0 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
 
 ```
 
@@ -321,7 +322,7 @@ All verification evidence is in `v13/evidence/`:
 
 ## 🤝 Contributing
 
-### Current Focus: QFS v18.9 "Deterministic Session Management"
+### Current Focus: QFS v14.0 "Deterministic Session Management"
 
 We're moving from verified baseline → live production with:
 
@@ -363,7 +364,7 @@ We're moving from verified baseline → live production with:
 - ✅ **V13.6**: Constitutional guards deployed
 - ✅ **V13.8**: Zero-Sim Absolute / Pipeline Compliance (Phase 14)
 - ✅ **Session Management System**: Deterministic session layer with challenge-response authentication
-- ✅ **V18.9**: Full session management system release with Explain-This integration
+- ✅ **V14.0**: Full session management system release with Autonomous Validation Framework
 
 ### Current Phase
 
