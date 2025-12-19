@@ -82,7 +82,60 @@ Your PR **will be rejected** if it fails any of these checks:
 
 ---
 
-## ❓ Troubleshooting
+## \ud83d\udd2c Cost-Efficiency & MOCKQPC Requirements
+
+All contributions must follow **cost-efficiency principles** and **MOCKQPC-first architecture**:
+
+### MOCKQPC-First Development
+
+- **All dev/beta work uses MOCKQPC** (zero PQC cost)
+- **Environment tagging**: Events must include `env=dev|beta|mainnet`
+- **Crypto abstraction**: Use `sign_poe(hash, env)` and `verify_poe(hash, sig, env)`
+- **No real PQC** until mainnet activation
+
+### Batched PoE
+
+- **Hash-chain all events** (moderation, admin, agent outputs)
+- **Batch signatures**: 100-1,000 events per batch
+- **Cost target**: <0.01 PQC calls per decision
+
+### Agent Advisory
+
+- **Stateless services**: Horizontally scalable
+- **Sampling**: 10-20% of content (configurable)
+- **Advisory only**: Outputs feed deterministic `F`, never decide directly
+- **Cost target**: <0.2 agent calls per decision
+
+### EvidenceBus Integration
+
+All PoE-worthy events must use **EvidenceBus**:
+
+```python
+from v13.evidence_bus import EvidenceBus
+
+bus = EvidenceBus(env='dev')
+bus.emit_event({
+    'type': 'moderation_decision',
+    'content_id': 'POST_12345',
+    'action': 'remove',
+    'moderator_id': 'wallet:0xABC...',
+    'timestamp': '2025-12-19T15:00:00Z'
+})
+```
+
+### Cost-Efficiency Checklist
+
+Before submitting PR, verify:
+
+- [ ] MOCKQPC-first (dev/beta environments)
+- [ ] Batched PoE (hash-chained events, batch signatures)
+- [ ] Crypto abstraction (`sign_poe`/`verify_poe` with `env`)
+- [ ] Agent advisory (outputs feed `F`, never decide)
+- [ ] Deterministic core (pure functions + rules)
+
+See [DEV_GUIDE.md](./DEV_GUIDE.md) for setup instructions.
+
+---
 
 **Q: My regression hash doesn't match.**
 A: Ensure you haven't modified any core v14 logic variables. Bounties usually target v15 layers or infrastructure.

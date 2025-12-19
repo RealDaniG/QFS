@@ -1,0 +1,148 @@
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\find_bad_import.py
+  Line 4: target = "libs.economics"
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\numeric.py
+  Line 10: from ...libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\core\economic_views.py
+  Line 3: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\core\transaction_processor.py
+  Line 8: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\models\quantum.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\models\transaction.py
+  Line 14: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\models\wallet.py
+  Line 5: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\p2p\bandwidth_economics.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\p2p\connection_manager.py
+  Line 175: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\p2p\secure_message_v2.py
+  Line 1: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\signals\artistic.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\signals\base.py
+  Line 12: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\signals\humor.py
+  Line 10: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\signals\humor_v2.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\platform\src\signals\humor_zerosim.py
+  Line 2: from libs.economics.QAmount import QAmount
+  Line 11: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\numeric.py
+  Line 10: from ...libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\core\economic_views.py
+  Line 3: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\core\transaction_processor.py
+  Line 8: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\models\quantum.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\models\transaction.py
+  Line 14: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\models\wallet.py
+  Line 5: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\p2p\bandwidth_economics.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\p2p\connection_manager.py
+  Line 175: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\p2p\secure_message_v2.py
+  Line 1: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\signals\artistic.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\signals\base.py
+  Line 12: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\signals\humor.py
+  Line 10: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\signals\humor_v2.py
+  Line 2: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\signals\humor_zerosim.py
+  Line 2: from libs.economics.QAmount import QAmount
+  Line 11: from libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas_api\gateway.py
+  Line 16: from ..libs.economics.EconomicsGuard import EconomicsGuard
+  Line 29: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\guards\AEGISGuard.py
+  Line 15: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+  Line 20: from libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\economics\EconomicsGuard.py
+  Line 62: from v13.libs.economics.economic_constants import (
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\governance\InfrastructureGovernance.py
+  Line 16: from ...libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO
+  Line 22: from v13.libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO
+  Line 28: from v13.libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\governance\NODAllocator.py
+  Line 17: from ...libs.economics.economic_constants import (
+  Line 31: from v13.libs.economics.economic_constants import (
+  Line 45: from v13.libs.economics.economic_constants import (
+  Line 56: from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+  Line 67: from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\governance\NODInvariantChecker.py
+  Line 36: from v13.libs.economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\governance\RewardAllocator.py
+  Line 15: from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+  Line 16: from v13.libs.economics.economic_constants import (
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\governance\TreasuryEngine.py
+  Line 17: from v13.libs.economics.economic_constants import (
+  Line 20: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\integration\StateTransitionEngine.py
+  Line 15: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\policy\governance\GovernanceParameterRegistry.py
+  Line 15: from v13.libs.economics import economic_constants as consts
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\sdk\QFSV13SDK.py
+  Line 20: from ..libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+  Line 23: from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_certified_math_integration.py
+  Line 6: from v13.libs.economics.GenesisHarmonicState import GENESIS_STATE, validate_genesis_constraints
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_deterministic_components.py
+  Line 20: from v13.libs.economics.QAmount import QAmount
+  Line 238: from v13.libs.economics.QAmount import QAmount
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_economics_guard.py
+  Line 5: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_phase3_integration.py
+  Line 8: from v13.libs.economics.GenesisHarmonicState import GENESIS_STATE, boot_from_genesis
+  Line 9: from v13.libs.economics.PsiFieldEngine import DiscretePsiField
+  Line 10: from v13.libs.economics.HarmonicEconomics import HarmonicEconomics
+  Line 11: from v13.libs.economics.PsiSyncProtocol import PsiSyncProtocol
+  Line 12: from v13.libs.economics.TreasuryDistributionEngine import TreasuryDistributionEngine
+  Line 13: from v13.libs.economics.HoloRewardEngine import HoloRewardEngine
+  Line 14: from v13.libs.economics.SystemRecoveryProtocol import SystemRecoveryProtocol
+  Line 15: from v13.libs.economics.EconomicAdversarySuite import EconomicAdversarySuite
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_psi_dynamics.py
+  Line 8: from v13.libs.economics.PsiFieldEngine import DiscretePsiField, create_secure_psi_field
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\autonomous\debug_guards.py
+  Line 13: from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType
+  Line 14: from v13.libs.economics.economic_constants import (
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\autonomous\phase_0_scan.py
+  Line 81: "v13.libs.economics.EconomicsGuard",
+  Line 85: "v13.libs.economics.economic_constants",
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\autonomous\phase_2_guards.py
+  Line 20: from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType
+  Line 28: from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\autonomous\validate_guards.py
+  Line 15: from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\governance\test_infrastructure_governance_complete.py
+  Line 9: from v13.libs.economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\governance\test_tier1_guarantees.py
+  Line 11: from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\phase3\treasury\test_treasury_proportional_distribution.py
+  Line 9: from v13.libs.economics.TreasuryDistributionEngine import TreasuryDistributionEngine, create_treasury_distribution_engine
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\v13_6\BoundaryConditionTests.py
+  Line 22: from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+  Line 23: from v13.libs.economics.economic_constants import *
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\v13_6\FailureModeTests.py
+  Line 19: from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult, EconomicViolationType
+  Line 22: from v13.libs.economics.economic_constants import *
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\v13_6\PerformanceBenchmark.py
+  Line 21: from v13.libs.economics.EconomicsGuard import EconomicsGuard
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tools\audit\phase3_validator.py
+  Line 17: from ...src.libs.economics.GenesisHarmonicState import export_genesis_evidence
+  Line 18: from ...src.libs.economics.PsiFieldEngine import generate_psi_field_evidence
+  Line 19: from ...src.libs.economics.HarmonicEconomics import HarmonicEconomics
+  Line 25: from src.libs.economics.GenesisHarmonicState import export_genesis_evidence
+  Line 26: from src.libs.economics.PsiFieldEngine import generate_psi_field_evidence
+  Line 27: from src.libs.economics.HarmonicEconomics import HarmonicEconomics
+  Line 33: from src.libs.economics.GenesisHarmonicState import export_genesis_evidence
+  Line 34: from src.libs.economics.PsiFieldEngine import generate_psi_field_evidence
+  Line 35: from src.libs.economics.HarmonicEconomics import HarmonicEconomics
+FOUND in: d:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v15\atlas\governance\GovernanceParameterRegistry.py
+  Line 15: from v13.libs.economics import economic_constants as consts

@@ -140,6 +140,25 @@ async def get_current_active_user(
     return current_user
 
 
+from v15.atlas.auth.session_manager import SessionManager
+
+_session_manager = SessionManager()
+
+
+async def get_current_session(token: str = Depends(oauth2_scheme)) -> dict:
+    """
+    Validates the session token and returns session data.
+    """
+    session = _session_manager.validate_session(token)
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired session",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return session
+
+
 def get_qfs_client_dependency() -> Generator[QFSClient, None, None]:
     """
     Dependency function for QFSClient.

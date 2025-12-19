@@ -1,5 +1,5 @@
 """
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 ArtisticSignalAddon Implementation for QFS V13.8 - Zero-Simulation Compliant
 
 This module implements the 5-dimensional Artistic Evaluation Signal (AES) addon that 

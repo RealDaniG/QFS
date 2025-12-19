@@ -2,7 +2,7 @@
 
 Welcome to the **QFS × ATLAS Developer Bounty Program**! Help us build the future of quantum-resistant autonomous finance.
 
-> **Total Available Rewards**: 1400 CHR
+> **Total Available Rewards**: 3400 CHR
 > **Status**: ACTIVE 🟢
 
 ---
@@ -11,6 +11,9 @@ Welcome to the **QFS × ATLAS Developer Bounty Program**! Help us build the futu
 
 | ID | Title | Reward | Difficulty | Status |
 |----|-------|--------|------------|--------|
+| **BNT-MOCKQPC-01** | **MOCKQPC Verification Infrastructure**<br>Implement comprehensive MOCKQPC verification tools for batched PoE signatures. | **800 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
+| **BNT-GITHUB-01** | **Wallet ↔ GitHub Dual-Proof Linking**<br>Implement `/auth/bind-github` endpoint with immutable link records. | **600 CHR** | Hard  🌶️🌶️🌶️ | **OPEN** |
+| **BNT-COST-01** | **Cost-Efficiency Audit Tool**<br>Build CLI tool to track PQC calls, agent sampling rates, and infrastructure costs per decision. | **400 CHR** | Medium 🌶️🌶️ | **OPEN** |
 | **BNT-20251218-01** | **Implementation of Living Posts Subtasks (Phase 1)**<br>Implement core structures for `LivingPost` and `InteractionEvent`. | **500 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
 | **BNT-20251218-02** | **CI/CD Pipeline Enhancement**<br>Add Type Safety check job (`mypy`) and Regression Hash verification step to GitHub Actions. | **300 CHR** | Medium 🌶️🌶️ | **OPEN** |
 | **BNT-20251218-03** | **Expand Unit Test Coverage**<br>Add tests for `v13/policy` ensuring >90% coverage for Governance logic. | **250 CHR** | Medium 🌶️🌶️ | **OPEN** |

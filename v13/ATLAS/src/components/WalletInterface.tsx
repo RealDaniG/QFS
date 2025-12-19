@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTreasury } from '@/hooks/useTreasury';
 import { useAuth } from '@/hooks/useAuth';
+import { WalletConnectButton } from '@/components/WalletConnectButton';
 
 import { ExplainThisPanel } from '@/components/ExplainThisPanel';
 import { useExplain } from '@/hooks/useExplain';
@@ -36,7 +37,10 @@ export default function WalletInterface() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Token Balances</CardTitle>
-                            <CardDescription>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</CardDescription>
+                            <div className="flex justify-between items-center">
+                                <CardDescription>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</CardDescription>
+                                <WalletConnectButton />
+                            </div>
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-2 gap-4">

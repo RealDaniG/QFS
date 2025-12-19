@@ -1,8 +1,8 @@
-# Zero-Simulation QFS × ATLAS Contract (v1.3)
+# Zero-Simulation QFS × ATLAS Contract (v1.4)
 
 > **Authority:** This document supersedes all local slice-level configuration.  
-> **Enforcement:** Verified by `run_zero_sim_suite.py` and strictly enforced by CI.  
-> **Effective:** 2025-12-14
+> **Enforcement:** Verified by `run_zero_sim_suite.py` and `scripts/check_zero_sim.py`, strictly enforced by CI.  
+> **Effective:** 2025-12-19
 
 ***
 
@@ -62,6 +62,21 @@ Every component in the critical path (Logic → Economics → Explanation) must 
   - Deterministic registries (PolicyRegistry, SignalRegistry).
   - Explicit dependency injection.
 
+### 2.6 Environment-Specific Forbidden Patterns (NEW - Critical)
+
+**In development and beta environments (`ENV=dev` or `ENV=beta`), the following are STRICTLY FORBIDDEN:**
+
+- **Real PQC Operations:** No calls to `liboqs`, `pqcrystals`, or any actual post-quantum cryptographic libraries.
+- **Hardware Security Modules:** No HSM requests, TPM operations, or secure enclave access.
+- **Non-Deterministic Cryptography:** No system-provided randomness in cryptographic operations (`os.urandom()`, `/dev/urandom`, `CryptGenRandom`).
+- **Network-Dependent Crypto:** No key servers, certificate authorities, or external entropy sources.
+
+**Required Mitigation:**
+
+- All PQC operations in dev/beta MUST use MOCKQPC (see Section 4.4).
+- CI MUST enforce `CI=true` and verify no real PQC imports in dev/beta code paths.
+- The crypto abstraction layer MUST check `ENV` and raise an error if real PQC is attempted in dev/beta.
+
 ***
 
 ## 3. AEGIS Integration (NEW - Critical)
@@ -116,6 +131,60 @@ All economic events and explanations must be cryptographically verifiable.
 - **SHA-3-256:** Every explanation object must include a SHA-3-256 hash computed over canonical JSON (sorted keys, no whitespace).
 - **Tamper Detection:** Clients can recompute the hash to detect tampering.
 - **Audit Trail:** Explanation hashes must be logged to QFS ledger as `ExplanationAuditEvent`.
+
+### 4.4 MOCKQPC: Deterministic PQC Simulation (NEW - Critical)
+
+**MOCKQPC is the REQUIRED and ONLY permitted cryptographic simulation for development and beta environments.**
+
+#### Requirements
+
+1. **Pure Function Contract:**
+   - `mock_sign_poe(hash: bytes, env: str) -> bytes` MUST be a pure, deterministic function.
+   - Given identical inputs `(hash, env)`, it MUST return identical signatures.
+   - No dependencies on: time, randomness, network, filesystem, or process state.
+
+2. **Allowed Implementation:**
+   - Deterministic key derivation: `private_key = HKDF(master_seed, context=env)`
+   - Deterministic "signature": `signature = SHA3-512(private_key || hash || "MOCK_PQC_SIG")`
+   - Fixed-size output (e.g., 64 bytes) to simulate Dilithium signatures.
+
+3. **Forbidden in MOCKQPC:**
+   - `random.*`, `uuid.*`, `os.urandom()`, `secrets.*`
+   - `time.*`, `datetime.*` (except for logging metadata)
+   - Network I/O, filesystem reads (except immutable config at startup)
+   - Real PQC libraries (`liboqs`, `pqcrystals`, `dilithium-py`)
+
+4. **Verification Requirements:**
+   - `mock_verify_poe(hash: bytes, signature: bytes, env: str) -> bool` MUST verify by recomputing the signature.
+   - Verification MUST be deterministic and reproducible across all platforms (Windows, macOS, Linux).
+
+5. **Environment Enforcement:**
+   - MOCKQPC MUST be used when `ENV=dev` or `ENV=beta` or `MOCKQPC_ENABLED=true`.
+   - Real PQC MUST ONLY be used when `ENV=mainnet` AND `MOCKQPC_ENABLED=false`.
+   - CI environments (`CI=true`) MUST set `MOCKQPC_ENABLED=true` and block real PQC.
+
+6. **Cost Guarantee:**
+   - MOCKQPC operations MUST have ZERO external cost (no API calls, no paid services).
+   - MOCKQPC MUST execute in < 1ms for sign/verify operations.
+
+7. **Testing Mandate:**
+   - Every test suite MUST run with MOCKQPC enabled.
+   - Replay tests MUST verify that MOCKQPC signatures are deterministic (same input → same output, 100% of the time).
+   - CI MUST include a determinism test: run same operation 10 times, assert all signatures identical.
+
+#### MOCKQPC Is Not a Security Compromise
+
+MOCKQPC is a **simulation** for development and beta, not a production cryptographic primitive. Its purpose is:
+
+- **Cost Elimination:** Zero PQC API costs during development and beta testing.
+- **Determinism:** Enable perfect replay and regression testing.
+- **Rapid Iteration:** No dependency on external cryptographic services or expensive hardware.
+
+**Security is enforced by:**
+
+- Environment separation: `dev/beta` uses MOCKQPC; `mainnet` uses real PQC (Dilithium).
+- CI guards: Block any real PQC imports in dev/beta code paths.
+- Activation barrier: Mainnet activation requires explicit governance approval + infrastructure migration.
 
 ***
 

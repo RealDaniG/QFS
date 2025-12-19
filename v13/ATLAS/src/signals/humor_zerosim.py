@@ -1,5 +1,5 @@
 """
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 Refactored HumorSignalAddon Implementation for QFS V13.7 - Zero-Simulation Compliant
 
 This module implements the 7-dimensional comedic signal addon that conforms to
@@ -8,7 +8,7 @@ QFS V13.7 SignalAddon contract and Zero-Sim invariants.
 
 from typing import Dict, Any
 from .base import SignalAddon, SignalResult
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 import hashlib
 import json
 import re

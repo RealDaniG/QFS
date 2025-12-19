@@ -1,5 +1,5 @@
 from fractions import Fraction
-from libs.economics.QAmount import QAmount
+from v13.libs.economics.QAmount import QAmount
 from typing import Dict, Any
 
 class P2PBandwidthEconomics:

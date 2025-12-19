@@ -172,7 +172,7 @@ class ConnectionManager:
         # For this MVP, we will send plaintext+signature wrapped in SecureMessageV2 structure (mocking encryption).
         mock_nonce = b"00000000"
         # We need a proper timestamp QAmount
-        from libs.economics.QAmount import QAmount
+        from v13.libs.economics.QAmount import QAmount
 
         msg = SecureMessageV2(
             ciphertext=payload,  # Mock: sending plaintext as ciphertext

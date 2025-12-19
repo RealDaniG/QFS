@@ -7,12 +7,104 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned (v15 Protocol Layer)
+### Ongoing Development
 
-- Living Posts Layer (HSMF-validated engagement rewards)
-- Developer Rewards Layer (bounties + ATR boosts)
-- Governance automation (GovernanceStateMachine)
-- Zero-Sim Contract v1.5
+The system continues to evolve with the following enhancement areas:
+
+- Admin/Moderator Panel optimization
+- Agent layer refinement (stateless services, sampling strategies)
+- Additional cross-platform deployment tooling
+- Performance optimization for high-volume scenarios
+
+## Current Baseline Capabilities
+
+### Added
+
+- **Cost-Efficient Architecture Documentation**:
+  - `COST_EFFICIENT_ARCHITECTURE.md` - Complete cost optimization guide
+  - `MASTER_PROMPT_v15.5.md` - Unified authoritative reference
+  - `BETA_DEPLOYMENT_PLAN.md` - $0-50/month deployment strategy
+- **Admin/Moderator Panel Specification**:
+  - Deterministic decision engine `F(content, scores, rules, role)`
+  - Hash-chained decision log with MOCKQPC signatures
+  - RBAC scopes: `mod:read`, `mod:act`, `admin:override`, `audit:*`
+  - Rule versioning and governance-controlled updates
+- **MOCKQPC Integration**:
+  - Crypto abstraction layer: `sign_poe(hash, env)`, `verify_poe(hash, sig, env)`
+  - Environment-tagged events (`env=dev|beta|mainnet`)
+  - Batched PoE signing (100-1,000 events per batch)
+- **Implementation Planning**:
+  - Phase 1: Backend Foundations (rule schema, decision models, hash-chained log)
+  - Phase 2: Panel APIs (queue, decision, audit endpoints)
+  - Phase 3: Frontend Panel (scope-driven UI, PoE indicators)
+- **Documentation Suite**:
+  - `implementation_plan_v15.5.md` - Detailed tasks with MOCKQPC integration
+  - `STATE_OF_THE_UNION_v15.5.md` - Architectural decisions
+  - `task_v15.5.md` - Subtasks and acceptance criteria
+  - `walkthrough_v15.5_admin_panel.md` - Architecture deep dive
+  - `QUICK_REFERENCE_v15.5.md` - Developer quick guide
+
+### Changed
+
+- **PoE Architecture**: Defaults to MOCKQPC in dev/beta, batched signatures in all environments
+- **Agent Layer**: Strictly advisory, feeds deterministic function `F`, never decides directly
+- **Cost Model**: All new features must pass cost-efficiency checklist (MOCKQPC-first, batched PoE, agent sampling)
+- **Development Workflow**: MOCKQPC mandatory for all v15.5 work, mainnet activation gated on governance approval
+
+## [v15.4.0] - 2025-12-19
+
+### Added
+
+- **Wallet Authentication (Phases 1-2)** - Complete end-to-end wallet auth:
+  - `NonceManager` - Ephemeral challenge generation (TTL, single-use)
+  - `WalletAuth` - EIP-191 signature verification (EVM/`eth_account`)
+  - `SessionManager` - Token-based session state (scopes, expiry)
+  - Frontend `useWalletAuth` hook and `WalletConnectButton` component
+- **Protected Bounty Features (Phase 3)** - Frontend integration complete:
+  - `BountyList` component - Browse and claim bounties with scope enforcement
+  - `MyBounties` component - View claimed bounties by connected wallet
+  - `BountyDashboard` component - Unified dashboard with tab navigation
+  - Auth middleware for bounty routes (`bounty:read`, `bounty:claim` scopes)
+  - Integration tests for end-to-end protected routes flow
+- **Import Resolution**:
+  - Fixed `v13.libs.economics` package initialization
+  - Resolved circular import issues in bounty system
+
+### Changed
+
+- **Session Management**: Wallet-based sessions with scope enforcement
+- **API Security**: All bounty endpoints protected with wallet authentication
+- **Frontend UX**: Scope-driven UI (hide unavailable actions)
+
+### Documentation
+
+- `PHASE_3_BROWSER_VERIFICATION.md` - Comprehensive browser testing checklist
+- Updated README with v15.4 Phase 3 completion status
+- Task tracking updated for v15.4/v15.5 roadmap
+
+## [v15.3.0] - 2025-12-18
+
+### Added
+
+- **Governance + PoE Fully Wired**:
+  - End-to-end flow: create proposal → vote → finalize → execute → PoE → verify
+  - Hash-chained governance index for deterministic replay
+  - CLI tools: `verify_poe.py`, `replay_gov_cycle.py`, `governance_index_manager.py`
+- **PoE Schema v1.0**:
+  - Standardized PoE artifact format with PQC signatures
+  - Governance event anchoring and verification
+- **Validation Scripts**:
+  - `validate_end_to_end_cycle.py` - Full governance cycle verification
+  - Automated detection of BigNum128 overflows, VoteTally errors, PoE gaps
+
+### Fixed
+
+- BigNum128 overflow in viral pool calculations
+- VoteTally type errors (`total()` method vs property)
+- PoE setup issues in governance execution
+- Deterministic replay verification
+
+### Planned (v15 Protocol Layer)
 
 ## [v14.0-social-layer] - 2025-12-18
 
