@@ -35,6 +35,16 @@ This implementation satisfies `ZERO_SIM_QFS_ATLAS_CONTRACT.md` v1.4:
 * **CI Gate:** The build **fails** if any non-deterministic pattern (random, UUID, time) is detected in the crypto path.
 * **Fallbacks:** None. The system fails safe (halts) if crypto invariants are violated.
 
+## 🛡️ Core Invariant Checklist (Required)
+
+**You must check at least one capability area and confirm invariants:**
+
+* [ ] **Capability Area**: (Choose: Governance | Wallet/Auth | Agents | Bounties | UI | Infra)
+* [ ] **MOCKQPC**: I confirm no real PQC imports or leaks in `dev/beta`.
+* [ ] **EvidenceBus**: All significant state changes emit `evidence_bus` events.
+* [ ] **Determinism**: I have avoided strict time/random dependency in logic (or used adapters).
+* [ ] **Cost**: This change does not introduce un-authorized PQC or Agent polling loops.
+
 ## 🔍 Verification Checklist
 
 * [x] `ENV=dev` forces MOCKQPC.

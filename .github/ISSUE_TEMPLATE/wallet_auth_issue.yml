@@ -1,0 +1,30 @@
+name: Wallet & Auth Issue
+description: Issues related to Wallet Connect, Session Management, or Scopes
+title: "[AUTH] "
+labels: ["wallet-auth", "security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues related to EIP-191 signing, session tokens, or scope enforcement.
+  - type: input
+    id: wallet_client
+    attributes:
+      label: Wallet Client
+      description: e.g., MetaMask, Rabby, Phantom
+      placeholder: MetaMask v10.x
+    validations:
+      required: true
+  - type: textarea
+    id: issue_details
+    attributes:
+      label: Issue Details
+      description: Describe the authentication failure or scope error.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console Logs
+      description: "Paste relevant browser console logs (redacted)."
+      render: shell

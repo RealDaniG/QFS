@@ -52,4 +52,4 @@ When submitting a Pull Request for a bounty, please copy the template below into
 3. **Tests Required**: No code without tests.
 4. **Zero Regression**: Your changes MUST NOT break existing v14 regression tests.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full setup instructions.
+See [The Contributor Journey in CONTRIBUTING.md](CONTRIBUTING.md#️-the-contributor-journey) for full setup instructions.

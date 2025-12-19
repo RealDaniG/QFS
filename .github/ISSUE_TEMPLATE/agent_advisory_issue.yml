@@ -1,0 +1,35 @@
+name: Agent Advisory Layer Issue
+description: Issues relating to agent signals, scoring, or integration adoption
+title: "[AGENT] "
+labels: ["agent-advisory", "evidence-bus"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please refer to the [Agent Integration & Evolution Plan](docs/AGENT_INTEGRATION_EVOLUTION.md).
+        Agents are advisory-only and must emit events to EvidenceBus.
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework / Tool
+      options:
+        - SuperAGI
+        - LangGraph
+        - Custom / Other
+        - Legacy (Open-AGI)
+    validations:
+      required: true
+  - type: textarea
+    id: signal_issue
+    attributes:
+      label: Signal / Event Issue
+      description: Describe how the agent signal is malformed, missing, or misinterpreted by `F`.
+    validations:
+      required: true
+  - type: textarea
+    id: determinism
+    attributes:
+      label: Determinism Check
+      description: Did the agent output cause a non-deterministic state change? (This is a critical failure)
+    validations:
+      required: true

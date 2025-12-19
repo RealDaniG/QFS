@@ -100,6 +100,16 @@ QFS × ATLAS is not just another platform; it is a **digital trust layer** for g
 
 ***
 
+## 🛡️ Core Invariant Checklist (Required)
+
+**You must check at least one capability area and confirm invariants:**
+
+- [ ] **Capability Area**: (Choose: Governance | Wallet/Auth | Agents | Bounties | UI | Infra)
+- [ ] **MOCKQPC**: I confirm no real PQC imports or leaks in `dev/beta`.
+- [ ] **EvidenceBus**: All significant state changes emit `evidence_bus` events.
+- [ ] **Determinism**: I have avoided strict time/random dependency in logic (or used adapters).
+- [ ] **Cost**: This change does not introduce un-authorized PQC or Agent polling loops.
+
 ## Checklist
 
 - [x] Narrative updated to reflect v16 baseline and cost‑efficient architecture.  

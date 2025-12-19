@@ -1,0 +1,61 @@
+name: Bug Report
+description: Create a report to help us improve QFS x ATLAS
+title: "[BUG] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        Please verify if this issue exists in the `dev` environment with MOCKQPC enabled.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Browser, QFS Version (e.g. Windows 11, Chrome, v15.5)
+      placeholder: Windows 11, Chrome, v15.5
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      options:
+        - Governance & PoE
+        - Wallet Auth & Sessions
+        - Agent Advisory Layer
+        - Bounty System
+        - Admin/Mod Panel
+        - CI/CD Infastructure
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to verify the bug (bonus if MOCKQPC determinism test provided).
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: input
+    id: poe_hash
+    attributes:
+      label: Relevant PoE Hash (Optional)
+      description: If this relates to a ledger event, provide the hash.

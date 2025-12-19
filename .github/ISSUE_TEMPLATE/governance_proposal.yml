@@ -1,0 +1,44 @@
+name: Governance Proposal
+description: Propose a change to QFS parameters, rules, or upgrades
+title: "[GOV] "
+labels: ["governance", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest in QFS Governance!
+        Please verify that this proposal aligns with the [Governance Spec](docs/V15_GOVERNANCE_SPEC.md).
+  - type: input
+    id: proposal_title
+    attributes:
+      label: Proposal Title
+      description: Short, descriptive title
+      placeholder: e.g., Adjust Treasury Distribution for Dev Rewards
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Brief explanation of the proposal
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this change necessary?
+    validations:
+      required: true
+  - type: textarea
+    id: technical_impact
+    attributes:
+      label: Technical Impact
+      description: Does this affect MOCKQPC, Determinism, or EvidenceBus logic?
+    validations:
+      required: true
+  - type: input
+    id: wallet_id
+    attributes:
+      label: Proposer Wallet ID (Optional)
+      description: For on-chain attribution (if applicable)

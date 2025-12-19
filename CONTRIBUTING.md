@@ -18,6 +18,16 @@ We incentivize contributions through our **Developer Rewards Treasury**. All act
 6. **Submit PR**: Open a Pull Request referencing the Bounty ID in the description using the [template provided in BOUNTIES.md](BOUNTIES.md#%F0%9F%93%9D-bounty-template).
 7. **Review & Reward**: Once merged, the reward (CHR/FLX) will be processed to your wallet.
 
+### 🗺️ The Contributor Journey
+
+We track every contribution on-chain via EvidenceBus. Here is the lifecycle of a rewarded contribution:
+
+1. **Wallet & Scopes**: Connect your wallet to ATLAS to generate a deterministic UserID and obtain `bounty:read` scope.
+2. **Contribution**: Pick an issue, claim it, and submit a PR linking your GitHub account (via dual-proof in Phase V+).
+3. **Evidence**: The system emits a `bounty_event` and `github_link_event` to the EvidenceBus, hash-chaining your work.
+4. **Reward**: Upon merge, the specific Token Reward (CHR/FLX) is allocated to your wallet via the Treasury.
+5. **Explainability**: Use the "Explain-This" tool to see exactly *why* you earned that amount, tracing back to the original rule.
+
 ---
 
 ## 🛠️ Development Setup
@@ -71,13 +81,20 @@ We enforce strict quality standards to maintain **Zero-Simulation Compliance**.
 
 ---
 
+## 🛡️ Role: Maintainer?
+
+See the [Maintainer's Guide](docs/MAINTAINERS_GUIDE.md) for triage, labeling, and release procedures.
+
+---
+
 ## ✅ Pull Request Requirements
 
 Your PR **will be rejected** if it fails any of these checks:
 
 1. **Tests Passing**: `pytest v13/tests/` must be 100% green.
 2. **Regression Verified**: `python v13/tests/regression/phase_v14_social_full.py` must complete successfully.
-3. **Type Safety**: No new `mypy` errors introduced.
+3. **Core Invariants**: PR description must include the [Core Invariant Checklist](docs/PR_TEMPLATE_v15.5.md).
+4. **Type Safety**: No new `mypy` errors introduced.
 4. **Deterministic**: No non-deterministic code (e.g., `random.random()`, `time.time()` outside of controlled contexts).
 
 ---
@@ -134,6 +151,7 @@ Before submitting PR, verify:
 - [ ] Deterministic core (pure functions + rules)
 
 See [DEV_GUIDE.md](./DEV_GUIDE.md) for setup instructions.
+See [FAQ - MOCKQPC & Agents](docs/FAQ_MOCKQPC_AND_AGENTS.md) for background.
 
 ---
 

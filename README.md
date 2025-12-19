@@ -145,44 +145,37 @@ The system provides end-to-end wallet authentication with scope-based access con
 
 * External crypto for optional on/off-ramps and settlement
 * **No governance or economics execute on public chains**
+* External crypto for optional on/off-ramps and settlement
+* **No governance or economics execute on public chains**
 
 #### Internal vs External Tokens
 
 * **Internal tokens** (NOD, CHR, ATR, etc.) are for governance, reputation, and coordination—**not financial instruments**
 * External tokens remain signals, not governance levers
 
+### EvidenceBus & Cost Profile
+
+**EvidenceBus** is the central event spine: all governance, moderation, bounty, wallet auth, and agent advisory events are emitted, hash-chained, and batched for PoE. Mainnet PQC anchors sign batches, not individual actions, yielding 10–100× crypto cost savings while preserving full replayability.
+
+| Feature | Dev/Beta/CI | Mainnet | Cost Impact |
+| :--- | :--- | :--- | :--- |
+| **Crypto** | MOCKQPC ($0) | Batched PQC Anchors | ~99% savings vs per-tx PQC |
+| **Agents** | Simulated / Local | Advisory-Only (Sampled) | Cost capped by sampling rate |
+| **Infra** | Single Node | Single Node (Monolithic) | < $50/mo baseline |
+
+> **Deep Dive:** [Cost-Efficient Architecture](./docs/COST_EFFICIENT_ARCHITECTURE.md)
+
 ### Agent Layer Evolution
 
-#### Conceptual Position
+The advisory/agent layer is **lean, open-source, and evidence-first**. Agents are **advisory-only** and never hold authority.
 
-The advisory/agent layer transitions from AEGIS to a **lean, open-source, evidence-first stack**.
-
-#### Current State
-
-* AEGIS is used for zero-trust node verification and multimodal tasks, but has low adoption and limited real-world proof
-
-#### Target Frameworks
-
-* **SuperAGI**: Primary candidate; OSS, multi-agent, multi-modal, active ecosystem
-* **LangGraph (LangChain)**: Backup; strong orchestration, checkpointing, and complex workflow management
+> **Canonical Doctrine:** [Timeless Agent Integration & Evolution Plan](./docs/AGENT_INTEGRATION_EVOLUTION.md)
 
 #### Architecture Principle: Agent Layer as Oracle
 
-* Agents produce proposed scores/moderation outcomes
-* **Adapter Layer** ensures outputs are deterministic, schema-validated, and hashed
-* **QFS core retains** BigNum128 math, PoE, governance, and PQC; **agents never have authority**
-
-#### Lean Migration Plan
-
-1. **Start Small**: Run SuperAGI locally or on inexpensive VM against historical telemetry/moderation samples
-2. **Compare Side-by-Side**: Benchmark AEGIS vs agent stack for speed, consistency, and quality
-3. **Swap Incrementally**: Begin with low-risk flows (moderation scoring) while logging and verifying outputs
-4. **Phase Out AEGIS**: Retire once PoE-backed logs confirm stability, retaining any unique PQC components if needed
-
-#### Strategic Flexibility
-
-* The plan remains flexible: other OSS frameworks may be evaluated as agent stacks evolve
-* Migration is **evidence-first and cost-conscious**: spend only once metrics and PoE logs prove value
+* Agents produce proposed scores/moderation outcomes via `agent_advisory` events.
+* **Adapter Layer** ensures outputs are deterministic, schema-validated, and hashed.
+* **QFS core retains** BigNum128 math, PoE, governance, and PQC; **agents never have authority**.
 
 ### Governance & PoE Fusion
 
@@ -346,6 +339,8 @@ npm run dev
 
 * [Developer Guide](./DEV_GUIDE.md) - Cross-platform setup and deployment
 * [Contributing Guidelines](./docs/CONTRIBUTING.md) - How to contribute
+* [Maintainers Guide](./docs/MAINTAINERS_GUIDE.md) - Triage and release procedures
+* [FAQ - MOCKQPC & Agents](./docs/FAQ_MOCKQPC_AND_AGENTS.md) - Common questions
 * [Bounties](./BOUNTIES.md) - Developer rewards and incentives
 * [Security Notes](./docs/SECURITY_NOTES.md) - Trust assumptions and limitations
 
