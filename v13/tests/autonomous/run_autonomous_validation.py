@@ -6,8 +6,8 @@ Orchestrates all validation phases with self-healing and comprehensive logging.
 """
 
 import sys
+import subprocess
 from pathlib import Path
-from datetime import datetime
 import json
 import os
 
@@ -27,13 +27,27 @@ class AutonomousValidator:
 
     def __init__(self, root_dir: Path):
         self.root_dir = root_dir
+        self.git_hash = self._get_git_hash()
         self.results = {
-            "start_time": datetime.now().isoformat(),
+            "git_hash": self.git_hash,
             "phases": {},
             "overall_status": "PENDING",
         }
         self.logs_dir = root_dir / "logs" / "autonomous"
         self.logs_dir.mkdir(parents=True, exist_ok=True)
+
+    def _get_git_hash(self) -> str:
+        """Get current git commit hash for deterministic timestamp"""
+        try:
+            result = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True,
+                text=True,
+                cwd=self.root_dir,
+            )
+            return result.stdout.strip() if result.returncode == 0 else "NO_GIT"
+        except Exception:
+            return "NO_GIT"
 
     def run_phase_0(self) -> bool:
         """Run Phase 0: Environment Scan"""
@@ -47,7 +61,7 @@ class AutonomousValidator:
         self.results["phases"]["phase_0"] = {
             "name": "Environment Scan",
             "status": "PASS" if success else "FAIL",
-            "timestamp": datetime.now().isoformat(),
+            "git_hash": self.git_hash,
         }
 
         return success
@@ -64,23 +78,21 @@ class AutonomousValidator:
         self.results["phases"]["phase_2"] = {
             "name": "Guard Validation",
             "status": "PASS" if success else "FAIL",
-            "timestamp": datetime.now().isoformat(),
+            "git_hash": self.git_hash,
         }
 
         return success
 
     def save_results(self):
         """Save validation results to JSON"""
-        self.results["end_time"] = datetime.now().isoformat()
-
         # Determine overall status
         all_passed = all(
             phase["status"] == "PASS" for phase in self.results["phases"].values()
         )
         self.results["overall_status"] = "PASS" if all_passed else "FAIL"
 
-        # Save to file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Save to file with git hash as filename
+        timestamp = self.git_hash[:12] if self.git_hash != "NO_GIT" else "no_git_000000"
         results_file = self.logs_dir / f"validation_results_{timestamp}.json"
         results_file.write_text(json.dumps(self.results, indent=2))
 
@@ -105,7 +117,7 @@ class AutonomousValidator:
         """Execute all validation phases"""
         print("\n" + "█" * 80)
         print("AUTONOMOUS CONSTITUTIONAL GOVERNANCE VALIDATION")
-        print("Starting at:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        print(f"Git Hash: {self.git_hash}")
         print("█" * 80)
 
         # Phase 0: Environment Scan
