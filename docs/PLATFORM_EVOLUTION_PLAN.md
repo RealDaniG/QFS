@@ -1,14 +1,14 @@
 # QFS × ATLAS — Platform Evolution Plan
 
 > **Status:** Authoritative Strategic Roadmap  
-> **Foundation:** Evergreen v15.5 Baseline (MOCKQPC-First, EvidenceBus-Centric, Deterministic)  
+> **Foundation:** Evergreen v16 Baseline (Deterministic, Cost-Efficient, MOCKQPC-First)  
 > **Agent Strategy:** CrewAI/LangGraph (replacing OpenAGI)
 
 ---
 
 ## Overview
 
-This plan outlines the complete platform evolution built on the evergreen v15.5 capability baseline. The platform is MOCKQPC-first, EvidenceBus-centric, with deterministic governance and moderation at its core.
+This plan outlines the complete platform evolution built on the evergreen v16 capability baseline. The platform is MOCKQPC-first, EvidenceBus-centric, with deterministic governance and moderation at its core.
 
 ### Core Principles
 
@@ -404,84 +404,4 @@ This plan outlines the complete platform evolution built on the evergreen v15.5 
 
 ### Phase 6: Observability & Tooling (Week 6-7)
 
-18. ⏳ **Cost/observability dashboards** implementation
-19. ⏳ **CLI tooling** finalization (verify_poe, cost_metrics, replay_*)
-20. ⏳ **Documentation** completion (DEV_GUIDE, audit instructions)
-
-### Phase 7: Beta Launch (Week 7-8)
-
-21. ⏳ **Freeze beta-baseline tag** (still evergreen)
-22. ⏳ **Start closed invites** (5-20 users)
-23. ⏳ **Monitor metrics** and collect feedback
-
----
-
-## Success Metrics
-
-### Technical Metrics
-
-- **Determinism**: 100% replay success across all components
-- **PoE Coverage**: 100% of critical events hash-chained and signed
-- **Cost Efficiency**:
-  - PQC: <100 calls/day for 10K decisions (batching)
-  - Agents: <1K calls/day for 10K decisions (sampling)
-  - Infrastructure: <$500/month for 10K decisions/day
-
-### User Metrics
-
-- **Moderator Satisfaction**: >80% (closed beta survey)
-- **Contributor Engagement**: >50% link wallet to GitHub
-- **Bounty Completion**: >70% claimed bounties completed
-- **UI Response Time**: <500ms for all dashboard actions
-
-### Platform Metrics
-
-- **Uptime**: >99% (single-node acceptable for beta)
-- **Event Throughput**: 10+ decisions/sec on mid-tier VM
-- **Audit Success**: 100% of PoE artifacts verifiable
-
----
-
-## Migration Notes
-
-### From OpenAGI to CrewAI/LangGraph
-
-**Why**:
-
-- OpenAGI has low adoption and limited real-world proof
-- CrewAI/LangGraph: OSS, multi-agent, multi-modal, active ecosystem
-- Better orchestration, checkpointing, and complex workflow management
-
-**Migration Strategy**:
-
-1. **Parallel Testing**: Run both frameworks on historical data
-2. **Benchmark**: Compare speed, consistency, and quality
-3. **Incremental Swap**: Start with low-risk flows (moderation scoring)
-4. **PoE Verification**: Ensure all outputs are logged and verifiable
-5. **Phase Out**: Retire OpenAGI once stability confirmed
-
-**Preserve**:
-
-- Agent outputs remain advisory only (feed into `F`, never decide)
-- All agent events logged to EvidenceBus
-- Cost tracking and sampling enforced
-
----
-
-## References
-
-### Core Documentation
-
-- [MASTER_PROMPT_v15.5.md](./docs/MASTER_PROMPT_v15.5.md) - Authoritative invariants
-- [COST_EFFICIENT_ARCHITECTURE.md](./docs/COST_EFFICIENT_ARCHITECTURE.md) - Cost optimization
-- [BETA_DEPLOYMENT_PLAN.md](./docs/BETA_DEPLOYMENT_PLAN.md) - Deployment strategy
-- [DEV_GUIDE.md](./DEV_GUIDE.md) - Cross-platform setup
-
-### Implementation Plans
-
-- [implementation_plan_v15.5.md](./docs/implementation_plan_v15.5.md) - Admin/Mod Panel tasks
-- [EVERGREEN_ALIGNMENT_GUIDE.md](./docs/EVERGREEN_ALIGNMENT_GUIDE.md) - Documentation alignment
-
----
-
-**QFS × ATLAS**: Deterministic, PoE-backed, cost-efficient, and ready to evolve. 🚀
+...
