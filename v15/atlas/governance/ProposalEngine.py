@@ -224,7 +224,7 @@ class ProposalEngine:
 
     def execute_proposal(self, proposal_id: str, registry: Any) -> bool:
         """
-        Execute a PASSED proposal.
+        Execute a PASSED proposal and generate PoE artifact.
         """
         if proposal_id not in self.proposals:
             return False
@@ -232,6 +232,14 @@ class ProposalEngine:
         prop = self.proposals[proposal_id]
         if prop.status != ProposalStatus.PASSED:
             return False
+
+        # Capture before state
+        before_state = {
+            "proposal_status": prop.status.value,
+            "registry_state": registry.get_all_parameters()
+            if hasattr(registry, "get_all_parameters")
+            else {},
+        }
 
         if prop.kind == ProposalKind.PARAMETER_CHANGE:
             key = prop.execution_payload.get("key")
@@ -250,6 +258,67 @@ class ProposalEngine:
 
                 registry.update_parameter(key, new_value, proposal_id)
                 prop.status = ProposalStatus.EXECUTED
+
+                # Capture after state
+                after_state = {
+                    "proposal_status": prop.status.value,
+                    "registry_state": registry.get_all_parameters()
+                    if hasattr(registry, "get_all_parameters")
+                    else {},
+                }
+
+                # Generate PoE artifact (v15.3)
+                try:
+                    from v15.atlas.governance.poe_generator import get_poe_generator
+
+                    poe_gen = get_poe_generator()
+
+                    # Build vote breakdown
+                    vote_breakdown = {
+                        "total_stake": prop.tally.total(),
+                        "yes_stake": prop.tally.yes,
+                        "no_stake": prop.tally.no,
+                        "quorum_met": True,  # Already passed
+                        "supermajority_met": True,  # Already passed
+                    }
+
+                    # Build execution trace
+                    execution_trace = [
+                        {
+                            "operation": "PARAMETER_CHANGE",
+                            "parameter_key": key,
+                            "old_value": str(
+                                before_state["registry_state"].get(key, "unknown")
+                            ),
+                            "new_value": str(new_value),
+                            "proposal_id": proposal_id,
+                        }
+                    ]
+
+                    # Generate artifact
+                    artifact = poe_gen.generate_artifact(
+                        proposal_id=proposal_id,
+                        proposal_hash=prop.payload_hash,
+                        epoch=1,  # TODO: Get from governance context
+                        cycle=prop.cycle_index,
+                        parameter_key=key,
+                        execution_phase="EXECUTION",
+                        before_state=before_state,
+                        after_state=after_state,
+                        vote_breakdown=vote_breakdown,
+                        execution_trace=execution_trace,
+                    )
+
+                    # Save artifact
+                    poe_gen.save_artifact(artifact)
+
+                    # Store artifact reference in proposal
+                    prop.poe_artifact_id = artifact["artifact_id"]
+
+                except Exception as poe_error:
+                    # PoE generation failure should not block execution
+                    print(f"PoE Generation Warning: {poe_error}")
+
                 return True
             except Exception as e:
                 # Log failure
