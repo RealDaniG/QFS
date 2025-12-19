@@ -16,7 +16,7 @@ import ast
 import fnmatch
 import os
 import sys
-from typing import List, Set
+from typing import List, Set, Any, Optional, Dict, Union
 from dataclasses import dataclass
 import logging
 
@@ -39,12 +39,12 @@ class ZeroSimAbort(Exception):
 
 
 class ZeroSimASTVisitor(ast.NodeVisitor):
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str) -> None:
         self.file_path = file_path
         self.violations: List[Violation] = []
         self.lines: List[str] = []
         self.inside_function = False
-        self.current_function_args = set()
+        self.current_function_args: Set[str] = set()
         path_parts = self.file_path.replace(os.sep, "/").split("/")
         base_name = os.path.basename(file_path)
         strict_deterministic_files = {
@@ -111,14 +111,14 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         }
         self.load_file_lines()
 
-    def load_file_lines(self):
+    def load_file_lines(self) -> None:
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 self.lines = f.readlines()
         except Exception:
             self.lines = []
 
-    def add_violation(self, node, violation_type, message):
+    def add_violation(self, node: ast.AST, violation_type: str, message: str) -> None:
         line = getattr(node, "lineno", 0)
         col = getattr(node, "col_offset", 0)
         snippet = self.lines[line - 1].strip() if 0 < line <= len(self.lines) else ""
@@ -133,7 +133,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         )
 
-    def is_typing_alias(self, node) -> bool:
+    def is_typing_alias(self, node: Any) -> bool:
         """Check if assignment RHS is a typing construct (type alias)."""
         TYPING_NAMES = {
             "Any",
@@ -163,9 +163,9 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             return node.attr in TYPING_NAMES
         return False
 
-    def visit_Assign(self, node: ast.Assign):
+    def visit_Assign(self, node: ast.Assign) -> None:
         if not self.inside_function:
-            for target in sorted(node.targets):
+            for target in node.targets:
                 if isinstance(target, ast.Name):
                     # Skip uppercase constants
                     if target.id.isupper():
@@ -194,7 +194,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                     )
         self.generic_visit(node)
 
-    def visit_Global(self, node: ast.Global):
+    def visit_Global(self, node: ast.Global) -> None:
         self.add_violation(
             node,
             "GLOBAL_KEYWORD",
@@ -202,7 +202,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         )
         self.generic_visit(node)
 
-    def visit_BinOp(self, node: ast.BinOp):
+    def visit_BinOp(self, node: ast.BinOp) -> None:
         if isinstance(node.op, ast.Div):
             self.add_violation(
                 node,
@@ -229,7 +229,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                 )
         self.generic_visit(node)
 
-    def visit_For(self, node: ast.For):
+    def visit_For(self, node: ast.For) -> None:
         if self._is_dict_like(node.iter) and (not self._is_sorted_call(node.iter)):
             self.add_violation(
                 node,
@@ -238,7 +238,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    def _is_dict_like(self, node) -> bool:
+    def _is_dict_like(self, node: Any) -> bool:
         if isinstance(node, ast.Name):
             return True
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
@@ -249,18 +249,18 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             return True
         return False
 
-    def _is_sorted_call(self, node) -> bool:
+    def _is_sorted_call(self, node: Any) -> bool:
         return (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
             and (node.func.id == "sorted")
         )
 
-    def visit_Set(self, node: ast.Set):
+    def visit_Set(self, node: ast.Set) -> None:
         self.add_violation(node, "FORBIDDEN_CONTAINER", "Sets are nondeterministic")
         self.generic_visit(node)
 
-    def visit_Call(self, node: ast.Call):
+    def visit_Call(self, node: ast.Call) -> None:
         if isinstance(node.func, ast.Name):
             if node.func.id in self.forbidden_functions:
                 self.add_violation(
@@ -287,11 +287,11 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                 self.add_violation(node, "DYNAMIC_IMPORT", "Dynamic imports forbidden")
         self.generic_visit(node)
 
-    def _parent_is_sorted(self, node) -> bool:
+    def _parent_is_sorted(self, node: Any) -> bool:
         return False
 
-    def visit_ListComp(self, node):
-        for gen in sorted(node.generators):
+    def visit_ListComp(self, node: ast.ListComp) -> None:
+        for gen in node.generators:
             if self._is_dict_like(gen.iter) and (not self._is_sorted_call(gen.iter)):
                 self.add_violation(
                     node,
@@ -300,15 +300,15 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                 )
         self.generic_visit(node)
 
-    def visit_SetComp(self, node):
+    def visit_SetComp(self, node: ast.SetComp) -> None:
         self.add_violation(node, "FORBIDDEN_COMP", "Set comprehensions forbidden")
         self.generic_visit(node)
 
-    def visit_DictComp(self, node):
+    def visit_DictComp(self, node: ast.DictComp) -> None:
         self.add_violation(node, "FORBIDDEN_COMP", "Dict comprehensions forbidden")
         self.generic_visit(node)
 
-    def visit_Yield(self, node):
+    def visit_Yield(self, node: ast.Yield) -> None:
         if self.is_deterministic_module:
             self.add_violation(
                 node,
@@ -317,12 +317,14 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    def visit_YieldFrom(self, node):
+    def visit_YieldFrom(self, node: ast.YieldFrom) -> None:
         if self.is_deterministic_module:
             self.add_violation(node, "FORBIDDEN_GENERATOR", "yield from forbidden")
         self.generic_visit(node)
 
-    def visit_FunctionDef(self, node):
+    def visit_FunctionDef(
+        self, node: Union[ast.FunctionDef, ast.AsyncFunctionDef]
+    ) -> None:
         self.inside_function = True
         self.current_function_args = {arg.arg for arg in node.args.args}
         if self.is_deterministic_module and (not node.name.startswith("_")):
@@ -335,11 +337,11 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
         self.generic_visit(node)
         self.inside_function = False
 
-    def visit_AsyncFunctionDef(self, node):
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
         """Handle async functions same as sync functions"""
         self.visit_FunctionDef(node)
 
-    def visit_AsyncFor(self, node):
+    def visit_AsyncFor(self, node: ast.AsyncFor) -> None:
         """Handle async loops same as sync loops"""
         if self._is_dict_like(node.iter) and (not self._is_sorted_call(node.iter)):
             self.add_violation(
@@ -349,13 +351,13 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    def visit_ExceptHandler(self, node):
+    def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:
         if node.type is None:
             self.add_violation(node, "BARE_EXCEPT", "Bare 'except:' forbidden")
         self.generic_visit(node)
 
-    def visit_Import(self, node):
-        for alias in sorted(node.names):
+    def visit_Import(self, node: ast.Import) -> None:
+        for alias in sorted(node.names, key=lambda x: x.name):
             if alias.name in self.forbidden_modules:
                 self.add_violation(
                     node, "FORBIDDEN_IMPORT", f"Import of {alias.name} forbidden"
@@ -366,7 +368,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
                 )
         self.generic_visit(node)
 
-    def visit_ImportFrom(self, node):
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
         if node.module in self.forbidden_modules:
             self.add_violation(
                 node, "FORBIDDEN_IMPORT", f"Import from {node.module} forbidden"
@@ -375,17 +377,17 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             self.add_violation(node, "WILDCARD_IMPORT", "Wildcard imports forbidden")
         self.generic_visit(node)
 
-    def visit_Constant(self, node):
+    def visit_Constant(self, node: ast.Constant) -> None:
         if isinstance(node.value, float):
             self.add_violation(node, "FLOAT_LITERAL", "Float literals forbidden")
         self.generic_visit(node)
 
-    def visit_Name(self, node):
+    def visit_Name(self, node: ast.Name) -> None:
         if node.id in ("set", "frozenset") and isinstance(node.ctx, ast.Load):
             self.add_violation(node, "FORBIDDEN_TYPE", f"{node.id} is nondeterministic")
         self.generic_visit(node)
 
-    def visit_Attribute(self, node):
+    def visit_Attribute(self, node: ast.Attribute) -> None:
         if isinstance(node.ctx, ast.Store) and (not self.inside_function):
             self.add_violation(
                 node,
@@ -394,7 +396,7 @@ class ZeroSimASTVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    def visit_GeneratorExp(self, node):
+    def visit_GeneratorExp(self, node: ast.GeneratorExp) -> None:
         if self.is_deterministic_module:
             self.add_violation(
                 node,
@@ -430,7 +432,7 @@ class AST_ZeroSimChecker:
                         has_det_time = True
                         break
                     if isinstance(node, ast.Import):
-                        for alias in sorted(node.names):
+                        for alias in sorted(node.names, key=lambda x: x.name):
                             if "DeterministicTime" in alias.name:
                                 has_det_time = True
                                 break
@@ -442,18 +444,22 @@ class AST_ZeroSimChecker:
             logger.warning(f"Syntax error in {file_path}: {e}")
             if visitor.is_deterministic_module or visitor.is_economics_related:
                 visitor.add_violation(
-                    ast.Module(), "SYNTAX_ERROR", f"Syntax error: {e}"
+                    ast.Module(body=[], type_ignores=[]),
+                    "SYNTAX_ERROR",
+                    f"Syntax error: {e}",
                 )
         except Exception as e:
             logger.warning(f"Error parsing {file_path}: {e}")
             if visitor.is_deterministic_module or visitor.is_economics_related:
                 visitor.add_violation(
-                    ast.Module(), "PARSING_ERROR", f"Parsing error: {e}"
+                    ast.Module(body=[], type_ignores=[]),
+                    "PARSING_ERROR",
+                    f"Parsing error: {e}",
                 )
         return visitor.violations
 
     def scan_directory(
-        self, directory: str, exclude_patterns: List[str] = None
+        self, directory: str, exclude_patterns: Optional[List[str]] = None
     ) -> List[Violation]:
         exclude_patterns = exclude_patterns or [
             "__pycache__*",
@@ -502,7 +508,7 @@ class AST_ZeroSimChecker:
                     all_violations.extend(self.scan_file(os.path.join(root, file)))
         return all_violations
 
-    def enforce_policy(self, path: str, fail_on_violations: bool = False):
+    def enforce_policy(self, path: str, fail_on_violations: bool = False) -> None:
         if os.path.isfile(path) and path.endswith(".py"):
             violations = self.scan_file(path)
         else:

@@ -13,39 +13,47 @@ QFS V13 Compliance Note:
 
 import json
 import hashlib
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 try:
-    from .BigNum128 import BigNum128
+    from v13.libs.BigNum128 import BigNum128
 except ImportError:
-    from BigNum128 import BigNum128
+    from BigNum128 import BigNum128  # type: ignore
 
 
-def get_LN2():
+_LN2_CACHE: Optional["BigNum128"] = None
+_LN10_CACHE: Optional["BigNum128"] = None
+_PI_CACHE: Optional["BigNum128"] = None
+
+
+def get_LN2() -> "BigNum128":
     """Get LN2 constant, initializing it if needed."""
-    if not hasattr(get_LN2, "_cached"):
+    global _LN2_CACHE
+    if _LN2_CACHE is None:
         from .BigNum128 import BigNum128
 
-        get_LN2._cached = BigNum128(693147180559945309)
-    return get_LN2._cached
+        _LN2_CACHE = BigNum128(693147180559945309)
+    return _LN2_CACHE
 
 
-def get_LN10():
+def get_LN10() -> "BigNum128":
     """Get LN10 constant, initializing it if needed."""
-    if not hasattr(get_LN10, "_cached"):
+    global _LN10_CACHE
+    if _LN10_CACHE is None:
         from .BigNum128 import BigNum128
 
-        get_LN10._cached = BigNum128(2302585092994045684)
-    return get_LN10._cached
+        _LN10_CACHE = BigNum128(2302585092994045684)
+    return _LN10_CACHE
 
 
-def get_PI():
+def get_PI() -> "BigNum128":
     """Get PI constant, initializing it if needed."""
-    if not hasattr(get_PI, "_cached"):
+    global _PI_CACHE
+    if _PI_CACHE is None:
         from .BigNum128 import BigNum128
 
-        get_PI._cached = BigNum128(3141592653589793238)
-    return get_PI._cached
+        _PI_CACHE = BigNum128(3141592653589793238)
+    return _PI_CACHE
 
 
 class MathOverflowError(Exception):
@@ -63,7 +71,9 @@ class MathValidationError(Exception):
 class CertifiedMathError(Exception):
     """Base exception for CertifiedMath errors."""
 
-    def __init__(self, message, error_code=None):
+    def __init__(
+        self, message: str, error_code: Optional[Union[int, str]] = None
+    ) -> None:
         super().__init__(message)
         self.error_code = error_code
 
@@ -133,7 +143,7 @@ class CertifiedMath:
         ),  # softplus(1) ≈ 1.313
     }
 
-    def __init__(self, log_list: Optional[List[Dict[str, Any]]] = None):
+    def __init__(self, log_list: Optional[List[Dict[str, Any]]] = None) -> None:
         """
         Initialize CertifiedMath instance with an optional log list.
         If no log list is provided, a new one is created.
@@ -200,6 +210,18 @@ class CertifiedMath:
     ) -> BigNum128:
         # div_floor is same as div for fixed point integer arithmetic in this context
         return CertifiedMath._safe_div(
+            a, b, log_list or self.log_list, pqc_cid, quantum_metadata
+        )
+
+    def mod(
+        self,
+        a: BigNum128,
+        b: BigNum128,
+        log_list: Optional[List[Dict[str, Any]]] = None,
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> BigNum128:
+        return CertifiedMath._safe_mod(
             a, b, log_list or self.log_list, pqc_cid, quantum_metadata
         )
 
@@ -420,22 +442,37 @@ class CertifiedMath:
     # Helper methods for int-BigNum128 operations (Phase 3 requirement)
     def imul(
         self,
-        a_int: int,
-        b: BigNum128,
+        a: Union[BigNum128, int],
+        b: Union[BigNum128, int],
         log_list: Optional[List[Dict[str, Any]]] = None,
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
     ) -> BigNum128:
-        """Multiply int * BigNum128 safely."""
-        a_bn = BigNum128.from_int(a_int)
-        return CertifiedMath._safe_mul(
-            a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata
-        )
+        """Multiply integer scalar * BigNum128 safely (commutative)."""
 
-        """Multiply int * BigNum128 safely."""
-        a_bn = BigNum128.from_int(a_int)
+        # Determine which is BigNum and which is int
+        bn_val = None
+        scalar_val = None
+
+        if isinstance(a, BigNum128) and isinstance(b, int):
+            bn_val = a
+            scalar_val = b
+        elif isinstance(a, int) and isinstance(b, BigNum128):
+            bn_val = b
+            scalar_val = a
+        else:
+            raise TypeError(
+                f"imul expects one BigNum128 and one int. Got {type(a)} and {type(b)}"
+            )
+
+        # Convert scalar integer to BigNum128 (scaling it up)
+        # scalar * SCALE
+        scalar_bn = BigNum128.from_int(scalar_val)
+
+        # Multiply: (bn * scalar_bn) / SCALE
+        # = (bn * scalar * SCALE) / SCALE = bn * scalar
         return CertifiedMath._safe_mul(
-            a_bn, b, log_list or self.log_list, pqc_cid, quantum_metadata
+            bn_val, scalar_bn, log_list or self.log_list, pqc_cid, quantum_metadata
         )
 
     def idiv(
@@ -477,20 +514,6 @@ class CertifiedMath:
         ):
             return a
         return b
-
-    def _log_operation(
-        self,
-        op_name: str,
-        inputs: Dict[str, Any],
-        result: BigNum128,
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-    ):
-        """Instance wrapper for _log_operation."""
-        CertifiedMath._log_operation(
-            op_name, inputs, result, log_list, pqc_cid, quantum_metadata
-        )
 
     def clamp(
         self, value: BigNum128, min_val: BigNum128, max_val: BigNum128
@@ -614,20 +637,6 @@ class CertifiedMath:
         result_value = a.value + b.value
         return BigNum128(result_value)
 
-    def _log_operation(
-        self,
-        op_name: str,
-        inputs: Dict[str, Any],
-        result: BigNum128,
-        log_list: List[Dict[str, Any]],
-        pqc_cid: Optional[str] = None,
-        quantum_metadata: Optional[Dict[str, Any]] = None,
-    ):
-        """Instance wrapper for _log_operation."""
-        CertifiedMath._log_operation(
-            op_name, inputs, result, log_list, pqc_cid, quantum_metadata
-        )
-
     class LogContext:
         """
         Context manager for creating isolated, deterministic operation logs.
@@ -637,23 +646,29 @@ class CertifiedMath:
                 result = CertifiedMath.add(a, b, log, pqc_cid="TEST_001")
         """
 
-        def __init__(self):
-            self.log = []
+        def __init__(self) -> None:
+            self.log: List[Dict[str, Any]] = []
 
-        def __enter__(self):
+        def __enter__(self) -> List[Dict[str, Any]]:
             self.log = []
             return self.log
 
-        def __exit__(self, exc_type, exc_val, exc_tb):
+        def __exit__(
+            self,
+            exc_type: Optional[type],
+            exc_value: Optional[BaseException],
+            traceback: Optional[Any],
+        ) -> None:
+            # We don't suppress exceptions
             pass
 
-        def get_log(self):
+        def get_log(self) -> List[Dict[str, Any]]:
             return self.log
 
-        def get_hash(self):
+        def get_hash(self) -> str:
             return CertifiedMath.get_log_hash(self.log)
 
-        def export(self, path: str):
+        def export(self, path: str) -> None:
             CertifiedMath.export_log(self.log, path)
 
     @staticmethod
@@ -687,7 +702,7 @@ class CertifiedMath:
         return hashlib.sha3_512(serialized_log.encode("utf-8")).hexdigest()
 
     @staticmethod
-    def export_log(log_list: List[Dict[str, Any]], path: str):
+    def export_log(log_list: List[Dict[str, Any]], path: str) -> None:
         """Export the provided log list to a JSON file."""
         serializable_log = []
         for entry in log_list:
@@ -722,7 +737,7 @@ class CertifiedMath:
         log_list: List[Dict[str, Any]],
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> None:
         """
         Log a mathematical operation for audit trail with FULL canonical serialization.
 
@@ -800,9 +815,9 @@ class CertifiedMath:
     ) -> BigNum128:
         # Ensure both a and b are BigNum128 objects
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
 
         result_value = a.value + b.value
         if result_value > BigNum128.MAX_VALUE:
@@ -823,9 +838,9 @@ class CertifiedMath:
     ) -> BigNum128:
         # Ensure both a and b are BigNum128 objects
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
 
         result_value = a.value - b.value
         if result_value < BigNum128.MIN_VALUE:
@@ -851,9 +866,9 @@ class CertifiedMath:
         product never exceeds safe bounds, even in constrained Python implementations.
         """
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
 
         # Enhancement 1: Pre-multiplication overflow check
         # Prevents intermediate overflow: if a*b > MAX_VALUE * SCALE, reject early
@@ -883,9 +898,9 @@ class CertifiedMath:
     ) -> BigNum128:
         # Ensure both a and b are BigNum128 objects
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
 
         if b.value == 0:
             raise ZeroDivisionError("CertifiedMath div by zero")
@@ -893,6 +908,29 @@ class CertifiedMath:
         result = BigNum128(result_value)
         CertifiedMath._log_operation(
             "div", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata
+        )
+        return result
+
+    @staticmethod
+    def _safe_mod(
+        a: BigNum128,
+        b: BigNum128,
+        log_list: List[Dict[str, Any]],
+        pqc_cid: Optional[str] = None,
+        quantum_metadata: Optional[Dict[str, Any]] = None,
+    ) -> BigNum128:
+        # Ensure both a and b are BigNum128 objects
+        if not isinstance(a, BigNum128):
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
+        if not isinstance(b, BigNum128):
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
+
+        if b.value == 0:
+            raise ZeroDivisionError("CertifiedMath mod by zero")
+        result_value = a.value % b.value
+        result = BigNum128(result_value)
+        CertifiedMath._log_operation(
+            "mod", {"a": a, "b": b}, result, log_list, pqc_cid, quantum_metadata
         )
         return result
 
@@ -905,7 +943,7 @@ class CertifiedMath:
     ) -> BigNum128:
         # Ensure a is a BigNum128 object
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
 
         result_value = abs(a.value)
         result = BigNum128(result_value)
@@ -924,9 +962,9 @@ class CertifiedMath:
     ) -> bool:
         # Ensure both a and b are BigNum128 objects
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
         result = a.value >= b.value
         CertifiedMath._log_operation(
             "gte",
@@ -999,9 +1037,9 @@ class CertifiedMath:
         # Ensure both a and b are BigNum128 objects
 
         if not isinstance(a, BigNum128):
-            a = BigNum128(a)
+            a = BigNum128.from_string(str(a)) if isinstance(a, str) else BigNum128(a)
         if not isinstance(b, BigNum128):
-            b = BigNum128(b)
+            b = BigNum128.from_string(str(b)) if isinstance(b, str) else BigNum128(b)
 
         result = a.value != b.value
         CertifiedMath._log_operation(
@@ -2059,7 +2097,7 @@ class CertifiedMath:
         return result
 
     @staticmethod
-    def verify_genesis_state(genesis_state: dict) -> dict:
+    def verify_genesis_state(genesis_state: Dict[str, Any]) -> Dict[str, Any]:
         """
         Verify genesis state for Phase 3 integration.
 

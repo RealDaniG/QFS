@@ -6,48 +6,17 @@ using CertifiedMath public API for all calculations and maintaining full
 auditability via log_list, pqc_cid, and quantum_metadata.
 """
 
-import json
-import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
-try:
-    from ...libs.CertifiedMath import CertifiedMath, BigNum128
-    from ...core.reward_types import RewardBundle
-    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
-    from ...libs.economics.economic_constants import (
-        MAX_REWARD_PER_ADDRESS,
-        MIN_DUST_THRESHOLD,
-    )
-except ImportError:
-    try:
-        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
-        from v13.core.reward_types import RewardBundle
-        from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
-        from v13.libs.economics.economic_constants import (
-            MAX_REWARD_PER_ADDRESS,
-            MIN_DUST_THRESHOLD,
-        )
-    except ImportError:
-        try:
-            from v13.libs.CertifiedMath import CertifiedMath, BigNum128
-            from v13.core.reward_types import RewardBundle
-            from v13.libs.economics.EconomicsGuard import (
-                EconomicsGuard,
-                ValidationResult,
-            )
-            from v13.libs.economics.economic_constants import (
-                MAX_REWARD_PER_ADDRESS,
-                MIN_DUST_THRESHOLD,
-            )
-        except ImportError:
-            from libs.CertifiedMath import CertifiedMath, BigNum128
-            from core.reward_types import RewardBundle
-            from economics.EconomicsGuard import EconomicsGuard, ValidationResult
-            from economics.economic_constants import (
-                MAX_REWARD_PER_ADDRESS,
-                MIN_DUST_THRESHOLD,
-            )
+from v13.libs.CertifiedMath import CertifiedMath
+from v13.libs.BigNum128 import BigNum128
+from v13.core.reward_types import RewardBundle
+from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
+from v13.libs.economics.economic_constants import (
+    MAX_REWARD_PER_ADDRESS,
+    MIN_DUST_THRESHOLD,
+)
 
 
 @dataclass
@@ -71,7 +40,7 @@ class RewardAllocator:
     (e.g., proportional splits, caps) and maintains full auditability.
     """
 
-    def __init__(self, cm_instance: CertifiedMath):
+    def __init__(self, cm_instance: CertifiedMath) -> None:
         """
         Initialize the Reward Allocator with V13.6 constitutional guards.
 
@@ -116,7 +85,6 @@ class RewardAllocator:
             allocation_weights, log_list, pqc_cid, quantum_metadata
         )
         allocated_rewards = {}
-        total_recipients = len(recipient_addresses)
         for address in sorted(recipient_addresses):
             weight = normalized_weights.get(address, BigNum128(0))
             chr_amount = self.cm.mul(
@@ -289,7 +257,7 @@ class RewardAllocator:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         deterministic_timestamp: int = 0,
-    ):
+    ) -> None:
         """
         Log the reward allocation for audit purposes.
 
@@ -342,7 +310,7 @@ class RewardAllocator:
         )
 
 
-def test_reward_allocator():
+def test_reward_allocator() -> None:
     """Test the RewardAllocator implementation."""
     cm = CertifiedMath()
     allocator = RewardAllocator(cm)
@@ -354,10 +322,11 @@ def test_reward_allocator():
         res_reward=BigNum128.from_int(25),
         psi_sync_reward=BigNum128.from_int(20),
         atr_reward=BigNum128.from_int(15),
+        nod_reward=BigNum128.from_int(0),
         total_reward=BigNum128.from_int(210),
     )
     recipient_addresses = ["addr_001", "addr_002", "addr_003"]
-    log_list = []
+    log_list: List[Dict[str, Any]] = []
     allocated_rewards = allocator.allocate_rewards(
         reward_bundle=reward_bundle,
         recipient_addresses=recipient_addresses,

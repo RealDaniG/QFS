@@ -59,7 +59,6 @@ def run_scenario():
         host_wallet=alice,
         title="Tech Talk",
         timestamp=1000000,
-        max_participants=100,
         log_list=log_list,
     )
     event1 = emit_space_created(space, cm, log_list, pqc_cid="test_001")
@@ -68,20 +67,24 @@ def run_scenario():
 
     print("\n[2/11] Joining space...")
     spaces.join_space(space.space_id, bob, 1000100, log_list)
-    event2 = emit_space_joined(space, bob, cm, log_list, pqc_cid="test_002")
+    event2 = emit_space_joined(
+        space.space_id, bob, 1000100, cm, log_list, pqc_cid="test_002"
+    )
     print(f"  ✅ {bob} joined space")
     print(f"  💰 Reward: {event2.amount} CHR to {bob}")
 
     print("\n[3/11] Speaking in space...")
-    spaces.speak_in_space(space.space_id, bob, 1000200, log_list)
-    event3 = emit_space_spoke(space, bob, cm, log_list, pqc_cid="test_003")
+    spaces.record_speak_time(space.space_id, bob, 1000200, log_list)
+    event3 = emit_space_spoke(
+        space.space_id, bob, 100, 1000200, cm, log_list, pqc_cid="test_003"
+    )
     print(f"  ✅ {bob} spoke in space")
     print(f"  💰 Reward: {event3.amount} CHR to {bob}")
 
     print("\n[4/11] Creating post...")
     post = wall.create_post(
         author_wallet=alice,
-        content_hash="hash_hello_atlas",
+        content="Hello ATLAS!",
         timestamp=1000300,
         space_id=space.space_id,
         log_list=log_list,
@@ -92,13 +95,13 @@ def run_scenario():
 
     print("\n[5/11] Quoting post...")
     quote = wall.quote_post(
-        quoter_wallet=bob,
-        original_post_id=post.post_id,
-        quote_content_hash="hash_great_post",
+        author_wallet=bob,
+        parent_post_id=post.post_id,
+        content="Great post!",
         timestamp=1000400,
         log_list=log_list,
     )
-    event5 = emit_post_quoted(quote, cm, log_list, pqc_cid="test_005")
+    event5 = emit_post_quoted(quote, post, cm, log_list, pqc_cid="test_005")
     print(f"  ✅ Post quoted: {quote.post_id}")
     print(f"  💰 Reward: {event5.amount} CHR to {bob}")
 
@@ -109,8 +112,10 @@ def run_scenario():
     print(f"  💰 Reward: {event6.amount} CHR to {alice}")
 
     print("\n[7/11] Reacting to post...")
-    wall.react_to_post(post.post_id, charlie, "👍", 1000600, log_list)
-    event7 = emit_post_reacted(post, charlie, "👍", cm, log_list, pqc_cid="test_007")
+    wall.add_reaction(post.post_id, charlie, "👍", log_list)
+    event7 = emit_post_reacted(
+        post.post_id, charlie, "👍", 1000600, cm, log_list, pqc_cid="test_007"
+    )
     print(f"  ✅ {charlie} reacted with 👍")
     print(f"  💰 Reward: {event7.amount} FLX to {charlie}")
 
@@ -148,7 +153,7 @@ def run_scenario():
 
     print("\n[11/11] Ending space...")
     spaces.end_space(space.space_id, alice, 1001000, log_list)
-    event11 = emit_space_ended(space, cm, log_list, pqc_cid="test_011")
+    event11 = emit_space_ended(space, 1001000, cm, log_list, pqc_cid="test_011")
     print(f"  ✅ Space ended by {alice}")
     print(f"  💰 Reward: {event11.amount} CHR to {alice}")
 
@@ -203,8 +208,14 @@ def run_scenario():
     print("Scenario Complete - Ready for Hash Generation")
     print("=" * 80)
 
-    return 0
+    log_hash = cm.get_log_hash(log_list)
+    print(f"Regression Hash: {log_hash}")
+    return log_hash
 
 
 if __name__ == "__main__":
-    sys.exit(run_scenario())
+    # Print hash for CI capture, exit 0 if successful
+    h = run_scenario()
+    if h:
+        sys.exit(0)
+    sys.exit(1)

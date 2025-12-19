@@ -4,6 +4,7 @@ ValueNodeExplainability.py - Explainability layer for value-node rewards
 This module provides explainability features for value-node derived rewards,
 allowing users and operators to understand why specific rewards were awarded.
 """
+
 import json
 import hashlib
 from typing import Dict, Any, Optional, List
@@ -12,9 +13,11 @@ from .humor_policy import HumorSignalPolicy
 from .artistic_policy import ArtisticSignalPolicy
 from ..libs.CertifiedMath import CertifiedMath, BigNum128
 
+
 @dataclass
 class ValueNodeRewardExplanation:
     """Detailed explanation of a value-node reward calculation."""
+
     wallet_id: str
     user_id: str
     reward_event_id: str
@@ -27,12 +30,14 @@ class ValueNodeRewardExplanation:
     policy_version: str
     policy_hash: str
     total_reward: Dict[str, Any]
-    explanation_hash: str = ''
+    explanation_hash: str = ""
     reason_codes: List[str] = field(default_factory=list)
+
 
 @dataclass
 class ContentRankingExplanation:
     """Detailed explanation of a content ranking calculation."""
+
     content_id: str
     epoch: int
     timestamp: int
@@ -41,7 +46,8 @@ class ContentRankingExplanation:
     final_rank: int
     policy_version: str
     policy_hash: str
-    explanation_hash: str = ''
+    explanation_hash: str = ""
+
 
 class ValueNodeExplainabilityHelper:
     """
@@ -53,7 +59,11 @@ class ValueNodeExplainabilityHelper:
     3. Verification capabilities for deterministic explanations
     """
 
-    def __init__(self, humor_policy: HumorSignalPolicy, artistic_policy: Optional[ArtisticSignalPolicy]=None):
+    def __init__(
+        self,
+        humor_policy: HumorSignalPolicy,
+        artistic_policy: Optional[ArtisticSignalPolicy] = None,
+    ):
         """
         Initialize the value-node explainability helper.
 
@@ -64,7 +74,6 @@ class ValueNodeExplainabilityHelper:
         self.humor_policy = humor_policy
         self.artistic_policy = artistic_policy
 
-<<<<<<< HEAD
     def explain_value_node_reward(
         self,
         wallet_id: str,
@@ -78,9 +87,6 @@ class ValueNodeExplainabilityHelper:
         timestamp: int,
         trace_id: str = "no-trace",
     ) -> ValueNodeRewardExplanation:
-=======
-    def explain_value_node_reward(self, wallet_id: str, user_id: str, reward_event_id: str, epoch: int, base_reward: Dict[str, Any], bonuses: List[Dict[str, Any]], caps: List[Dict[str, Any]], guards: List[Dict[str, Any]], timestamp: int) -> ValueNodeRewardExplanation:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Generate detailed explanation for a value-node reward.
 
@@ -100,12 +106,11 @@ class ValueNodeExplainabilityHelper:
         """
         reason_codes = []
         for guard in guards:
-            if guard.get('result') == 'fail':
+            if guard.get("result") == "fail":
                 reason_codes.append(f"GUARD_FAILED_{guard.get('name', '').upper()}")
         if caps:
-            reason_codes.append('REWARD_CAPS_APPLIED')
+            reason_codes.append("REWARD_CAPS_APPLIED")
         if bonuses:
-<<<<<<< HEAD
             reason_codes.append("REWARD_BONUSES_APPLIED")
 
         # Calculate total reward (verifying with CertifiedMath)
@@ -135,15 +140,18 @@ class ValueNodeExplainabilityHelper:
         )
 
         # Generate deterministic hash
-=======
-            reason_codes.append('REWARD_BONUSES_APPLIED')
-        total_reward = self._calculate_total_reward(base_reward, bonuses, caps)
-        explanation = ValueNodeRewardExplanation(wallet_id=wallet_id, user_id=user_id, reward_event_id=reward_event_id, epoch=epoch, timestamp=timestamp, base_reward=base_reward, bonuses=bonuses, caps=caps, guards=guards, policy_version=self._aggregate_policy_versions(), policy_hash=self._aggregate_policy_hashes(), total_reward=total_reward, reason_codes=reason_codes)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         explanation.explanation_hash = self._generate_explanation_hash(explanation)
         return explanation
 
-    def explain_content_ranking(self, content_id: str, epoch: int, signals: List[Dict[str, Any]], neighbors: List[Dict[str, Any]], final_rank: int, timestamp: int) -> ContentRankingExplanation:
+    def explain_content_ranking(
+        self,
+        content_id: str,
+        epoch: int,
+        signals: List[Dict[str, Any]],
+        neighbors: List[Dict[str, Any]],
+        final_rank: int,
+        timestamp: int,
+    ) -> ContentRankingExplanation:
         """
         Generate detailed explanation for a content ranking.
 
@@ -158,60 +166,64 @@ class ValueNodeExplainabilityHelper:
         Returns:
             ContentRankingExplanation: Detailed explanation
         """
-        explanation = ContentRankingExplanation(content_id=content_id, epoch=epoch, timestamp=timestamp, signals=signals, neighbors=neighbors, final_rank=final_rank, policy_version=self._aggregate_policy_versions(), policy_hash=self._aggregate_policy_hashes())
+        explanation = ContentRankingExplanation(
+            content_id=content_id,
+            epoch=epoch,
+            timestamp=timestamp,
+            signals=signals,
+            neighbors=neighbors,
+            final_rank=final_rank,
+            policy_version=self._aggregate_policy_versions(),
+            policy_hash=self._aggregate_policy_hashes(),
+        )
         explanation.explanation_hash = self._generate_ranking_hash(explanation)
         return explanation
 
     def _generate_ranking_hash(self, explanation: ContentRankingExplanation) -> str:
         """Generate deterministic hash for ranking explanation."""
-        hash_data = {'content_id': explanation.content_id, 'epoch': explanation.epoch, 'timestamp': explanation.timestamp, 'signals': explanation.signals, 'neighbors': explanation.neighbors, 'final_rank': explanation.final_rank, 'policy_version': explanation.policy_version, 'policy_hash': explanation.policy_hash}
-        json_str = json.dumps(hash_data, sort_keys=True, separators=(',', ':'))
-        return hashlib.sha256(json_str.encode('utf-8')).hexdigest()
+        hash_data = {
+            "content_id": explanation.content_id,
+            "epoch": explanation.epoch,
+            "timestamp": explanation.timestamp,
+            "signals": explanation.signals,
+            "neighbors": explanation.neighbors,
+            "final_rank": explanation.final_rank,
+            "policy_version": explanation.policy_version,
+            "policy_hash": explanation.policy_hash,
+        }
+        json_str = json.dumps(hash_data, sort_keys=True, separators=(",", ":"))
+        return hashlib.sha256(json_str.encode("utf-8")).hexdigest()
 
     def _aggregate_policy_versions(self) -> str:
         versions = []
-        if self.humor_policy and hasattr(self.humor_policy, 'policy'):
-            versions.append(f'Humor:{self.humor_policy.policy.version}')
-        if self.artistic_policy and hasattr(self.artistic_policy, 'policy'):
-            versions.append(f'Artistic:{self.artistic_policy.policy.version}')
-        return '|'.join(sorted(versions)) or 'v1.0.0'
+        if self.humor_policy and hasattr(self.humor_policy, "policy"):
+            versions.append(f"Humor:{self.humor_policy.policy.version}")
+        if self.artistic_policy and hasattr(self.artistic_policy, "policy"):
+            versions.append(f"Artistic:{self.artistic_policy.policy.version}")
+        return "|".join(sorted(versions)) or "v1.0.0"
 
     def _aggregate_policy_hashes(self) -> str:
         hashes = []
-        if self.humor_policy and hasattr(self.humor_policy, 'policy'):
-            hashes.append(f'Humor:{self.humor_policy.policy.hash[:8]}')
-        if self.artistic_policy and hasattr(self.artistic_policy, 'policy'):
-            hashes.append(f'Artistic:{self.artistic_policy.policy.hash[:8]}')
-        return '|'.join(sorted(hashes))
+        if self.humor_policy and hasattr(self.humor_policy, "policy"):
+            hashes.append(f"Humor:{self.humor_policy.policy.hash[:8]}")
+        if self.artistic_policy and hasattr(self.artistic_policy, "policy"):
+            hashes.append(f"Artistic:{self.artistic_policy.policy.hash[:8]}")
+        return "|".join(sorted(hashes))
 
-<<<<<<< HEAD
-=======
-    def _calculate_total_reward(self, base_reward: Dict[str, Any], bonuses: List[Dict[str, Any]], caps: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """
-        Calculate total reward from base, bonuses, and caps.
-
-        Args:
-            base_reward: Base reward information
-            bonuses: List of bonus information
-            caps: List of cap information
-
-        Returns:
-            Dict: Total reward calculation
-        """
-
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     def _parse_atr_to_int(self, value_str: str) -> int:
         """
         Parse "X.Y ATR" string to scaled integer (scale 100).
         Example: "2.5 ATR" -> 250
         """
-        clean_str = value_str.replace(' ATR', '').replace('+', '').replace('-', '').strip()
-        if '.' in clean_str:
-            parts = clean_str.split('.')
+        clean_str = (
+            value_str.replace(" ATR", "").replace("+", "").replace("-", "").strip()
+        )
+        if "." in clean_str:
+            parts = clean_str.split(".")
             whole = int(parts[0])
             fraction = parts[1]
             if len(fraction) == 1:
-                fraction += '0'
+                fraction += "0"
             elif len(fraction) > 2:
                 fraction = fraction[:2]
             return whole * 100 + int(fraction)
@@ -225,9 +237,8 @@ class ValueNodeExplainabilityHelper:
         """
         whole = value_int // 100
         fraction = value_int % 100
-        return f'{whole}.{fraction // 10} ATR'
+        return f"{whole}.{fraction // 10} ATR"
 
-<<<<<<< HEAD
     def _calculate_total_reward(
         self,
         base_reward: Dict[str, Any],
@@ -235,15 +246,11 @@ class ValueNodeExplainabilityHelper:
         caps: List[Dict[str, Any]],
         trace_id: str = "no-trace",
     ) -> Dict[str, Any]:
-=======
-    def _calculate_total_reward(self, base_reward: Dict[str, Any], bonuses: List[Dict[str, Any]], caps: List[Dict[str, Any]]) -> Dict[str, Any]:
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         """
         Calculate total reward from base, bonuses, and caps.
         Uses CertifiedMath to generate a consistency proof linked to the trace_id.
         """
         total = dict(base_reward)
-<<<<<<< HEAD
         cm = (
             CertifiedMath()
         )  # Create instance to track logs locally (even if discarded for now)
@@ -304,26 +311,11 @@ class ValueNodeExplainabilityHelper:
         final_val_int = final_val_bn.value // BigNum128.SCALE
         total["ATR"] = self._format_int_to_atr(final_val_int)
 
-=======
-        base_atr_str = total.get('ATR', '0 ATR')
-        if not isinstance(base_atr_str, str):
-            base_val = int(base_atr_str) if isinstance(base_atr_str, int) else 0
-        else:
-            base_val = self._parse_atr_to_int(base_atr_str)
-        total_bonus = 0
-        for bonus in bonuses:
-            val_str = bonus.get('value', '0 ATR')
-            total_bonus += self._parse_atr_to_int(val_str)
-        total_cap_reduction = 0
-        for cap in caps:
-            val_str = cap.get('value', '0 ATR')
-            total_cap_reduction += self._parse_atr_to_int(val_str)
-        final_val = base_val + total_bonus - total_cap_reduction
-        total['ATR'] = self._format_int_to_atr(final_val)
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
         return total
 
-    def _generate_explanation_hash(self, explanation: ValueNodeRewardExplanation) -> str:
+    def _generate_explanation_hash(
+        self, explanation: ValueNodeRewardExplanation
+    ) -> str:
         """
         Generate deterministic hash for explanation verification.
 
@@ -333,11 +325,27 @@ class ValueNodeExplainabilityHelper:
         Returns:
             str: SHA256 hash of the explanation
         """
-        hash_data = {'wallet_id': explanation.wallet_id, 'user_id': explanation.user_id, 'reward_event_id': explanation.reward_event_id, 'epoch': explanation.epoch, 'timestamp': explanation.timestamp, 'base_reward': explanation.base_reward, 'bonuses': explanation.bonuses, 'caps': explanation.caps, 'guards': explanation.guards, 'policy_version': explanation.policy_version, 'policy_hash': explanation.policy_hash, 'total_reward': explanation.total_reward, 'reason_codes': explanation.reason_codes}
-        json_str = json.dumps(hash_data, sort_keys=True, separators=(',', ':'))
-        return hashlib.sha256(json_str.encode('utf-8')).hexdigest()
+        hash_data = {
+            "wallet_id": explanation.wallet_id,
+            "user_id": explanation.user_id,
+            "reward_event_id": explanation.reward_event_id,
+            "epoch": explanation.epoch,
+            "timestamp": explanation.timestamp,
+            "base_reward": explanation.base_reward,
+            "bonuses": explanation.bonuses,
+            "caps": explanation.caps,
+            "guards": explanation.guards,
+            "policy_version": explanation.policy_version,
+            "policy_hash": explanation.policy_hash,
+            "total_reward": explanation.total_reward,
+            "reason_codes": explanation.reason_codes,
+        }
+        json_str = json.dumps(hash_data, sort_keys=True, separators=(",", ":"))
+        return hashlib.sha256(json_str.encode("utf-8")).hexdigest()
 
-    def verify_explanation_consistency(self, explanation: ValueNodeRewardExplanation) -> bool:
+    def verify_explanation_consistency(
+        self, explanation: ValueNodeRewardExplanation
+    ) -> bool:
         """
         Verify that an explanation is consistent with its own hash.
 
@@ -350,7 +358,9 @@ class ValueNodeExplainabilityHelper:
         expected_hash = self._generate_explanation_hash(explanation)
         return explanation.explanation_hash == expected_hash
 
-    def get_simplified_explanation(self, explanation: ValueNodeRewardExplanation) -> Dict[str, Any]:
+    def get_simplified_explanation(
+        self, explanation: ValueNodeRewardExplanation
+    ) -> Dict[str, Any]:
         """
         Generate simplified explanation for end users.
 
@@ -360,8 +370,32 @@ class ValueNodeExplainabilityHelper:
         Returns:
             Dict: Simplified explanation
         """
-        guard_failures = [g for g in explanation.guards if g.get('result') == 'fail']
+        guard_failures = [g for g in explanation.guards if g.get("result") == "fail"]
         has_guard_failures = len(guard_failures) > 0
-        total_atr = explanation.total_reward.get('ATR', '0 ATR')
-        simplified = {'summary': f'Received value-node reward of {total_atr}', 'reason': f'Based on wallet activity in epoch {explanation.epoch}', 'reason_codes': explanation.reason_codes, 'breakdown': {'base_reward': explanation.base_reward, 'bonuses': explanation.bonuses, 'caps': explanation.caps, 'guards': explanation.guards, 'total_reward': explanation.total_reward}, 'policy_info': {'version': explanation.policy_version, 'hash': explanation.policy_hash + '...' if explanation.policy_hash else '', 'has_guard_failures': has_guard_failures}, 'verification': {'hash': explanation.explanation_hash + '...' if explanation.explanation_hash else '', 'consistent': self.verify_explanation_consistency(explanation)}}
+        total_atr = explanation.total_reward.get("ATR", "0 ATR")
+        simplified = {
+            "summary": f"Received value-node reward of {total_atr}",
+            "reason": f"Based on wallet activity in epoch {explanation.epoch}",
+            "reason_codes": explanation.reason_codes,
+            "breakdown": {
+                "base_reward": explanation.base_reward,
+                "bonuses": explanation.bonuses,
+                "caps": explanation.caps,
+                "guards": explanation.guards,
+                "total_reward": explanation.total_reward,
+            },
+            "policy_info": {
+                "version": explanation.policy_version,
+                "hash": explanation.policy_hash + "..."
+                if explanation.policy_hash
+                else "",
+                "has_guard_failures": has_guard_failures,
+            },
+            "verification": {
+                "hash": explanation.explanation_hash + "..."
+                if explanation.explanation_hash
+                else "",
+                "consistent": self.verify_explanation_consistency(explanation),
+            },
+        }
         return simplified

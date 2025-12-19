@@ -66,13 +66,32 @@ class Bounty:
     expires_at: Optional[int] = None  # Unix timestamp, None = no expiration
     impact_tier: ImpactTier = ImpactTier.FEATURE  # For ATR boost
     tags: List[str] = field(default_factory=list)  # e.g., ["ci", "testing"]
+    current_claimant: Optional[str] = None  # Wallet address of claimant
+    submission: Optional["BountySubmission"] = None  # Linked submission
 
     def to_dict(self) -> Dict:
         """Serialize to dictionary for storage"""
-        data = asdict(self)
-        data["status"] = self.status.value
-        data["impact_tier"] = self.impact_tier.value
-        return data
+        return {
+            "bounty_id": self.bounty_id,
+            "title": self.title,
+            "scope": self.scope,
+            "acceptance_criteria": self.acceptance_criteria,
+            "reward_flx": self.reward_flx,
+            "reward_chr": self.reward_chr,
+            "res_stake_required": self.res_stake_required,
+            "created_at": self.created_at,
+            "created_by": self.created_by,
+            "status": self.status.value
+            if hasattr(self.status, "value")
+            else self.status,
+            "expires_at": self.expires_at,
+            "impact_tier": self.impact_tier.value
+            if hasattr(self.impact_tier, "value")
+            else self.impact_tier,
+            "tags": self.tags,
+            "current_claimant": self.current_claimant,
+            "submission": self.submission.to_dict() if self.submission else None,
+        }
 
     @classmethod
     def from_dict(cls, data: Dict) -> "Bounty":
@@ -127,9 +146,21 @@ class BountySubmission:
 
     def to_dict(self) -> Dict:
         """Serialize to dictionary for storage"""
-        data = asdict(self)
-        data["status"] = self.status.value
-        return data
+        return {
+            "submission_id": self.submission_id,
+            "bounty_id": self.bounty_id,
+            "contributor_wallet": self.contributor_wallet,
+            "pr_number": self.pr_number,
+            "commit_hash": self.commit_hash,
+            "res_staked": self.res_staked,
+            "submitted_at": self.submitted_at,
+            "status": self.status.value
+            if hasattr(self.status, "value")
+            else self.status,
+            "verification_notes": self.verification_notes,
+            "verified_by": self.verified_by,
+            "verified_at": self.verified_at,
+        }
 
     @classmethod
     def from_dict(cls, data: Dict) -> "BountySubmission":
@@ -195,7 +226,16 @@ class ContributorProfile:
 
     def to_dict(self) -> Dict:
         """Serialize to dictionary for storage"""
-        return asdict(self)
+        return {
+            "wallet_address": self.wallet_address,
+            "total_atr": self.total_atr,
+            "bounties_completed": self.bounties_completed,
+            "total_flx_earned": self.total_flx_earned,
+            "total_chr_earned": self.total_chr_earned,
+            "first_contribution_at": self.first_contribution_at,
+            "last_contribution_at": self.last_contribution_at,
+            "contribution_history": self.contribution_history,
+        }
 
     @classmethod
     def from_dict(cls, data: Dict) -> "ContributorProfile":

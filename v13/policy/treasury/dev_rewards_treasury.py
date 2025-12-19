@@ -9,11 +9,12 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass, field, asdict
 import json
 
-from .bounty_events import (
+from v13.policy.bounties.bounty_events import (
     emit_bounty_paid_event,
     emit_treasury_refill_event,
     EconomicEvent,
 )
+from v13.libs.BigNum128 import BigNum128
 
 
 class InsufficientTreasuryError(Exception):
@@ -34,8 +35,8 @@ class TreasuryPayment:
 
     bounty_id: str
     contributor: str
-    flx_amount: int
-    chr_amount: int
+    flx_amount: BigNum128
+    chr_amount: BigNum128
     timestamp: int
     pr_number: int
     commit_hash: str
@@ -54,10 +55,10 @@ class DevRewardsTreasury:
     """
 
     treasury_id: str = "dev_rewards_v1"
-    flx_reserve: int = 0
-    chr_reserve: int = 0
-    total_paid_flx: int = 0
-    total_paid_chr: int = 0
+    flx_reserve: BigNum128 = field(default_factory=lambda: BigNum128.from_int(0))
+    chr_reserve: BigNum128 = field(default_factory=lambda: BigNum128.from_int(0))
+    total_paid_flx: BigNum128 = field(default_factory=lambda: BigNum128.from_int(0))
+    total_paid_chr: BigNum128 = field(default_factory=lambda: BigNum128.from_int(0))
     payment_history: List[TreasuryPayment] = field(default_factory=list)
     refill_history: List[Dict] = field(default_factory=list)
 
@@ -67,23 +68,29 @@ class DevRewardsTreasury:
 
     def __post_init__(self):
         """Initialize with default allocation if not set"""
-        if self.flx_reserve == 0 and self.chr_reserve == 0:
+        if self.flx_reserve.value == 0 and self.chr_reserve.value == 0:
             # Default allocation (can be overridden)
-            self.flx_reserve = 10000
-            self.chr_reserve = 5000
+            self.flx_reserve = BigNum128.from_int(10000)
+            self.chr_reserve = BigNum128.from_int(5000)
 
-    def can_pay(self, flx: int, chr: int) -> bool:
+    def can_pay(self, flx: BigNum128, chr: BigNum128) -> bool:
         """Check if treasury has sufficient reserves"""
-        return self.flx_reserve >= flx and self.chr_reserve >= chr
+        return (
+            self.flx_reserve.value >= flx.value and self.chr_reserve.value >= chr.value
+        )
 
     def get_reserve_percentage(self) -> Dict[str, float]:
         """Get current reserve levels as percentages"""
-        initial_flx = self.flx_reserve + self.total_paid_flx
-        initial_chr = self.chr_reserve + self.total_paid_chr
+        initial_flx = self.flx_reserve.value + self.total_paid_flx.value
+        initial_chr = self.chr_reserve.value + self.total_paid_chr.value
 
         return {
-            "flx_pct": (self.flx_reserve / initial_flx) if initial_flx > 0 else 0.0,
-            "chr_pct": (self.chr_reserve / initial_chr) if initial_chr > 0 else 0.0,
+            "flx_pct": (self.flx_reserve.value / initial_flx)
+            if initial_flx > 0
+            else 0.0,
+            "chr_pct": (self.chr_reserve.value / initial_chr)
+            if initial_chr > 0
+            else 0.0,
         }
 
     def check_depletion_status(self) -> Optional[str]:
@@ -108,8 +115,8 @@ class DevRewardsTreasury:
         self,
         bounty_id: str,
         contributor: str,
-        flx: int,
-        chr: int,
+        flx: BigNum128,
+        chr: BigNum128,
         pr_number: int,
         commit_hash: str,
         verifier: str,
@@ -139,10 +146,10 @@ class DevRewardsTreasury:
             )
 
         # Deduct from reserves
-        self.flx_reserve -= flx
-        self.chr_reserve -= chr
-        self.total_paid_flx += flx
-        self.total_paid_chr += chr
+        self.flx_reserve = BigNum128(self.flx_reserve.value - flx.value)
+        self.chr_reserve = BigNum128(self.chr_reserve.value - chr.value)
+        self.total_paid_flx = BigNum128(self.total_paid_flx.value + flx.value)
+        self.total_paid_chr = BigNum128(self.total_paid_chr.value + chr.value)
 
         # Record payment
         from .bounty_events import get_deterministic_timestamp
@@ -177,7 +184,11 @@ class DevRewardsTreasury:
         )
 
     def refill(
-        self, flx_amount: int, chr_amount: int, authorized_by: str, reason: str
+        self,
+        flx_amount: BigNum128,
+        chr_amount: BigNum128,
+        authorized_by: str,
+        reason: str,
     ) -> EconomicEvent:
         """
         Refill treasury (requires governance approval).
@@ -191,16 +202,16 @@ class DevRewardsTreasury:
         Returns:
             EconomicEvent for ledger
         """
-        self.flx_reserve += flx_amount
-        self.chr_reserve += chr_amount
+        self.flx_reserve = BigNum128(self.flx_reserve.value + flx_amount.value)
+        self.chr_reserve = BigNum128(self.chr_reserve.value + chr_amount.value)
 
         # Record refill
         from .bounty_events import get_deterministic_timestamp
 
         self.refill_history.append(
             {
-                "flx_added": flx_amount,
-                "chr_added": chr_amount,
+                "flx_added": flx_amount.to_decimal_string(),
+                "chr_added": chr_amount.to_decimal_string(),
                 "authorized_by": authorized_by,
                 "reason": reason,
                 "timestamp": get_deterministic_timestamp(),
@@ -222,12 +233,15 @@ class DevRewardsTreasury:
         return {
             "treasury_id": self.treasury_id,
             "reserves": {
-                "flx": self.flx_reserve,
-                "chr": self.chr_reserve,
+                "flx": self.flx_reserve.to_decimal_string(),
+                "chr": self.chr_reserve.to_decimal_string(),
                 "flx_pct": reserves["flx_pct"],
                 "chr_pct": reserves["chr_pct"],
             },
-            "total_paid": {"flx": self.total_paid_flx, "chr": self.total_paid_chr},
+            "total_paid": {
+                "flx": self.total_paid_flx.to_decimal_string(),
+                "chr": self.total_paid_chr.to_decimal_string(),
+            },
             "payments_count": len(self.payment_history),
             "refills_count": len(self.refill_history),
             "status": self.check_depletion_status() or "healthy",
@@ -237,27 +251,36 @@ class DevRewardsTreasury:
         """Serialize to dictionary for storage"""
         return {
             "treasury_id": self.treasury_id,
-            "flx_reserve": self.flx_reserve,
-            "chr_reserve": self.chr_reserve,
-            "total_paid_flx": self.total_paid_flx,
-            "total_paid_chr": self.total_paid_chr,
-            "payment_history": [asdict(p) for p in self.payment_history],
+            "flx_reserve": self.flx_reserve.to_decimal_string(),
+            "chr_reserve": self.chr_reserve.to_decimal_string(),
+            "total_paid_flx": self.total_paid_flx.to_decimal_string(),
+            "total_paid_chr": self.total_paid_chr.to_decimal_string(),
+            "payment_history": [
+                {
+                    **asdict(p),
+                    "flx_amount": p.flx_amount.to_decimal_string(),
+                    "chr_amount": p.chr_amount.to_decimal_string(),
+                }
+                for p in self.payment_history
+            ],
             "refill_history": self.refill_history,
         }
 
     @classmethod
     def from_dict(cls, data: Dict) -> "DevRewardsTreasury":
         """Deserialize from dictionary"""
-        payment_history = [
-            TreasuryPayment(**p) for p in data.get("payment_history", [])
-        ]
+        payment_history = []
+        for p in data.get("payment_history", []):
+            p["flx_amount"] = BigNum128.from_string(str(p["flx_amount"]))
+            p["chr_amount"] = BigNum128.from_string(str(p["chr_amount"]))
+            payment_history.append(TreasuryPayment(**p))
 
         return cls(
             treasury_id=data.get("treasury_id", "dev_rewards_v1"),
-            flx_reserve=data["flx_reserve"],
-            chr_reserve=data["chr_reserve"],
-            total_paid_flx=data.get("total_paid_flx", 0),
-            total_paid_chr=data.get("total_paid_chr", 0),
+            flx_reserve=BigNum128.from_string(str(data["flx_reserve"])),
+            chr_reserve=BigNum128.from_string(str(data["chr_reserve"])),
+            total_paid_flx=BigNum128.from_string(str(data.get("total_paid_flx", "0"))),
+            total_paid_chr=BigNum128.from_string(str(data.get("total_paid_chr", "0"))),
             payment_history=payment_history,
             refill_history=data.get("refill_history", []),
         )

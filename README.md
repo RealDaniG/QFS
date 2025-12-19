@@ -44,6 +44,25 @@ This release introduces the complete deterministic session management system wit
 
 ---
 
+## 🤝 Contributing & Bounties
+
+![Bounties Available](https://img.shields.io/badge/bounties-5-brightgreen) ![Total Rewards](https://img.shields.io/badge/rewards-1400_CHR-blue)
+
+We welcome community contributions through our **Developer Rewards Program**. Check out:
+
+- **[BOUNTIES.md](BOUNTIES.md)**: View active paid tasks.
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Setup guide and coding standards.
+
+### Quick Start
+
+```bash
+git clone https://github.com/your-org/qfs-atlas.git && cd qfs-atlas
+python -m venv venv && venv\Scripts\activate  # or source venv/bin/activate
+pip install -r requirements.txt
+pre-commit install
+pytest v13/tests/
+```
+
 ## 🏗️ Architecture Overview
 
 QFS V18.9 runs beneath the ATLAS social layer as a zero‑simulation, multi‑token economic engine with explainable rewards, PQC‑secured consensus, and decentralized storage.
@@ -83,7 +102,7 @@ ATLAS is the user-facing web application that provides wallet-based authenticati
 
 **Key Features:**
 
-- Wallet-based identity (MetaMask, WalletConnect)
+- Wallet-based identity
 - End-to-end encrypted messaging
 - Referral system with Genesis Points
 - Real-time coherence scoring

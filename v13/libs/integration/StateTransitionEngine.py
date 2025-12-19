@@ -5,46 +5,17 @@ Implements the StateTransitionEngine class for atomically applying token state c
 after validation and reward distribution, maintaining full auditability.
 """
 
-import json
-import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
-try:
-    from ...libs.CertifiedMath import CertifiedMath, BigNum128
-    from ...core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
-    from ...libs.governance.RewardAllocator import AllocatedReward
-    from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
-    from ...libs.governance.NODInvariantChecker import (
-        NODInvariantChecker,
-        InvariantCheckResult,
-    )
-except ImportError:
-    try:
-        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
-        from v13.core.TokenStateBundle import (
-            TokenStateBundle,
-            create_token_state_bundle,
-        )
-        from v13.libs.governance.RewardAllocator import AllocatedReward
-        from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
-        from v13.libs.governance.NODInvariantChecker import (
-            NODInvariantChecker,
-            InvariantCheckResult,
-        )
-    except ImportError:
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-        from v13.libs.CertifiedMath import CertifiedMath, BigNum128
-        from v13.core.TokenStateBundle import (
-            TokenStateBundle,
-            create_token_state_bundle,
-        )
-        from v13.libs.governance.RewardAllocator import AllocatedReward
-        from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult
-        from v13.libs.governance.NODInvariantChecker import (
-            NODInvariantChecker,
-            InvariantCheckResult,
-        )
+from v13.libs.CertifiedMath import CertifiedMath
+from v13.libs.BigNum128 import BigNum128
+from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle
+from v13.libs.governance.RewardAllocator import AllocatedReward
+from v13.libs.economics.EconomicsGuard import EconomicsGuard
+from v13.libs.governance.NODInvariantChecker import (
+    NODInvariantChecker,
+)
 
 
 @dataclass
@@ -65,7 +36,7 @@ class StateTransitionEngine:
     atomic updates of all relevant token states, maintaining full auditability.
     """
 
-    def __init__(self, cm_instance: CertifiedMath):
+    def __init__(self, cm_instance: CertifiedMath) -> None:
         """
         Initialize the State Transition Engine with V13.6 constitutional guards.
 
@@ -177,6 +148,7 @@ class StateTransitionEngine:
                 psi_sync_state=new_psi_sync_state,
                 atr_state=new_atr_state,
                 res_state=new_res_state,
+                nod_state=new_nod_state,
                 lambda1=current_token_bundle.lambda1,
                 lambda2=current_token_bundle.lambda2,
                 c_crit=current_token_bundle.c_crit,
@@ -186,15 +158,27 @@ class StateTransitionEngine:
                 or current_token_bundle.quantum_metadata,
                 parameters=current_token_bundle.parameters,
             )
-            if nod_allocations is not None:
-                new_token_bundle.nod_state = new_nod_state
             if nod_allocations is not None and len(nod_allocations) > 0:
                 old_nod_state = (
                     current_token_bundle.nod_state
                     if hasattr(current_token_bundle, "nod_state")
                     else {"balance": "0"}
                 )
-                mock_allocations = []
+                from v13.libs.governance.NODAllocator import NODAllocation
+
+                actual_allocations: List[NODAllocation] = []
+                # Enforce deterministic order (alphabetical by node_id)
+                for node_id in sorted(nod_allocations.keys()):
+                    amount = nod_allocations[node_id]
+                    actual_allocations.append(
+                        NODAllocation(
+                            node_id=node_id,
+                            nod_amount=amount,
+                            contribution_score=BigNum128.from_int(0),  # Proxy
+                            timestamp=deterministic_timestamp,
+                        )
+                    )
+
                 invariant_results = self.nod_invariant_checker.validate_all_invariants(
                     caller_module="StateTransitionEngine",
                     operation_type="nod_allocation",
@@ -205,10 +189,12 @@ class StateTransitionEngine:
                         str(new_nod_state.get("balance", "0"))
                     ),
                     node_balances=new_nod_state,
-                    allocations=mock_allocations,
+                    allocations=actual_allocations,
                     log_list=log_list,
                 )
-                for invariant_result in sorted(invariant_results):
+                for invariant_result in sorted(
+                    invariant_results, key=lambda r: r.invariant_id
+                ):
                     if not invariant_result.passed:
                         log_list.append(
                             {
@@ -234,6 +220,7 @@ class StateTransitionEngine:
                 current_token_bundle,
                 new_token_bundle,
                 allocated_rewards,
+                nod_allocations,
                 log_list,
                 pqc_cid,
                 quantum_metadata,
@@ -355,7 +342,7 @@ class StateTransitionEngine:
         nod_allocations: Optional[Dict[str, BigNum128]],
         log_list: List[Dict[str, Any]],
         deterministic_timestamp: int,
-    ):
+    ) -> None:
         """
         Validate total supply changes for all tokens using EconomicsGuard.
 
@@ -381,22 +368,26 @@ class StateTransitionEngine:
             old_balance = BigNum128.from_string(str(old_state.get("balance", "0")))
             new_balance = BigNum128.from_string(str(new_state.get("balance", "0")))
             supply_delta = self.cm.sub(new_balance, old_balance, log_list, None, None)
+            if supply_delta.value == 0:
+                continue
             if token_name == "CHR":
                 validation = self.economics_guard.validate_chr_reward(
-                    chr_reward=supply_delta,
-                    total_supply_delta=supply_delta,
+                    reward_amount=supply_delta,
+                    current_daily_total=BigNum128(0),  # Placeholder
+                    current_total_supply=new_balance,
                     log_list=log_list,
                 )
             elif token_name == "FLX":
                 validation = self.economics_guard.validate_flx_reward(
-                    flx_reward=supply_delta,
-                    total_supply_delta=supply_delta,
+                    flx_amount=supply_delta,
+                    chr_reward=BigNum128(0),  # Placeholder
+                    user_current_balance=new_balance,
                     log_list=log_list,
                 )
             elif token_name == "RES":
                 validation = self.economics_guard.validate_res_reward(
                     res_reward=supply_delta,
-                    total_supply_delta=supply_delta,
+                    current_total_supply=new_balance,
                     log_list=log_list,
                 )
             else:
@@ -422,11 +413,12 @@ class StateTransitionEngine:
         old_bundle: TokenStateBundle,
         new_bundle: TokenStateBundle,
         allocated_rewards: Dict[str, AllocatedReward],
+        nod_allocations: Optional[Dict[str, BigNum128]],
         log_list: List[Dict[str, Any]],
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         deterministic_timestamp: int = 0,
-    ):
+    ) -> None:
         """
         Log the state transition for audit purposes.
 
@@ -439,28 +431,17 @@ class StateTransitionEngine:
             quantum_metadata: Quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        rewards_log = {
-            address: {
-                "CHR": alloc.chr_amount.to_decimal_string(),
-                "FLX": alloc.flx_amount.to_decimal_string(),
-                "RES": alloc.res_amount.to_decimal_string(),
-                "PsiSync": alloc.psi_sync_amount.to_decimal_string(),
-                "ATR": alloc.atr_amount.to_decimal_string(),
-                "Total": alloc.total_amount.to_decimal_string(),
-            }
-            for address, alloc in allocated_rewards.items()
-        }
-        details = {
-            "operation": "state_transition",
-            "old_bundle_id": old_bundle.bundle_id,
-            "new_bundle_id": new_bundle.bundle_id,
-            "allocated_rewards": rewards_log,
-            "timestamp": deterministic_timestamp,
-        }
         self.cm._log_operation(
             "state_transition",
-            details,
-            BigNum128.from_int(deterministic_timestamp),
+            {
+                "operation": "state_transition",
+                "old_bundle_hash": old_bundle.get_deterministic_hash(),
+                "new_bundle_hash": new_bundle.get_deterministic_hash(),
+                "allocated_rewards_count": len(allocated_rewards),
+                "nod_allocations_count": len(nod_allocations) if nod_allocations else 0,
+                "timestamp": deterministic_timestamp,
+            },
+            new_bundle.lambda1,  # Dummy result for log
             log_list,
             pqc_cid,
             quantum_metadata,
@@ -475,7 +456,7 @@ class StateTransitionEngine:
         pqc_cid: Optional[str] = None,
         quantum_metadata: Optional[Dict[str, Any]] = None,
         deterministic_timestamp: int = 0,
-    ):
+    ) -> None:
         """
         Log a state transition error for audit purposes.
 
@@ -488,22 +469,11 @@ class StateTransitionEngine:
             quantum_metadata: Quantum metadata
             deterministic_timestamp: Deterministic timestamp
         """
-        rewards_log = {
-            address: {
-                "CHR": alloc.chr_amount.to_decimal_string(),
-                "FLX": alloc.flx_amount.to_decimal_string(),
-                "RES": alloc.res_amount.to_decimal_string(),
-                "PsiSync": alloc.psi_sync_amount.to_decimal_string(),
-                "ATR": alloc.atr_amount.to_decimal_string(),
-                "Total": alloc.total_amount.to_decimal_string(),
-            }
-            for address, alloc in allocated_rewards.items()
-        }
         details = {
             "operation": "state_transition_error",
-            "bundle_id": current_bundle.bundle_id,
+            "bundle_id": current_bundle.get_deterministic_hash(),
             "error_message": error_message,
-            "allocated_rewards": rewards_log,
+            "allocated_rewards_count": len(allocated_rewards),
             "timestamp": deterministic_timestamp,
         }
         self.cm._log_operation(
@@ -516,30 +486,30 @@ class StateTransitionEngine:
         )
 
 
-def test_state_transition_engine():
+def test_state_transition_engine() -> None:
     """Test the StateTransitionEngine implementation."""
     cm = CertifiedMath()
     engine = StateTransitionEngine(cm)
-    from ...core.TokenStateBundle import create_token_state_bundle
 
     chr_state = {"balance": "1000.0", "coherence_metric": "5.0"}
     flx_state = {"balance": "500.0", "scaling_metric": "2.0"}
     psi_sync_state = {"balance": "250.0", "frequency_metric": "1.0"}
     atr_state = {"balance": "300.0", "directional_metric": "1.5"}
     res_state = {"balance": "400.0", "inertial_metric": "2.5"}
+    nod_state = {"balance": "100.0"}
     current_bundle = create_token_state_bundle(
         chr_state=chr_state,
         flx_state=flx_state,
         psi_sync_state=psi_sync_state,
         atr_state=atr_state,
         res_state=res_state,
+        nod_state=nod_state,
         lambda1=BigNum128.from_int(1),
         lambda2=BigNum128.from_int(1),
         c_crit=BigNum128.from_int(3),
         pqc_cid="test_transition_001",
         timestamp=1234567890,
     )
-    from ...libs.governance.RewardAllocator import AllocatedReward
 
     allocated_rewards = {
         "addr_001": AllocatedReward(
@@ -561,7 +531,7 @@ def test_state_transition_engine():
             total_amount=BigNum128.from_int(11),
         ),
     }
-    log_list = []
+    log_list: List[Dict[str, Any]] = []
     result = engine.apply_state_transition(
         current_token_bundle=current_bundle,
         allocated_rewards=allocated_rewards,

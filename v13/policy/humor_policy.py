@@ -26,7 +26,7 @@ class HumorPolicy:
     version: str = "v1.0.0"
     hash: str = ""
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Initialize hash for policy versioning."""
         self.hash = self._calculate_hash()
 
@@ -47,7 +47,7 @@ class HumorPolicy:
 class HumorPolicyConfig:
     """Configuration for humor policy rules and reward calculations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.dimension_weights = {
             "chronos": Fraction(3, 20),
             "lexicon": Fraction(1, 10),
@@ -115,15 +115,15 @@ class HumorSignalPolicy:
             enabled=True,
             mode="rewarding",
             dimension_weights={
-                "chronos": Fraction(3, 20),
-                "lexicon": Fraction(1, 10),
-                "surreal": Fraction(1, 10),
-                "empathy": Fraction(1, 5),
-                "critique": Fraction(3, 20),
-                "slapstick": Fraction(1, 10),
-                "meta": Fraction(1, 5),
+                "chronos": float(Fraction(3, 20)),
+                "lexicon": float(Fraction(1, 10)),
+                "surreal": float(Fraction(1, 10)),
+                "empathy": float(Fraction(1, 5)),
+                "critique": float(Fraction(3, 20)),
+                "slapstick": float(Fraction(1, 10)),
+                "meta": float(Fraction(1, 5)),
             },
-            max_bonus_ratio=Fraction(1, 4),
+            max_bonus_ratio=float(Fraction(1, 4)),
             per_user_daily_cap_atr=1,
         )
         self.observation_stats = HumorObservationStats()
@@ -165,7 +165,7 @@ class HumorSignalPolicy:
                 weights_applied=self.policy.dimension_weights,
                 policy_version=self.policy.version,
             )
-        weighted_sum = 0
+        weighted_sum: float = 0.0
         for dimension, score in sorted(dimensions.items()):
             weight = self.policy.dimension_weights.get(dimension, 0)
             weighted_sum += score * weight
@@ -185,7 +185,7 @@ class HumorSignalPolicy:
 
     def _update_observation_stats(
         self, dimensions: Dict[str, float], confidence: float, bonus: float
-    ):
+    ) -> None:
         """Update observability statistics."""
         self.observation_stats.total_signals_processed += 1
         for dimension, score in sorted(dimensions.items()):

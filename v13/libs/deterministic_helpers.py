@@ -13,7 +13,6 @@ This module implements all the helper functions required by the auto_fix_violati
 import hashlib
 from typing import Any, Optional
 from .BigNum128 import BigNum128
-from .CertifiedMath import CertifiedMath
 
 
 class ZeroSimAbort(Exception):
@@ -107,9 +106,9 @@ def qnum(value: Any) -> BigNum128:
     elif isinstance(value, int):
         return BigNum128.from_int(value)
     elif isinstance(value, str):
-        return CertifiedMath.from_string(value)
+        return BigNum128.from_string(value)
     elif isinstance(value, float):
-        return CertifiedMath.from_string(str(value))
+        return BigNum128.from_string(str(value))
     else:
         raise TypeError(f"Cannot convert {type(value)} to BigNum128")
 
@@ -124,14 +123,6 @@ class DeterministicID:
     _seed = "qfs-v13-seed"
 
     @classmethod
-    def next(cls) -> str:
-        """Generate next deterministic ID (UUID-like hex string)"""
-        cls._counter += 1
-        data = f"{cls._seed}-{cls._counter}"
-        # Return 32-char hex string to match uuid4().hex length
-        return hashlib.sha256(data.encode()).hexdigest()[:32]
-
-    @classmethod
     def from_string(cls, data: str) -> str:
         """
         Generate deterministic ID from input string using SHA-256.
@@ -143,3 +134,23 @@ class DeterministicID:
             str: Deterministic 32-character hex ID
         """
         return hashlib.sha256(data.encode()).hexdigest()[:32]
+
+
+def deterministic_hash(value: Any) -> int:
+    """
+    Deterministic hash function for safe set/dict operations.
+    Replaces built-in hash() which is non-deterministic for strings/bytes across runs.
+    """
+    if isinstance(value, (int, bool)):
+        return hash(value)  # Ints/Bools are safe
+    if isinstance(value, (str, bytes)):
+        # SHA-256 for stable hashing of sequence types
+        if isinstance(value, str):
+            value = value.encode("utf-8")
+        return int(hashlib.sha256(value).hexdigest(), 16)
+    if isinstance(value, float):
+        raise TypeError("Floats Forbidden in deterministic hash")
+    if value is None:
+        return 0
+    # Fallback to str() representation
+    return int(hashlib.sha256(str(value).encode("utf-8")).hexdigest(), 16)

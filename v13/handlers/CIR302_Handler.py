@@ -37,19 +37,32 @@ class CIR302_Handler:
 
     CIR302_CODE = BigNum128.from_int(302)
     GUARD_ERROR_MAPPINGS = {
-        "ECON_BOUND_VIOLATION": "Constitutional economic bound violated",
-        "ECON_CHR_MAX_REWARD_EXCEEDED": "CHR reward exceeds max per action",
-        "ECON_CHR_DAILY_EMISSION_CAP_EXCEEDED": "CHR daily emission cap exceeded",
-        "ECON_CHR_SATURATION_THRESHOLD_EXCEEDED": "CHR saturation threshold exceeded",
-        "ECON_FLX_FRACTION_OUT_OF_BOUNDS": "FLX reward fraction out of bounds",
-        "ECON_FLX_PER_USER_CAP_EXCEEDED": "FLX per-user cap exceeded",
-        "ECON_FLX_SATURATION_THRESHOLD_EXCEEDED": "FLX saturation threshold exceeded",
-        "ECON_RES_ALLOCATION_OUT_OF_BOUNDS": "RES allocation out of bounds",
-        "ECON_NOD_ALLOCATION_FRACTION_VIOLATION": "NOD allocation fraction out of bounds (1%-15%)",
-        "ECON_NOD_ISSUANCE_CAP_EXCEEDED": "NOD issuance exceeds epoch cap",
-        "ECON_NOD_NODE_DOMINANCE_VIOLATION": "Single node exceeds max NOD share (30%)",
-        "ECON_NOD_VOTING_POWER_VIOLATION": "Single node exceeds max voting power (25%)",
-        "ECON_PER_ADDRESS_CAP": "Per-address reward cap exceeded",
+        "ECON_BOUND_VIOLATION": "Constitutional economic bound violated: Operation attempted outside allowed parameters",
+        "ECON_CHR_REWARD_ABOVE_MAX": "CHR reward exceeds constitutional maximum per action",
+        "ECON_CHR_REWARD_BELOW_MIN": "CHR reward below constitutional minimum per action",
+        "ECON_CHR_EMISSION_CAP_EXCEEDED": "CHR daily emission cap exceeded: Action violates daily inflation bounds",
+        "ECON_CHR_SATURATION_EXCEEDED": "CHR saturation threshold exceeded: System liquidity risk detected",
+        "ECON_FLX_FRACTION_ABOVE_MAX": "FLX reward fraction exceeds constitutional maximum",
+        "ECON_FLX_FRACTION_BELOW_MIN": "FLX reward fraction below constitutional minimum",
+        "ECON_FLX_PER_USER_EXCEEDED": "FLX per-user cap exceeded: Concentration risk detected",
+        "ECON_NOD_ALLOCATION_ABOVE_MAX": "NOD allocation fraction exceeds constitutional maximum",
+        "ECON_NOD_ALLOCATION_BELOW_MIN": "NOD allocation fraction below constitutional minimum",
+        "ECON_NOD_VOTING_POWER_EXCEEDED": "Single node exceeds constitutional max voting power (25%)",
+        "ECON_NOD_REWARD_SHARE_EXCEEDED": "Single node exceeds constitutional max reward share (30%)",
+        "ECON_NOD_EPOCH_ISSUANCE_EXCEEDED": "NOD issuance exceeds constitutional epoch cap",
+        "ECON_NOD_INSUFFICIENT_ACTIVE_NODES": "Insufficient active nodes for constitutional NOD consensus",
+        "ECON_PSI_DELTA_ABOVE_MAX": "PSI delta exceeds constitutional maximum allowed per epoch",
+        "ECON_PSI_DELTA_BELOW_MIN": "PSI delta below constitutional minimum magnitude",
+        "ECON_PSI_SATURATION_EXCEEDED": "PSI saturation cap exceeded: Stability protocol violation",
+        "ECON_ATR_COST_MULTIPLIER_EXCEEDED": "ATR cost multiplier exceeds constitutional maximum",
+        "ECON_ATR_ACCUMULATION_EXCEEDED": "ATR accumulation exceeds constitutional maximum storage",
+        "ECON_SUPPLY_RATIO_CHANGE_EXCEEDED": "Total supply ratio change exceeds constitutional safety bound",
+        "ECON_SINGLE_EVENT_IMPACT_EXCEEDED": "Single event impact exceeds constitutional safety threshold",
+        "GOV_SAFETY_QUORUM_ABOVE_MAX": "Governance quorum above constitutional maximum bound",
+        "GOV_SAFETY_QUORUM_BELOW_MIN": "Governance quorum below constitutional minimum bound",
+        "GOV_SAFETY_PARAMETER_INVALID": "Governance parameter out of constitutional safety bounds",
+        "ECON_ADDRESS_REWARD_EXCEEDED": "Per-address reward cap exceeded: Anti-concentration guard triggered",
+        "ECON_RES_REWARD_EXCEEDED": "RES reward exceeds constitutional 0.5% draw limit of total supply",
         "ECON_DUST_THRESHOLD": "Reward below dust threshold",
         "ECON_IMMUTABLE_CONSTANT_MUTATION": "Attempted mutation of [IMMUTABLE] constant",
         "INVARIANT_VIOLATION_NOD_TRANSFER": "NOD transfer firewall: NOD delta outside allowed context",
@@ -122,14 +135,10 @@ class CIR302_Handler:
             pqc_cid,
             quantum_metadata,
         )
-<<<<<<< HEAD
 
         # HARD HALT — no return, no state, no quarantine
         # Exit code must be deterministically derived from the fault, not hardcoded
         exit_code = self.cm.idiv_bn(
-=======
-        exit_code = self.cm.idiv(
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
 
@@ -196,13 +205,9 @@ class CIR302_Handler:
                 "timestamp": deterministic_timestamp,
             }
         )
-<<<<<<< HEAD
 
         # HARD HALT — no return, no state, no quarantine
         exit_code = self.cm.idiv_bn(
-=======
-        exit_code = self.cm.idiv(
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
             CIR302_Handler.CIR302_CODE.value, CIR302_Handler.CIR302_CODE.SCALE
         )
 

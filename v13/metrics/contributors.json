@@ -1,0 +1,16 @@
+{
+    "last_updated": "2025-12-18T20:00:00Z",
+    "counts": {
+        "total_contributors": 1,
+        "active_bounties": 5,
+        "completed_bounties": 0,
+        "total_rewards_distributed": 0
+    },
+    "contributors": [
+        {
+            "handle": "core-team",
+            "role": "maintainer",
+            "joined": "2025-01-01"
+        }
+    ]
+}

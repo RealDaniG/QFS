@@ -1,0 +1,7 @@
+{
+  "v14_social_layer": {
+    "hash": "3562088a0f314432ab317dda905743e21cbf8d5b31d73eee943aea2312eebcf1a4ccb68d15d44db64c104d10270e8fd0b0eea52b327d0794b41d8175251ad2a9",
+    "description": "Canonical v14 social layer regression hash",
+    "test_file": "v13/tests/regression/phase_v14_social_full.py"
+  }
+}
