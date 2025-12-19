@@ -56,9 +56,9 @@
 
 ## 2. Admin Panel & Observability (`area:ui`)
 
-- [ ] Create `v15/ui/admin_dashboard.py` (FastAPI + React/Next.js routes)
-- [ ] Implement "Evidence Chain Viewer" (read-only view of PoE log)
-- [ ] Connect `CostProfile` metrics to UI
+- [x] Create `v15/ui/admin_dashboard.py` (FastAPI + React/Next.js routes)
+- [x] Implement "Evidence Chain Viewer" (read-only view of PoE log)
+- [x] Connect `CostProfile` metrics to UI
 
 ## 3. Agent Advisory Migration (`area:agent-advisory`)
 

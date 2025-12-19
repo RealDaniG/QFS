@@ -22,25 +22,13 @@ class EvidenceBus:
     In dev/beta (`MOCKQPC_ENABLED=true`), this mocks the consensus layer.
     """
 
-    _chain_tip: str = "0" * 64
+    _log_file: str = "evidence_chain.jsonl"
 
     @classmethod
     def emit(cls, event_type: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         """
         Emit an event to the Evidence Chain.
-
-        Args:
-            event_type: The type of event (e.g. 'AUTH_LOGIN')
-            payload: The event data
-
-        Returns:
-            The signed event envelope
         """
-        # 1. Deterministic Timestamp (In dev/mockqpc, we might use logical time,
-        # but for now system time is acceptable IF wrapped or accepted as input.
-        # However, to be strict Zero-Sim, we should really accept a timestamp or use a logical clock.
-        # For this scaffold, we'll accept it in payload or default to 0 to be safe/visible violation.)
-
         ts = payload.get("timestamp", int(time.time()))
 
         # 2. Construct Canonical Event
@@ -61,7 +49,6 @@ class EvidenceBus:
         event_hash = algo.hexdigest()
 
         # 5. MOCKQPC Sign (PoE)
-        # We sign the HASH, not the full body, for efficiency
         signature = sign_poe(bytes.fromhex(event_hash))
 
         # 6. Update Chain Tip
@@ -71,13 +58,28 @@ class EvidenceBus:
         envelope = {
             "event": event,
             "hash": event_hash,
-            "signature": signature.hex(),  # signature is bytes
+            "signature": signature.hex(),
         }
 
-        # In a real system, this would write to Kafka/DB.
-        # Here we just return it (or print to stdout if configured).
+        # 8. Persist (Dev/MOCKQPC Mode)
+        with open(cls._log_file, "a") as f:
+            f.write(json.dumps(envelope) + "\n")
+
         return envelope
 
     @classmethod
     def get_tip(cls) -> str:
         return cls._chain_tip
+
+    @classmethod
+    def get_events(cls, limit: int = 100) -> list[Dict]:
+        """Read events from the local chain log."""
+        events = []
+        try:
+            with open(cls._log_file, "r") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(json.loads(line))
+        except FileNotFoundError:
+            return []
+        return events[-limit:]
