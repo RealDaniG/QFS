@@ -34,6 +34,7 @@ class ProposalStatus(str, Enum):
 
 class ProposalKind(str, Enum):
     PARAMETER_CHANGE = "PARAMETER_CHANGE"
+    TEXT = "TEXT"
     # Future attributes: EMERGENCY_FREEZE, UPGRADE_CONTRACT
 
 

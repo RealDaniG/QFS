@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-12-19T11:21:43.247637",
+  "qfs_version": "19.0.0",
+  "atlas_version": "1.3.0",
+  "total_tests": 9,
+  "passed_tests": 9,
+  "failed_tests": 0,
+  "invariants": [
+    {
+      "invariant_id": "GOV-I1",
+      "description": "Quorum (30%) and Supermajority (66%) via integer math only",
+      "component": "ProposalEngine",
+      "test_coverage": [
+        "test_integer_thresholds"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_integer_thresholds"
+    },
+    {
+      "invariant_id": "GOV-I2",
+      "description": "Proposal IDs are content-addressed (SHA3-512)",
+      "component": "ProposalEngine",
+      "test_coverage": [
+        "test_deterministic_id"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_deterministic_id"
+    },
+    {
+      "invariant_id": "GOV-R1",
+      "description": "Immutable parameters cannot be modified",
+      "component": "GovernanceParameterRegistry",
+      "test_coverage": [
+        "test_immutable_protection",
+        "test_immutable_protection_under_load"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_immutable_protection, test_stress_campaign.py::test_immutable_protection_under_load"
+    },
+    {
+      "invariant_id": "TRIG-I1",
+      "description": "Active parameters constant within epoch",
+      "component": "GovernanceTrigger",
+      "test_coverage": [
+        "test_full_execution_lifecycle"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py::test_full_execution_lifecycle"
+    },
+    {
+      "invariant_id": "REPLAY-I1",
+      "description": "Bit-for-bit deterministic replay (0 drift)",
+      "component": "ProposalEngine + Registry + Trigger",
+      "test_coverage": [
+        "test_bit_for_bit_replay",
+        "test_campaign_replay_drift"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_replay.py::test_bit_for_bit_replay, test_stress_campaign.py::test_campaign_replay_drift"
+    },
+    {
+      "invariant_id": "AEGIS-G1",
+      "description": "Active Snapshot == Registry at sync points",
+      "component": "GovernanceCoherenceCheck",
+      "test_coverage": [
+        "test_full_execution_lifecycle",
+        "test_campaign_replay_drift"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py + test_stress_campaign.py (AEGIS checks)"
+    },
+    {
+      "invariant_id": "ECON-I1",
+      "description": "VIRAL_POOL_CAP read from GovernanceTrigger snapshot",
+      "component": "ViralRewardBinder",
+      "test_coverage": [
+        "test_full_execution_lifecycle"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py::test_full_execution_lifecycle"
+    }
+  ],
+  "overall_status": "PASS"
+}

@@ -1,0 +1,9 @@
+test_campaign_replay_drift (__main__.TestStressCampaign.test_campaign_replay_drift)
+Standard Stress: Play campaign 2x and ensure 0 drift. ... ok
+test_immutable_protection_under_load (__main__.TestStressCampaign.test_immutable_protection_under_load)
+Verify that NO immutable keys were changed despite attacks. ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+OK
