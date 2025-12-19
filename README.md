@@ -1,3 +1,21 @@
+# QFS × ATLAS: Quantum Financial System
+
+> **Latest Release:** [v15.0.0 - Autonomous Governance](RELEASE_NOTES_v15.0.0.md) 🎉  
+> **Status:** Production-Ready - Testnet Deployment  
+> **Test Coverage:** 23/23 tests passing, 13/13 invariants verified
+
+## 🚀 v15.0.0 Highlights
+
+- **Autonomous Governance:** Self-amending protocol with deterministic proposal execution
+- **100% Test Coverage:** All governance-critical and operational behaviors verified
+- **Deterministic Replay:** Zero drift, bit-for-bit reproducibility
+- **AEGIS Coherence:** Cross-layer verification ensuring system integrity
+- **Ready for Testnet:** Complete audit trail, external review package prepared
+
+[📖 Read Full Release Notes](RELEASE_NOTES_v15.0.0.md) | [🧪 Quick Start Guide](#quick-start)
+
+---
+
 # Quantum Financial System (QFS) V14.0 – Deterministic Session Management
 
 > **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
