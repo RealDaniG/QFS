@@ -76,7 +76,7 @@ QFS V14.0 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 └─────────────────────────────────────────────────────────┘
                            ↓
 ┌─────────────────────────────────────────────────────────┐
-│                   QFS V18.9 Engine                      │
+│                   QFS V14.0 Engine                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │Constitutional│  │  Zero-Sim    │  │ ExplainThis  │  │
 │  │    Guards    │  │    Replay    │  │    Audit     │  │
