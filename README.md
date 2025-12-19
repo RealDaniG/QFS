@@ -44,8 +44,12 @@ The **7-phase Auth & Contributor Stack** defines v15.4; the first two phases are
 
 #### 🔄 Phases 3–7 (In Progress / Planned)
 
-- **Phase 3**: Protect bounty/contribution routes with wallet auth *(In Progress)*
-- **Phase 4**: Dual-proof wallet ↔ GitHub linking
+- **Phase 3**: Protected Features with Wallet Auth *(COMPLETE - Browser Verification Pending)*
+  - ✅ Auth middleware for bounty routes (`bounty:read`, `bounty:claim`)
+  - ✅ Frontend components: `BountyList`, `MyBounties`, `BountyDashboard`
+  - ✅ Integration tests for end-to-end flow
+  - 🔄 Browser verification in progress
+- **Phase 4**: Dual-proof wallet ↔ GitHub linking *(Next)*
 - **Phase 5**: GitHub Contributions Indexer → deterministic rewards → PoE
 - **Phase 6**: Dashboard with transparent formulas and PoE links
 - **Phase 7**: Hardening (Redis for sessions, rate limiting, CI gating, audit logs)
