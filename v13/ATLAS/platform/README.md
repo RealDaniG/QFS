@@ -1,7 +1,7 @@
 # ATLAS 1.2 — Deterministic Session Management
 
 > **Current Status:** ATLAS 1.2 Released (Session Management & Explainability)  
-> **Backend:** QFS V18.9 (Deterministic Session Management)  
+> **Backend:** QFS V14.0 (Deterministic Session Management)  
 > **Frontend:** Next.js 15 + Explain-This Panels
 
 ATLAS 1.2 transforms ATLAS × QFS into a **deterministic, two-sided "Explain-This" platform**: users and operators can inspect **why** value, rewards, rankings, and visibility occur, while all real economics remain exclusively governed by QFS.
@@ -78,7 +78,7 @@ ATLAS is explicitly defined as:
 
 **Result:** Storage behavior is inspectable and verifiable, not opaque.
 
-### 5. Value-Node Replay & Explainability (V18.9)
+### 5. Value-Node Replay & Explainability (V14.0)
 
 Introduced **user-as-value-node** and **content-as-object** semantics as replayable views.
 

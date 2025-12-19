@@ -1,0 +1,11 @@
+{
+  "git_hash": "f856559538b83c2fe71e886432a7fad8a537bec2",
+  "phases": {
+    "phase_0": {
+      "name": "Environment Scan",
+      "status": "FAIL",
+      "git_hash": "f856559538b83c2fe71e886432a7fad8a537bec2"
+    }
+  },
+  "overall_status": "FAIL"
+}

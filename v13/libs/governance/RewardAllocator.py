@@ -286,20 +286,26 @@ class RewardAllocator:
             }
             for address, alloc in allocated_rewards.items()
         }
+        import json
+
         details = {
             "operation": "reward_allocation",
-            "total_rewards": {
-                "CHR": reward_bundle.chr_reward.to_decimal_string(),
-                "FLX": reward_bundle.flx_reward.to_decimal_string(),
-                "RES": reward_bundle.res_reward.to_decimal_string(),
-                "PsiSync": reward_bundle.psi_sync_reward.to_decimal_string(),
-                "ATR": reward_bundle.atr_reward.to_decimal_string(),
-                "Total": reward_bundle.total_reward.to_decimal_string(),
-            },
-            "recipients": recipient_addresses,
-            "allocation_weights": weights_log,
-            "allocations": allocations_log,
+            "total_rewards": json.dumps(
+                {
+                    "CHR": reward_bundle.chr_reward.to_decimal_string(),
+                    "FLX": reward_bundle.flx_reward.to_decimal_string(),
+                    "RES": reward_bundle.res_reward.to_decimal_string(),
+                    "PsiSync": reward_bundle.psi_sync_reward.to_decimal_string(),
+                    "ATR": reward_bundle.atr_reward.to_decimal_string(),
+                    "Total": reward_bundle.total_reward.to_decimal_string(),
+                },
+                sort_keys=True,
+            ),
+            "recipients": json.dumps(recipient_addresses, sort_keys=True),
+            "allocation_weights": json.dumps(weights_log, sort_keys=True),
+            "allocations": json.dumps(allocations_log, sort_keys=True),
         }
+
         self.cm._log_operation(
             "reward_allocation",
             details,

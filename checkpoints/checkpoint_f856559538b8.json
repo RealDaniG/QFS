@@ -1,0 +1,4449 @@
+{
+  "git_hash": "f856559538b83c2fe71e886432a7fad8a537bec2",
+  "checkpoint_id": "f856559538b8",
+  "imports": {
+    "test_stage_5_integration.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.governance.RewardAllocator import RewardAllocator",
+      "from v13.policy.governance.GovernanceParameterRegistry import (",
+      "from v13.policy.governance.ProposalEngine import ProposalEngine",
+      "from v13.atlas.economics.ViralRewardBinder import ViralRewardBinder"
+    ],
+    "scripts\\debug_violations.py": [
+      "import sys",
+      "import os",
+      "from scripts.zero_sim_analyzer import ViolationAnalyzer, VIOLATION_REGISTRY"
+    ],
+    "scripts\\get_dev_address.py": [
+      "from v13.libs.crypto.derivation import derive_creator_keypair"
+    ],
+    "scripts\\run_local_ast.py": [
+      "import subprocess"
+    ],
+    "scripts\\run_zero_sim_suite.py": [
+      "import sys",
+      "import os",
+      "import subprocess",
+      "import json",
+      "import hashlib",
+      "from v13.libs.deterministic_helpers import ("
+    ],
+    "scripts\\simple_ast_checker.py": [
+      "import ast",
+      "import sys",
+      "from pathlib import Path"
+    ],
+    "scripts\\test_uuid_fix.py": [
+      "import uuid"
+    ],
+    "scripts\\zero_sim_analyzer.py": [
+      "from dataclasses import dataclass, asdict",
+      "from typing import List, Dict, Optional",
+      "import json",
+      "import ast",
+      "import os",
+      "import argparse"
+    ],
+    "scripts\\zero_sim_autofix.py": [
+      "import libcst as cst",
+      "import libcst.matchers as m",
+      "from pathlib import Path",
+      "from typing import Tuple, List, Dict, Any, Set",
+      "import json",
+      "import logging",
+      "from fractions import Fraction",
+      "import argparse"
+    ],
+    "scripts\\zero_sim_dashboard.py": [
+      "import json",
+      "from datetime import datetime, timedelta",
+      "from pathlib import Path",
+      "from typing import List, Dict, Any",
+      "import argparse"
+    ],
+    "v13\\AEGIS\\api.py": [
+      "from fastapi import APIRouter",
+      "from .services import evidence_api",
+      "from .services import explanation_api",
+      "from .services import governance_map",
+      "from .governance import api as governance_api",
+      "from .sandbox import api as sandbox_api  # Added Track 5"
+    ],
+    "v13\\AEGIS\\__init__.py": [
+      "from . import models",
+      "from . import governance",
+      "from . import services",
+      "from . import sandbox",
+      "from . import ui_contracts"
+    ],
+    "v13\\atlas\\bootstrap.py": [
+      "import sys",
+      "from pathlib import Path",
+      "from typing import Dict, Any, Tuple, Optional",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.atlas.spaces.spaces_manager import SpacesManager",
+      "from v13.atlas.wall.wall_service import WallService",
+      "from v13.atlas.chat.chat_service import ChatService",
+      "from v13.policy.bounties.bounty_state_machine import BountyStateMachine",
+      "from v13.policy.treasury.dev_rewards_treasury import DevRewardsTreasury",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\atlas_api\\gateway.py": [
+      "from fractions import Fraction",
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, List, Optional",
+      "from .models import FeedRequest, FeedResponse, FeedPost, InteractionRequest, InteractionResponse, GuardResults, RewardEstimate, ErrorResponse, AGIObservation",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from ..core.CoherenceEngine import CoherenceEngine",
+      "from ..core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from ..core.TokenStateBundle import TokenStateBundle",
+      "from ..libs.governance.TreasuryEngine import TreasuryEngine",
+      "from ..libs.governance.RewardAllocator import RewardAllocator",
+      "from ..libs.economics.EconomicsGuard import EconomicsGuard",
+      "from ..libs.DeterministicTime import DeterministicTime",
+      "from ..guards.AEGISGuard import AEGISGuard",
+      "from ..services.notification_service import NotificationService",
+      "from ..auth.open_agi_role import OPENAGIRoleEnforcer, OPENAGIRole, OPENAGIActionType",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.CoherenceEngine import CoherenceEngine",
+      "from v13.core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.governance.TreasuryEngine import TreasuryEngine",
+      "from v13.libs.governance.RewardAllocator import RewardAllocator",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "from v13.guards.AEGISGuard import AEGISGuard",
+      "from v13.services.notification_service import NotificationService",
+      "from v13.auth.open_agi_role import OPENAGIRoleEnforcer, OPENAGIRole, OPENAGIActionType",
+      "from ..policy.policy_engine import PolicyEngine",
+      "from ..ATLAS.src.signals.humor import HumorSignalAddon",
+      "from v13.ATLAS.src.signals.humor import HumorSignalAddon",
+      "from v13.policy.policy_engine import PolicyEngine",
+      "from ..services.notification_service import NotificationCategory",
+      "from ..core.TokenStateBundle import create_token_state_bundle",
+      "from v13.core.TokenStateBundle import create_token_state_bundle",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\atlas_api\\ledger_handler.py": [
+      "import json",
+      "from typing import Dict, Any, Optional, List",
+      "from ..core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from ..core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\atlas_api\\models.py": [
+      "from ..libs.BigNum128 import BigNum128",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from libs.BigNum128 import BigNum128",
+      "from dataclasses import dataclass, field",
+      "from typing import Optional, List, Dict, Any"
+    ],
+    "v13\\atlas_api\\referral_handler.py": [
+      "from typing import Dict, Any, List, Optional",
+      "import logging",
+      "from v13.ledger.referral_ledger import ReferralLedger"
+    ],
+    "v13\\atlas_api\\router.py": [
+      "from .gateway import AtlasAPIGateway",
+      "from .models import FeedRequest, InteractionRequest, ErrorResponse",
+      "from ..auth.open_agi_role import OPENAGIRole, OPENAGIActionType"
+    ],
+    "v13\\auth\\open_agi_role.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath"
+    ],
+    "v13\\cli\\init_creator.py": [
+      "import json",
+      "import hashlib",
+      "import argparse",
+      "import logging",
+      "from typing import Dict, Any",
+      "from v13.libs.crypto.derivation import derive_creator_keypair",
+      "from v13.libs.keystore.manager import KeystoreManager",
+      "from v13.ledger.writer import LedgerWriter",
+      "from v13.ledger.genesis_ledger import GenesisLedger",
+      "from v13.policy.authorization import AuthorizationEngine"
+    ],
+    "v13\\compliance\\golden_pass.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\core\\AEGISNodeVerification.py": [
+      "import base64",
+      "from typing import Dict, Any"
+    ],
+    "v13\\core\\audit_integrity.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, Union"
+    ],
+    "v13\\core\\CoherenceEngine.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from .TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.events.referral_events import ReferralRewarded",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\core\\CoherenceLedger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.PQC import PQC"
+    ],
+    "v13\\core\\dependencies.py": [
+      "from typing import Optional, Dict, Any"
+    ],
+    "v13\\core\\DRV_Packet.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, Optional, NamedTuple, List",
+      "from ..libs.PQC import PQC",
+      "from v13.libs.PQC import PQC",
+      "from libs.PQC import PQC",
+      "from ..libs.pqc_provider import get_pqc_provider",
+      "from ..libs.pqc_provider import get_pqc_provider"
+    ],
+    "v13\\core\\explanation_audit.py": [
+      "from typing import Dict, Any, Optional",
+      "import json",
+      "import hashlib",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy"
+    ],
+    "v13\\core\\gating_service.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from .TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\core\\HSMF.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from .TokenStateBundle import TokenStateBundle",
+      "from ..handlers.CIR302_Handler import CIR302_Handler",
+      "from ..libs.integration.StateTransitionEngine import StateTransitionEngine",
+      "from ..libs.governance.RewardAllocator import AllocatedReward",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.libs.integration.StateTransitionEngine import StateTransitionEngine",
+      "from v13.libs.governance.RewardAllocator import AllocatedReward",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.libs.integration.StateTransitionEngine import StateTransitionEngine",
+      "from ..libs.governance.RewardAllocator import RewardAllocator",
+      "from ..libs.governance.TreasuryEngine import RewardBundle"
+    ],
+    "v13\\core\\KeyLedger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.PQC import PQC",
+      "from ..libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\core\\QFSReplaySource.py": [
+      "import json",
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import asdict",
+      "from v13.core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\core\\reward_types.py": [
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\core\\StorageEngine.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass, field",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.governance.AEGIS_Node_Verification import (",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.governance.AEGIS_Node_Verification import (",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\core\\storage_economic_views.py": [
+      "from __future__ import annotations",
+      "from dataclasses import dataclass",
+      "from typing import Any, Dict, List, Mapping, MutableMapping, Optional",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath"
+    ],
+    "v13\\core\\storage_explainability.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import dataclass, field",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\core\\TokenStateBundle.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from ..libs.PQC import PQC",
+      "from v13.libs.PQC import PQC",
+      "from libs.PQC import PQC"
+    ],
+    "v13\\epoch\\Replayer.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List, Optional",
+      "from v13.libs.PQC import PQC, ValidationResult",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\events\\referral_events.py": [
+      "from dataclasses import dataclass, field",
+      "from typing import Dict, Any",
+      "import hashlib"
+    ],
+    "v13\\guards\\AEGISGuard.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.core.SafetyGuard import SafetyGuard",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from libs.economics.EconomicsGuard import EconomicsGuard",
+      "from libs.core.SafetyGuard import SafetyGuard",
+      "from core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\handlers\\AntiTamper.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from .CIR412_Handler import CIR412_Handler, TamperEvidence",
+      "from .CIR302_Handler import CIR302_Handler"
+    ],
+    "v13\\handlers\\CIR302_Handler.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List, Type",
+      "from libs.BigNum128 import BigNum128",
+      "from libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.fatal_errors import ZeroSimAbort, log_fatal_exception"
+    ],
+    "v13\\handlers\\CIR412_Handler.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\handlers\\CIR511_Handler.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\integrations\\openagi_dm_adapter.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from v13.libs.deterministic_hash import deterministic_hash",
+      "from v13.policy.authorization import AuthorizationEngine"
+    ],
+    "v13\\integrations\\openagi_pqc_adapter.py": [
+      "import json",
+      "import base64",
+      "from typing import Dict, Any, Optional",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\ledger\\genesis_ledger.py": [
+      "import json",
+      "import hashlib",
+      "import os",
+      "import asyncio",
+      "import time",
+      "from datetime import datetime, timezone",
+      "from typing import Dict, Any, List, Optional",
+      "from pydantic import BaseModel"
+    ],
+    "v13\\ledger\\referral_ledger.py": [
+      "from typing import Dict, Any, List, Optional",
+      "from v13.events.referral_events import ReferralCreated, ReferralAccepted, ReferralActivated, ReferralFraudBlocked, deterministic_referral_code",
+      "import logging",
+      "from v13.events.referral_events import ReferralRewarded"
+    ],
+    "v13\\ledger\\writer.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional",
+      "from v13.ledger.genesis_ledger import GenesisLedger, GenesisEntry"
+    ],
+    "v13\\libs\\AST_ZeroSimChecker.py": [
+      "import ast",
+      "import fnmatch",
+      "import os",
+      "import sys",
+      "from typing import List, Set, Any, Optional, Dict, Union",
+      "from dataclasses import dataclass",
+      "import logging",
+      "import argparse"
+    ],
+    "v13\\libs\\BigNum128.py": [
+      "import json",
+      "from typing import Any, Dict, List, Union",
+      "from .CertifiedMath import CertifiedMath",
+      "from .deterministic_helpers import deterministic_hash",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath"
+    ],
+    "v13\\libs\\BigNum128_fixed.py": [
+      "import json",
+      "from typing import Any, Dict, List, Union",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .deterministic_helpers import deterministic_hash",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath",
+      "from .CertifiedMath import CertifiedMath"
+    ],
+    "v13\\libs\\CertifiedMath.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List, Optional, Tuple, Union",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from BigNum128 import BigNum128  # type: ignore",
+      "from .BigNum128 import BigNum128",
+      "from .BigNum128 import BigNum128",
+      "from .BigNum128 import BigNum128"
+    ],
+    "v13\\libs\\DeterministicTime.py": [
+      "from typing import Optional, Any"
+    ],
+    "v13\\libs\\deterministic_hash.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List, Union",
+      "from CertifiedMath import BigNum128"
+    ],
+    "v13\\libs\\deterministic_helpers.py": [
+      "import hashlib",
+      "from typing import Any, Optional",
+      "from .BigNum128 import BigNum128"
+    ],
+    "v13\\libs\\fatal_errors.py": [
+      "from typing import Optional",
+      "from .CertifiedMath import CertifiedMath"
+    ],
+    "v13\\libs\\HolonetSync.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional, Tuple",
+      "from dataclasses import dataclass",
+      "from .CertifiedMath import CertifiedMath, BigNum128",
+      "from .deterministic_hash import deterministic_hash"
+    ],
+    "v13\\libs\\PQC.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Optional, Dict, List, Tuple, Union",
+      "from dataclasses import dataclass",
+      "from .pqc.registry import PQCAlgorithm, REGISTRY",
+      "from .pqc.oqs_adapter import get_adapter"
+    ],
+    "v13\\libs\\pqc_provider.py": [
+      "from typing import Protocol, Tuple, Optional",
+      "import os",
+      "import hashlib",
+      "import hmac",
+      "import logging"
+    ],
+    "v13\\libs\\type_guards.py": [
+      "from typing import (",
+      "from enum import Enum",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\ops\\DriftDetector.py": [
+      "from fractions import Fraction",
+      "import argparse",
+      "import logging",
+      "from typing import List, Dict, Any",
+      "from v13.core.QFSReplaySource import LiveLedgerReplaySource",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine"
+    ],
+    "v13\\policy\\artistic_observatory.py": [
+      "from fractions import Fraction",
+      "from typing import Dict, Any, List",
+      "from dataclasses import dataclass",
+      "from collections import defaultdict",
+      "from .artistic_policy import ArtisticObservationStats"
+    ],
+    "v13\\policy\\artistic_policy.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from v13.policy.artistic_constants import SCALE, PHI",
+      "from v13.policy.artistic_vector import ArtisticVector",
+      "from v13.policy.artistic_features.composition import analyze_composition",
+      "from v13.policy.artistic_features.color import analyze_color_harmony",
+      "from v13.policy.artistic_features.symmetry import analyze_symmetry",
+      "from v13.policy.artistic_features.complexity import analyze_complexity",
+      "from v13.policy.artistic_features.narrative import analyze_narrative"
+    ],
+    "v13\\policy\\artistic_vector.py": [
+      "from dataclasses import dataclass, field",
+      "from typing import List, Dict",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\policy\\authorization.py": [
+      "from typing import List, Dict, Any"
+    ],
+    "v13\\policy\\humor_explainability.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from decimal import Decimal",
+      "from .humor_policy import HumorSignalPolicy"
+    ],
+    "v13\\policy\\humor_observatory.py": [
+      "from fractions import Fraction",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass, field",
+      "from collections import defaultdict",
+      "from .humor_policy import HumorObservationStats"
+    ],
+    "v13\\policy\\humor_policy.py": [
+      "from fractions import Fraction",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from .policy_engine import PolicyEngine, PolicyConfiguration, PolicyHints"
+    ],
+    "v13\\policy\\PolicyRegistry.py": [
+      "from typing import Dict, Any, Optional",
+      "import copy"
+    ],
+    "v13\\policy\\policy_engine.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum"
+    ],
+    "v13\\policy\\storage_explainability.py": [
+      "from typing import Dict, Any, List, Optional",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\policy\\value_node_explainability.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from .humor_policy import HumorSignalPolicy",
+      "from .artistic_policy import ArtisticSignalPolicy",
+      "from ..libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\policy\\value_node_replay.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "from v13.ATLAS.src.value_graph_ref import ValueGraphRef",
+      "from v13.policy.value_node_explainability import (",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "import hashlib"
+    ],
+    "v13\\scripts\\autonomous_fix_analyzer.py": [
+      "import json",
+      "import subprocess",
+      "from pathlib import Path",
+      "from typing import Dict, List",
+      "import re"
+    ],
+    "v13\\scripts\\build_phase3_evidence.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List"
+    ],
+    "v13\\scripts\\check_dual_write_consistency.py": [
+      "import argparse",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List, Tuple",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\scripts\\generate_aes_gut_evidence.py": [
+      "import json",
+      "import hashlib",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy",
+      "from v13.policy.artistic_constants import SCALE"
+    ],
+    "v13\\scripts\\generate_drill_ledger.py": [
+      "import json"
+    ],
+    "v13\\scripts\\generate_full_stack_evidence.py": [
+      "import subprocess",
+      "import json"
+    ],
+    "v13\\scripts\\generate_staging_ledger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.core.CoherenceLedger import LedgerEntry"
+    ],
+    "v13\\scripts\\generate_value_node_evidence.py": [
+      "from fractions import Fraction",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy"
+    ],
+    "v13\\scripts\\nightly_e2e.py": [
+      "import subprocess",
+      "import json"
+    ],
+    "v13\\scripts\\run_autonomous_audit.py": [
+      "import re",
+      "import json",
+      "import subprocess",
+      "from pathlib import Path",
+      "from typing import Dict, List, Tuple, Optional"
+    ],
+    "v13\\scripts\\run_autonomous_audit_v2.py": [
+      "import re",
+      "import json",
+      "import logging",
+      "import subprocess",
+      "import ast",
+      "from pathlib import Path",
+      "from typing import Dict, List, Tuple, Optional, Set",
+      "from dataclasses import dataclass, asdict",
+      "import hashlib",
+      "from fnmatch import fnmatch"
+    ],
+    "v13\\scripts\\run_storage_replay_drill.py": [
+      "import argparse",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\scripts\\run_zero_sim_suite.py": [
+      "import pytest"
+    ],
+    "v13\\scripts\\scan_zero_mock_compliance.py": [
+      "import re",
+      "import json",
+      "import ast",
+      "from pathlib import Path",
+      "from typing import List, Dict, Any, Set"
+    ],
+    "v13\\scripts\\scan_zero_sim_compliance.py": [
+      "import os",
+      "import re",
+      "import json",
+      "import ast"
+    ],
+    "v13\\scripts\\simulate_storage_cir302_incident.py": [
+      "import argparse",
+      "import json",
+      "import sys",
+      "import os",
+      "from typing import Dict, Any",
+      "from unittest.mock import patch",
+      "from core.StorageEngine import StorageEngine",
+      "from libs.CertifiedMath import CertifiedMath",
+      "from libs.BigNum128 import BigNum128",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from libs.deterministic_helpers import det_time_isoformat"
+    ],
+    "v13\\scripts\\verify_aegis_boundaries.py": [
+      "import sys",
+      "import json",
+      "from typing import List, Dict, Any",
+      "from datetime import datetime",
+      "from v13.core.audit_integrity import get_audit_trail"
+    ],
+    "v13\\scripts\\verify_reward_proof.py": [
+      "import json",
+      "import hashlib",
+      "import argparse"
+    ],
+    "v13\\scripts\\verify_trust_loop.py": [
+      "import json",
+      "from v13.ledger.genesis_ledger import GenesisLedger, GenesisEntry",
+      "from v13.ATLAS.src.security.wallet_id import wallet_to_user_id",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.CoherenceEngine import CoherenceEngine",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle"
+    ],
+    "v13\\scripts\\verify_value_node_zero_sim.py": [
+      "import subprocess",
+      "import json",
+      "import glob"
+    ],
+    "v13\\scripts\\zero-sim-ast.py": [
+      "import ast",
+      "import json",
+      "import argparse",
+      "from typing import List, Dict, Any"
+    ],
+    "v13\\scripts\\zero_mock_final_sweep.py": [
+      "import os",
+      "import re",
+      "from pathlib import Path"
+    ],
+    "v13\\scripts\\zero_sim_analyzer.py": [
+      "from dataclasses import dataclass, asdict",
+      "from typing import List, Dict, Optional",
+      "import json",
+      "import ast",
+      "import os",
+      "import argparse"
+    ],
+    "v13\\scripts\\zero_sim_autofix.py": [
+      "import libcst as cst",
+      "import libcst.matchers as m",
+      "from pathlib import Path",
+      "from typing import Tuple, List, Dict, Any, Set",
+      "import json",
+      "import logging",
+      "from fractions import Fraction",
+      "import argparse"
+    ],
+    "v13\\scripts\\zero_sim_dashboard.py": [
+      "import json",
+      "from datetime import datetime, timedelta",
+      "from pathlib import Path",
+      "from typing import List, Dict, Any",
+      "import argparse"
+    ],
+    "v13\\sdk\\QFSV13SDK.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from ..core.TokenStateBundle import TokenStateBundle",
+      "from ..core.HSMF import HSMF",
+      "from ...libs.TreasuryEngine import TreasuryEngine",
+      "from ..handlers.CIR302_Handler import CIR302_Handler",
+      "from ..libs.PQC import PQC",
+      "from ..core.DRV_Packet import DRV_Packet",
+      "from ..services.aegis_api import AEGIS_API",
+      "from ..libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from ..libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult",
+      "from v13.libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult",
+      "from NODInvariantChecker import NODInvariantChecker, InvariantCheckResult",
+      "from ..libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult",
+      "from v13.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult",
+      "from AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult"
+    ],
+    "v13\\services\\aegis_api.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from ..core.TokenStateBundle import TokenStateBundle",
+      "from ..core.HSMF import HSMF",
+      "from ...libs.TreasuryEngine import TreasuryEngine",
+      "from ..handlers.CIR302_Handler import CIR302_Handler",
+      "from ..libs.PQC import PQC",
+      "from ..core.DRV_Packet import DRV_Packet"
+    ],
+    "v13\\services\\ledger_economics_service.py": [
+      "from typing import Dict, Any, Optional",
+      "from ..libs.CertifiedMath import BigNum128",
+      "import hashlib"
+    ],
+    "v13\\services\\notification_service.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from ..libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from ..core.CoherenceLedger import CoherenceLedger, LedgerEntry",
+      "from ..core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tests\\conftest.py": [
+      "import os",
+      "import sys",
+      "import types",
+      "import pytest",
+      "import v13.core.TokenStateBundle as _tsb_mod",
+      "import v13.utils.qfs_system as _qfs_system_mod",
+      "from v13.libs.logging.qfs_logger import LogLevel, LogCategory"
+    ],
+    "v13\\tests\\debug_gateway.py": [
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest"
+    ],
+    "v13\\tests\\deterministic_verification_suite.py": [
+      "import json",
+      "import hashlib",
+      "import sys",
+      "import os",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from PQC import PQC",
+      "from HSMF import HSMF, ValidationResult",
+      "from DRV_Packet import DRV_Packet",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from CIR302_Handler import CIR302_Handler, QuarantineResult",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from PQC import PQC",
+      "from HSMF import HSMF, ValidationResult",
+      "from DRV_Packet import DRV_Packet",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from CIR302_Handler import CIR302_Handler, QuarantineResult",
+      "from dataclasses import dataclass"
+    ],
+    "v13\\tests\\final_integration_test.py": [
+      "import json",
+      "import hashlib",
+      "import os",
+      "import sys",
+      "from typing import Any",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from PQC import PQC",
+      "from HSMF import HSMF, ValidationResult",
+      "from DRV_Packet import DRV_Packet",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from CIR302_Handler import CIR302_Handler, QuarantineResult"
+    ],
+    "v13\\tests\\performance_test_suite.py": [
+      "import json",
+      "from time import perf_counter",
+      "import hashlib",
+      "from typing import List, Dict, Any"
+    ],
+    "v13\\tests\\phase3_audit_suite.py": [
+      "import json",
+      "from typing import List, Dict, Any",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "import traceback"
+    ],
+    "v13\\tests\\phase3_verification_suite.py": [
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "import traceback"
+    ],
+    "v13\\tests\\test_aegis_advisory_exposure.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tests\\test_aegis_advisory_gate.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import pytest",
+      "from v13.guards.AEGISGuard import AEGISGuard",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tests\\test_aegis_guard.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.guards.AEGISGuard import AEGISGuard",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\tests\\test_aes_vectors.py": [
+      "import pytest",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy",
+      "from v13.policy.artistic_constants import SCALE, PHI"
+    ],
+    "v13\\tests\\test_agi_observation_endpoint.py": [
+      "import pytest",
+      "from v13.atlas_api.router import AtlasAPIRouter",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.auth.open_agi_role import OPENAGIRole, OPENAGIActionType"
+    ],
+    "v13\\tests\\test_artistic_compliance.py": [
+      "import ast",
+      "import pytest"
+    ],
+    "v13\\tests\\test_artistic_explainability.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy",
+      "from v13.policy.humor_policy import HumorSignalPolicy"
+    ],
+    "v13\\tests\\test_artistic_observatory.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.artistic_observatory import ArtisticSignalObservatory, ArtisticSignalSnapshot"
+    ],
+    "v13\\tests\\test_artistic_policy.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy",
+      "from v13.policy.artistic_constants import SCALE"
+    ],
+    "v13\\tests\\test_artistic_signal.py": [
+      "import pytest",
+      "from v13.ATLAS.src.signals.artistic import ArtisticSignalAddon",
+      "from v13.ATLAS.src.signals.base import SignalResult"
+    ],
+    "v13\\tests\\test_ast.py": [
+      "import ast"
+    ],
+    "v13\\tests\\test_ast_math.py": [
+      "import ast"
+    ],
+    "v13\\tests\\test_ast_zerosimchecker_modules.py": [
+      "import pytest",
+      "import tempfile",
+      "from v13.libs.AST_ZeroSimChecker import AST_ZeroSimChecker"
+    ],
+    "v13\\tests\\test_audit_integrity.py": [
+      "import pytest",
+      "from v13.core.audit_integrity import verify_explanation_integrity, detect_tampering",
+      "import json, hashlib",
+      "import json, hashlib",
+      "import json, hashlib"
+    ],
+    "v13\\tests\\test_bignum128_comprehensive.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\test_bignum128_copy.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\test_bignum128_edge_cases.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\test_bignum128_fixes.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\test_bignum128_operators.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\test_bignum128_phase3_audit.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "import struct",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\test_bignum128_underflow.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\test_certifiedmath_edge_cases.py": [
+      "import pytest",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\test_certified_math_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.economics.GenesisHarmonicState import GENESIS_STATE, validate_genesis_constraints",
+      "import traceback"
+    ],
+    "v13\\tests\\test_deterministic_behavior.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "from atlas_api.gateway import AtlasAPIGateway",
+      "from atlas_api.models import FeedRequest, InteractionRequest"
+    ],
+    "v13\\tests\\test_deterministic_components.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import sys",
+      "import os",
+      "from v13.libs.economics.QAmount import QAmount",
+      "from v13.libs.deterministic.time import (",
+      "from v13.libs.deterministic.random import (",
+      "from v13.libs.fatal_errors import (",
+      "from v13.libs.economics.QAmount import QAmount",
+      "from v13.ATLAS.src.numeric import AtlasNumeric",
+      "from v13.ATLAS.src.time import AtlasTime"
+    ],
+    "v13\\tests\\test_deterministic_replay.py": [
+      "import hashlib",
+      "import json",
+      "from typing import List, Dict, Any",
+      "from atlas_api.gateway import AtlasAPIGateway",
+      "from atlas_api.models import FeedRequest, InteractionRequest",
+      "from libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from core.TokenStateBundle import TokenStateBundle",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest, InteractionRequest",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from atlas_api.gateway import AtlasAPIGateway",
+      "from atlas_api.models import FeedRequest, InteractionRequest",
+      "from libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from core.TokenStateBundle import TokenStateBundle",
+      "import pytest"
+    ],
+    "v13\\tests\\test_economics_guard.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\test_explain_live_equivalence.py": [
+      "import pytest",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy"
+    ],
+    "v13\\tests\\test_explain_this_performance.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import pytest",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.core.audit_integrity import verify_explanation_integrity",
+      "import hashlib, json"
+    ],
+    "v13\\tests\\test_feed_aegis_advisory_exposure.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tests\\test_feed_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.atlas_api.models import FeedRequest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from unittest.mock import Mock",
+      "import traceback"
+    ],
+    "v13\\tests\\test_feed_safety.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest"
+    ],
+    "v13\\tests\\test_functionality.py": [
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from HSMF import HSMF, ValidationResult",
+      "import inspect"
+    ],
+    "v13\\tests\\test_gateway_aegis_integration.py": [
+      "import pytest",
+      "from unittest.mock import Mock, patch",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\test_governance_dashboard.py": [
+      "import pytest",
+      "from v13.atlas_api.router import AtlasAPIRouter",
+      "from v13.auth.open_agi_role import OPENAGIRole, OPENAGIActionType"
+    ],
+    "v13\\tests\\test_humor_compliance.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.ATLAS.src.signals.humor import HumorSignalAddon",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.humor_observatory import HumorSignalObservatory",
+      "from v13.policy.humor_explainability import HumorExplainabilityHelper",
+      "import inspect",
+      "import v13.ATLAS.src.signals.humor as humor_module",
+      "import inspect",
+      "import v13.policy.humor_policy as policy_module",
+      "import inspect",
+      "import v13.policy.humor_observatory as observatory_module",
+      "import inspect",
+      "import v13.policy.humor_explainability as explainability_module",
+      "import inspect",
+      "import v13.ATLAS.src.signals.humor as humor_module",
+      "import v13.policy.humor_policy as policy_module",
+      "import v13.policy.humor_observatory as observatory_module",
+      "import v13.policy.humor_explainability as explainability_module",
+      "import inspect",
+      "import v13.ATLAS.src.signals.humor as humor_module",
+      "import v13.policy.humor_policy as policy_module",
+      "import v13.policy.humor_observatory as observatory_module",
+      "import v13.policy.humor_explainability as explainability_module",
+      "import inspect",
+      "import v13.ATLAS.src.signals.humor as humor_module",
+      "import v13.policy.humor_policy as policy_module",
+      "import v13.policy.humor_observatory as observatory_module",
+      "import v13.policy.humor_explainability as explainability_module"
+    ],
+    "v13\\tests\\test_humor_deterministic_replay.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "import json",
+      "import hashlib",
+      "from v13.ATLAS.src.signals.humor import HumorSignalAddon",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.humor_observatory import HumorSignalObservatory, HumorSignalSnapshot",
+      "from v13.policy.humor_explainability import HumorExplainabilityHelper"
+    ],
+    "v13\\tests\\test_humor_explainability.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "from v13.policy.humor_explainability import HumorExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy"
+    ],
+    "v13\\tests\\test_humor_observatory.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.humor_observatory import HumorSignalObservatory, HumorSignalSnapshot"
+    ],
+    "v13\\tests\\test_humor_policy.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicyConfig, HumorPolicy"
+    ],
+    "v13\\tests\\test_humor_signal_integration.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.ATLAS.src.signals.humor import HumorSignalAddon"
+    ],
+    "v13\\tests\\test_interaction_safety.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest"
+    ],
+    "v13\\tests\\test_ledger_economics_integration.py": [
+      "import pytest",
+      "from v13.guards.AEGISGuard import AEGISGuard",
+      "from v13.services.ledger_economics_service import LedgerEconomicsService",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tests\\test_observation_correlation.py": [
+      "import pytest",
+      "from v13.atlas_api.router import AtlasAPIRouter",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.auth.open_agi_role import OPENAGIRole, OPENAGIActionType"
+    ],
+    "v13\\tests\\test_phase3_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.economics.GenesisHarmonicState import GENESIS_STATE, boot_from_genesis",
+      "from v13.libs.economics.PsiFieldEngine import DiscretePsiField",
+      "from v13.libs.economics.HarmonicEconomics import HarmonicEconomics",
+      "from v13.libs.economics.PsiSyncProtocol import PsiSyncProtocol",
+      "from v13.libs.economics.TreasuryDistributionEngine import TreasuryDistributionEngine",
+      "from v13.libs.economics.HoloRewardEngine import HoloRewardEngine",
+      "from v13.libs.economics.SystemRecoveryProtocol import SystemRecoveryProtocol",
+      "from v13.libs.economics.EconomicAdversarySuite import EconomicAdversarySuite",
+      "from v13.core.TokenStateBundle import create_token_state_bundle",
+      "from v13.core.CoherenceLedger import CoherenceLedger"
+    ],
+    "v13\\tests\\test_policy_engine.py": [
+      "import pytest",
+      "from v13.policy.policy_engine import PolicyEngine, PolicyConfiguration, PolicyHints, VisibilityLevel, WarningBannerType"
+    ],
+    "v13\\tests\\test_policy_integration.py": [
+      "import unittest",
+      "from unittest.mock import Mock, patch",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest, FeedPost",
+      "from v13.policy.policy_engine import PolicyEngine, PolicyConfiguration, VisibilityLevel, WarningBannerType"
+    ],
+    "v13\\tests\\test_policy_integration_fixed.py": [
+      "import unittest",
+      "from unittest.mock import Mock, patch",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest, FeedPost",
+      "from v13.policy.policy_engine import PolicyEngine, PolicyConfiguration, VisibilityLevel, WarningBannerType"
+    ],
+    "v13\\tests\\test_policy_severities.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.atlas_api.models import FeedRequest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from unittest.mock import Mock",
+      "import traceback"
+    ],
+    "v13\\tests\\test_pqc_integration.py": [
+      "import unittest",
+      "import asyncio",
+      "from libs.PQC import PQC, KeyPair, ValidationResult",
+      "from ATLAS.src.qfs_client import QFSClient",
+      "from ATLAS.src.qfs_types import OperationBundle",
+      "from unittest.mock import MagicMock",
+      "from ATLAS.src.types import Transaction"
+    ],
+    "v13\\tests\\test_pqc_network_integration.py": [
+      "import unittest",
+      "import base64",
+      "import json",
+      "import asyncio",
+      "from unittest.mock import MagicMock, AsyncMock, patch",
+      "from libs.PQC import PQC, KeyPair",
+      "from ATLAS.src.core.pqc_session import pqc_session_manager",
+      "from pydantic import BaseModel",
+      "from ATLAS.src.p2p.connection_manager import ConnectionManager"
+    ],
+    "v13\\tests\\test_psi_dynamics.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "from v13.libs.economics.PsiFieldEngine import DiscretePsiField, create_secure_psi_field",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath"
+    ],
+    "v13\\tests\\test_real_storage_wiring.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import FeedRequest",
+      "from v13.libs.CertifiedMath import BigNum128"
+    ],
+    "v13\\tests\\test_safety_guard.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.libs.core.SafetyGuard import SafetyGuard",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\tests\\test_safety_guard_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest"
+    ],
+    "v13\\tests\\test_storage_economic_views.py": [
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.storage_economic_views import compute_storage_metrics_from_events",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\test_storage_engine.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import pytest",
+      "from StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\test_token_state_bundle_storage.py": [
+      "import pytest",
+      "from v13.core.TokenStateBundle import create_token_state_bundle, TokenStateBundle",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\test_token_state_extension.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import BigNum128"
+    ],
+    "v13\\tests\\test_unsafe_interaction_flow.py": [
+      "import pytest",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.atlas_api.models import InteractionRequest"
+    ],
+    "v13\\tests\\test_value_node_explainability.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "import re",
+      "from typing import Dict, Any, List",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper, ValueNodeRewardExplanation",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "import v13.policy.value_node_explainability as module",
+      "import inspect",
+      "import v13.policy.value_node_explainability as module",
+      "import inspect",
+      "import v13.policy.value_node_explainability as module",
+      "import inspect",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy"
+    ],
+    "v13\\tests\\test_value_node_replay.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy"
+    ],
+    "v13\\tests\\test_wall_posts.py": [
+      "import pytest",
+      "from typing import Dict, Any, List",
+      "from v13.atlas.spaces.wall_posts import WallPostManager, WallPost",
+      "from v13.atlas.spaces.wall_posts_events import (",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\test_write.py": [
+      "import json"
+    ],
+    "v13\\tests\\test_write2.py": [
+      "import json",
+      "import traceback"
+    ],
+    "v13\\tests\\test_zero_sim_violations.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import math",
+      "import importlib"
+    ],
+    "v13\\tools\\adversarial_simulator.py": [
+      "import json",
+      "from typing import List, Dict, Any",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from CIR302_Handler import CIR302_Handler",
+      "from CIR302_Handler import CIR302_Handler",
+      "from v13.core.HSMF import HSMF",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.core.DRV_Packet import DRV_Packet",
+      "from test_cir302_handler import TestCIR302Handler",
+      "import argparse",
+      "from test_cir302_handler import TestCIR302Handler",
+      "import json"
+    ],
+    "v13\\tools\\determinism_fuzzer.py": [
+      "import json",
+      "import logging",
+      "from typing import List, Dict, Any",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "import argparse"
+    ],
+    "v13\\tools\\evidence_indexer.py": [
+      "import json",
+      "import hashlib",
+      "import argparse",
+      "from pathlib import Path",
+      "from typing import List, Dict, Any"
+    ],
+    "v13\\tools\\extract_violation_count.py": [
+      "import re",
+      "import sys"
+    ],
+    "v13\\tools\\fix_drv_packet.py": [
+      "import os"
+    ],
+    "v13\\tools\\generate_reference_hash.py": [
+      "from pathlib import Path",
+      "from tools.determinism_fuzzer import DeterminismFuzzer"
+    ],
+    "v13\\tools\\generate_violation_taxonomy.py": [
+      "from fractions import Fraction",
+      "import re",
+      "import json",
+      "import os",
+      "import sys",
+      "from datetime import datetime, timezone"
+    ],
+    "v13\\tools\\humor_observatory_cli.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import argparse",
+      "from typing import Dict, Any, List",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "from v13.policy.humor_observatory import HumorSignalObservatory, HumorSignalSnapshot"
+    ],
+    "v13\\tools\\phase3_batch1_test_cleanup.py": [
+      "import re",
+      "import os",
+      "import shutil",
+      "from pathlib import Path",
+      "from datetime import datetime",
+      "from typing import Tuple",
+      "import sys",
+      "import argparse"
+    ],
+    "v13\\tools\\phase3_batch2_sorted_iterations.py": [
+      "import ast",
+      "import sys",
+      "import shutil",
+      "from pathlib import Path",
+      "from typing import List, Tuple, Optional",
+      "from dataclasses import dataclass",
+      "from datetime import datetime",
+      "import argparse"
+    ],
+    "v13\\tools\\phase3_batch3_print_removal.py": [
+      "import ast",
+      "import sys",
+      "import shutil",
+      "from pathlib import Path",
+      "from typing import List, Tuple",
+      "from dataclasses import dataclass",
+      "from datetime import datetime",
+      "import argparse"
+    ],
+    "v13\\tools\\phase3_batch4_set_removal.py": [
+      "import ast",
+      "import sys",
+      "import shutil",
+      "from pathlib import Path",
+      "from typing import List, Tuple",
+      "from dataclasses import dataclass",
+      "import argparse"
+    ],
+    "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py": [
+      "import ast",
+      "import sys",
+      "from pathlib import Path",
+      "from dataclasses import dataclass",
+      "from typing import List"
+    ],
+    "v13\\tools\\phase3_verification_dashboard.py": [
+      "import subprocess",
+      "import json",
+      "import sys",
+      "from datetime import datetime",
+      "from pathlib import Path"
+    ],
+    "v13\\tools\\rollback_batch1.py": [
+      "import shutil",
+      "from pathlib import Path",
+      "import subprocess",
+      "import sys"
+    ],
+    "v13\\tools\\run_phase2_tests.py": [
+      "import json",
+      "from datetime import datetime",
+      "import logging",
+      "from pathlib import Path",
+      "from tools.determinism_fuzzer import DeterminismFuzzer",
+      "from tools.adversarial_simulator import AdversarialSimulator, CIR302_Handler",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.DeterministicTime import DeterministicTime"
+    ],
+    "v13\\tools\\simple_reference_generator.py": [
+      "import hashlib",
+      "import json",
+      "from typing import List, Dict, Any",
+      "from pathlib import Path",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tools\\type_checker.py": [
+      "import sys",
+      "import subprocess",
+      "from pathlib import Path"
+    ],
+    "v13\\utils\\qfs_system.py": [
+      "import json",
+      "import hashlib",
+      "import logging",
+      "from typing import Dict, Any, List, Optional",
+      "from PQC import get_pqc_audit_hash",
+      "from DRV_Packet import get_drv_packet_audit_hash",
+      "from PQC import clear_pqc_audit_log",
+      "from DRV_Packet import clear_drv_packet_audit_log"
+    ],
+    "v13\\tools\\audit\\phase3_validator.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass",
+      "from ...src.libs.PQC import PQC",
+      "from ...src.libs.CertifiedMath import BigNum128",
+      "from ...src.libs.economics.GenesisHarmonicState import export_genesis_evidence",
+      "from ...src.libs.economics.PsiFieldEngine import generate_psi_field_evidence",
+      "from ...src.libs.economics.HarmonicEconomics import HarmonicEconomics",
+      "from ...src.core.TokenStateBundle import TokenStateBundle",
+      "from src.libs.PQC import PQC",
+      "from src.libs.CertifiedMath import BigNum128",
+      "from src.libs.economics.GenesisHarmonicState import export_genesis_evidence",
+      "from src.libs.economics.PsiFieldEngine import generate_psi_field_evidence",
+      "from src.libs.economics.HarmonicEconomics import HarmonicEconomics",
+      "from src.core.TokenStateBundle import TokenStateBundle",
+      "from src.libs.PQC import PQC",
+      "from src.libs.CertifiedMath import BigNum128",
+      "from src.libs.economics.GenesisHarmonicState import export_genesis_evidence",
+      "from src.libs.economics.PsiFieldEngine import generate_psi_field_evidence",
+      "from src.libs.economics.HarmonicEconomics import HarmonicEconomics",
+      "from src.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\tools\\ci\\check_commit_status.py": [
+      "import json",
+      "import subprocess",
+      "from datetime import datetime"
+    ],
+    "v13\\tools\\ci\\check_failing_details.py": [
+      "import json",
+      "import subprocess"
+    ],
+    "v13\\tools\\ci\\check_pr_status.py": [
+      "import json",
+      "import subprocess"
+    ],
+    "v13\\tools\\discovery\\discovery_scan.py": [
+      "import os",
+      "import json",
+      "from pathlib import Path",
+      "from typing import Dict, List"
+    ],
+    "v13\\tests\\api\\test_atlas_p0_surfaces.py": [
+      "import pytest",
+      "from v13.atlas_api.router import AtlasAPIRouter",
+      "from v13.atlas_api.models import FeedRequest, InteractionRequest"
+    ],
+    "v13\\tests\\api\\test_explain_api.py": [
+      "from v13.ATLAS.src.api.routes.explain import explain_helper"
+    ],
+    "v13\\tests\\atlas\\test_chat.py": [
+      "import pytest",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.chat import ("
+    ],
+    "v13\\tests\\atlas\\test_spaces.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.spaces.spaces_manager import (",
+      "from v13.atlas.spaces.spaces_events import ("
+    ],
+    "v13\\tests\\atlas\\test_wall.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.wall import (",
+      "from v13.atlas.spaces import SpacesManager"
+    ],
+    "v13\\tests\\auth\\test_open_agi_role.py": [
+      "import pytest",
+      "from v13.auth.open_agi_role import OPENAGIRoleEnforcer, OPENAGIRole, OPENAGIActionType",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\autonomous\\debug_guards.py": [
+      "import sys",
+      "from pathlib import Path",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType",
+      "from v13.libs.economics.economic_constants import (",
+      "import inspect",
+      "import inspect",
+      "import inspect"
+    ],
+    "v13\\tests\\autonomous\\phase_0_scan.py": [
+      "import sys",
+      "import subprocess",
+      "import json",
+      "import logging",
+      "from pathlib import Path",
+      "from typing import Dict, List"
+    ],
+    "v13\\tests\\autonomous\\phase_2_guards.py": [
+      "import sys",
+      "from pathlib import Path",
+      "from typing import List, Dict, Tuple",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType",
+      "import os",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType"
+    ],
+    "v13\\tests\\autonomous\\run_autonomous_validation.py": [
+      "import sys",
+      "import subprocess",
+      "from pathlib import Path",
+      "import json",
+      "import os",
+      "from phase_0_scan import EnvironmentScanner",
+      "from phase_2_guards import GuardValidator"
+    ],
+    "v13\\tests\\autonomous\\validate_guards.py": [
+      "import sys",
+      "from pathlib import Path",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType"
+    ],
+    "v13\\tests\\cir302\\test_cir302_handler.py": [
+      "import json",
+      "import hashlib",
+      "import sys",
+      "import os",
+      "from unittest.mock import patch, MagicMock",
+      "from typing import List, Dict, Any",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.deterministic_helpers import det_time_isoformat",
+      "import json"
+    ],
+    "v13\\tests\\contract\\test_api_contracts.py": [
+      "import unittest",
+      "import sys",
+      "import os",
+      "from pydantic import ValidationError",
+      "from v13.libs.canonical.models import ("
+    ],
+    "v13\\tests\\deterministic\\test_deterministic_replay.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\deterministic\\test_deterministic_time_regression_cir302.py": [
+      "from fractions import Fraction",
+      "import hashlib",
+      "import json",
+      "from typing import List, Dict, Any, Optional",
+      "import pytest",
+      "from v13.libs.DeterministicTime import DeterministicTime"
+    ],
+    "v13\\tests\\deterministic\\test_deterministic_time_replay.py": [
+      "from fractions import Fraction",
+      "import hashlib",
+      "import json",
+      "from typing import List, Dict, Any",
+      "import pytest",
+      "from v13.libs.DeterministicTime import DeterministicTime"
+    ],
+    "v13\\tests\\deterministic\\test_value_node_replay_determinism.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "import copy",
+      "from typing import List, Dict, Any",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy"
+    ],
+    "v13\\tests\\drv_packet\\test_drv_packet.py": [
+      "import hashlib",
+      "from PQC import generate_keypair, clear_pqc_audit_log, get_pqc_audit_log, get_pqc_audit_hash",
+      "import PQC",
+      "from DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode, clear_drv_packet_audit_log, get_drv_packet_audit_log, get_drv_packet_audit_hash",
+      "import DRV_Packet"
+    ],
+    "v13\\tests\\drv_packet\\test_drv_packet_version.py": [
+      "from DRV_Packet import DRV_Packet",
+      "import DRV_Packet"
+    ],
+    "v13\\tests\\e2e\\test_storage_economics_flow.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from typing import Dict, Any",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\e2e\\test_storage_user_flow.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "import tempfile",
+      "from typing import Dict, Any",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler"
+    ],
+    "v13\\tests\\governance\\test_aegis_zerosim.py": [
+      "import pytest",
+      "from v13.services.governance.context import UserContext",
+      "from v13.services.aegis.policies import evaluate_policy"
+    ],
+    "v13\\tests\\governance\\test_appeals_deterministic.py": [
+      "import pytest",
+      "from v13.services.governance.appeals import score_appeal, Vote"
+    ],
+    "v13\\tests\\governance\\test_bounty_integration.py": [
+      "import pytest",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.policy.bounties.bounty_schema import (",
+      "from v13.policy.bounties.bounty_state_machine import BountyStateMachine",
+      "from v13.policy.treasury.dev_rewards_treasury import (",
+      "from v13.libs.fatal_errors import ZeroSimAbort"
+    ],
+    "v13\\tests\\governance\\test_evidence_determinism.py": [
+      "from v13.services.governance.evidence import canonical_evidence_json, hash_evidence"
+    ],
+    "v13\\tests\\governance\\test_governance_zero_sim_replay.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.governance.context import build_user_context",
+      "from v13.services.governance.evidence import hash_evidence",
+      "from v13.services.governance.appeals import score_appeal, Vote",
+      "from v13.services.aegis.policies import evaluate_policy"
+    ],
+    "v13\\tests\\governance\\test_infrastructure_governance_complete.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.governance.InfrastructureGovernance import InfrastructureGovernance, GovernanceProposalType, ProposalStatus",
+      "from v13.libs.economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO"
+    ],
+    "v13\\tests\\governance\\test_tier1_guarantees.py": [
+      "import pytest",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, EconomicViolationType",
+      "from v13.libs.integration.StateTransitionEngine import StateTransitionEngine",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\tests\\governance\\test_user_context_replay.py": [
+      "import pytest",
+      "from v13.services.governance.context import build_user_context"
+    ],
+    "v13\\tests\\guards\\test_aegis_guard.py": [
+      "import pytest",
+      "from v13.guards.AEGISGuard import AEGISGuard, AEGISObservation",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import create_token_state_bundle, BigNum128"
+    ],
+    "v13\\tests\\handlers\\test_cir302_handler_phase1.py": [
+      "import pytest",
+      "import json",
+      "import hashlib",
+      "from unittest.mock import patch, MagicMock",
+      "from typing import List, Dict, Any",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from libs.CertifiedMath import CertifiedMath",
+      "from libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\HSMF\\test_hsmf_certifiedmath_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from libs.BigNum128 import BigNum128",
+      "from libs.CertifiedMath import CertifiedMath",
+      "from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from core.HSMF import HSMF",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.core.HSMF import HSMF",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.core.HSMF import HSMF",
+      "import traceback"
+    ],
+    "v13\\tests\\HSMF\\test_hsmf_compliance.py": [
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from HSMF import HSMF, ValidationResult",
+      "from dataclasses import dataclass",
+      "from typing import List, Dict, Any, Optional"
+    ],
+    "v13\\tests\\HSMF\\test_hsmf_implementation.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from libs.BigNum128 import BigNum128",
+      "from libs.CertifiedMath import CertifiedMath",
+      "from core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from handlers.CIR302_Handler import CIR302_Handler",
+      "from core.HSMF import HSMF",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.core.HSMF import HSMF",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.handlers.CIR302_Handler import CIR302_Handler",
+      "from v13.core.HSMF import HSMF"
+    ],
+    "v13\\tests\\HSMF\\test_hsmf_simple.py": [
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from HSMF import HSMF"
+    ],
+    "v13\\tests\\infrastructure\\test_pqc_backend.py": [
+      "import pytest",
+      "from pathlib import Path",
+      "from v13.libs.PQC import PQC"
+    ],
+    "v13\\tests\\integration\\harness.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from v13.libs.canonical.models import (",
+      "from v13.tests.mocks.mock_atlas import MockAtlasFrontend",
+      "from v13.tests.mocks.mock_openagi import MockOpenAGIAgent",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\integration\\test_full_stack_determinism.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.policy.humor_policy import HumorSignalPolicy",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.artistic_constants import SCALE"
+    ],
+    "v13\\tests\\integration\\test_lifecycle.py": [
+      "import sys",
+      "import unittest",
+      "import os",
+      "from v13.tests.integration.harness import SimulationHarness"
+    ],
+    "v13\\tests\\integration\\test_live_replay.py": [
+      "import pytest",
+      "import json",
+      "from typing import Dict, Any",
+      "from v13.core.QFSReplaySource import LiveLedgerReplaySource",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\integration\\test_pqc_phase3_compliance.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from copy import deepcopy",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer",
+      "from v13.libs.pqc.PQC_Logger import PQC_Logger",
+      "from v13.libs.pqc.PQC_Audit import PQC_Audit",
+      "import json",
+      "import json"
+    ],
+    "v13\\tests\\integration\\test_verify_reward_proof_script.py": [
+      "import subprocess",
+      "import json",
+      "import pytest",
+      "from unittest.mock import MagicMock",
+      "from v13.core.CoherenceLedger import CoherenceLedger"
+    ],
+    "v13\\tests\\libs_checks\\qfs_v13_integration_test.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from PQC import PQC, KeyPair",
+      "from HSMF import HSMF, ValidationResult as HSMFValidationResult",
+      "from DRV_Packet import DRV_Packet, ValidationResult as DRVValidationResult",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from CIR302_Handler import CIR302_Handler, QuarantineResult",
+      "from AST_ZeroSimChecker import AST_ZeroSimChecker"
+    ],
+    "v13\\tests\\libs_checks\\quick_determinism_test.py": [
+      "import json",
+      "import hashlib",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from PQC import PQC",
+      "from HSMF import HSMF, ValidationResult",
+      "from DRV_Packet import DRV_Packet",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from CIR302_Handler import CIR302_Handler, QuarantineResult"
+    ],
+    "v13\\tests\\mocks\\mock_atlas.py": [
+      "from typing import Dict, Any",
+      "import time",
+      "from v13.libs.canonical.models import ContentMetadata, ContentType"
+    ],
+    "v13\\tests\\mocks\\mock_openagi.py": [
+      "from typing import List, Dict, Any",
+      "import time",
+      "from v13.libs.canonical.models import AdvisorySignal"
+    ],
+    "v13\\tests\\observability\\test_trace_propagation.py": [
+      "import pytest",
+      "from fastapi import FastAPI, Request",
+      "from fastapi.testclient import TestClient",
+      "from unittest.mock import MagicMock, patch",
+      "import json",
+      "import sys",
+      "import datetime",
+      "from v13.ATLAS.src.api.routes.explain import router",
+      "from v13.core.observability.logger import TraceContext",
+      "from v13.ATLAS.src.api.dependencies import get_current_user, get_replay_source"
+    ],
+    "v13\\tests\\old\\comprehensive_log_test.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError"
+    ],
+    "v13\\tests\\old\\debug_hsmf.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from HSMF import HSMF",
+      "from TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\tests\\old\\debug_overflow.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError"
+    ],
+    "v13\\tests\\old\\debug_transcendental.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\old\\demo_transaction.py": [
+      "import json",
+      "import hashlib",
+      "from QFSV13SDK import QFSV13SDK, DRV_Packet, OperationBundle"
+    ],
+    "v13\\tests\\old\\error_handling_comprehensive_test.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError"
+    ],
+    "v13\\tests\\old\\example_pqc_usage.py": [
+      "from PQC import PQC, generate_keypair, sign_data, verify_signature"
+    ],
+    "v13\\tests\\old\\example_usage.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\old\\hsmf_tokenstate_integration_test.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from HSMF import HSMF, ValidationResult",
+      "from TokenStateBundle import create_token_state_bundle, TokenStateBundle",
+      "import json"
+    ],
+    "v13\\tests\\old\\run_all_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess"
+    ],
+    "v13\\tests\\old\\run_certified_math_extensions_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess"
+    ],
+    "v13\\tests\\old\\run_hsmf_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.tests.test_hsmf_certifiedmath_integration import test_hsmf_with_certified_math, test_public_api",
+      "import traceback"
+    ],
+    "v13\\tests\\old\\run_integration_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess"
+    ],
+    "v13\\tests\\old\\run_pqc_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess"
+    ],
+    "v13\\tests\\old\\run_tests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess"
+    ],
+    "v13\\tests\\old\\test_all_operations.py": [
+      "import json",
+      "from QFSV13SDK import QFSV13SDK, DRV_Packet"
+    ],
+    "v13\\tests\\old\\test_drv_chain.py": [
+      "from v13.libs.DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode",
+      "from v13.libs.PQC import generate_keypair"
+    ],
+    "v13\\tests\\old\\test_version_check.py": [
+      "from v13.libs.DRV_Packet import DRV_Packet"
+    ],
+    "v13\\tests\\pqc\\TestPQCAdapters.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.libs.cee.adapters.pqc_adapter_factory import PQCAdapterFactory",
+      "from v13.libs.cee.interfaces.message_protocol import SignedMessage",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer",
+      "import json"
+    ],
+    "v13\\tests\\pqc\\TestPQCStandardization.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.libs.cee.adapters.pqc_adapter_factory import PQCAdapterFactory",
+      "from v13.libs.cee.interfaces.pqc_interface import PQCInterface",
+      "from v13.libs.cee.interfaces.message_protocol import SignedMessage",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer"
+    ],
+    "v13\\tests\\pqc\\test_pqc.py": [
+      "import json",
+      "from PQC import generate_keypair, sign_data, verify_signature",
+      "import PQC",
+      "from PQC import clear_pqc_audit_log, get_pqc_audit_log, get_pqc_audit_hash"
+    ],
+    "v13\\tests\\pqc\\test_pqc_adapter_mock.py": [
+      "import sys",
+      "import os",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from unittest.mock import patch",
+      "from v13.libs.adapters.mock_pqc_adapter import MockPQCAdapter",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer",
+      "import json",
+      "from datetime import datetime, timezone"
+    ],
+    "v13\\tests\\pqc\\test_pqc_key_management.py": [
+      "import json",
+      "import base64",
+      "from PQC import generate_keypair, export_key_to_hex, export_key_to_base64, export_key_to_json, import_key_from_hex, import_key_from_base64, import_keypair_from_json, zeroize_private_key, secure_zeroize_keypair",
+      "import PQC"
+    ],
+    "v13\\tests\\pqc\\test_pqc_real_backend.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.libs.adapters.pqc_adapter_factory import PQCAdapterFactory",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer",
+      "from v13.libs.pqc.PQC_Core import PQC",
+      "import json"
+    ],
+    "v13\\tests\\property\\test_bignum128_fuzz.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import (",
+      "import json",
+      "import hashlib",
+      "import logging",
+      "import os",
+      "from typing import List, Dict, Any",
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\regression\\generate_golden_hashes.py": [
+      "import sys",
+      "import json",
+      "import os",
+      "from pathlib import Path",
+      "from v13.tests.regression.phase_v14_social_full import run_scenario"
+    ],
+    "v13\\tests\\regression\\phase_v14_social_full.py": [
+      "import sys",
+      "from pathlib import Path",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.atlas.spaces import (",
+      "from v13.atlas.wall import (",
+      "from v13.atlas.chat import ("
+    ],
+    "v13\\tests\\scripts\\test_cir302_simulation.py": [
+      "import json",
+      "import tempfile",
+      "import sys",
+      "import os",
+      "from unittest.mock import patch",
+      "from v13.scripts.simulate_storage_cir302_incident import CIR302IncidentSimulator",
+      "from v13.libs.deterministic_helpers import det_time_isoformat"
+    ],
+    "v13\\tests\\sdk\\test_sdk.py": [
+      "import json",
+      "from QFSV13SDK import QFSV13SDK, DRV_Packet"
+    ],
+    "v13\\tests\\security\\test_pqc_integration_mock.py": [
+      "import pytest",
+      "import json",
+      "import hashlib",
+      "from v13.libs.PQC import PQC"
+    ],
+    "v13\\tests\\services\\test_notification_service.py": [
+      "import pytest",
+      "from v13.services.notification_service import NotificationService, Notification, NotificationCategory",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import create_token_state_bundle, BigNum128"
+    ],
+    "v13\\tests\\sessions\\test_session_challenge_reuse.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.sessions.session_manager import SessionManager",
+      "from v13.services.sessions.session_challenge import compute_challenge, post_session_challenge, post_session_establish"
+    ],
+    "v13\\tests\\sessions\\test_session_cutover_boundary.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.sessions.session_manager import SessionManager, SessionToken",
+      "from v13.services.sessions.replay_helper import replay_sessions, get_active_sessions_at_block"
+    ],
+    "v13\\tests\\sessions\\test_session_explainability_mixed_eras.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.sessions.session_manager import SessionManager, SessionToken",
+      "from v13.services.sessions.explain_helper import build_session_proof"
+    ],
+    "v13\\tests\\sessions\\test_session_lifecycle_replay.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.sessions.session_manager import SessionManager, SessionToken",
+      "from v13.services.sessions.replay_helper import replay_sessions"
+    ],
+    "v13\\tests\\sessions\\test_session_rotation_ordering.py": [
+      "import pytest",
+      "from typing import List, Dict, Any",
+      "from v13.services.sessions.session_manager import SessionManager, SessionToken"
+    ],
+    "v13\\tests\\signals\\test_humor.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import pytest",
+      "import sys",
+      "import os",
+      "from v13.ATLAS.src.signals.humor import HumorSignalAddon",
+      "from ATLAS.src.signals.humor import HumorSignalAddon",
+      "from src.signals.humor import HumorSignalAddon"
+    ],
+    "v13\\tests\\storage\\test_storageengine_replay.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Any, Dict, List, Mapping, Tuple",
+      "import pytest",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\tools\\test_evidence_indexer.py": [
+      "import json",
+      "import tempfile",
+      "import shutil",
+      "from pathlib import Path",
+      "from evidence_indexer import EvidenceIndexer"
+    ],
+    "v13\\tests\\unit\\test_appeals_workflow.py": [
+      "import pytest",
+      "from v13.services.appeals.manager import AppealManager"
+    ],
+    "v13\\tests\\unit\\test_bignum_fixes.py": [
+      "from v13.libs.BigNum128 import BigNum128, BigNum128Error"
+    ],
+    "v13\\tests\\unit\\test_bignum_negative.py": [
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\unit\\test_bignum_underflow.py": [
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\unit\\test_bounty_state_machine.py": [
+      "import pytest",
+      "from unittest.mock import Mock, MagicMock",
+      "from v13.policy.bounties.bounty_state_machine import BountyStateMachine",
+      "from v13.policy.bounties.bounty_schema import (",
+      "from v13.policy.bounties.bounty_events import EconomicEvent",
+      "from v13.policy.treasury.dev_rewards_treasury import DevRewardsTreasury"
+    ],
+    "v13\\tests\\unit\\test_certifiedmath.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\test_certifiedmath_fixes.py": [
+      "from CertifiedMath import BigNum128, CertifiedMath"
+    ],
+    "v13\\tests\\unit\\test_certified_math.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "import hashlib"
+    ],
+    "v13\\tests\\unit\\test_certified_math_edge_cases.py": [
+      "import json",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config"
+    ],
+    "v13\\tests\\unit\\test_certified_math_extensions.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128, MathValidationError"
+    ],
+    "v13\\tests\\unit\\test_certified_math_import.py": [
+      "import sys",
+      "import unittest",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\unit\\test_certified_math_performance.py": [
+      "import sys",
+      "import os",
+      "from time import perf_counter",
+      "from CertifiedMath import CertifiedMath, BigNum128, LogContext",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from CertifiedMath import CertifiedMath, BigNum128, LogContext"
+    ],
+    "v13\\tests\\unit\\test_certified_math_proofvectors.py": [
+      "import pytest",
+      "from pathlib import Path",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\tests\\unit\\test_coherence_referral_integration.py": [
+      "import pytest",
+      "from v13.core.CoherenceEngine import CoherenceEngine",
+      "from v13.core.TokenStateBundle import create_token_state_bundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.events.referral_events import ReferralRewarded"
+    ],
+    "v13\\tests\\unit\\test_community_model.py": [
+      "import pytest",
+      "from v13.services.community.manager import GuildManager",
+      "from v13.services.community.membership import MembershipService"
+    ],
+    "v13\\tests\\unit\\test_division_by_zero.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\tests\\unit\\test_dm_integration.py": [
+      "import pytest",
+      "from v13.services.dm.identity import IdentityManager",
+      "from v13.services.dm.crypto import DMCryptoEngine",
+      "from v13.services.dm.messenger import DirectMessagingService"
+    ],
+    "v13\\tests\\unit\\test_drv_timestamp.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.core.DRV_Packet import DRV_Packet, ValidationErrorCode"
+    ],
+    "v13\\tests\\unit\\test_explain_this_system.py": [
+      "import pytest",
+      "import hashlib",
+      "import json",
+      "from v13.services.explainer.engine import ExplainerEngine"
+    ],
+    "v13\\tests\\unit\\test_gateway_explain.py": [
+      "import pytest",
+      "from unittest.mock import MagicMock",
+      "from v13.atlas_api.gateway import AtlasAPIGateway",
+      "from v13.core.CoherenceLedger import LedgerEntry"
+    ],
+    "v13\\tests\\unit\\test_hd_derivation.py": [
+      "import pytest",
+      "import binascii",
+      "from v13.libs.crypto.derivation import HDKey, _point_mul, _ser256_point, _N",
+      "import unittest",
+      "import hashlib",
+      "from typing import List",
+      "from v13.libs.crypto.derivation import derive_master_key, derive_child_key, derive_path, derive_creator_keypair, ExtendedKey, HARDENED_OFFSET"
+    ],
+    "v13\\tests\\unit\\test_ln.py": [
+      "import math",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\test_memory_hygiene.py": [
+      "import pytest",
+      "from v13.libs.pqc.MemoryHygiene import MemoryHygiene",
+      "from v13.libs.pqc.PQC_Core import KeyPair"
+    ],
+    "v13\\tests\\unit\\test_onboarding_tours.py": [
+      "import pytest",
+      "from v13.services.onboarding.tours import TourRegistry",
+      "from v13.services.onboarding.progress import ProgressTracker"
+    ],
+    "v13\\tests\\unit\\test_openagi_dm_integration.py": [
+      "import pytest",
+      "from v13.services.dm.messenger import DirectMessagingService",
+      "from v13.integrations.openagi_dm_adapter import OpenAGIDMAdapter"
+    ],
+    "v13\\tests\\unit\\test_phi_series.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\test_pqc_malleability.py": [
+      "import pytest",
+      "from v13.libs.PQC import PQC",
+      "from v13.core.DRV_Packet import DRV_Packet"
+    ],
+    "v13\\tests\\unit\\test_pqc_provider.py": [
+      "import pytest",
+      "import os",
+      "from v13.libs.pqc_provider import ("
+    ],
+    "v13\\tests\\unit\\test_pqc_provider_consistency_shim.py": [
+      "import unittest",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from v13.libs.pqc.IPQCProvider import IPQCProvider, PrivKeyHandle, KeyPair, ValidationResult",
+      "from v13.libs.pqc.ConcretePQCProvider import ConcretePQCProvider, MockPQCProvider"
+    ],
+    "v13\\tests\\unit\\test_referral_ledger_sync.py": [
+      "import pytest",
+      "from v13.ledger.referral_ledger import ReferralLedger",
+      "from v13.core.CoherenceLedger import CoherenceLedger",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.events.referral_events import ReferralRewarded"
+    ],
+    "v13\\tests\\unit\\test_referral_system.py": [
+      "import pytest",
+      "from unittest.mock import Mock, MagicMock",
+      "from v13.ledger.referral_ledger import ReferralLedger",
+      "from v13.events.referral_events import ReferralCreated, ReferralAccepted, ReferralActivated, ReferralFraudBlocked",
+      "from v13.events.referral_events import ReferralRewarded"
+    ],
+    "v13\\tests\\unit\\test_reward_system.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.reward_types import RewardBundle",
+      "from v13.libs.governance.TreasuryEngine import TreasuryEngine",
+      "from v13.libs.governance.RewardAllocator import RewardAllocator, AllocatedReward",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.libs.governance.RewardAllocator import RewardAllocator",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128, CertifiedMathError",
+      "from v13.libs.governance.TreasuryEngine import TreasuryEngine",
+      "from v13.core.TokenStateBundle import create_token_state_bundle",
+      "import pytest"
+    ],
+    "v13\\tests\\unit\\test_structure.py": [
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import PQC",
+      "from AST_ZeroSimChecker import AST_ZeroSimChecker"
+    ],
+    "v13\\tests\\unit\\test_system_creator_wallet.py": [
+      "import pytest",
+      "import json",
+      "from unittest.mock import MagicMock, patch, mock_open",
+      "from v13.libs.crypto.derivation import derive_creator_keypair",
+      "from v13.libs.keystore.manager import KeystoreManager",
+      "from v13.ledger.writer import LedgerWriter",
+      "from v13.policy.authorization import AuthorizationEngine"
+    ],
+    "v13\\tests\\unit\\test_transcendentals.py": [
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\test_type_guards.py": [
+      "import pytest",
+      "from enum import Enum",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.type_guards import ensure_bignum, ensure_int, safe_enum_serialize"
+    ],
+    "v13\\tests\\unit\\test_value_node_replay_explanation.py": [
+      "from fractions import Fraction",
+      "import pytest",
+      "from typing import Dict, Any",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy"
+    ],
+    "v13\\tests\\v13_6\\BoundaryConditionTests.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from typing import Dict, Any",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from v13.libs.economics.economic_constants import *"
+    ],
+    "v13\\tests\\v13_6\\DeterministicReplayTest.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, List",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.governance.NODAllocator import NODAllocator",
+      "from v13.libs.governance.InfrastructureGovernance import InfrastructureGovernance, GovernanceProposalType"
+    ],
+    "v13\\tests\\v13_6\\FailureModeTests.py": [
+      "import json",
+      "from typing import Dict, Any, List",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult, EconomicViolationType",
+      "from v13.libs.governance.NODInvariantChecker import NODInvariantChecker, InvariantCheckResult, NODInvariantViolationType",
+      "from v13.libs.integration.StateTransitionEngine import StateTransitionEngine",
+      "from v13.libs.economics.economic_constants import *"
+    ],
+    "v13\\tests\\v13_6\\PerformanceBenchmark.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from typing import Dict, Any, List",
+      "import statistics",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.governance.NODInvariantChecker import NODInvariantChecker",
+      "from v13.libs.integration.StateTransitionEngine import StateTransitionEngine"
+    ],
+    "v13\\tests\\unit\\determinism\\test_certified_math_config_runtime.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\tests\\unit\\determinism\\test_certified_math_extended_determinism.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\tests\\unit\\determinism\\test_certified_math_stress_concurrency.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "import concurrent.futures",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\tests\\unit\\integration\\run_simple_test.py": [
+      "import sys",
+      "import os",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from UtilityOracleInterface import UtilityOracleInterface, UtilityOracleResult",
+      "from PQC import generate_keypair, sign_data, verify_signature"
+    ],
+    "v13\\tests\\unit\\integration\\test_certified_math_drv_integration.py": [
+      "import json",
+      "from CertifiedMath import CertifiedMath, BigNum128, LogContext",
+      "from DRV_Packet import DRV_Packet"
+    ],
+    "v13\\tests\\unit\\integration\\test_malformed_input_handling.py": [
+      "import json",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\integration\\test_packet_creation_logging.py": [
+      "import json",
+      "import hashlib",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\integration\\test_packet_hash_determinism.py": [
+      "import json",
+      "import hashlib",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\integration\\test_qfs_integration.py": [
+      "import json",
+      "from PQC import generate_keypair, sign_data, verify_signature, export_key_to_hex, import_key_from_hex",
+      "from DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import generate_keypair, sign_data, verify_signature, export_key_to_hex, import_key_from_hex",
+      "from DRV_Packet import DRV_Packet, ValidationResult, ValidationErrorCode",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\integration\\test_qfs_system.py": [
+      "from qfs_system import get_system_audit_hash, clear_all_audit_logs"
+    ],
+    "v13\\tests\\unit\\integration\\test_qfs_v13_phase1_2_integration.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from typing import Dict, Any",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from UtilityOracleInterface import UtilityOracleInterface, UtilityOracleResult",
+      "from PQC import generate_keypair, sign_data, verify_signature",
+      "from TreasuryEngine import TreasuryEngine",
+      "from TreasuryEngine import TreasuryEngine",
+      "from RewardAllocator import RewardAllocator",
+      "from CoherenceLedger import CoherenceLedger",
+      "from CIR302_Handler import CIR302_Handler",
+      "from AST_ZeroSimChecker import AST_ZeroSimChecker",
+      "from RewardAllocator import RewardAllocator",
+      "from CoherenceLedger import CoherenceLedger",
+      "from CIR302_Handler import CIR302_Handler",
+      "from AST_ZeroSimChecker import AST_ZeroSimChecker"
+    ],
+    "v13\\tests\\unit\\integration\\test_quantum_metadata_determinism.py": [
+      "import json",
+      "import hashlib",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "from PQC import generate_keypair",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\unit\\integration\\test_token_state_bundle.py": [
+      "import json",
+      "from PQC import generate_keypair, sign_data",
+      "from CertifiedMath import BigNum128",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle, load_token_state_bundle",
+      "from PQC import generate_keypair, sign_data",
+      "from CertifiedMath import BigNum128",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle, load_token_state_bundle"
+    ],
+    "v13\\tests\\unit\\verification\\test_certified_math_exception_verification.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\tests\\unit\\verification\\test_certified_math_formal_verification.py": [
+      "import json",
+      "import sympy as sp",
+      "from sympy import symbols, simplify, expand, Eq, solve, series, limit, oo, sqrt, exp, log, pi"
+    ],
+    "v13\\tests\\unit\\verification\\test_certified_math_regression_hash_system.py": [
+      "import json",
+      "import hashlib",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\tests\\phase3\\treasury\\test_treasury_proportional_distribution.py": [
+      "import sys",
+      "import os",
+      "import unittest",
+      "from unittest.mock import MagicMock",
+      "from v13.libs.economics.TreasuryDistributionEngine import TreasuryDistributionEngine, create_treasury_distribution_engine",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\services\\aegis\\policies.py": [
+      "from typing import Dict, Callable",
+      "from v13.services.governance.context import UserContext"
+    ],
+    "v13\\services\\appeals\\manager.py": [
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List"
+    ],
+    "v13\\services\\community\\manager.py": [
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List, Union",
+      "from typing import Dict, Any, Optional, List",
+      "from v13.libs.deterministic_hash import deterministic_uuid",
+      "from v13.libs.DeterministicTime import DeterministicTime"
+    ],
+    "v13\\services\\community\\membership.py": [
+      "from typing import Dict, List, Any",
+      "from v13.services.community.manager import GuildManager"
+    ],
+    "v13\\services\\dm\\crypto.py": [
+      "from typing import Tuple"
+    ],
+    "v13\\services\\dm\\identity.py": [
+      "from typing import Dict, Optional, Any"
+    ],
+    "v13\\services\\dm\\messenger.py": [
+      "import hashlib",
+      "from typing import Dict, List, Optional",
+      "from v13.services.dm.identity import IdentityManager",
+      "from v13.services.dm.crypto import DMCryptoEngine"
+    ],
+    "v13\\services\\explainer\\engine.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, List, Optional",
+      "from v13.services.explainer.resolvers import RewardResolver, CoherenceResolver, FlagResolver"
+    ],
+    "v13\\services\\explainer\\resolvers.py": [
+      "from typing import Dict, Any, List",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.BigNum128 import BigNum128"
+    ],
+    "v13\\services\\governance\\appeals.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.services.governance.context import UserContext",
+      "from v13.services.governance.evidence import hash_evidence"
+    ],
+    "v13\\services\\governance\\context.py": [
+      "from dataclasses import dataclass",
+      "from typing import List, Dict, Any, Optional",
+      "import json"
+    ],
+    "v13\\services\\governance\\evidence.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict"
+    ],
+    "v13\\services\\onboarding\\progress.py": [
+      "from typing import Dict, List, Any",
+      "from ...libs.CertifiedMath import CertifiedMath"
+    ],
+    "v13\\services\\onboarding\\tours.py": [
+      "from typing import Dict, List, Any"
+    ],
+    "v13\\services\\sessions\\explain_helper.py": [
+      "import json",
+      "from typing import Dict, List, Any, Optional",
+      "from .session_manager import SessionToken"
+    ],
+    "v13\\services\\sessions\\replay_helper.py": [
+      "import json",
+      "from typing import Dict, List, Any, Optional",
+      "from .session_manager import SessionToken"
+    ],
+    "v13\\services\\sessions\\session_challenge.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Tuple, Dict, Any",
+      "from .session_manager import sha256, compute_device_id"
+    ],
+    "v13\\services\\sessions\\session_manager.py": [
+      "import hashlib",
+      "import json",
+      "from dataclasses import dataclass",
+      "from typing import List, Dict, Any"
+    ],
+    "v13\\policy\\artistic_features\\color.py": [
+      "from typing import Dict, List",
+      "from v13.policy.artistic_constants import GOLDEN_ANGLE, SCALE"
+    ],
+    "v13\\policy\\artistic_features\\complexity.py": [
+      "from typing import Dict, List",
+      "from v13.policy.artistic_constants import SCALE"
+    ],
+    "v13\\policy\\artistic_features\\composition.py": [
+      "from typing import Dict, List",
+      "from v13.policy.artistic_constants import PHI, SCALE, phi_ratio"
+    ],
+    "v13\\policy\\artistic_features\\narrative.py": [
+      "from typing import Dict, List",
+      "from v13.policy.artistic_constants import FIBONACCI, SCALE"
+    ],
+    "v13\\policy\\artistic_features\\symmetry.py": [
+      "from typing import Dict, List",
+      "from v13.policy.artistic_constants import HEX_ANGLE, SCALE"
+    ],
+    "v13\\policy\\bounties\\bounty_events.py": [
+      "from typing import Dict, Optional",
+      "from dataclasses import dataclass",
+      "import time"
+    ],
+    "v13\\policy\\bounties\\bounty_schema.py": [
+      "from dataclasses import dataclass, field, asdict",
+      "from typing import List, Dict, Optional",
+      "from enum import Enum",
+      "import json"
+    ],
+    "v13\\policy\\bounties\\bounty_state_machine.py": [
+      "from typing import Dict, List, Optional, Any",
+      "from dataclasses import dataclass, field",
+      "from v13.policy.bounties.bounty_schema import Bounty, BountyStatus, BountySubmission",
+      "from v13.policy.bounties.bounty_events import (",
+      "from v13.policy.treasury.dev_rewards_treasury import DevRewardsTreasury",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.policy.bounties.bounty_schema import ImpactTier"
+    ],
+    "v13\\policy\\bounties\\__init__.py": [
+      "from .bounty_schema import (",
+      "from .bounty_events import ("
+    ],
+    "v13\\policy\\governance\\GovernanceParameterRegistry.py": [
+      "from typing import Dict, Any, Optional",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics import economic_constants as consts"
+    ],
+    "v13\\policy\\governance\\ProposalEngine.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\policy\\treasury\\dev_rewards_treasury.py": [
+      "from typing import List, Dict, Optional",
+      "from dataclasses import dataclass, field, asdict",
+      "import json",
+      "import logging",
+      "from v13.policy.bounties.bounty_events import (",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from .bounty_events import get_deterministic_timestamp",
+      "from .bounty_events import get_deterministic_timestamp"
+    ],
+    "v13\\policy\\treasury\\__init__.py": [
+      "from .dev_rewards_treasury import ("
+    ],
+    "v13\\libs\\adapters\\dilithium5_adapter.py": [
+      "from v13.libs.pqc.PQC_Core import Dilithium5Impl",
+      "from ..interfaces.pqc_interface import PQCInterface",
+      "from typing import Tuple"
+    ],
+    "v13\\libs\\adapters\\mock_pqc.py": [
+      "import hashlib",
+      "from typing import Tuple",
+      "from ..interfaces.pqc_interface import PQCInterface"
+    ],
+    "v13\\libs\\adapters\\mock_pqc_adapter.py": [
+      "from typing import Tuple",
+      "import hashlib",
+      "from ..interfaces.pqc_interface import PQCInterface"
+    ],
+    "v13\\libs\\adapters\\pqc_adapter_factory.py": [
+      "from typing import Tuple",
+      "from ..interfaces.pqc_interface import PQCInterface",
+      "from .dilithium5_adapter import Dilithium5Adapter",
+      "from .mock_pqc_adapter import MockPQCAdapter",
+      "from ..pqc.PQC_Core import Dilithium5Impl"
+    ],
+    "v13\\libs\\adapters\\__init__.py": [
+      "from .dilithium5_adapter import Dilithium5Adapter",
+      "from .mock_pqc import MockPQC"
+    ],
+    "v13\\libs\\canonical\\models.py": [
+      "from typing import Dict, Optional, Any, List",
+      "from enum import Enum",
+      "from pydantic import BaseModel, Field"
+    ],
+    "v13\\libs\\canonical\\types.py": [
+      "from datetime import datetime",
+      "from enum import Enum",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, field_validator",
+      "import hashlib"
+    ],
+    "v13\\libs\\canonical\\__init__.py": [
+      "from .models import ("
+    ],
+    "v13\\libs\\core\\SafetyGuard.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ...libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from ...core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from core.TokenStateBundle import TokenStateBundle",
+      "from ...core.TokenStateBundle import create_token_state_bundle",
+      "from v13.core.TokenStateBundle import create_token_state_bundle",
+      "from v13.core.TokenStateBundle import create_token_state_bundle"
+    ],
+    "v13\\libs\\core\\UtilityOracle.py": [
+      "import json",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\libs\\core\\UtilityOracleInterface.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ...libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from ...core.DRV_Packet import DRV_Packet"
+    ],
+    "v13\\libs\\crypto\\derivation.py": [
+      "import hashlib",
+      "import hmac",
+      "import struct",
+      "from typing import Tuple, Optional, Union, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.pqc_provider import get_pqc_provider"
+    ],
+    "v13\\libs\\deterministic\\random.py": [
+      "from typing import List, Any",
+      "import hashlib"
+    ],
+    "v13\\libs\\deterministic\\time.py": [
+      "from typing import Optional",
+      "import hashlib"
+    ],
+    "v13\\libs\\economics\\EconomicAdversarySuite.py": [
+      "from fractions import Fraction",
+      "from libs.deterministic_helpers import (",
+      "from libs.fatal_errors import (",
+      "from typing import Dict, List, Any, Optional, Tuple, Callable",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\libs\\economics\\EconomicsGuard.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from .economic_constants import (",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.economics.economic_constants import ("
+    ],
+    "v13\\libs\\economics\\economic_constants.py": [
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\libs\\economics\\GenesisHarmonicState.py": [
+      "import json",
+      "import hashlib"
+    ],
+    "v13\\libs\\economics\\HarmonicEconomics.py": [
+      "from libs.deterministic_helpers import (",
+      "from libs.fatal_errors import (",
+      "from typing import Dict, Any, Optional",
+      "from enum import Enum",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "import copy",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\libs\\economics\\HoloRewardEngine.py": [
+      "from typing import Any, Dict, List, Optional",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "from v13.libs.CertifiedMath import BigNum128",
+      "from v13.libs.fatal_errors import ZeroSimAbort"
+    ],
+    "v13\\libs\\economics\\PsiFieldEngine.py": [
+      "from libs.deterministic_helpers import det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure",
+      "from typing import Dict, List, Tuple, Set, Any, Optional, TYPE_CHECKING",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from ...core.TokenStateBundle import TokenStateBundle",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "import hashlib"
+    ],
+    "v13\\libs\\economics\\PsiSyncProtocol.py": [
+      "from typing import Any, Dict, List, Optional",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "from v13.libs.CertifiedMath import BigNum128",
+      "from v13.libs.fatal_errors import ZeroSimAbort"
+    ],
+    "v13\\libs\\economics\\QAmount.py": [
+      "from typing import Any, Union",
+      "from ..BigNum128 import BigNum128",
+      "from ..CertifiedMath import CertifiedMath"
+    ],
+    "v13\\libs\\economics\\SystemRecoveryProtocol.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure",
+      "from typing import Any, Dict, List, Optional, Set",
+      "from v13.libs.DeterministicTime import DeterministicTime"
+    ],
+    "v13\\libs\\economics\\TreasuryDistributionEngine.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.fatal_errors import ZeroSimAbort, EconomicInvariantBreach, GovernanceGuardFailure",
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List, Optional, Tuple, Union",
+      "from v13.libs.DeterministicTime import DeterministicTime",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\libs\\encoding\\canonical.py": [
+      "import hashlib",
+      "import cbor2",
+      "from typing import Any, Dict, List, Union",
+      "from decimal import Decimal",
+      "from v13.libs.BigNum128 import BigNum128"
+    ],
+    "v13\\libs\\encoding\\__init__.py": [
+      "from .canonical import CanonicalEncoder, canonical_hash, canonical_hash_hex, canonical_encode"
+    ],
+    "v13\\libs\\governance\\AEGIS_Node_Verification.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "from ..CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from CertifiedMath import BigNum128, CertifiedMath"
+    ],
+    "v13\\libs\\governance\\InfrastructureGovernance.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "from ...libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from ...core.TokenStateBundle import TokenStateBundle",
+      "from ...libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO",
+      "from .AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO",
+      "from v13.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.economics.economic_constants import NOD_DEFAULT_QUORUM_THRESHOLD, MIN_QUORUM_THRESHOLD, MAX_QUORUM_THRESHOLD, BLOCK_TIME_SECONDS, GOVERNANCE_VOTING_WINDOW_BLOCKS, GOVERNANCE_EXECUTION_DELAY_BLOCKS, GOVERNANCE_PROPOSAL_COOLDOWN_BLOCKS, GOVERNANCE_EMERGENCY_QUORUM, MAX_NOD_VOTING_POWER_RATIO",
+      "from v13.libs.governance.AEGIS_Node_Verification import AEGIS_Node_Verifier, NodeVerificationResult"
+    ],
+    "v13\\libs\\governance\\NODAllocator.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from ...libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from ...core.TokenStateBundle import TokenStateBundle",
+      "from ...libs.economics.economic_constants import (",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.economics.economic_constants import (",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.libs.economics.economic_constants import (",
+      "from ...libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from ...libs.governance.NODInvariantChecker import (",
+      "from ...libs.governance.AEGIS_Node_Verification import (",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from v13.libs.governance.NODInvariantChecker import (",
+      "from v13.libs.governance.AEGIS_Node_Verification import (",
+      "from economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from governance.NODInvariantChecker import (",
+      "from governance.AEGIS_Node_Verification import ("
+    ],
+    "v13\\libs\\governance\\NODInvariantChecker.py": [
+      "import json",
+      "import hashlib",
+      "import sys",
+      "import os",
+      "from typing import Dict, Any, Optional, List, TYPE_CHECKING",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "from .NODAllocator import NODAllocation",
+      "from ..CertifiedMath import BigNum128, CertifiedMath",
+      "from ..economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO",
+      "from v13.libs.CertifiedMath import BigNum128, CertifiedMath",
+      "from v13.libs.economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from economics.economic_constants import MAX_NOD_VOTING_POWER_RATIO",
+      "from v13.libs.governance.NODAllocator import NODAllocation"
+    ],
+    "v13\\libs\\governance\\RewardAllocator.py": [
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.core.reward_types import RewardBundle",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard, ValidationResult",
+      "from v13.libs.economics.economic_constants import (",
+      "import json",
+      "from v13.core.reward_types import RewardBundle"
+    ],
+    "v13\\libs\\governance\\TreasuryEngine.py": [
+      "import sys",
+      "import os",
+      "from typing import Dict, Any, Optional, List",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle",
+      "from v13.core.reward_types import RewardBundle",
+      "from v13.libs.economics.economic_constants import (",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.CertifiedMath import CertifiedMathError",
+      "from ...core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.core.TokenStateBundle import (",
+      "from v13.core.TokenStateBundle import ("
+    ],
+    "v13\\libs\\integration\\StateTransitionEngine.py": [
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.core.TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from v13.libs.governance.RewardAllocator import AllocatedReward",
+      "from v13.libs.economics.EconomicsGuard import EconomicsGuard",
+      "from v13.libs.governance.NODInvariantChecker import (",
+      "from v13.libs.governance.NODAllocator import NODAllocation"
+    ],
+    "v13\\libs\\interfaces\\message_protocol.py": [
+      "from typing import Dict, Any",
+      "from pydantic import BaseModel, Field",
+      "from v13.libs.pqc.CanonicalSerializer import CanonicalSerializer",
+      "from .pqc_interface import PQCInterface"
+    ],
+    "v13\\libs\\interfaces\\module_interface.py": [
+      "from typing import Protocol, Dict, Any, List",
+      "from pydantic import BaseModel, Field"
+    ],
+    "v13\\libs\\interfaces\\pqc_interface.py": [
+      "from typing import Protocol, Tuple"
+    ],
+    "v13\\libs\\interfaces\\__init__.py": [
+      "from .pqc_interface import PQCInterface",
+      "from .module_interface import CEEModule, ModuleInput, ModuleOutput",
+      "from .message_protocol import SignedMessage"
+    ],
+    "v13\\libs\\keystore\\manager.py": [
+      "import json",
+      "from typing import Optional"
+    ],
+    "v13\\libs\\logging\\qfs_logger.py": [
+      "import json",
+      "import hashlib",
+      "from enum import Enum",
+      "from typing import Dict, Any, Optional",
+      "from pathlib import Path",
+      "from libs.deterministic_helpers import det_time_isoformat",
+      "from v13.handlers.CIR302_Handler import CIR302Handler"
+    ],
+    "v13\\libs\\pqc\\CanonicalSerializer.py": [
+      "import json",
+      "from typing import Any"
+    ],
+    "v13\\libs\\pqc\\ConcretePQCProvider.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Any, Optional, Dict, List, Tuple, Union",
+      "from dataclasses import dataclass",
+      "from .IPQCProvider import IPQCProvider, PrivKeyHandle, KeyPair, ValidationResult",
+      "from ..PQC import PQC as LegacyPQC, KeyPair as LegacyKeyPair, PQCError",
+      "from ..PQC import Dilithium5Impl"
+    ],
+    "v13\\libs\\pqc\\IPQCProvider.py": [
+      "from abc import ABC, abstractmethod",
+      "from typing import Any, Optional, Dict, List, Tuple, Union",
+      "from dataclasses import dataclass"
+    ],
+    "v13\\libs\\pqc\\MemoryHygiene.py": [
+      "from typing import Union"
+    ],
+    "v13\\libs\\pqc\\oqs_adapter.py": [
+      "import os",
+      "import hashlib",
+      "import logging",
+      "from typing import Tuple, Optional",
+      "from .registry import PQCAlgorithm, REGISTRY",
+      "import oqs"
+    ],
+    "v13\\libs\\pqc\\PQC_Audit.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List",
+      "from .CanonicalSerializer import CanonicalSerializer",
+      "from .CanonicalSerializer import CanonicalSerializer"
+    ],
+    "v13\\libs\\pqc\\PQC_Core.py": [
+      "import hashlib",
+      "from typing import Any, Optional, Dict, List, Union",
+      "from dataclasses import dataclass",
+      "from dilithium import Dilithium as DilithiumBase",
+      "import dilithium",
+      "from .CanonicalSerializer import CanonicalSerializer",
+      "from .PQC_Logger import PQC_Logger"
+    ],
+    "v13\\libs\\pqc\\PQC_Logger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Any, Dict, List, Optional",
+      "from .PQC_Audit import PQC_Audit",
+      "from .PQC_Audit import PQC_Audit"
+    ],
+    "v13\\libs\\pqc\\registry.py": [
+      "from enum import Enum",
+      "from dataclasses import dataclass"
+    ],
+    "v13\\libs\\pqc\\__init__.py": [
+      "from .PQC_Core import PQC, KeyPair, ValidationResult, PQCError, PQCValidationError",
+      "from .CanonicalSerializer import CanonicalSerializer",
+      "from .PQC_Audit import PQC_Audit",
+      "from .PQC_Logger import PQC_Logger",
+      "from .MemoryHygiene import MemoryHygiene"
+    ],
+    "v13\\libs\\quantum\\QPU_Interface.py": [
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\docs\\audit\\audit_verification.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "from CertifiedMath import CertifiedMath, BigNum128, LogContext, MathOverflowError",
+      "from HSMF import HSMF",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from AST_ZeroSimChecker import AST_ZeroSimChecker"
+    ],
+    "v13\\docs\\audit\\phase_a_module_audit.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "import ast",
+      "import traceback",
+      "from typing import Dict, List, Any, Optional, Tuple",
+      "from CertifiedMath import BigNum128, CertifiedMath",
+      "from TokenStateBundle import TokenStateBundle, create_token_state_bundle",
+      "from UtilityOracleInterface import UtilityOracleInterface, create_utility_oracle",
+      "from DRV_Packet import DRV_Packet",
+      "from PQC import generate_keypair, sign_data, verify_signature",
+      "from HSMF import HSMF",
+      "from CIR302_Handler import CIR302_Handler"
+    ],
+    "v13\\docs\\audit\\qfs_v13_autonomous_audit.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import json",
+      "import hashlib",
+      "import base64",
+      "import platform",
+      "from typing import List, Dict, Any, Optional, Tuple",
+      "from dataclasses import dataclass, asdict",
+      "from hashlib import sha3_512",
+      "import traceback",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError",
+      "from HSMF import HSMF, ValidationResult",
+      "from TokenStateBundle import create_token_state_bundle, TokenStateBundle",
+      "from CIR302_Handler import CIR302_Handler",
+      "from PQC import sign_data, verify_signature, generate_keypair"
+    ],
+    "v13\\docs\\audit\\qfs_v13_full_audit.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError",
+      "from HSMF import HSMF, ValidationResult",
+      "from TokenStateBundle import create_token_state_bundle, TokenStateBundle",
+      "from CIR302_Handler import CIR302_Handler",
+      "from PQC import sign_data, verify_signature, generate_keypair"
+    ],
+    "v13\\docs\\audit\\qfs_v13_technical_test_report.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any, Optional",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError",
+      "from HSMF import HSMF, ValidationResult",
+      "from TokenStateBundle import create_token_state_bundle, TokenStateBundle",
+      "from CIR302_Handler import CIR302_Handler"
+    ],
+    "v13\\docs\\audit\\run_certified_math_audit.py": [
+      "import os",
+      "import sys",
+      "from datetime import datetime",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, qnum",
+      "import subprocess",
+      "import json"
+    ],
+    "v13\\docs\\audit\\test_certified_math_audit_compliance.py": [
+      "import json",
+      "import hashlib",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\docs\\audit\\test_certified_math_audit_trail_hardening.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\docs\\audit\\test_certified_math_cross_module_audit.py": [
+      "import json",
+      "import hashlib",
+      "from typing import List, Dict, Any",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext",
+      "from DRV_Packet import DRV_Packet"
+    ],
+    "v13\\docs\\audit\\test_certified_math_enhanced_audit.py": [
+      "import json",
+      "import hashlib",
+      "from CertifiedMath import CertifiedMath, BigNum128, MathOverflowError, MathValidationError, PHI_INTENSITY_B, LN2_CONSTANT, EXP_LIMIT, ZERO, ONE, TWO, set_series_precision, set_phi_intensity_damping, set_exp_limit, get_current_config, LogContext"
+    ],
+    "v13\\docs\\audit\\test_serialization_audit.py": [
+      "import json",
+      "import hashlib",
+      "from PQC import generate_keypair, sign_data, verify_signature, get_pqc_audit_log, get_pqc_audit_hash, clear_pqc_audit_log",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128",
+      "import PQC",
+      "import DRV_Packet",
+      "import CertifiedMath",
+      "from PQC import generate_keypair, sign_data, verify_signature, get_pqc_audit_log, get_pqc_audit_hash, clear_pqc_audit_log",
+      "from DRV_Packet import DRV_Packet, get_drv_packet_audit_log, get_drv_packet_audit_hash, clear_drv_packet_audit_log",
+      "from CertifiedMath import CertifiedMath, BigNum128"
+    ],
+    "v13\\core\\observability\\logger.py": [
+      "import sys",
+      "import json",
+      "import datetime",
+      "from dataclasses import dataclass, field, asdict",
+      "from typing import Any, Dict, Optional",
+      "from v13.libs.deterministic_helpers import DeterministicID"
+    ],
+    "v13\\core\\observability\\metrics.py": [
+      "from typing import Dict, Any, Optional"
+    ],
+    "v13\\core\\tests\\test_qfs_replay_source.py": [
+      "import pytest",
+      "from typing import Dict, Any",
+      "from v13.core.CoherenceLedger import CoherenceLedger",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.TokenStateBundle import TokenStateBundle"
+    ],
+    "v13\\atlas\\chat\\chat_events.py": [
+      "from dataclasses import dataclass",
+      "from typing import List, Dict, Any",
+      "from v13.libs.CertifiedMath import CertifiedMath, BigNum128",
+      "from .chat_models import Conversation, Message"
+    ],
+    "v13\\atlas\\chat\\chat_models.py": [
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from typing import List, Optional, Dict"
+    ],
+    "v13\\atlas\\chat\\chat_service.py": [
+      "from typing import Dict, List, Optional",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.deterministic_helpers import DeterministicID",
+      "from .chat_models import Conversation, Message, ConversationType, MessageStatus"
+    ],
+    "v13\\atlas\\chat\\__init__.py": [
+      "from .chat_models import Conversation, Message, ConversationType, MessageStatus",
+      "from .chat_service import ChatService",
+      "from .chat_events import ("
+    ],
+    "v13\\atlas\\economics\\ViralRewardBinder.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.governance.RewardAllocator import RewardAllocator, AllocatedReward",
+      "from v13.core.reward_types import RewardBundle"
+    ],
+    "v13\\atlas\\scoring\\ViralEngine.py": [
+      "import hashlib",
+      "import json",
+      "from dataclasses import dataclass"
+    ],
+    "v13\\atlas\\social\\SocialBridge.py": [
+      "from dataclasses import dataclass",
+      "from typing import Dict, Any, Optional",
+      "from v13.atlas.scoring.ViralEngine import ViralEngine, EngagementMetrics",
+      "import sys",
+      "import os",
+      "from v13.atlas.scoring.ViralEngine import ViralEngine, EngagementMetrics"
+    ],
+    "v13\\atlas\\spaces\\spaces_events.py": [
+      "from typing import Dict, Any, List",
+      "from dataclasses import dataclass",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from .spaces_manager import Space",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.spaces.spaces_manager import Space"
+    ],
+    "v13\\atlas\\spaces\\spaces_manager.py": [
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.deterministic_helpers import DeterministicID",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.deterministic_helpers import DeterministicID"
+    ],
+    "v13\\atlas\\spaces\\wall_posts.py": [
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.deterministic_helpers import DeterministicID",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.deterministic_helpers import DeterministicID"
+    ],
+    "v13\\atlas\\spaces\\wall_posts_events.py": [
+      "from typing import Dict, Any, List",
+      "from dataclasses import dataclass",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from .wall_posts import WallPost",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.spaces.wall_posts import WallPost"
+    ],
+    "v13\\atlas\\spaces\\__init__.py": [
+      "from .spaces_manager import (",
+      "from .spaces_events import ("
+    ],
+    "v13\\atlas\\src\\config.py": [
+      "import os"
+    ],
+    "v13\\atlas\\src\\main.py": [
+      "import logging",
+      "from fastapi import FastAPI, Request, status",
+      "from fastapi.middleware.cors import CORSMiddleware",
+      "from fastapi.responses import JSONResponse",
+      "from fastapi.exceptions import RequestValidationError",
+      "from contextlib import asynccontextmanager",
+      "from .api import app as api_app",
+      "from .core.quantum_engine import QuantumEngine",
+      "from .core.transaction_processor import TransactionProcessor",
+      "import uvicorn",
+      "from .config import PORT"
+    ],
+    "v13\\atlas\\src\\numeric.py": [
+      "from typing import Union, Any",
+      "import json",
+      "from ...libs.economics.QAmount import QAmount",
+      "from ...libs.BigNum128 import BigNum128"
+    ],
+    "v13\\atlas\\src\\qfs_client.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "import logging",
+      "from .real_ledger import RealLedger",
+      "from .types import Transaction, DeterminismReport",
+      "from .qfs_types import OperationBundle",
+      "from libs.deterministic_helpers import det_time_isoformat",
+      "from libs.PQC import PQC"
+    ],
+    "v13\\atlas\\src\\qfs_types.py": [
+      "from dataclasses import dataclass, asdict",
+      "from typing import Dict, Any, List, Optional",
+      "import json"
+    ],
+    "v13\\atlas\\src\\real_ledger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List, Union",
+      "from dataclasses import dataclass, asdict",
+      "import logging",
+      "from .qfs_types import OperationBundle"
+    ],
+    "v13\\atlas\\src\\time.py": [
+      "from typing import Union",
+      "from ...libs.deterministic.time import ("
+    ],
+    "v13\\atlas\\src\\types.py": [
+      "from dataclasses import dataclass",
+      "from typing import Dict, Any, Optional, List"
+    ],
+    "v13\\atlas\\src\\value_graph_ref.py": [
+      "from __future__ import annotations",
+      "from dataclasses import dataclass, field",
+      "from typing import Any, Dict, List, Optional",
+      "import json"
+    ],
+    "v13\\atlas\\src\\__init__.py": [
+      "from .core.quantum_engine import QuantumEngine",
+      "from .core.transaction_processor import TransactionProcessor"
+    ],
+    "v13\\atlas\\wall\\feed_resolver.py": [
+      "from typing import List, Optional",
+      "from .wall_service import WallService",
+      "from .wall_models import Post, PostType",
+      "from v13.atlas.wall.wall_service import WallService",
+      "from v13.atlas.wall.wall_models import Post, PostType"
+    ],
+    "v13\\atlas\\wall\\wall_events.py": [
+      "from typing import Dict, Any, List",
+      "from dataclasses import dataclass",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from .wall_models import Post",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.atlas.wall.wall_models import Post"
+    ],
+    "v13\\atlas\\wall\\wall_models.py": [
+      "from typing import Dict, Any, Optional",
+      "from dataclasses import dataclass, field",
+      "from enum import Enum"
+    ],
+    "v13\\atlas\\wall\\wall_service.py": [
+      "from typing import Dict, Any, List, Optional",
+      "import hashlib",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.deterministic_helpers import DeterministicID",
+      "from .wall_models import Post, PostType, Visibility",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.deterministic_helpers import DeterministicID",
+      "from v13.atlas.wall.wall_models import Post, PostType, Visibility"
+    ],
+    "v13\\atlas\\wall\\__init__.py": [
+      "from .wall_models import Post, PostType, Visibility",
+      "from .wall_service import WallService",
+      "from .feed_resolver import FeedResolver",
+      "from .wall_events import ("
+    ],
+    "v13\\atlas\\tests\\value_node\\test_content_id_determinism.py": [
+      "from __future__ import annotations",
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any",
+      "import pytest"
+    ],
+    "v13\\atlas\\tests\\value_node\\test_value_graph_ref.py": [
+      "from __future__ import annotations",
+      "from pathlib import Path",
+      "from typing import Dict, Any, List",
+      "import pytest",
+      "from value_graph_ref import ValueGraphRef",
+      "from test_value_node_replay import simple_user_state, simple_event_trace, run_event_sequence",
+      "from test_value_node_replay import UserState"
+    ],
+    "v13\\atlas\\tests\\value_node\\test_value_node_replay.py": [
+      "from __future__ import annotations",
+      "from fractions import Fraction",
+      "from dataclasses import dataclass, replace",
+      "from typing import Dict, Any, List",
+      "import pytest"
+    ],
+    "v13\\atlas\\src\\api\\crypto_utils.py": [
+      "import logging",
+      "from eth_account.messages import encode_defunct",
+      "from eth_account import Account"
+    ],
+    "v13\\atlas\\src\\api\\dependencies.py": [
+      "from functools import lru_cache",
+      "from typing import Optional, Generator",
+      "import logging",
+      "from fastapi import Depends, HTTPException, status",
+      "from fastapi.security import OAuth2PasswordBearer",
+      "from pydantic import BaseModel",
+      "from ..qfs_client import QFSClient",
+      "from ..qfs_client import QFSClient",
+      "from ..real_ledger import RealLedger",
+      "from ..models.user import User",
+      "from v13.core.CoherenceLedger import CoherenceLedger",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.QFSReplaySource import LiveLedgerReplaySource",
+      "from ..config import EXPLAIN_THIS_SOURCE, QFS_LEDGER_PATH",
+      "from v13.core.dependencies import get_crypto_engine",
+      "import json"
+    ],
+    "v13\\atlas\\src\\api\\events.py": [
+      "from fastapi import APIRouter, HTTPException, Depends, status",
+      "from pydantic import BaseModel",
+      "from typing import List, Dict, Any, Optional",
+      "import hashlib",
+      "from v13.ledger.genesis_ledger import GenesisLedger, GenesisEntry"
+    ],
+    "v13\\atlas\\src\\api\\__init__.py": [
+      "from fastapi import FastAPI, HTTPException, Depends, status",
+      "from fastapi.security import OAuth2PasswordBearer",
+      "from typing import Optional",
+      "import logging",
+      "from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain",
+      "from .dependencies import get_current_user"
+    ],
+    "v13\\atlas\\src\\core\\economic_views.py": [
+      "from __future__ import annotations",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.economics.QAmount import QAmount",
+      "from dataclasses import dataclass",
+      "from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence"
+    ],
+    "v13\\atlas\\src\\core\\pqc_session.py": [
+      "import logging",
+      "import base64",
+      "import uuid",
+      "from typing import Dict",
+      "from libs.PQC import PQC",
+      "import os"
+    ],
+    "v13\\atlas\\src\\core\\quantum_engine.py": [
+      "import numpy as np",
+      "from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister",
+      "from qiskit.circuit.library import QFT",
+      "from qiskit.quantum_info import Statevector",
+      "from typing import Optional, Tuple, List",
+      "import hashlib"
+    ],
+    "v13\\atlas\\src\\core\\transaction_processor.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from typing import Dict, List, Optional, Tuple",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "from dataclasses import dataclass, asdict",
+      "import logging"
+    ],
+    "v13\\atlas\\src\\core\\__init__.py": [
+      "from .quantum_engine import QuantumEngine",
+      "from .transaction_processor import TransactionProcessor"
+    ],
+    "v13\\atlas\\src\\models\\quantum.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator"
+    ],
+    "v13\\atlas\\src\\models\\transaction.py": [
+      "from libs.deterministic_helpers import (",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator"
+    ],
+    "v13\\atlas\\src\\models\\user.py": [
+      "from pydantic import BaseModel, EmailStr",
+      "from typing import Optional, Dict, Any"
+    ],
+    "v13\\atlas\\src\\models\\wallet.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator, EmailStr"
+    ],
+    "v13\\atlas\\src\\p2p\\aegis_bootstrap.py": [
+      "import logging",
+      "import base64",
+      "from typing import Optional, Dict",
+      "from v13.core.AEGISNodeVerification import AEGIS_Node_Verifier"
+    ],
+    "v13\\atlas\\src\\p2p\\bandwidth_economics.py": [
+      "from fractions import Fraction",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, Any"
+    ],
+    "v13\\atlas\\src\\p2p\\connection_manager.py": [
+      "import logging",
+      "import json",
+      "import base64",
+      "import asyncio",
+      "from typing import Dict, Optional, Tuple",
+      "from libs.PQC import PQC, KeyPair",
+      "from .secure_message_v2 import SecureMessageV2, MessageSequenceManager",
+      "from .aegis_bootstrap import AEGISDIDBootstrap",
+      "from libs.economics.QAmount import QAmount"
+    ],
+    "v13\\atlas\\src\\p2p\\secure_message_logger.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.core.CoherenceLedger import CoherenceLedger, LedgerEntry"
+    ],
+    "v13\\atlas\\src\\p2p\\secure_message_v2.py": [
+      "from libs.economics.QAmount import QAmount",
+      "import json",
+      "import base64",
+      "import hashlib",
+      "import logging",
+      "from typing import Dict, Tuple, Optional"
+    ],
+    "v13\\atlas\\src\\security\\wallet_id.py": [
+      "import hashlib"
+    ],
+    "v13\\atlas\\src\\signals\\artistic.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from fractions import Fraction",
+      "from typing import Dict, Any, List",
+      "from .base import SignalAddon, SignalResult",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\src\\signals\\base.py": [
+      "from typing import Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "import hashlib",
+      "import json",
+      "from libs.economics.QAmount import QAmount"
+    ],
+    "v13\\atlas\\src\\signals\\humor.py": [
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\src\\signals\\humor_v2.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from fractions import Fraction",
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\src\\signals\\humor_zerosim.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\src\\signals\\test_base.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "from .base import SignalAddon, SignalResult"
+    ],
+    "v13\\atlas\\src\\signals\\test_humor.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import pytest",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\src\\signals\\test_integration.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "from .base import SignalAddon, SignalResult",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\src\\signals\\test_zerosim_compliance.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import pytest",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\src\\tests\\test_atlas_api_wallets_auth_and_policy.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app"
+    ],
+    "v13\\atlas\\src\\tests\\test_economic_views.py": [
+      "from fractions import Fraction",
+      "from pathlib import Path",
+      "from src.core.economic_views import build_transaction_list_view, build_wallet_summary_view"
+    ],
+    "v13\\atlas\\src\\tests\\test_explain_this_e2e.py": [
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api.dependencies import get_replay_source, get_current_user",
+      "from v13.ATLAS.src.api.routes import explain"
+    ],
+    "v13\\atlas\\src\\tests\\test_metrics_and_proofs_endpoints.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app",
+      "from src.api.routes import metrics as metrics_route",
+      "from src.api.routes import metrics as metrics_route"
+    ],
+    "v13\\atlas\\src\\tests\\test_qfs_client.py": [
+      "import sys",
+      "from pathlib import Path",
+      "import pytest",
+      "from datetime import datetime, timezone",
+      "from src.qfs_client import QFSClient",
+      "from src.qfs_types import OperationBundle",
+      "from src.types import Transaction, DeterminismReport",
+      "from src.real_ledger import RealLedger, MockLedger"
+    ],
+    "v13\\atlas\\src\\tests\\test_transactions_api_boundary.py": [
+      "from fractions import Fraction",
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app",
+      "from src.api.routes import transactions as tx_routes"
+    ],
+    "v13\\atlas\\src\\secure_chat\\core\\engine.py": [
+      "import hashlib",
+      "import hmac",
+      "import json",
+      "from typing import Dict, List, Optional, Tuple",
+      "from dataclasses import dataclass, asdict, field",
+      "import logging",
+      "from enum import Enum"
+    ],
+    "v13\\atlas\\src\\secure_chat\\core\\__init__.py": [
+      "from .engine import SecureChatEngine, ThreadStatus, Thread, Message"
+    ],
+    "v13\\atlas\\src\\secure_chat\\storage\\ipfs_storage.py": [
+      "import hashlib",
+      "from typing import Dict, Optional, Union",
+      "import aiohttp",
+      "import json",
+      "import logging",
+      "import logging",
+      "import logging",
+      "import logging"
+    ],
+    "v13\\atlas\\src\\secure_chat\\storage\\memory_storage.py": [
+      "import hashlib",
+      "from typing import Dict, Optional"
+    ],
+    "v13\\atlas\\src\\secure_chat\\storage\\__init__.py": [
+      "from .memory_storage import MemoryStorage"
+    ],
+    "v13\\atlas\\src\\secure_chat\\tests\\test_secure_chat_api.py": [
+      "from pathlib import Path",
+      "from typing import Dict, Any",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app"
+    ],
+    "v13\\atlas\\src\\secure_chat\\tests\\test_secure_chat_engine.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from src.secure_chat.core.engine import SecureChatEngine, ThreadStatus",
+      "from src.secure_chat.storage.memory_storage import MemoryStorage"
+    ],
+    "v13\\atlas\\src\\api\\routes\\explain.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, Any, Optional",
+      "import logging",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from ..dependencies import get_replay_source, get_current_user",
+      "from ..config import EXPLAIN_THIS_SOURCE",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.storage_explainability import explain_storage_placement"
+    ],
+    "v13\\atlas\\src\\api\\routes\\explain_p2p.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, Depends, HTTPException",
+      "from typing import Dict, Any",
+      "import hashlib",
+      "import json",
+      "from v13.ATLAS.src.api.dependencies import get_current_user, get_replay_source, User"
+    ],
+    "v13\\atlas\\src\\api\\routes\\governance.py": [
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, Any, List, Optional"
+    ],
+    "v13\\atlas\\src\\api\\routes\\metrics.py": [
+      "from fastapi import APIRouter, Depends, HTTPException, status",
+      "from typing import Dict, Any",
+      "import logging",
+      "from ..dependencies import get_qfs_client_dependency",
+      "from ...qfs_client import QFSClient",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.StorageEngine import StorageEngine"
+    ],
+    "v13\\atlas\\src\\api\\routes\\proofs.py": [
+      "from fastapi import APIRouter, HTTPException, status, Body",
+      "from typing import Dict, Any, Optional",
+      "import logging",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\atlas\\src\\api\\routes\\quantum.py": [
+      "from fastapi import APIRouter, HTTPException, status",
+      "from typing import Dict, List, Optional",
+      "import logging",
+      "import hashlib",
+      "from ...core.quantum_engine import QuantumEngine",
+      "from ...models.quantum import QuantumKeyPair, QuantumSignature, QuantumSignatureVerify, EntangledPair, QuantumState"
+    ],
+    "v13\\atlas\\src\\api\\routes\\secure_chat.py": [
+      "from libs.deterministic_helpers import det_time_isoformat",
+      "from fastapi import APIRouter, Depends, HTTPException, status",
+      "from pydantic import BaseModel, Field",
+      "from typing import List, Optional, Dict, Any",
+      "import logging",
+      "import base64",
+      "from libs.PQC import PQC",
+      "from ..dependencies import get_current_user, get_qfs_client",
+      "from ...models.user import User",
+      "from ...qfs_client import QFSClient",
+      "from ...types import Transaction",
+      "from ...secure_chat.core.engine import ThreadStatus",
+      "from ...core.pqc_session import pqc_session_manager",
+      "import hashlib"
+    ],
+    "v13\\atlas\\src\\api\\routes\\test_explain.py": [
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api import app"
+    ],
+    "v13\\atlas\\src\\api\\routes\\test_metrics.py": [
+      "import unittest"
+    ],
+    "v13\\atlas\\src\\api\\routes\\test_proofs.py": [
+      "import unittest"
+    ],
+    "v13\\atlas\\src\\api\\routes\\transactions.py": [
+      "from fastapi import APIRouter, HTTPException, Depends, status",
+      "from typing import List, Optional",
+      "import logging",
+      "from ...core.transaction_processor import Transaction, TransactionProcessor",
+      "from ...models.transaction import TransactionCreate, TransactionResponse"
+    ],
+    "v13\\atlas\\src\\api\\routes\\wallets.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, List, Optional",
+      "import logging",
+      "from ...core.transaction_processor import TransactionProcessor",
+      "from ...models.wallet import WalletBalance, WalletCreate, WalletResponse"
+    ],
+    "v13\\atlas\\platform\\spaces\\spaces_events.py": [
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.canonical.events import EconomicEvent",
+      "from .spaces_manager import Space, Participant, ParticipantRole",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.canonical.events import EconomicEvent",
+      "from v13.atlas.spaces.spaces_manager import Space, Participant, ParticipantRole"
+    ],
+    "v13\\atlas\\platform\\spaces\\spaces_manager.py": [
+      "from typing import Dict, Any, List, Optional",
+      "from dataclasses import dataclass",
+      "from enum import Enum",
+      "import hashlib",
+      "import json",
+      "from ...libs.BigNum128 import BigNum128",
+      "from ...libs.CertifiedMath import CertifiedMath",
+      "from ...libs.deterministic_helpers import DeterministicID",
+      "from v13.libs.BigNum128 import BigNum128",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.libs.deterministic_helpers import DeterministicID"
+    ],
+    "v13\\atlas\\platform\\spaces\\__init__.py": [
+      "from .spaces_manager import (",
+      "from .spaces_events import ("
+    ],
+    "v13\\atlas\\platform\\src\\config.py": [
+      "import os"
+    ],
+    "v13\\atlas\\platform\\src\\main.py": [
+      "import logging",
+      "from fastapi import FastAPI, Request, status",
+      "from fastapi.middleware.cors import CORSMiddleware",
+      "from fastapi.responses import JSONResponse",
+      "from fastapi.exceptions import RequestValidationError",
+      "from contextlib import asynccontextmanager",
+      "from .api import app as api_app",
+      "from .core.quantum_engine import QuantumEngine",
+      "from .core.transaction_processor import TransactionProcessor",
+      "import uvicorn",
+      "from .config import PORT"
+    ],
+    "v13\\atlas\\platform\\src\\numeric.py": [
+      "from typing import Union, Any",
+      "import json",
+      "from ...libs.economics.QAmount import QAmount",
+      "from ...libs.BigNum128 import BigNum128"
+    ],
+    "v13\\atlas\\platform\\src\\qfs_client.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List",
+      "from dataclasses import dataclass",
+      "import logging",
+      "from .real_ledger import RealLedger",
+      "from .types import Transaction, DeterminismReport",
+      "from .qfs_types import OperationBundle",
+      "from libs.deterministic_helpers import det_time_isoformat",
+      "from libs.PQC import PQC"
+    ],
+    "v13\\atlas\\platform\\src\\qfs_types.py": [
+      "from dataclasses import dataclass, asdict",
+      "from typing import Dict, Any, List, Optional",
+      "import json"
+    ],
+    "v13\\atlas\\platform\\src\\real_ledger.py": [
+      "import json",
+      "import hashlib",
+      "from typing import Dict, Any, Optional, List, Union",
+      "from dataclasses import dataclass, asdict",
+      "import logging",
+      "from .qfs_types import OperationBundle"
+    ],
+    "v13\\atlas\\platform\\src\\time.py": [
+      "from typing import Union",
+      "from ...libs.deterministic.time import ("
+    ],
+    "v13\\atlas\\platform\\src\\types.py": [
+      "from dataclasses import dataclass",
+      "from typing import Dict, Any, Optional, List"
+    ],
+    "v13\\atlas\\platform\\src\\value_graph_ref.py": [
+      "from __future__ import annotations",
+      "from dataclasses import dataclass, field",
+      "from typing import Any, Dict, List, Optional",
+      "import json"
+    ],
+    "v13\\atlas\\platform\\src\\__init__.py": [
+      "from .core.quantum_engine import QuantumEngine",
+      "from .core.transaction_processor import TransactionProcessor"
+    ],
+    "v13\\atlas\\platform\\tests\\value_node\\test_content_id_determinism.py": [
+      "from __future__ import annotations",
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any",
+      "import pytest"
+    ],
+    "v13\\atlas\\platform\\tests\\value_node\\test_value_graph_ref.py": [
+      "from __future__ import annotations",
+      "from pathlib import Path",
+      "from typing import Dict, Any, List",
+      "import pytest",
+      "from value_graph_ref import ValueGraphRef",
+      "from test_value_node_replay import simple_user_state, simple_event_trace, run_event_sequence",
+      "from test_value_node_replay import UserState"
+    ],
+    "v13\\atlas\\platform\\tests\\value_node\\test_value_node_replay.py": [
+      "from __future__ import annotations",
+      "from fractions import Fraction",
+      "from dataclasses import dataclass, replace",
+      "from typing import Dict, Any, List",
+      "import pytest"
+    ],
+    "v13\\atlas\\platform\\src\\api\\crypto_utils.py": [
+      "import logging",
+      "from eth_account.messages import encode_defunct",
+      "from eth_account import Account"
+    ],
+    "v13\\atlas\\platform\\src\\api\\dependencies.py": [
+      "from functools import lru_cache",
+      "from typing import Optional, Generator",
+      "import logging",
+      "from fastapi import Depends, HTTPException, status",
+      "from fastapi.security import OAuth2PasswordBearer",
+      "from pydantic import BaseModel",
+      "from ..qfs_client import QFSClient",
+      "from ..qfs_client import QFSClient",
+      "from ..real_ledger import RealLedger",
+      "from ..models.user import User",
+      "from v13.core.CoherenceLedger import CoherenceLedger",
+      "from v13.core.StorageEngine import StorageEngine",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.QFSReplaySource import LiveLedgerReplaySource",
+      "from ..config import EXPLAIN_THIS_SOURCE, QFS_LEDGER_PATH",
+      "from v13.core.dependencies import get_crypto_engine",
+      "import json"
+    ],
+    "v13\\atlas\\platform\\src\\api\\events.py": [
+      "from fastapi import APIRouter, HTTPException, Depends, status",
+      "from pydantic import BaseModel",
+      "from typing import List, Dict, Any, Optional",
+      "import hashlib",
+      "from v13.ledger.genesis_ledger import GenesisLedger, GenesisEntry"
+    ],
+    "v13\\atlas\\platform\\src\\api\\__init__.py": [
+      "from fastapi import FastAPI, HTTPException, Depends, status",
+      "from fastapi.security import OAuth2PasswordBearer",
+      "from typing import Optional",
+      "import logging",
+      "from .routes import wallets, transactions, metrics, proofs, quantum, secure_chat, explain",
+      "from .dependencies import get_current_user"
+    ],
+    "v13\\atlas\\platform\\src\\core\\economic_views.py": [
+      "from __future__ import annotations",
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.economics.QAmount import QAmount",
+      "from dataclasses import dataclass",
+      "from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence"
+    ],
+    "v13\\atlas\\platform\\src\\core\\pqc_session.py": [
+      "import logging",
+      "import base64",
+      "import uuid",
+      "from typing import Dict",
+      "from libs.PQC import PQC",
+      "import os"
+    ],
+    "v13\\atlas\\platform\\src\\core\\quantum_engine.py": [
+      "import numpy as np",
+      "from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister",
+      "from qiskit.circuit.library import QFT",
+      "from qiskit.quantum_info import Statevector",
+      "from typing import Optional, Tuple, List",
+      "import hashlib"
+    ],
+    "v13\\atlas\\platform\\src\\core\\transaction_processor.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from typing import Dict, List, Optional, Tuple",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "from dataclasses import dataclass, asdict",
+      "import logging"
+    ],
+    "v13\\atlas\\platform\\src\\core\\__init__.py": [
+      "from .quantum_engine import QuantumEngine",
+      "from .transaction_processor import TransactionProcessor"
+    ],
+    "v13\\atlas\\platform\\src\\models\\quantum.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator"
+    ],
+    "v13\\atlas\\platform\\src\\models\\transaction.py": [
+      "from libs.deterministic_helpers import (",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator"
+    ],
+    "v13\\atlas\\platform\\src\\models\\user.py": [
+      "from pydantic import BaseModel, EmailStr",
+      "from typing import Optional, Dict, Any"
+    ],
+    "v13\\atlas\\platform\\src\\models\\wallet.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, List, Optional, Any",
+      "from pydantic import BaseModel, Field, validator, EmailStr"
+    ],
+    "v13\\atlas\\platform\\src\\p2p\\aegis_bootstrap.py": [
+      "import logging",
+      "import base64",
+      "from typing import Optional, Dict",
+      "from v13.core.AEGISNodeVerification import AEGIS_Node_Verifier"
+    ],
+    "v13\\atlas\\platform\\src\\p2p\\bandwidth_economics.py": [
+      "from fractions import Fraction",
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, Any"
+    ],
+    "v13\\atlas\\platform\\src\\p2p\\connection_manager.py": [
+      "import logging",
+      "import json",
+      "import base64",
+      "import asyncio",
+      "from typing import Dict, Optional, Tuple",
+      "from libs.PQC import PQC, KeyPair",
+      "from .secure_message_v2 import SecureMessageV2, MessageSequenceManager",
+      "from .aegis_bootstrap import AEGISDIDBootstrap",
+      "from libs.economics.QAmount import QAmount"
+    ],
+    "v13\\atlas\\platform\\src\\p2p\\secure_message_logger.py": [
+      "from libs.deterministic_helpers import ZeroSimAbort, det_time_now, det_perf_counter, det_random, det_time_isoformat, qnum",
+      "import hashlib",
+      "from typing import Dict, Any",
+      "from v13.core.CoherenceLedger import CoherenceLedger, LedgerEntry"
+    ],
+    "v13\\atlas\\platform\\src\\p2p\\secure_message_v2.py": [
+      "from libs.economics.QAmount import QAmount",
+      "import json",
+      "import base64",
+      "import hashlib",
+      "import logging",
+      "from typing import Dict, Tuple, Optional"
+    ],
+    "v13\\atlas\\platform\\src\\security\\wallet_id.py": [
+      "import hashlib"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\artistic.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from fractions import Fraction",
+      "from typing import Dict, Any, List",
+      "from .base import SignalAddon, SignalResult",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\base.py": [
+      "from typing import Dict, Any, Optional",
+      "from dataclasses import dataclass",
+      "import hashlib",
+      "import json",
+      "from libs.economics.QAmount import QAmount"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\humor.py": [
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\humor_v2.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from fractions import Fraction",
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\humor_zerosim.py": [
+      "from libs.economics.QAmount import QAmount",
+      "from typing import Dict, Any",
+      "from .base import SignalAddon, SignalResult",
+      "from libs.economics.QAmount import QAmount",
+      "import hashlib",
+      "import json",
+      "import re"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\test_base.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "from .base import SignalAddon, SignalResult"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\test_humor.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import pytest",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\test_integration.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "from .base import SignalAddon, SignalResult",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\platform\\src\\signals\\test_zerosim_compliance.py": [
+      "from fractions import Fraction",
+      "import unittest",
+      "import pytest",
+      "from .humor import HumorSignalAddon"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_atlas_api_wallets_auth_and_policy.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_economic_views.py": [
+      "from fractions import Fraction",
+      "from pathlib import Path",
+      "from src.core.economic_views import build_transaction_list_view, build_wallet_summary_view"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_explain_this_e2e.py": [
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api.dependencies import get_replay_source, get_current_user",
+      "from v13.ATLAS.src.api.routes import explain"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_metrics_and_proofs_endpoints.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app",
+      "from src.api.routes import metrics as metrics_route",
+      "from src.api.routes import metrics as metrics_route"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_qfs_client.py": [
+      "import sys",
+      "from pathlib import Path",
+      "import pytest",
+      "from datetime import datetime, timezone",
+      "from src.qfs_client import QFSClient",
+      "from src.qfs_types import OperationBundle",
+      "from src.types import Transaction, DeterminismReport",
+      "from src.real_ledger import RealLedger, MockLedger"
+    ],
+    "v13\\atlas\\platform\\src\\tests\\test_transactions_api_boundary.py": [
+      "from fractions import Fraction",
+      "from pathlib import Path",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app",
+      "from src.api.routes import transactions as tx_routes"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\core\\engine.py": [
+      "import hashlib",
+      "import hmac",
+      "import json",
+      "from typing import Dict, List, Optional, Tuple",
+      "from dataclasses import dataclass, asdict, field",
+      "import logging",
+      "from enum import Enum"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\core\\__init__.py": [
+      "from .engine import SecureChatEngine, ThreadStatus, Thread, Message"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\storage\\ipfs_storage.py": [
+      "import hashlib",
+      "from typing import Dict, Optional, Union",
+      "import aiohttp",
+      "import json",
+      "import logging",
+      "import logging",
+      "import logging",
+      "import logging"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\storage\\memory_storage.py": [
+      "import hashlib",
+      "from typing import Dict, Optional"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\storage\\__init__.py": [
+      "from .memory_storage import MemoryStorage"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\tests\\test_secure_chat_api.py": [
+      "from pathlib import Path",
+      "from typing import Dict, Any",
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from src.main import app"
+    ],
+    "v13\\atlas\\platform\\src\\secure_chat\\tests\\test_secure_chat_engine.py": [
+      "from pathlib import Path",
+      "import pytest",
+      "from src.secure_chat.core.engine import SecureChatEngine, ThreadStatus",
+      "from src.secure_chat.storage.memory_storage import MemoryStorage"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\explain.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, Any, Optional",
+      "import logging",
+      "from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper",
+      "from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from ..dependencies import get_replay_source, get_current_user",
+      "from ..config import EXPLAIN_THIS_SOURCE",
+      "from v13.policy.artistic_policy import ArtisticSignalPolicy, ArtisticPolicy",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.policy.value_node_replay import ValueNodeReplayEngine",
+      "from v13.policy.storage_explainability import explain_storage_placement"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\explain_p2p.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, Depends, HTTPException",
+      "from typing import Dict, Any",
+      "import hashlib",
+      "import json",
+      "from v13.ATLAS.src.api.dependencies import get_current_user, get_replay_source, User"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\governance.py": [
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, Any, List, Optional"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\metrics.py": [
+      "from fastapi import APIRouter, Depends, HTTPException, status",
+      "from typing import Dict, Any",
+      "import logging",
+      "from ..dependencies import get_qfs_client_dependency",
+      "from ...qfs_client import QFSClient",
+      "from v13.libs.CertifiedMath import CertifiedMath",
+      "from v13.core.StorageEngine import StorageEngine"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\proofs.py": [
+      "from fastapi import APIRouter, HTTPException, status, Body",
+      "from typing import Dict, Any, Optional",
+      "import logging",
+      "import hashlib",
+      "import json"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\quantum.py": [
+      "from fastapi import APIRouter, HTTPException, status",
+      "from typing import Dict, List, Optional",
+      "import logging",
+      "import hashlib",
+      "from ...core.quantum_engine import QuantumEngine",
+      "from ...models.quantum import QuantumKeyPair, QuantumSignature, QuantumSignatureVerify, EntangledPair, QuantumState"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\secure_chat.py": [
+      "from libs.deterministic_helpers import det_time_isoformat",
+      "from fastapi import APIRouter, Depends, HTTPException, status",
+      "from pydantic import BaseModel, Field",
+      "from typing import List, Optional, Dict, Any",
+      "import logging",
+      "import base64",
+      "from libs.PQC import PQC",
+      "from ..dependencies import get_current_user, get_qfs_client",
+      "from ...models.user import User",
+      "from ...qfs_client import QFSClient",
+      "from ...types import Transaction",
+      "from ...secure_chat.core.engine import ThreadStatus",
+      "from ...core.pqc_session import pqc_session_manager",
+      "import hashlib"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\test_explain.py": [
+      "import pytest",
+      "from fastapi.testclient import TestClient",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api import app",
+      "from v13.ATLAS.src.api import app"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\test_metrics.py": [
+      "import unittest"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\test_proofs.py": [
+      "import unittest"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\transactions.py": [
+      "from fastapi import APIRouter, HTTPException, Depends, status",
+      "from typing import List, Optional",
+      "import logging",
+      "from ...core.transaction_processor import Transaction, TransactionProcessor",
+      "from ...models.transaction import TransactionCreate, TransactionResponse"
+    ],
+    "v13\\atlas\\platform\\src\\api\\routes\\wallets.py": [
+      "from fractions import Fraction",
+      "from fastapi import APIRouter, HTTPException, status, Depends",
+      "from typing import Dict, List, Optional",
+      "import logging",
+      "from ...core.transaction_processor import TransactionProcessor",
+      "from ...models.wallet import WalletBalance, WalletCreate, WalletResponse"
+    ],
+    "v13\\atlas\\platform\\node_modules\\flatted\\python\\flatted.py": [
+      "import json as _json"
+    ],
+    "v13\\AEGIS\\governance\\api.py": [
+      "from fastapi import APIRouter, HTTPException",
+      "from .consequence_graph import build_aegis_consequence_graph, AEGISConsequenceGraph"
+    ],
+    "v13\\AEGIS\\governance\\consequence_graph.py": [
+      "from typing import List, Dict, Any",
+      "from pydantic import BaseModel, Field",
+      "from ..ui_contracts.schemas import DAGNode, DAGEdge",
+      "from .model_registry import get_model_config"
+    ],
+    "v13\\AEGIS\\governance\\model_registry.py": [
+      "from pydantic import BaseModel, Field",
+      "from typing import Dict, List, Optional",
+      "import json",
+      "from pathlib import Path"
+    ],
+    "v13\\AEGIS\\governance\\proposals.py": [
+      "from pydantic import BaseModel, Field",
+      "from typing import List, Dict, Optional"
+    ],
+    "v13\\AEGIS\\sandbox\\api.py": [
+      "from fastapi import APIRouter, Body",
+      "from ..ui_contracts.schemas import SandboxScenarioRequest, SandboxResult",
+      "from .engine import run_sandbox_scenario",
+      "from .assistant import analyze_sandbox_result"
+    ],
+    "v13\\AEGIS\\sandbox\\assistant.py": [
+      "from typing import Dict, Any",
+      "from ..ui_contracts.schemas import SandboxResult, UserExplanationSettings"
+    ],
+    "v13\\AEGIS\\sandbox\\engine.py": [
+      "from typing import Dict, Any",
+      "import hashlib",
+      "from ..ui_contracts.schemas import SandboxResult"
+    ],
+    "v13\\AEGIS\\services\\counter_scenario.py": [
+      "from typing import Dict, Any",
+      "from ..ui_contracts.schemas import GovernanceMapResponse, UserExplanationSettings"
+    ],
+    "v13\\AEGIS\\services\\evidence_api.py": [
+      "from fastapi import APIRouter, HTTPException, Depends",
+      "from typing import List",
+      "from ..ui_contracts.schemas import ProofVectorRef",
+      "from .evidence_service import get_proof_vectors_by_ids",
+      "from v13.ATLAS.src.api.dependencies import get_replay_source",
+      "from v13.core.QFSReplaySource import QFSReplaySource"
+    ],
+    "v13\\AEGIS\\services\\evidence_models.py": [
+      "from pydantic import BaseModel, Field",
+      "from typing import Dict, List, Optional, Any"
+    ],
+    "v13\\AEGIS\\services\\evidence_service.py": [
+      "from typing import List, Dict, Any, Optional",
+      "from ..ui_contracts.schemas import ProofVectorRef",
+      "from .evidence_models import ProofVector",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from libs.deterministic_helpers import det_time_isoformat"
+    ],
+    "v13\\AEGIS\\services\\explanation_api.py": [
+      "from fastapi import APIRouter, HTTPException, Body",
+      "from typing import Dict",
+      "from ..ui_contracts.schemas import UserExplanationSettings, GovernanceMapResponse",
+      "from .explanation_control import (",
+      "from .counter_scenario import run_counter_scenario"
+    ],
+    "v13\\AEGIS\\services\\explanation_control.py": [
+      "import hashlib",
+      "import json",
+      "from typing import Dict, Any, Optional",
+      "from ..ui_contracts.schemas import UserExplanationSettings, GovernanceMapResponse"
+    ],
+    "v13\\AEGIS\\services\\explanation_service.py": [
+      "from typing import Tuple, List, Dict, Any",
+      "from ..ui_contracts.schemas import UserExplanationSettings, DAGNode, ProofVectorRef"
+    ],
+    "v13\\AEGIS\\services\\governance_map.py": [
+      "from fastapi import APIRouter, HTTPException",
+      "from typing import List, Dict, Any",
+      "from ..ui_contracts.schemas import (",
+      "from .evidence_service import find_proof_vectors_for_dag",
+      "from ..governance.model_registry import get_active_aegis_model",
+      "from .explanation_service import generate_aegis_explanation",
+      "from .explanation_control import generate_explanation_id"
+    ],
+    "v13\\AEGIS\\tests\\test_evidence_integration.py": [
+      "import pytest",
+      "from unittest.mock import MagicMock",
+      "from v13.AEGIS.services.evidence_service import get_proof_vectors_by_ids",
+      "from v13.core.QFSReplaySource import QFSReplaySource",
+      "from v13.libs.deterministic_helpers import det_time_isoformat"
+    ],
+    "v13\\AEGIS\\ui_contracts\\schemas.py": [
+      "from pydantic import BaseModel, Field",
+      "from typing import List, Dict, Literal, Optional"
+    ],
+    "monitoring\\collectors\\metrics_collector.py": [
+      "from dataclasses import dataclass, asdict",
+      "from typing import Dict, List, Optional",
+      "import json",
+      "import time",
+      "from pathlib import Path",
+      "import argparse"
+    ],
+    "archive\\scripts\\fix_bignum3.py": [
+      "import re"
+    ],
+    "archive\\scripts\\fix_files.py": [
+      "import os",
+      "import sys",
+      "from v13.libs.deterministic_helpers import det_time_isoformat",
+      "import os",
+      "import hashlib",
+      "import asyncio",
+      "from typing import Dict, Any, List, Optional",
+      "from pydantic import BaseModel"
+    ]
+  },
+  "modules": {
+    "v13.libs.BigNum128": true,
+    "v13.libs.CertifiedMath": true,
+    "v13.libs.economics.EconomicsGuard": true,
+    "v13.libs.economics.economic_constants": true,
+    "v13.libs.integration.StateTransitionEngine": true,
+    "v13.libs.governance.NODInvariantChecker": true,
+    "v13.policy.bounties.bounty_state_machine": true,
+    "v13.policy.bounties.bounty_schema": true,
+    "v13.policy.bounties.bounty_events": true,
+    "v13.policy.treasury.dev_rewards_treasury": true,
+    "v13.handlers.CIR302_Handler": true,
+    "v13.policy.governance.ProposalEngine": true,
+    "v13.atlas.scoring.ViralEngine": true,
+    "v13.atlas.social.SocialBridge": true,
+    "v13.atlas.economics.ViralRewardBinder": true,
+    "v13.policy.governance.GovernanceParameterRegistry": true
+  }
+}

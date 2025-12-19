@@ -144,11 +144,53 @@ jobs:
           retention-days: 30
 
   # ============================================================================
+  # Stage 1.5: Autonomous Validation
+  # ============================================================================
+  autonomous-validation:
+    name: "[STAGE 1.5] Autonomous Validation"
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Setup Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: "[SETUP] Install dependencies"
+        run: |
+          set -euo pipefail
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: "[AUTONOMOUS] Run Validation Harness"
+        run: |
+          set -euo pipefail
+          echo "::group::Autonomous Constitutional Check"
+
+          # Run the master controller
+          python v13/tests/autonomous/run_autonomous_validation.py
+
+          echo "::endgroup::"
+
+      - name: "[ARTIFACTS] Upload Validation Logs"
+        if: always()
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
+        with:
+          name: autonomous-validation-logs
+          path: logs/autonomous/
+          retention-days: 30
+
+  # ============================================================================
   # Stage 2: Unit Tests
   # ============================================================================
   unit-tests:
     name: "[STAGE 2] Unit Tests"
-    needs: static-analysis
+    needs: [static-analysis, autonomous-validation]
     runs-on: ubuntu-latest
     permissions:
       contents: read

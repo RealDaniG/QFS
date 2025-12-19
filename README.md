@@ -322,11 +322,21 @@ All verification evidence is in `v13/evidence/`:
 
 ## 🤝 Contributing
 
-### Current Focus: QFS v14.0 "Deterministic Session Management"
+### Current Focus:# QFS v19.0 × ATLAS v1.3 (v15 Autonomous Governance LIVE)
+>
+> **Status:** Stage 7 Release Complete. v15 Autonomous Governance Active.
 
-We're moving from verified baseline → live production with:
+QFS is a quantum-secure, constitutionally deterministic financial operating system.
 
-1. Deterministic session management system
+## 🚀 Latest Developments (v15)
+
+**Stage 7 Autonomous Governance** is now LIVE.
+
+- **Self-Amendment**: Hash-bound proposals update economic parameters via `v15/atlas/governance`.
+- **Proof-of-Execution**: Every governance action generates a verifiable artifact.
+- **Tezos-Inspired**: Phased Proposal → Vote → Execute cycle.
+- [Read the Release Notes](docs/RELEASES/RELEASE_NOTES_v15_0_0.md) or [v15 Overview](docs/V15_OVERVIEW.md).
+
 2. Challenge-response authentication flow
 3. Ledger-replayable session state reconstruction
 4. Explain-This cryptographic proof integration

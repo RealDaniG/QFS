@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import List, Dict, Tuple
 
 # Add root to path
-root = Path(__file__).parent.parent.parent
+root = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(root))
+
 
 try:
     from v13.libs.CertifiedMath import CertifiedMath

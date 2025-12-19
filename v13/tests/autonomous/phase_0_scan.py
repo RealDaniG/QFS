@@ -14,7 +14,12 @@ from typing import Dict, List
 
 # Setup logger
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format="%(message)s")
+# Setup logger
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(logging.Formatter("%(message)s"))
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 
 class EnvironmentScanner:
@@ -35,7 +40,14 @@ class EnvironmentScanner:
                 continue
 
             try:
-                content = py_file.read_text(encoding="utf-8")
+                try:
+                    content = py_file.read_text(encoding="utf-8")
+                except (PermissionError, OSError) as e:
+                    logger.warning(
+                        f"  ! Skipped {str(py_file.name)} due to permission/OS error: {e}"
+                    )
+                    continue
+
                 imports = []
 
                 for line in content.split("\n"):
@@ -44,10 +56,17 @@ class EnvironmentScanner:
                         imports.append(line)
 
                 if imports:
-                    import_map[str(py_file.relative_to(self.root_dir))] = imports
+                    try:
+                        import_map[str(py_file.relative_to(self.root_dir))] = imports
+                    except ValueError:
+                        # Fallback if relative path fails
+                        import_map[str(py_file)] = imports
 
             except Exception as e:
-                logger.error(f"[SCAN ERROR] {py_file}: {e}")
+                # Use ascii safe error message
+                logger.error(
+                    f"[SCAN ERROR] {str(py_file).encode('ascii', 'replace').decode()}: {str(e)}"
+                )
 
         return import_map
 
@@ -91,6 +110,20 @@ class EnvironmentScanner:
                 "v13/policy/treasury/dev_rewards_treasury.py",
             ),
             ("v13.handlers.CIR302_Handler", "v13/handlers/CIR302_Handler.py"),
+            (
+                "v13.policy.governance.ProposalEngine",
+                "v13/policy/governance/ProposalEngine.py",
+            ),
+            ("v13.atlas.scoring.ViralEngine", "v13/atlas/scoring/ViralEngine.py"),
+            ("v13.atlas.social.SocialBridge", "v13/atlas/social/SocialBridge.py"),
+            (
+                "v13.atlas.economics.ViralRewardBinder",
+                "v13/atlas/economics/ViralRewardBinder.py",
+            ),
+            (
+                "v13.policy.governance.GovernanceParameterRegistry",
+                "v13/policy/governance/GovernanceParameterRegistry.py",
+            ),
         ]
 
         for module, file_path in critical_modules:
@@ -152,9 +185,12 @@ class EnvironmentScanner:
 
         if missing:
             logger.error(f"  ✗ MISSING MODULES: {len(missing)}")
-            for m in missing:
-                logger.error(f"    - {m}")
+            with open("missing_modules.txt", "w", encoding="utf-8") as f:
+                for m in missing:
+                    f.write(f"{m}\n")
+                    logger.error(f"    - {m}")
             return False
+
         else:
             logger.info(f"  ✓ All {len(modules)} critical modules found")
 
@@ -167,7 +203,7 @@ class EnvironmentScanner:
 
 
 if __name__ == "__main__":
-    root = Path(__file__).parent.parent.parent
+    root = Path(__file__).resolve().parent.parent.parent.parent
     scanner = EnvironmentScanner(root)
     success = scanner.execute()
     sys.exit(0 if success else 1)

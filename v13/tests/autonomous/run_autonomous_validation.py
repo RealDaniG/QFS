@@ -12,9 +12,10 @@ import json
 import os
 
 # Add root to path and change to root directory
-root = Path(__file__).parent.parent.parent
+root = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(root))
 os.chdir(root)
+
 
 # Import phases
 sys.path.insert(0, str(Path(__file__).parent))
@@ -142,7 +143,7 @@ class AutonomousValidator:
 
 
 if __name__ == "__main__":
-    root = Path(__file__).parent.parent.parent
+    root = Path(__file__).resolve().parent.parent.parent.parent
     validator = AutonomousValidator(root)
     success = validator.execute()
     sys.exit(0 if success else 1)
