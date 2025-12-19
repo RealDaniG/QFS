@@ -1,7 +1,7 @@
-QFS_VERSION=v16.0.0-evergreen-baseline
+QFS_VERSION=v16.1.0-integration-complete
 ATLAS_VERSION=1.4.0
-GOVERNANCE_ENGINE=v16 (Zero-Sim)
+GOVERNANCE_ENGINE=v16 (Zero-Sim + EvidenceBus + Advisory Agents)
 RELEASE_DATE=2025-12-19
-STATUS=STABLE (Evergreen)
-VALIDATION_SUITE=Passed (Green)
-COMMIT_HASH=v16.0.0-evergreen-baseline
+STATUS=STABLE (Integration Complete)
+VALIDATION_SUITE=PASSING
+COMMIT_HASH=732b509

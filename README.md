@@ -1,7 +1,7 @@
 # QFS × ATLAS: Deterministic v16 Baseline
 
-> **Status:** Production-Ready (v16 Baseline)  
-> **Architecture:** MOCKQPC-First, Zero-Sim Enforced, AGPL-3.0 Licensed  
+> **Status:** Production-Ready (v16.1.0 Integration Complete)  
+> **Architecture:** MOCKQPC-First, Zero-Sim Enforced, EvidenceBus-Centric, AGPL-3.0 Licensed  
 > **Focus:** Deterministic Governance & Cost-Efficient Coordination
 
 ---
@@ -55,6 +55,10 @@ Strategic reset where processes became structured and coherent. Decisions became
 ### v16 — Ready for Real-World Use
 
 Achieves an optimal balance between strength and efficiency. Preserves earlier guarantees while drastically lowering operating costs via MOCKQPC, reducing dependencies, and making deployment feasible in standard environments.
+
+### v16.1.0 — Integration Complete (Current)
+
+Adds deterministic wallet authentication, admin observability dashboard, and agent advisory layer. All components are fully integrated with EvidenceBus for complete audit trails. Agents provide non-authoritative suggestions while deterministic functions (F) remain the final authority.
 
 ---
 
