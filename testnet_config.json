@@ -1,0 +1,54 @@
+{
+    "testnet_name": "QFS v15 Autonomous Governance Testnet",
+    "version": "15.0.0",
+    "network_id": "qfs-testnet-v15",
+    "chain_id": 15000,
+    "governance": {
+        "epoch_duration": 100,
+        "min_proposal_stake": "100000000000000000000",
+        "quorum_threshold": 30,
+        "supermajority_threshold": 66,
+        "proposal_voting_period": 50,
+        "proposal_execution_delay": 10
+    },
+    "parameters": {
+        "VIRAL_POOL_CAP": "1000000000000000000000000000",
+        "VIRAL_REWARD_MULTIPLIER": "1000000000000000000",
+        "MIN_PROPOSAL_STAKE": "100000000000000000000",
+        "QUORUM_THRESHOLD": 30,
+        "SUPERMAJORITY_THRESHOLD": 66
+    },
+    "monitoring": {
+        "aegis_check_interval_seconds": 60,
+        "health_check_interval_seconds": 600,
+        "dashboard_refresh_interval_seconds": 30,
+        "poe_logging_enabled": true,
+        "poe_log_directory": "./logs/poe_artifacts"
+    },
+    "rpc": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "port": 8545,
+        "cors_origins": [
+            "*"
+        ],
+        "max_connections": 100
+    },
+    "api": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "port": 3000,
+        "rate_limit_per_minute": 60
+    },
+    "logging": {
+        "level": "INFO",
+        "file": "./logs/testnet.log",
+        "max_size_mb": 100,
+        "backup_count": 10
+    },
+    "security": {
+        "require_pqc_signatures": true,
+        "enforce_aegis_coherence": true,
+        "reject_on_health_critical": true
+    }
+}

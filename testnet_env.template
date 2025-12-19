@@ -1,0 +1,43 @@
+# QFS v15 Testnet Environment Variables Template
+# Copy this file to .env and fill in your values
+
+# Network Configuration
+TESTNET_NAME="QFS v15 Autonomous Governance Testnet"
+NETWORK_ID="qfs-testnet-v15"
+CHAIN_ID=15000
+
+# Governance Parameters
+EPOCH_DURATION=100
+MIN_PROPOSAL_STAKE=100000000000000000000
+QUORUM_THRESHOLD=30
+SUPERMAJORITY_THRESHOLD=66
+
+# Monitoring
+AEGIS_CHECK_INTERVAL=60
+HEALTH_CHECK_INTERVAL=600
+DASHBOARD_REFRESH_INTERVAL=30
+POE_LOGGING_ENABLED=true
+POE_LOG_DIR=./logs/poe_artifacts
+
+# RPC Configuration
+RPC_ENABLED=true
+RPC_HOST=0.0.0.0
+RPC_PORT=8545
+
+# API Configuration
+API_ENABLED=true
+API_HOST=0.0.0.0
+API_PORT=3000
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE=./logs/testnet.log
+
+# Security
+REQUIRE_PQC_SIGNATURES=true
+ENFORCE_AEGIS_COHERENCE=true
+REJECT_ON_HEALTH_CRITICAL=true
+
+# Your Testnet Wallet (First Tester)
+TESTNET_WALLET_ADDRESS=wallet_first_tester
+TESTNET_WALLET_STAKE=1000
