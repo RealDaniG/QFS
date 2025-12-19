@@ -254,6 +254,14 @@ npm run dev
 
 ---
 
+## 🔐 Security & Compliance
+
+### Deterministic Crypto & Zero-Sim
+
+- **MOCKQPC-First**: All dev/beta environments use simulated, pure-deterministic PQC signatures ($0 cost, high speed) to ensure consistent replayability.
+- **CI Enforcement**: The Zero-Sim checker runs on every commit, blocking non-deterministic functions (random/time) and forbidding real PQC libraries in simulation environments.
+- **Safety**: Real PQC libraries (`liboqs`) are physically blocked in CI and dev/beta. Real PQC usage is reserved for batched mainnet anchors only.
+
 ## 📚 Documentation
 
 ### Core Documentation
