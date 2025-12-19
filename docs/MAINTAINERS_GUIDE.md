@@ -45,6 +45,16 @@ Use labels to categorize capabilities and invariant risks.
 | `area:governance` | Changes rules, voting, or treasury. |
 | `area:evidencebus` | Changes log schema or emitters. |
 | `area:mockqpc` | Changes crypto adapters or stubs. |
+| `area:wallet-auth` | Changes authentication adapters or session logic. |
+
+## 🔑 Authentication Implementation (v16)
+
+All authentication MUST follow the **EvidenceBus-Centric** pattern:
+
+1. **Frontend**: Signs SHA256(message) via EIP-191.
+2. **Adapter**: Verifies signature (MOCKQPC or Real).
+3. **SessionManager**: Creates session AND emits `AUTH_LOGIN` event to EvidenceBus.
+4. **Zero-Sim**: No database writes for sessions; use in-memory or deterministic cache.
 
 ---
 

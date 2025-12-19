@@ -50,9 +50,9 @@
 
 ## 1. Wallet Authentication (`area:wallet-auth`)
 
-- [ ] Implement `v15/auth/wallet_connect.py` adapter
-- [ ] Connect EIP-191 signatures to `SessionManager`
-- [ ] Emit `auth_event` to EvidenceBus on login/logout
+- [x] Implement `v15/auth/wallet_connect.py` adapter
+- [x] Connect EIP-191 signatures to `SessionManager`
+- [x] Emit `auth_event` to EvidenceBus on login/logout
 
 ## 2. Admin Panel & Observability (`area:ui`)
 
