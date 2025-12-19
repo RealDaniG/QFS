@@ -11,6 +11,10 @@ on:
 env:
   PYTHON_VERSION: "3.11"
   COVERAGE_THRESHOLD: 100
+  # MOCKQPC Environment (Contract § 2.6, § 4.4)
+  ENV: "dev"
+  MOCKQPC_ENABLED: "true"
+  CI: "true"
 
 permissions:
   contents: read
@@ -144,11 +148,109 @@ jobs:
           retention-days: 30
 
   # ============================================================================
+  # Stage 1.25: MOCKQPC + Zero-Sim Compliance
+  # ============================================================================
+  mockqpc-compliance:
+    name: "[STAGE 1.25] MOCKQPC + Zero-Sim Compliance"
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Setup Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: "[SETUP] Install dependencies"
+        run: |
+          set -euo pipefail
+          echo "::group::Installing Dependencies"
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          echo "::endgroup::"
+
+      - name: "[MOCKQPC] Run Zero-Sim + MOCKQPC Checker"
+        id: mockqpc-check
+        run: |
+          set -euo pipefail
+          echo "::group::MOCKQPC Compliance Check"
+          START_TIME=$(date +%s)
+
+          python scripts/check_zero_sim.py \
+            --dir v15 \
+            --output mockqpc_compliance_report.json \
+            --fail-on-critical
+
+          END_TIME=$(date +%s)
+          echo "Duration: $((END_TIME - START_TIME))s"
+          echo "::endgroup::"
+
+      - name: "[MOCKQPC] Determinism Verification"
+        run: |
+          set -euo pipefail
+          echo "::group::MOCKQPC Determinism Test"
+
+          python scripts/verify_mockqpc_determinism.py
+
+          echo "::endgroup::"
+
+      - name: "[MOCKQPC] Verify Environment Variables"
+        run: |
+          set -euo pipefail
+          echo "::group::Environment Verification"
+
+          echo "Checking environment variables..."
+          if [ "$ENV" != "dev" ]; then
+            echo "❌ ENV must be 'dev' in CI, got: $ENV"
+            exit 1
+          fi
+
+          if [ "$MOCKQPC_ENABLED" != "true" ]; then
+            echo "❌ MOCKQPC_ENABLED must be 'true' in CI, got: $MOCKQPC_ENABLED"
+            exit 1
+          fi
+
+          if [ "$CI" != "true" ]; then
+            echo "❌ CI must be 'true', got: $CI"
+            exit 1
+          fi
+
+          echo "✅ Environment variables correct:"
+          echo "   ENV=$ENV"
+          echo "   MOCKQPC_ENABLED=$MOCKQPC_ENABLED"
+          echo "   CI=$CI"
+
+          echo "::endgroup::"
+
+      - name: "[MOCKQPC] Run Crypto Adapter Tests"
+        run: |
+          set -euo pipefail
+          echo "::group::Crypto Adapter Test Execution"
+
+          python -m pytest v15/tests/test_crypto_adapter.py -v --tb=short
+          python -m pytest v15/tests/test_mockqpc.py -v --tb=short
+
+          echo "::endgroup::"
+
+      - name: "[ARTIFACTS] Upload MOCKQPC Reports"
+        if: always()
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
+        with:
+          name: mockqpc-compliance-reports
+          path: |
+            mockqpc_compliance_report.json
+          retention-days: 30
+
+  # ============================================================================
   # Stage 1.5: Autonomous Validation
   # ============================================================================
   autonomous-validation:
     name: "[STAGE 1.5] Autonomous Validation"
-    needs: static-analysis
+    needs: [static-analysis, mockqpc-compliance]
     runs-on: ubuntu-latest
     permissions:
       contents: read
