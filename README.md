@@ -1,24 +1,30 @@
 # QFS × ATLAS: Quantum Financial System
 
-> **Latest Release:** [v15.0.0 - Autonomous Governance](RELEASE_NOTES_v15.0.0.md) 🎉  
-> **Status:** Production-Ready - Testnet Deployment  
-> **Test Coverage:** 23/23 tests passing, 13/13 invariants verified
+> **Latest Release:** [v15.3 - Proof-of-Execution Integration](RELEASE_NOTES_v15.0.0.md) 🎉  
+> **Status:** Production-Ready - Structural Verifiability Achieved  
+> **Test Coverage:** 23/23 tests passing, 13/13 invariants verified  
+> **Updated:** December 19, 2025 - v15.3 PoE Integration
 
-## 🚀 v15.0.0 Highlights
+## 🚀 v15.3 Highlights
 
+- **Structural Verifiability:** PoE v15.3 enables independent verification without trust
 - **Autonomous Governance:** Self-amending protocol with deterministic proposal execution
+- **External Assurance:** PoE artifacts, replay tools, and public verification dashboard
 - **100% Test Coverage:** All governance-critical and operational behaviors verified
 - **Deterministic Replay:** Zero drift, bit-for-bit reproducibility
 - **AEGIS Coherence:** Cross-layer verification ensuring system integrity
-- **Ready for Testnet:** Complete audit trail, external review package prepared
+- **CI/CD Pipeline:** Stage 12.1 with 5 quality gates, autonomous verification
+- **Testnet Ready:** Complete audit trail, PoE artifacts, external review package
 
-[📖 Read Full Release Notes](RELEASE_NOTES_v15.0.0.md) | [🧪 Quick Start Guide](#quick-start)
+[📖 Read Full Release Notes](RELEASE_NOTES_v15.0.0.md) | [🧪 Quick Start Guide](#quick-start) | [🔍 Verify Yourself](VERIFICATION_STATUS.md)
 
 ---
 
-# Quantum Financial System (QFS) V14.0 – Deterministic Session Management
+# Quantum Financial System (QFS) v15.3 – Structural Verifiability
 
-> **A deterministic, post‑quantum economic engine for decentralized social media, with constitutional guards and cryptographic, replayable auditability.**
+> **A deterministic, post‑quantum economic engine with independently verifiable governance, constitutional guards, and cryptographic, replayable auditability.**
+
+**Key Innovation:** Governance is no longer an assertion—it's a testable claim backed by cryptographic proof.
 
 ---
 
