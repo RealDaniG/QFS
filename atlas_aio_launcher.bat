@@ -462,7 +462,7 @@ if not exist "%ROOTDIR%test_wallet.py" (
     call :log SUCCESS "Created test_wallet.py"
 )
 
-call :retry_command "python %ROOTDIR%test_wallet.py" %MAX_RETRIES%
+call :retry_command "python \"%ROOTDIR%test_wallet.py\"" %MAX_RETRIES%
 if %errorlevel% neq 0 (
     call :log ERROR "Wallet test failed"
     set /a CRITICAL_ERRORS+=1
