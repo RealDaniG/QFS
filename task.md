@@ -43,3 +43,25 @@
 
 - [x] Verify all new docs are linked
 - [x] Commit with message: "docs: v16 operationalization complete"
+
+# QFS × ATLAS v16 Integration Plan
+
+> **Goal:** Build the user-facing and admin-facing layers on top of the deterministic v16 baseline.
+
+## 1. Wallet Authentication (`area:wallet-auth`)
+
+- [ ] Implement `v15/auth/wallet_connect.py` adapter
+- [ ] Connect EIP-191 signatures to `SessionManager`
+- [ ] Emit `auth_event` to EvidenceBus on login/logout
+
+## 2. Admin Panel & Observability (`area:ui`)
+
+- [ ] Create `v15/ui/admin_dashboard.py` (FastAPI + React/Next.js routes)
+- [ ] Implement "Evidence Chain Viewer" (read-only view of PoE log)
+- [ ] Connect `CostProfile` metrics to UI
+
+## 3. Agent Advisory Migration (`area:agent-advisory`)
+
+- [ ] Audit `v14` agents for write-access violations
+- [ ] Refactor into `AdvisorySignal` emitters
+- [ ] Enforce "read-only" permissions in `v15/scenarios`
