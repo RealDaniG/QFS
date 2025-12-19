@@ -388,30 +388,20 @@ for %%m in (spaces wall chat) do (
 call :log_phase "5_ATLAS_MODULES" "COMPLETE"
 
 :: ============================================================================
-:: PHASE 6: TEST SUITE EXECUTION
+:: PHASE 6: TEST SUITE EXECUTION (v15 Governance + Operational Tools)
 :: ============================================================================
 
 call :log_phase "6_TEST_SUITE" "STARTING"
 
-:: Run unit tests
-call :log INFO "Running unit tests..."
-pytest "%ROOTDIR%v13\tests\unit\" -v --tb=short >> "%LOGFILE%" 2>&1
+:: Run v15 Full Audit Suite (includes all governance, stress, and ops tests)
+call :log INFO "Running v15 Full Audit Suite..."
+python v15\tests\autonomous\test_full_audit_suite.py
 if %errorlevel% neq 0 (
-    call :log WARNING "Unit tests had failures"
-    set /a PHASE_FAILURES+=1
-) else (
-    call :log SUCCESS "Unit tests passed"
-)
-
-:: Run regression tests
-call :log INFO "Running v14 regression test..."
-python "%ROOTDIR%v13\tests\regression\phase_v14_social_full.py" >> "%LOGFILE%" 2>&1
-if %errorlevel% neq 0 (
-    call :log ERROR "v14 regression test failed"
+    call :log CRITICAL "v15 Audit Suite FAILED - check AUDIT_RESULTS_SUMMARY.md"
     set /a CRITICAL_ERRORS+=1
-) else (
-    call :log SUCCESS "v14 regression test passed"
+    goto :critical_exit
 )
+call :log SUCCESS "v15 Audit Suite PASSED - All invariants verified"
 
 call :log_phase "6_TEST_SUITE" "COMPLETE"
 

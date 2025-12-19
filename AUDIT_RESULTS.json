@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-12-19T11:21:43.247637",
+  "timestamp": "2025-12-19T12:13:10.212999",
   "qfs_version": "19.0.0",
   "atlas_version": "1.3.0",
-  "total_tests": 9,
-  "passed_tests": 9,
+  "total_tests": 23,
+  "passed_tests": 23,
   "failed_tests": 0,
   "invariants": [
     {
@@ -78,6 +78,66 @@
       ],
       "status": "PASS",
       "evidence": "test_stage_6_simulation.py::test_full_execution_lifecycle"
+    },
+    {
+      "invariant_id": "HEALTH-I1",
+      "description": "All metrics derived from deterministic, on-ledger data",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_deterministic_metrics"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_deterministic_metrics"
+    },
+    {
+      "invariant_id": "HEALTH-I2",
+      "description": "Critical failures return non-zero exit code",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_aegis_fail_detection"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_aegis_fail_detection"
+    },
+    {
+      "invariant_id": "HEALTH-I3",
+      "description": "No external dependencies or network calls",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_no_external_dependencies"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_no_external_dependencies"
+    },
+    {
+      "invariant_id": "DASH-I1",
+      "description": "Dashboard is read-only (no state mutations)",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_read_only"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_read_only"
+    },
+    {
+      "invariant_id": "DASH-I2",
+      "description": "All displayed data sourced from governance modules",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_data_accuracy_parameters"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_data_accuracy_parameters"
+    },
+    {
+      "invariant_id": "DASH-I3",
+      "description": "PoE artifacts displayed match actual proof chain",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_poe_artifacts_section"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_poe_artifacts_section"
     }
   ],
   "overall_status": "PASS"

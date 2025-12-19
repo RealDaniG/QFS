@@ -28,6 +28,8 @@ from v15.atlas.governance.tests.test_proposal_engine import TestProposalEngineV1
 from v15.tests.autonomous.test_governance_replay import TestGovernanceReplay
 from v15.tests.autonomous.test_stage_6_simulation import TestStage6Simulation
 from v15.tests.autonomous.test_stress_campaign import TestStressCampaign
+from v15.tests.test_protocol_health_check import TestProtocolHealthCheck
+from v15.tests.test_governance_dashboard import TestGovernanceDashboard
 
 
 @dataclass
@@ -67,6 +69,8 @@ class FullAuditSuite:
         suite.addTests(loader.loadTestsFromTestCase(TestGovernanceReplay))
         suite.addTests(loader.loadTestsFromTestCase(TestStage6Simulation))
         suite.addTests(loader.loadTestsFromTestCase(TestStressCampaign))
+        suite.addTests(loader.loadTestsFromTestCase(TestProtocolHealthCheck))
+        suite.addTests(loader.loadTestsFromTestCase(TestGovernanceDashboard))
 
         # Run with detailed output
         runner = unittest.TextTestRunner(verbosity=2)
@@ -162,6 +166,73 @@ class FullAuditSuite:
                 test_coverage=["test_full_execution_lifecycle"],
                 status="PASS" if test_result.wasSuccessful() else "FAIL",
                 evidence="test_stage_6_simulation.py::test_full_execution_lifecycle",
+            )
+        )
+
+        # Operational Tools Invariants
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="HEALTH-I1",
+                description="All metrics derived from deterministic, on-ledger data",
+                component="ProtocolHealthCheck",
+                test_coverage=["test_health_check_deterministic_metrics"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_protocol_health_check.py::test_health_check_deterministic_metrics",
+            )
+        )
+
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="HEALTH-I2",
+                description="Critical failures return non-zero exit code",
+                component="ProtocolHealthCheck",
+                test_coverage=["test_health_check_aegis_fail_detection"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_protocol_health_check.py::test_health_check_aegis_fail_detection",
+            )
+        )
+
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="HEALTH-I3",
+                description="No external dependencies or network calls",
+                component="ProtocolHealthCheck",
+                test_coverage=["test_health_check_no_external_dependencies"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_protocol_health_check.py::test_health_check_no_external_dependencies",
+            )
+        )
+
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="DASH-I1",
+                description="Dashboard is read-only (no state mutations)",
+                component="GovernanceDashboard",
+                test_coverage=["test_dashboard_read_only"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_governance_dashboard.py::test_dashboard_read_only",
+            )
+        )
+
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="DASH-I2",
+                description="All displayed data sourced from governance modules",
+                component="GovernanceDashboard",
+                test_coverage=["test_dashboard_data_accuracy_parameters"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_governance_dashboard.py::test_dashboard_data_accuracy_parameters",
+            )
+        )
+
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="DASH-I3",
+                description="PoE artifacts displayed match actual proof chain",
+                component="GovernanceDashboard",
+                test_coverage=["test_dashboard_poe_artifacts_section"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_governance_dashboard.py::test_dashboard_poe_artifacts_section",
             )
         )
 
