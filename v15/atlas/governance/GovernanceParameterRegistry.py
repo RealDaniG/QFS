@@ -64,3 +64,9 @@ class GovernanceParameterRegistry:
             )
 
         self._storage[key] = new_value
+
+    def get_all_parameters(self) -> Dict[str, BigNum128]:
+        """
+        Return a copy of all mutable parameters.
+        """
+        return self._storage.copy()

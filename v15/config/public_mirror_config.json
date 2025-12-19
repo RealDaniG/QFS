@@ -1,0 +1,13 @@
+{
+    "mirror_enabled": true,
+    "public_endpoint": "https://poe.qfs.example.com",
+    "sync_interval_seconds": 300,
+    "artifacts_path": "evidence/poe_artifacts",
+    "index_path": "evidence/governance_index.json",
+    "cdn_provider": "stub_cdn",
+    "allowed_origins": [
+        "https://explorer.qfs.example.com",
+        "https://dashboard.qfs.example.com"
+    ],
+    "cache_control": "public, max-age=31536000, immutable"
+}

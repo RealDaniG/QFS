@@ -11,7 +11,8 @@ This guide explains how to independently verify the QFS v15 Autonomous Governanc
 1. Local audit suite execution
 2. Deterministic replay verification
 3. Proof-of-Execution (PoE) artifact validation
-4. Testnet history verification
+4. Hash-chained governance index verification
+5. Testnet history verification
 
 ## Prerequisites
 

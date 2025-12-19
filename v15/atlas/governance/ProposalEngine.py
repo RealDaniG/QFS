@@ -69,6 +69,7 @@ class ProposalEngine:
     """
 
     def __init__(self):
+        print(f"DEBUG: ProposalEngine instantiated from {__file__}")
         self.proposals: Dict[str, Proposal] = {}
         # Simple Ledger State for validation (Mock for prototype)
         self.total_staked_nod = 10_000  # Example total NOD supply for quorum calcs
@@ -222,6 +223,19 @@ class ProposalEngine:
 
         return (prop.status, proof_artifact)
 
+    def _to_poe_serializable(self, data: Any) -> Any:
+        """Helper to convert internal types (BigNum128) to PoE-friendly types (str/int)."""
+        from v13.libs.BigNum128 import BigNum128
+
+        if isinstance(data, BigNum128):
+            return str(data)
+        elif isinstance(data, dict):
+            return {k: self._to_poe_serializable(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            return [self._to_poe_serializable(v) for v in data]
+        else:
+            return data
+
     def execute_proposal(self, proposal_id: str, registry: Any) -> bool:
         """
         Execute a PASSED proposal and generate PoE artifact.
@@ -230,16 +244,18 @@ class ProposalEngine:
             return False
 
         prop = self.proposals[proposal_id]
+
         if prop.status != ProposalStatus.PASSED:
             return False
 
         # Capture before state
-        before_state = {
+        raw_before_state = {
             "proposal_status": prop.status.value,
             "registry_state": registry.get_all_parameters()
             if hasattr(registry, "get_all_parameters")
             else {},
         }
+        before_state = self._to_poe_serializable(raw_before_state)
 
         if prop.kind == ProposalKind.PARAMETER_CHANGE:
             key = prop.execution_payload.get("key")
@@ -260,12 +276,17 @@ class ProposalEngine:
                 prop.status = ProposalStatus.EXECUTED
 
                 # Capture after state
-                after_state = {
+                raw_after_state = {
                     "proposal_status": prop.status.value,
                     "registry_state": registry.get_all_parameters()
                     if hasattr(registry, "get_all_parameters")
                     else {},
                 }
+                print(
+                    f"DEBUG: Before State Registry Type: {type(raw_before_state['registry_state'])}",
+                    flush=True,
+                )
+                after_state = self._to_poe_serializable(raw_after_state)
 
                 # Generate PoE artifact (v15.3)
                 try:
@@ -275,12 +296,13 @@ class ProposalEngine:
 
                     # Build vote breakdown
                     vote_breakdown = {
-                        "total_stake": prop.tally.total(),
+                        "total_stake": prop.tally.total,
                         "yes_stake": prop.tally.yes,
                         "no_stake": prop.tally.no,
                         "quorum_met": True,  # Already passed
                         "supermajority_met": True,  # Already passed
                     }
+                    vote_breakdown = self._to_poe_serializable(vote_breakdown)
 
                     # Build execution trace
                     execution_trace = [
@@ -288,41 +310,73 @@ class ProposalEngine:
                             "operation": "PARAMETER_CHANGE",
                             "parameter_key": key,
                             "old_value": str(
-                                before_state["registry_state"].get(key, "unknown")
+                                raw_before_state["registry_state"].get(key, "unknown")
                             ),
                             "new_value": str(new_value),
                             "proposal_id": proposal_id,
                         }
                     ]
 
-                    # Generate artifact
-                    artifact = poe_gen.generate_artifact(
-                        proposal_id=proposal_id,
-                        proposal_hash=prop.payload_hash,
-                        epoch=1,  # TODO: Get from governance context
-                        cycle=prop.cycle_index,
-                        parameter_key=key,
-                        execution_phase="EXECUTION",
-                        before_state=before_state,
-                        after_state=after_state,
-                        vote_breakdown=vote_breakdown,
-                        execution_trace=execution_trace,
+                    import inspect
+
+                    print(f"DEBUG: poe_gen module: {poe_gen.__class__.__module__}")
+                    print(
+                        f"DEBUG: generate_artifact signature: {inspect.signature(poe_gen.generate_artifact)}"
                     )
+                    print(f"DEBUG: Calling with key={key}")
 
-                    # Save artifact
-                    poe_gen.save_artifact(artifact)
+                    # Generate artifact
+                    try:
+                        # Use KEYWORD arguments now that BigNum128 serialization is fixed
+                        artifact = poe_gen.generate_artifact(
+                            proposal_id=proposal_id,
+                            proposal_hash=prop.payload_hash,
+                            epoch=1,  # TODO: Get from governance context
+                            cycle=prop.cycle_index,
+                            parameter_key=key,
+                            execution_phase="EXECUTION",
+                            before_state=before_state,
+                            after_state=after_state,
+                            vote_breakdown=vote_breakdown,
+                            execution_trace=execution_trace,
+                        )
 
-                    # Store artifact reference in proposal
-                    prop.poe_artifact_id = artifact["artifact_id"]
+                        # Save artifact
+                        poe_gen.save_artifact(artifact)
 
-                except Exception as poe_error:
-                    # PoE generation failure should not block execution
-                    print(f"PoE Generation Warning: {poe_error}")
+                        # Store artifact reference in proposal
+                        prop.poe_artifact_id = artifact["artifact_id"]
+
+                        # Add to Governance Index (v15.3)
+                        try:
+                            from v15.tools.governance_index_manager import (
+                                get_index_manager,
+                            )
+
+                            index_manager = get_index_manager()
+                            index_manager.add_entry(artifact)
+                        except Exception as index_error:
+                            print(f"Index Update Warning: {index_error}")
+
+                    except Exception as poe_error:
+                        print(f"PoE Generation ERROR: {poe_error}")
+                        import traceback
+
+                        traceback.print_exc()
+
+                except Exception as e:
+                    print(f"PoE Setup Error: {e}")
+                    import traceback
+
+                    traceback.print_exc()
 
                 return True
+
             except Exception as e:
-                # Log failure
-                print(f"Execution Error: {e}")
+                print(f"Execution Logic Error: {e}")
+                import traceback
+
+                traceback.print_exc()
                 return False
 
         return False

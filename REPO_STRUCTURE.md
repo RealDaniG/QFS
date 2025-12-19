@@ -59,7 +59,18 @@ QFS × ATLAS follows a clean, organized structure with clear separation between 
 - `CI_IMPROVEMENTS.md` - CI/CD improvements and roadmap
 - `BOUNTIES.md` - Bounty system documentation
 - `REPO_STRUCTURE.md` - This file
+- `SYSTEM_MAP.md` - Ecosystem map (Product vs Protocol)
 - `LICENSE.ATLAS.md` - License information
+
+### v15 (Next-Gen Protocol)
+
+**`v15/`** - Autonomous Governance & PoE
+
+- Purpose: Structural Verifiability & PoE Infrastructure
+- Structure:
+  - `v15/atlas/governance/` - Enhanced governance engine (PoE-native)
+  - `v15/tools/` - Verification tooling (`verify_poe.py`, `replay_gov_cycle.py`)
+  - `v15/config/` - v15 Configurations
 
 ### Tooling & Infrastructure
 
@@ -101,6 +112,9 @@ QFS × ATLAS follows a clean, organized structure with clear separation between 
 
 - Purpose: Audit trails and compliance artifacts
 - Contents: Logs, reports, and evidence for audits
+- Subdirectories:
+  - `evidence/poe_artifacts/` - Proof-of-Execution artifacts (v15.3 index)
+  - `evidence/governance_index.json` - Hash-chained index
 
 **`reports/`** - Generated reports
 

@@ -10,8 +10,9 @@
 
 | File | Path | Status | Description |
 |------|------|--------|-------------|
-| README.md | `/README.md` | NEEDS_UPDATE | Main repository overview |
-| REPO_STRUCTURE.md | `/REPO_STRUCTURE.md` | NEEDS_UPDATE | Repository structure documentation |
+| README.md | `/README.md` | UPDATED | Main repository overview |
+| SYSTEM_MAP.md | `/SYSTEM_MAP.md` | OK | Ecosystem boundary map (Product vs Protocol) |
+| REPO_STRUCTURE.md | `/REPO_STRUCTURE.md` | UPDATED | Repository structure documentation |
 | RELEASE_NOTES_v15.0.0.md | `/RELEASE_NOTES_v15.0.0.md` | OK | v15.0.0 release notes (historical) |
 | SECURITY_NOTES.md | `/SECURITY_NOTES.md` | NEEDS_UPDATE | Security documentation |
 
@@ -19,7 +20,7 @@
 
 | File | Path | Status | Description |
 |------|------|--------|-------------|
-| HOW_TO_AUDIT_QFS_V15.md | `/HOW_TO_AUDIT_QFS_V15.md` | NEEDS_UPDATE | Auditor guide (needs PoE v15.3) |
+| HOW_TO_AUDIT_QFS_V15.md | `/HOW_TO_AUDIT_QFS_V15.md` | UPDATED | Auditor guide (needs PoE v15.3) |
 | REGRESSION.md | `/REGRESSION.md` | NEEDS_UPDATE | Regression testing documentation |
 | POST_AUDIT_PLAN.md | `/POST_AUDIT_PLAN.md` | NEEDS_UPDATE | Post-audit planning |
 
@@ -40,7 +41,7 @@
 
 | File | Path | Status | Description |
 |------|------|--------|-------------|
-| TESTNET_STATUS.md | `/TESTNET_STATUS.md` | NEEDS_UPDATE | Testnet status page |
+| TESTNET_STATUS.md | `/TESTNET_STATUS.md` | UPDATED | Testnet status page |
 | FIRST_TESTNET_DEPLOYMENT.md | `/FIRST_TESTNET_DEPLOYMENT.md` | NEEDS_UPDATE | Testnet deployment guide |
 | NOD_OPERATOR_GUIDE.md | `/NOD_OPERATOR_GUIDE.md` | OK | NOD operator guide (just created) |
 | scenarios/README.md | `/scenarios/README.md` | OK | Governance scenarios documentation |

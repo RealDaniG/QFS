@@ -1,0 +1,22 @@
+{
+  "chain_head_hash": "sha3_512:83c51d026c6c845b968a6c1910ebf5627e66565bd02ae0e31bf5bc818f13d2c6d67ddd44d093181e2965750fca7627c7899d5739178cdc4edc47e84990910819",
+  "chain_start_hash": "sha3_512:abd61096adea87376753a966d2c7dcb907e06598804cc23022e014dead067725a7f533846d969df3f0c3f418a889491c047eb9514513c1a9c4d1141eb1e2ab5e",
+  "entries": [
+    {
+      "artifact_id": "GOV-001-EXEC-00",
+      "cycle": 0,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:abd61096adea87376753a966d2c7dcb907e06598804cc23022e014dead067725a7f533846d969df3f0c3f418a889491c047eb9514513c1a9c4d1141eb1e2ab5e",
+      "proof_hash": "sha3_512:dd31e961fc1e0e38dd77b5636c240b28d6f2622fe63e7f29c72a3d6caca66d54073f71343a18f33f47262213df39cacf7252c33bfa4690f8c33407ad98be0012",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-00.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 1,
+      "this_entry_hash": "sha3_512:83c51d026c6c845b968a6c1910ebf5627e66565bd02ae0e31bf5bc818f13d2c6d67ddd44d093181e2965750fca7627c7899d5739178cdc4edc47e84990910819",
+      "timestamp": "2025-12-19T14:38:34.972493Z"
+    }
+  ],
+  "index_version": "1.0",
+  "last_updated": "2025-12-19T14:38:34.972545Z",
+  "total_entries": 1
+}

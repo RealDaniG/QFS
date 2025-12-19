@@ -10,16 +10,10 @@ import hashlib
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 
-try:
-    from v13.libs.CertifiedMath import BigNum128, CertifiedMath
-    from v13.libs.economics.EconomicsGuard import EconomicsGuard
-    from v13.libs.core.SafetyGuard import SafetyGuard
-    from v13.core.TokenStateBundle import TokenStateBundle
-except ImportError:
-    from libs.CertifiedMath import BigNum128, CertifiedMath
-    from libs.economics.EconomicsGuard import EconomicsGuard
-    from libs.core.SafetyGuard import SafetyGuard
-    from core.TokenStateBundle import TokenStateBundle
+from v13.libs.CertifiedMath import BigNum128, CertifiedMath
+from v13.libs.economics.EconomicsGuard import EconomicsGuard
+from v13.libs.core.SafetyGuard import SafetyGuard
+from v13.core.TokenStateBundle import TokenStateBundle
 
 
 @dataclass

@@ -7,9 +7,9 @@
 
 ## 🎯 What Is This?
 
-QFS v15 introduces **Autonomous Governance** - a fully deterministic, cryptographically verifiable system that allows the protocol to self-amend parameters through on-chain proposals and voting.
+QFS v15.3 introduces **Structural Verifiability** - a fully deterministic system where every governance execution produces a cryptographically signed Proof-of-Execution (PoE) artifact.
 
-**This is a PUBLIC TESTNET.** The goal is external validation and security review, not speculation or price discussion.
+**This is a PUBLIC TESTNET.** The goal is external validation of the v15.3 PoE assurance layer.
 
 ## ✅ What Can I Verify Myself?
 
@@ -28,10 +28,22 @@ python v15/tests/autonomous/test_full_audit_suite.py
 - 13/13 invariants verified
 - Complete audit trail generated
 
-### 2. Verify Deterministic Replay
+### 2. Verify PoE Artifacts
 
 ```bash
-python tools/replay_verification.py
+python v15/tools/verify_poe.py --artifact_id <ID>
+```
+
+**You will see:**
+
+- Cryptographic signature valid
+- Artifact hash matches on-chain record
+- Execution trace integrity confirmed
+
+### 3. Verify Deterministic Replay
+
+```bash
+python v15/tools/replay_gov_cycle.py --artifact_id <ID>
 ```
 
 **You will see:**
@@ -95,7 +107,7 @@ curl http://testnet.qfs.example.com:3000/api/v1/health
 - Total Tests Run: 23
 - Pass Rate: 100%
 - Invariants Verified: 13/13
-- PoE Artifacts Generated: [Live count]
+| **PoE Assurance** | ✅ Live | Schema v1.0 | External-Grade |count]
 
 **Participation:**
 
