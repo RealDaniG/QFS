@@ -8,6 +8,7 @@ Constitutional compliance: no unbounded minting, explainable payments.
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field, asdict
 import json
+import logging
 
 from v13.policy.bounties.bounty_events import (
     emit_bounty_paid_event,
@@ -15,6 +16,9 @@ from v13.policy.bounties.bounty_events import (
     EconomicEvent,
 )
 from v13.libs.BigNum128 import BigNum128
+
+# Setup logger
+logger = logging.getLogger(__name__)
 
 
 class InsufficientTreasuryError(Exception):
@@ -168,9 +172,9 @@ class DevRewardsTreasury:
         # Check depletion status
         status = self.check_depletion_status()
         if status == "critical":
-            print(f"⚠️ CRITICAL: Treasury reserves below 10%!")
+            logger.warning(f"CRITICAL: Treasury reserves below 10%!")
         elif status == "low":
-            print(f"⚠️ WARNING: Treasury reserves below 20%")
+            logger.warning(f"WARNING: Treasury reserves below 20%")
 
         # Emit economic event
         return emit_bounty_paid_event(
