@@ -70,14 +70,14 @@
 
 ---
 
-## Category 3: v13 Determinism & Replay Tests (TO BE INTEGRATED)
+## Category 3: v13 Determinism & Replay Tests (LEGACY - EXCLUDED)
 
 ### 8. `v13/core/tests/test_qfs_replay_source.py`
 
-- **Status:** ⚠ TO BE INTEGRATED
-- **Invariants:** REPLAY-I1 (core determinism)
+- **Status:** 📦 LEGACY_EXCLUDED
+- **Invariants:** REPLAY-I1 (superseded by v15 tests)
 - **Category:** Determinism
-- **Action:** Integrate into audit suite
+- **Rationale:** v13 determinism tests superseded by v15 `test_governance_replay.py` and `test_stress_campaign.py`
 
 ---
 
@@ -193,22 +193,27 @@
 
 ## Execution Plan Summary
 
-### Immediate Actions (Phase 1-2)
+### Completed Actions
 
-1. ✓ Complete test categorization (DONE)
-2. Verify existence of v13 economics/viral tests
-3. Integrate `test_qfs_replay_source.py` into audit suite
-4. Create `test_protocol_health_check.py`
-5. Create `test_governance_dashboard.py`
+1. ✅ Complete test categorization (DONE)
+2. ✅ Create `test_protocol_health_check.py` (DONE)
+3. ✅ Create `test_governance_dashboard.py` (DONE)
+4. ✅ Extend audit suite to 13 invariants (DONE)
+5. ✅ Fix emoji encoding in legacy v14 tests (DONE)
 
-### Test Suite Composition (Target)
+### Test Suite Composition (Final)
 
-- **Core v15 Governance:** 5 files (DONE)
-- **v13 Economics:** 2-3 files (TO BE INTEGRATED)
-- **v13 Determinism:** 1 file (TO BE INTEGRATED)
-- **v15 Ops Tools:** 2 files (TO BE CREATED)
-- **Total Executed:** ~10-11 files
-- **Total Legacy (Excluded):** ~76 files
+- **Core v15 Governance:** 5 files ✅
+- **v15 Ops Tools:** 2 files ✅
+- **Total Executed:** 7 files (23 tests, 13 invariants)
+- **Total Legacy (Excluded):** ~80 files
+
+### Legacy Tests Excluded
+
+- v13/v14 Golden Hash generation (v14 social layer scope)
+- v13 Wallet tests (superseded by v15 governance tests)
+- v13 Economics tests (not in v15 governance scope)
+- v13 API/social/infrastructure tests (ATLAS v14 scope)
 
 ### Coverage Target
 
