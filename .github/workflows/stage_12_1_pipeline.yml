@@ -1,0 +1,328 @@
+name: QFS v15 Pipeline - Stage 12.1 Self-Verification
+
+on:
+    push:
+        branches:
+            - main
+            - "release/**"
+        tags:
+            - "v*-testnet"
+            - "v*-rc"
+    pull_request:
+        branches:
+            - main
+    schedule:
+        - cron: "0 2 * * *" # Nightly at 2 AM UTC
+
+env:
+    PYTHON_VERSION: "3.11"
+    TESTNET_CONFIG: testnet_config.json
+
+jobs:
+    stage-a-static-checks:
+        name: "Stage A: Static Checks"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install pylint mypy black
+
+            - name: Run linting
+              run: |
+                  pylint v15/ --fail-under=8.0
+
+            - name: Run type checking
+              run: |
+                  mypy v15/ --strict
+
+            - name: Check formatting
+              run: |
+                  black --check v15/
+
+            - name: Upload stage A results
+              if: always()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: stage-a-results
+                  path: |
+                      .pylint.log
+                      .mypy.log
+
+    stage-b-v15-audit-suite:
+        name: "Stage B: v15 Audit Suite (Quality Gate)"
+        runs-on: ubuntu-latest
+        needs: stage-a-static-checks
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run v15 Full Audit Suite
+              id: audit
+              run: |
+                  python v15/tests/autonomous/test_full_audit_suite.py
+                  echo "audit_status=$?" >> $GITHUB_OUTPUT
+
+            - name: Verify audit results
+              run: |
+                  # Check that AUDIT_RESULTS.json exists and has correct structure
+                  python -c "
+                  import json
+                  with open('AUDIT_RESULTS.json') as f:
+                      audit = json.load(f)
+                  assert audit['total_tests'] == 23, 'Expected 23 tests'
+                  assert audit['passed_tests'] == 23, 'All tests must pass'
+                  assert len(audit['invariants']) == 13, 'Expected 13 invariants'
+                  for inv in audit['invariants']:
+                      assert inv['status'] == 'PASS', f'Invariant {inv[\"invariant_id\"]} failed'
+                  print('✓ Audit verification passed')
+                  "
+
+            - name: Check for unexecuted tests
+              run: |
+                  # Ensure no unexecuted tests
+                  if grep -q "unexecuted_tests" AUDIT_RESULTS.json; then
+                    python -c "
+                    import json
+                    with open('AUDIT_RESULTS.json') as f:
+                        audit = json.load(f)
+                    if 'unexecuted_tests' in audit and len(audit['unexecuted_tests']) > 0:
+                        print(f'ERROR: {len(audit[\"unexecuted_tests\"])} unexecuted tests found')
+                        exit(1)
+                    "
+                  fi
+
+            - name: Upload audit artifacts
+              if: always()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: stage-b-audit-results
+                  path: |
+                      AUDIT_RESULTS.json
+                      AUDIT_RESULTS_SUMMARY.md
+                      logs/
+
+    stage-c-replay-stress:
+        name: "Stage C: Replay & Stress Regression"
+        runs-on: ubuntu-latest
+        needs: stage-b-v15-audit-suite
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run deterministic replay tests
+              run: |
+                  python -m pytest v15/tests/autonomous/test_governance_replay.py -v
+
+            - name: Run stress campaign (50 proposals)
+              run: |
+                  python -m pytest v15/tests/autonomous/test_stress_campaign.py -v
+
+            - name: Verify zero drift
+              run: |
+                  python -c "
+                  import json
+                  with open('AUDIT_RESULTS.json') as f:
+                      audit = json.load(f)
+                  # Check REPLAY-I1 invariant
+                  replay_inv = [i for i in audit['invariants'] if i['invariant_id'] == 'REPLAY-I1'][0]
+                  assert replay_inv['status'] == 'PASS', 'Replay invariant must pass (zero drift)'
+                  print('✓ Zero drift verified')
+                  "
+
+            - name: Upload replay artifacts
+              if: always()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: stage-c-replay-results
+                  path: |
+                      logs/
+                      *.poe
+
+    stage-d-ops-verification:
+        name: "Stage D: Ops & Health Verification"
+        runs-on: ubuntu-latest
+        needs: stage-c-replay-stress
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run health check tests
+              run: |
+                  python -m pytest v15/tests/test_protocol_health_check.py -v
+
+            - name: Run dashboard tests
+              run: |
+                  python -m pytest v15/tests/test_governance_dashboard.py -v
+
+            - name: Verify operational invariants
+              run: |
+                  python -c "
+                  import json
+                  with open('AUDIT_RESULTS.json') as f:
+                      audit = json.load(f)
+                  # Check HEALTH and DASH invariants
+                  ops_invs = ['HEALTH-I1', 'HEALTH-I2', 'HEALTH-I3', 'DASH-I1', 'DASH-I2', 'DASH-I3']
+                  for inv_id in ops_invs:
+                      inv = [i for i in audit['invariants'] if i['invariant_id'] == inv_id][0]
+                      assert inv['status'] == 'PASS', f'{inv_id} must pass'
+                  print('✓ All operational invariants verified')
+                  "
+
+            - name: Upload ops artifacts
+              if: always()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: stage-d-ops-results
+                  path: |
+                      logs/
+
+    stage-e-testnet-dryrun:
+        name: "Stage E: Testnet Dry-Run (Optional)"
+        runs-on: ubuntu-latest
+        needs: stage-d-ops-verification
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: Run Scenario 1 (Change Emission Cap)
+              run: |
+                  python scenarios/scenario_1_emission_cap.py
+
+            - name: Verify PoE artifacts generated
+              run: |
+                  if [ ! -d "logs/poe_artifacts" ]; then
+                    echo "ERROR: PoE artifacts directory not found"
+                    exit 1
+                  fi
+                  if [ -z "$(ls -A logs/poe_artifacts)" ]; then
+                    echo "ERROR: No PoE artifacts generated"
+                    exit 1
+                  fi
+                  echo "✓ PoE artifacts verified"
+
+            - name: Run health check
+              run: |
+                  python v15/tools/protocol_health_check.py
+                  if [ $? -ne 0 ]; then
+                    echo "ERROR: Health check failed"
+                    exit 1
+                  fi
+
+            - name: Upload testnet artifacts
+              if: always()
+              uses: actions/upload-artifact@v3
+              with:
+                  name: stage-e-testnet-results
+                  path: |
+                      logs/
+                      *.poe
+
+    pipeline-status-report:
+        name: "Generate Pipeline Status Report"
+        runs-on: ubuntu-latest
+        needs:
+            [
+                stage-a-static-checks,
+                stage-b-v15-audit-suite,
+                stage-c-replay-stress,
+                stage-d-ops-verification,
+                stage-e-testnet-dryrun,
+            ]
+        if: always()
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Download all artifacts
+              uses: actions/download-artifact@v3
+
+            - name: Generate status report
+              run: |
+                  cat > PIPELINE_STATUS.md << EOF
+                  # Pipeline Status Report
+
+                  **Commit:** ${{ github.sha }}
+                  **Branch:** ${{ github.ref }}
+                  **Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+                  **Trigger:** ${{ github.event_name }}
+
+                  ## Stage Results
+
+                  - **Stage A (Static Checks):** ${{ needs.stage-a-static-checks.result }}
+                  - **Stage B (v15 Audit Suite):** ${{ needs.stage-b-v15-audit-suite.result }}
+                  - **Stage C (Replay & Stress):** ${{ needs.stage-c-replay-stress.result }}
+                  - **Stage D (Ops Verification):** ${{ needs.stage-d-ops-verification.result }}
+                  - **Stage E (Testnet Dry-Run):** ${{ needs.stage-e-testnet-dryrun.result }}
+
+                  ## Overall Status
+
+                  ${{ (needs.stage-a-static-checks.result == 'success' && needs.stage-b-v15-audit-suite.result == 'success' && needs.stage-c-replay-stress.result == 'success' && needs.stage-d-ops-verification.result == 'success') && '✅ PIPELINE PASSED - Ready for testnet deployment' || '❌ PIPELINE FAILED - Do not deploy' }}
+
+                  ## Artifacts
+
+                  - [Stage A Results](stage-a-results/)
+                  - [Stage B Audit Results](stage-b-audit-results/)
+                  - [Stage C Replay Results](stage-c-replay-results/)
+                  - [Stage D Ops Results](stage-d-ops-results/)
+                  - [Stage E Testnet Results](stage-e-testnet-results/)
+
+                  EOF
+
+                  cat PIPELINE_STATUS.md
+
+            - name: Upload pipeline status
+              uses: actions/upload-artifact@v3
+              with:
+                  name: pipeline-status
+                  path: PIPELINE_STATUS.md
+
+            - name: Fail if any required stage failed
+              if: needs.stage-a-static-checks.result != 'success' || needs.stage-b-v15-audit-suite.result != 'success' || needs.stage-c-replay-stress.result != 'success' || needs.stage-d-ops-verification.result != 'success'
+              run: |
+                  echo "❌ Pipeline failed - one or more required stages did not pass"
+                  exit 1
