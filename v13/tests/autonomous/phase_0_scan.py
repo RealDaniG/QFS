@@ -8,9 +8,13 @@ Creates system state checkpoint and verifies all critical modules exist.
 import sys
 import subprocess
 import json
+import logging
 from pathlib import Path
-from datetime import datetime
 from typing import Dict, List
+
+# Setup logger
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 class EnvironmentScanner:
@@ -43,7 +47,7 @@ class EnvironmentScanner:
                     import_map[str(py_file.relative_to(self.root_dir))] = imports
 
             except Exception as e:
-                print(f"[SCAN ERROR] {py_file}: {e}")
+                logger.error(f"[SCAN ERROR] {py_file}: {e}")
 
         return import_map
 
@@ -94,24 +98,27 @@ class EnvironmentScanner:
             module_status[module] = full_path.exists()
 
             if not full_path.exists():
-                print(f"[MISSING] {module} -> {full_path}")
+                logger.warning(f"[MISSING] {module} -> {full_path}")
 
         return module_status
 
     def create_checkpoint(self) -> Path:
         """Create system state checkpoint"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Use git hash as deterministic timestamp base
+        git_hash = self.get_git_hash()
+        timestamp = git_hash[:12] if git_hash != "NO_GIT" else "no_git_000000"
+
         checkpoint = {
-            "timestamp": timestamp,
+            "git_hash": git_hash,
+            "checkpoint_id": timestamp,
             "imports": self.scan_imports(),
             "modules": self.verify_module_paths(),
-            "git_hash": self.get_git_hash(),
         }
 
         checkpoint_file = self.checkpoint_dir / f"checkpoint_{timestamp}.json"
         checkpoint_file.write_text(json.dumps(checkpoint, indent=2))
 
-        print(f"[CHECKPOINT] Created: {checkpoint_file}")
+        logger.info(f"[CHECKPOINT] Created: {checkpoint_file}")
         return checkpoint_file
 
     def get_git_hash(self) -> str:
@@ -124,38 +131,38 @@ class EnvironmentScanner:
                 cwd=self.root_dir,
             )
             return result.stdout.strip() if result.returncode == 0 else "NO_GIT"
-        except:
+        except Exception:
             return "NO_GIT"
 
     def execute(self) -> bool:
         """Execute Phase 0 scan"""
-        print("\n" + "=" * 80)
-        print("PHASE 0: ENVIRONMENT SCAN & BASELINE")
-        print("=" * 80)
+        logger.info("\n" + "=" * 80)
+        logger.info("PHASE 0: ENVIRONMENT SCAN & BASELINE")
+        logger.info("=" * 80)
 
         # Scan imports
-        print("\n[STEP 1] Scanning imports...")
+        logger.info("\n[STEP 1] Scanning imports...")
         imports = self.scan_imports()
-        print(f"  ✓ Found {len(imports)} Python files with imports")
+        logger.info(f"  ✓ Found {len(imports)} Python files with imports")
 
         # Verify modules
-        print("\n[STEP 2] Verifying module paths...")
+        logger.info("\n[STEP 2] Verifying module paths...")
         modules = self.verify_module_paths()
         missing = [m for m, exists in modules.items() if not exists]
 
         if missing:
-            print(f"  ✗ MISSING MODULES: {len(missing)}")
+            logger.error(f"  ✗ MISSING MODULES: {len(missing)}")
             for m in missing:
-                print(f"    - {m}")
+                logger.error(f"    - {m}")
             return False
         else:
-            print(f"  ✓ All {len(modules)} critical modules found")
+            logger.info(f"  ✓ All {len(modules)} critical modules found")
 
         # Create checkpoint
-        print("\n[STEP 3] Creating checkpoint...")
+        logger.info("\n[STEP 3] Creating checkpoint...")
         self.create_checkpoint()
 
-        print("\n[PHASE 0] COMPLETE ✓")
+        logger.info("\n[PHASE 0] COMPLETE ✓")
         return True
 
 
