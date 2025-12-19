@@ -22,6 +22,7 @@ class EvidenceBus:
     In dev/beta (`MOCKQPC_ENABLED=true`), this mocks the consensus layer.
     """
 
+    _chain_tip: str = "0" * 64
     _log_file: str = "evidence_chain.jsonl"
 
     @classmethod

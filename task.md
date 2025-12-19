@@ -62,6 +62,6 @@
 
 ## 3. Agent Advisory Migration (`area:agent-advisory`)
 
-- [ ] Audit `v14` agents for write-access violations
-- [ ] Refactor into `AdvisorySignal` emitters
-- [ ] Enforce "read-only" permissions in `v15/scenarios`
+- [x] Audit `v14` agents for write-access violations
+- [x] Refactor into `AdvisorySignal` emitters
+- [x] Enforce "read-only" permissions in `v15/scenarios`
