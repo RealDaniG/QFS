@@ -1,6 +1,7 @@
 # UX Polish Backlog (V18)
 
 Issues identified during the "First-Time User" narrative walkthrough. Use this list for the next polish sprint.
+**Relevant Code**: `v13/atlas/src/app` (Next.js Pages) & `v13/atlas/src/components` (UI).
 
 ## 1. Onboarding & Auth
 

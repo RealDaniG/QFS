@@ -12,9 +12,11 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** v18.0.0-alpha Distributed Backbone (Complete) • v18.5 Ascon Edge (Complete) • v18.6 Auth Sync (Complete)  
-**Current Focus:** v18.9 ATLAS App Alpha (Distributed App Integration)  
+**Status:** V18 Integration Complete (Frontend/Backend Wired) • Distributed Backbone (Alpha)  
+**Current Focus:** Production Deployment & UX Polish  
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
+
+[**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](TESTING.md)
 
 </div>
 
@@ -304,6 +306,20 @@ Optimal balance between strength and efficiency. MOCKQPC-first architecture, red
 ### v16.1.x — Integration Complete (Current Main)
 
 Wallet auth, admin dashboard, agent advisory layer, full EvidenceBus integration.
+
+### 🌐 ATLAS V18 Status & Docs
+
+The V18 integration is **Complete and Verified**, merging the Distributed Backbone with the User Application.
+
+- **Backend**: `main_minimal.py` serves real v18 routes (Governance, Content, Auth) via `v13/src/api`.
+- **Frontend**: `v13/atlas` is fully wired to live endpoints (`GovernanceInterface`, `DistributedFeed`).
+- **Verification**: Validated via [Automated Scripts](TESTING.md) and Playwright E2E tests.
+
+**Key Documentation:**
+
+- [Integration Status detailed](docs/V18_INTEGRATION_STATUS_DETAILED.md)
+- [Deployment Checklist](docs/V18_DEPLOYMENT_CHECKLIST.md)
+- [Security Debt](docs/SECURITY_DEBT.md)
 
 ### v17.0.0-beta — Governance & Bounty F-Layer
 

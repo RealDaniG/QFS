@@ -1,135 +1,89 @@
 # Repository Structure
 
-**Version**: v18.0.0-alpha-distributed-backbone
-**Purpose**: Define canonical repository organization for v18 (v17 F-layer core + v18 distributed backbone)
-**Status**: Alpha (Backbone Core Complete)
-**Last Updated**: 2025-12-20 (v18.0 Alpha)
-**Next Review**: v18 Phase 4 (Observability)
+**Version**: Structure-v18.0 (Integration Phase)
+**Purpose**: Define canonical repository organization and where new work should go.
+**Status**: Source of Truth for Repository Layout.
 
 ## Overview
 
-QFS × ATLAS operates as a multi-layered engine. The repository reflects the generational evolution of the protocol:
+QFS × ATLAS is a hybrid system combining a legacy deterministic engine (`v13`), a next-gen authentication layer (`v15`), and a distributed backbone (`v18`).
 
-- **v13**: Legacy engine and economic baseline (constitutional invariants, SafeMath).
-- **v15**: Proof-of-Execution (PoE), EvidenceBus, and verification infrastructure.
-- **v16**: Authentication, Session Management, and User Tables.
-- **v17**: Deterministic Governance, Bounties, Social Surface, and Agent Advisory (Layer D).
-- **v18**: Distributed Fabric (Consensus, PQC Anchors, Multi-node Wiring).
+### 📂 Top-Level Directory Map
 
-## Top-Level Directories
-
-### Core
-
-**`v18/`** - Distributed Fabric (Core & Backbone)
-
-- Purpose: Consensus replication, PQC anchors, and cluster simulation
-- Structure:
-  - `v18/consensus/` - Raft engine, State Machine, Simulators
-  - `v18/pqc/` - PQC Batch Anchor Service
-  - `v18/tests/` - Multi-node simulation and integration tests
-
-**`v17/`** - Current F-Layer (Governance, Bounties, Social)
-
-- Purpose: Canonical deterministic logic for the current beta
-- Structure:
-  - `v17/governance/` - Proposals, Voting, Execution (Deterministic F-Layer)
-  - `v17/bounties/` - Bounty lifecycle and reward allocation
-  - `v17/social/` - Social surface (Threads, Disputes)
-  - `v17/agents/` - Layer D Advisory (Heuristics, Listeners)
-  - `v17/ui/` - Projections and DTO builders
-  - `v17/tests/` - v17-specific unit and integration tests
-
-**`v15/`** - PoE & Evidence Infrastructure
-
-- Purpose: Structural Verifiability & EvidenceBus
-- Structure:
-  - `v15/evidence/` - EvidenceBus implementation
-  - `v15/utils/` - Deterministic utilities (Timestamping)
-  - `v15/auth/` - EIP-191 Wallet Authentication (v16 basis)
-  - `v15/ui/` - Admin Dashboard foundations
-
-**`v13/`** - Legacy Engine & Economic Baseline
-
-- Purpose: Constitutional invariants and regression baseline
-- Structure:
-  - `v13/libs/` - Core libraries (CertifiedMath, BigNum128, EconomicsGuard)
-  - `v13/tests/` - Legacy test suite (Regression barriers)
-
-**`.github/`** - CI/CD workflows
-
-- Purpose: GitHub Actions workflows and automation
-- Files:
-  - `workflows/ci.yml` - Main CI pipeline (v17 tests + Zero-Sim)
-  - `workflows/autonomous_verification.yml` - Zero-Sim enforcement
-
-### Documentation
-
-**`docs/`** - High-level documentation
-
-- Purpose: Project-wide documentation and specifications
-- Structure:
-  - `docs/RELEASES/` - Release notes and implementation summaries (v16, v17)
-  - `docs/architecture/` - System design docs
-
-**Root-level docs** (canonical):
-
-- `README.md` - Project overview and quickstart
-- `REPO_STRUCTURE.md` - This file
-- `SYSTEM_MAP.md` - Ecosystem map (Product vs Protocol)
-- `LAYER_D_ADVISORY_COMPLETE.md` - Advisory system specs
-- `V17_IMPLEMENTATION_COMPLETE.md` - v17 F-Layer sign-off
-
-### Artifacts & Archives
-
-**`evidence/`** - Compliance evidence
-
-- Purpose: Audit trails and compliance artifacts
-- Contents: `governance_index.json` (PoE Chain)
-
-**`scripts/`** - Common Utilities
-
-- `scripts/check_zero_sim.py` - Zero-Simulation Enforcer
-- `scripts/smoke_test_layer_d.py` - Advisory Smoke Test
-
-## Where to Put New Files
-
-### New Code
-
-- **Governance/Bounties/Social**: `v17/` (appropriate submodule)
-- **Advisory Agents**: `v17/agents/`
-- **Distributed Fabric / Consensus**: `v18/`
-- **Core Infrastructure (Bus, Auth)**: `v15/`
-
-### New Tests
-
-- **Feature Tests**: `v17/tests/`
-- **Distributed Fabric Tests**: `v18/tests/`
-- **Regression/Invariant Checks**: `v13/tests/` (only if strictly legacy-bound)
-
-### New Documentation
-
-- **Feature Specs**: `docs/` or Root (if major)
-- **Release Notes**: `docs/RELEASES/`
-
-## Maintenance (v18 Pipeline)
-
-### Before Major Releases
-
-1. Run Pipeline: `python run_pipeline.py`
-2. Test Suite: `pytest v18/tests`, `pytest v17/tests`, and `pytest v13/tests`
-3. Zero-Sim Check: `python scripts/check_zero_sim.py --fail-on-critical`
-4. Update `REPO_STRUCTURE.md` if layout changes
-
-## Constitutional Guarantees
-
-The repository structure supports the following constitutional guarantees:
-
-- **0.5% RES Resonance Cap**: Enforced via `v13/libs/economics/EconomicsGuard.py`
-- **Deterministic Replay**: Ensured by `v15/evidence/bus.py` (EvidenceBus) and v17 F-Layers
-- **Zero-Simulation Compliance**: Validated by `scripts/check_zero_sim.py`
-- **Advisory-Only Agents**: Enforced by `v17/agents/` architecture (read-only + emit advisory events)
+| Directory | Purpose | Key Substructures |
+| :--- | :--- | :--- |
+| **`v13/`** | **Application & Core Engine**. Contains the ATLAS frontend/backend and the QFS economic logic. | `atlas/`, `core/`, `tests/` |
+| **`v18/`** | **Distributed Backbone**. Consensus, clustering, and PQC anchoring simulation. | `consensus/`, `pqc/`, `cluster/` |
+| **`v15/`** | **Identity & Auth**. Authentication primitives and EvidenceBus foundations. | `auth/`, `evidence/` |
+| **`docs/`** | **Documentation**. Specs, guides, status reports. | `RELEASES/`, `architecture/` |
+| **`scripts/`** | **Tooling**. Root-level maintenance and verification scripts. | `verify_auth.py`, `check_zero_sim.py` |
+| **`tests/`** | **Global Tests**. (Emerging consolidation point). | |
+| **`evidence/`**| **Artifacts**. Audit trails and PoE chains. | |
 
 ---
 
-**Last Updated**: 2025-12-20 (v18.0-alpha)
-**Next Review**: v18 Phase 4 (Observability)
+## 🏗️ Detailed Structure
+
+### `v13/` - Application & Core Engine
+
+This is the working directory for the active ATLAS application.
+
+- **`v13/atlas/`**: The **Integrated V18 Application**.
+  - `src/app/` (Next.js Frontend) - Includes `GovernanceInterface` and `DistributedFeed`.
+  - `src/api/` (FastAPI Backend) - Routes for `v18/governance`, `v18/content`, `v1/wallets`.
+  - `src/lib/` - Shared business logic and singletons (`RealLedger`, `GovernanceService`).
+- **`v13/libs/`**: Core economic libraries (`CertifiedMath`, `EconomicsGuard`).
+
+### `v18/` - Distributed Backbone
+
+Contains the distributed systems logic separate from the web application.
+
+- `v18/consensus/`: Raft implementation.
+- `v18/pqc/`: Post-Quantum Cryptography batching services.
+- `v18/cluster/`: Node simulation and topology definitions.
+
+### `v15/` - Identity & Auth
+
+- `v15/auth/`: Wallet authentication logic (EIP-191).
+- `v15/evidence/`: EvidenceBus structures.
+
+---
+
+## 🔗 V18 Integration & Readiness
+
+The repository is currently in the **V18 Integration Phase**. Key Integration documents are located in `docs/`:
+
+- **[Integration Status](docs/V18_INTEGRATION_STATUS_DETAILED.md)**: Current state of Backend/Frontend wiring.
+- **[Deployment Checklist](docs/V18_DEPLOYMENT_CHECKLIST.md)**: Infra diagram and go-live steps.
+- **[Security Debt](docs/SECURITY_DEBT.md)**: Known gaps (CORS, Token Storage).
+- **[Observability Spec](docs/OBSERVABILITY_SPEC.md)**: Logging standards (`logs/`).
+- **[UX Polish Backlog](docs/UX_POLISH_BACKLOG.md)**: Frontend improvements needed.
+
+---
+
+## 📍 Where to Put New Files
+
+| Content Type | Target Directory | Notes |
+| :--- | :--- | :--- |
+| **Frontend UI/Components** | `v13/atlas/src/components/` | Application layer code. |
+| **Backend API Routes** | `v13/atlas/src/api/routes/` | Expose via `main_minimal.py`. |
+| **Consensus/Backbone Logic** | `v18/[submodule]/` | Distributed system core. |
+| **Verification Scripts** | `scripts/` | If general purpose. |
+| **Tests (Backbone)** | `v18/tests/` | |
+| **Tests (Application)** | `v13/atlas/src/tests/` | Or `tests/e2e/` (Playwright). |
+| **Documentation** | `docs/` or Root | Link in `DOCS_INDEX.md`. |
+
+---
+
+## 🧹 Maintenance & Cleanup
+
+**Before Major Releases:**
+
+1. **Run Pipeline**: `python run_pipeline.py`
+2. **Verify Zero-Sim**: `python scripts/check_zero_sim.py`
+3. **Run Full Test Suite**: See [TESTING.md](TESTING.md).
+4. **Update Structure Docs**: Ensure this file matches reality.
+
+---
+
+**Last Updated**: 2025-12-20 (Post-V18 Integration)
