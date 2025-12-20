@@ -43,12 +43,12 @@ do {
     
     # 1. Start Backend
     Log-Section "BACKEND" "Starting FastAPI on :8001..."
-    $backend = Start-Process cmd -ArgumentList "/c python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001" -WorkingDirectory $Root -RedirectStandardOutput "$Root\logs\backend_stdio.log" -RedirectStandardError "$Root\logs\backend_stderr.log" -PassThru
+    $backend = Start-Process cmd -ArgumentList "/c python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001" -WorkingDirectory $Root -RedirectStandardOutput "$Root\logs\backend_stdio.log" -RedirectStandardError "$Root\logs\backend_stderr.log" -PassThru -WindowStyle Hidden
 
     # 2. Start Frontend
     Log-Section "FRONTEND" "Starting UI on :3000..."
     # npm run dev needs to be run in v13/atlas
-    $frontend = Start-Process cmd -ArgumentList "/c npm run dev" -WorkingDirectory "$Root\v13\atlas" -RedirectStandardOutput "$Root\logs\frontend_stdio.log" -RedirectStandardError "$Root\logs\frontend_stderr.log" -PassThru
+    $frontend = Start-Process cmd -ArgumentList "/c npm run dev" -WorkingDirectory "$Root\v13\atlas" -RedirectStandardOutput "$Root\logs\frontend_stdio.log" -RedirectStandardError "$Root\logs\frontend_stderr.log" -PassThru -WindowStyle Hidden
 
     Log-Section "SYSTEM" "Waiting for services to become healthy..."
     

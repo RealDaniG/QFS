@@ -20,8 +20,6 @@ $env:PYTHONPATH = "path\to\repo\V13"
 python -m pytest v13/atlas/src/tests/test_routes_v18.py
 ```
 
-*Known Issue: `test_routes_v18.py` may fail with `PydanticInvalidForJsonSchema` due to complex mock PQC types in `main_minimal`. This does not affect runtime stability, as confirmed by E2E scripts.*
-
 ### 2. API End-to-End Tests
 
 **Scope**: Connectivity, HTTP Status Codes, Data Structure verification (Live Backend).
