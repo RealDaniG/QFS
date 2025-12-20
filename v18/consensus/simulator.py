@@ -4,6 +4,7 @@ from v18.consensus.schemas import (
     RequestVote,
     RequestVoteResponse,
     AppendEntries,
+    AppendEntriesResponse,
 )
 from v18.consensus.mocks import InMemoryConsensusLog
 
@@ -38,8 +39,9 @@ class SimulatedTransport:
                 node.handle_vote_response(msg)
             elif isinstance(msg, AppendEntries):
                 resp = node.handle_append_entries(msg)
-                # Responses to heartbeats would go here if we implemented matchIndex logic
-            # Note: Extensions for AppendEntriesResponse handled here in future
+                self.send(target, sender, resp)
+            elif isinstance(msg, AppendEntriesResponse):
+                node.handle_append_entries_response(msg)
 
 
 class ClusterSimulator:

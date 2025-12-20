@@ -1,9 +1,10 @@
-from typing import List, Optional, Any, Tuple
+from typing import List, Optional, Any, Dict
 from v18.consensus.schemas import (
     RequestVote,
     RequestVoteResponse,
     AppendEntries,
     AppendEntriesResponse,
+    LogEntry,
 )
 from v18.consensus.interfaces import IConsensusLog
 
@@ -27,6 +28,13 @@ class ConsensusNode:
         self.commit_index = 0
         self.last_applied = 0
         self.state = "follower"  # follower, candidate, leader
+
+        # VOLATILE state on leaders (Reinitialized after election)
+        self.next_index: Dict[str, int] = {}
+        self.match_index: Dict[str, int] = {}
+
+        # Callbacks
+        self.on_commit_callbacks: List[Any] = []
 
         # Simulation/Timing state (Logical units)
         self.election_timeout = 10
@@ -98,7 +106,18 @@ class ConsensusNode:
         # whose term matches prevLogTerm
         # (TODO: Implement log consistency check in implementation phase)
 
-        # For initial scaffolding, we treat everything as heartbeat/success if term is valid
+        # 4. Append any new entries not already in the log
+        for entry in rpc.entries:
+            if entry.index > self.log.last_index():
+                self.log.append({"term": entry.term, "command": entry.command})
+
+        # 5. If leaderCommit > commitIndex, set commitIndex = min(leaderCommit, index of last new entry)
+        if rpc.leader_commit > self.commit_index:
+            old_commit = self.commit_index
+            self.commit_index = min(rpc.leader_commit, self.log.last_index())
+            if self.commit_index > old_commit:
+                self._trigger_commit_callbacks(old_commit + 1, self.commit_index)
+
         return AppendEntriesResponse(
             term=self.current_term,
             sender_id=self.node_id,
@@ -152,22 +171,95 @@ class ConsensusNode:
         """Transition to leader and immediately send heartbeats."""
         self.state = "leader"
         self.time_since_last_event = 0
-        # In full Raft, leader would initialize nextIndex and matchIndex here.
+
+        # Initialize leader state
+        last_idx = self.log.last_index()
+        for peer in self.peer_ids:
+            self.next_index[peer] = last_idx + 1
+            self.match_index[peer] = 0
 
     def _send_heartbeats(self) -> List[AppendEntries]:
-        """Generate heartbeats for all peers."""
+        """Generate heartbeats/appends for all peers."""
         self.time_since_last_event = 0
         rpcs = []
         for peer in self.peer_ids:
+            # Send entries starting from next_index[peer]
+            entries_data = self.log.get_entries(self.next_index[peer])
+            entries = [
+                LogEntry(
+                    index=idx + self.next_index[peer],
+                    term=e["term"],
+                    command=e["command"],
+                )
+                for idx, e in enumerate(entries_data)
+            ]
+            prev_idx = self.next_index[peer] - 1
+
+            # Simplified: in real Raft, we'd look up the term of prev_idx
+            prev_term = 0
+
             rpcs.append(
                 AppendEntries(
                     term=self.current_term,
                     sender_id=self.node_id,
                     leader_id=self.node_id,
-                    prev_log_index=self.log.last_index(),
-                    prev_log_term=self.log.last_term(),
-                    entries=[],
+                    prev_log_index=prev_idx,
+                    prev_log_term=prev_term,
+                    entries=entries,
                     leader_commit=self.commit_index,
                 )
             )
         return rpcs
+
+    def handle_append_entries_response(self, response: AppendEntriesResponse) -> None:
+        """Process response from peer to log replication/heartbeat."""
+        if self.state != "leader" or response.term != self.current_term:
+            return
+
+        peer_id = response.sender_id
+        if response.success:
+            # Update matchIndex and nextIndex for follower
+            self.match_index[peer_id] = max(
+                self.match_index.get(peer_id, 0), response.match_index
+            )
+            self.next_index[peer_id] = self.match_index[peer_id] + 1
+            self._update_leader_commit_index()
+        else:
+            # If AppendEntries fails because of log inconsistency, decrement nextIndex and retry
+            self.next_index[peer_id] = max(1, self.next_index[peer_id] - 1)
+
+    def _update_leader_commit_index(self) -> None:
+        """Advance commitIndex if there exists N > commitIndex such that a majority of matchIndex[i] >= N."""
+        # Simplistic majority check
+        match_indices = sorted(
+            list(self.match_index.values()) + [self.log.last_index()]
+        )
+        # For N nodes, we need majority (N // 2 + 1)
+        # With 3 nodes, index 1 (0, 1, 2) is the "majority" point
+        majority_idx = len(match_indices) // 2
+        if len(match_indices) % 2 == 0:
+            majority_idx -= 1  # adjust for even clusters if needed
+
+        N = match_indices[majority_idx]
+
+        if N > self.commit_index:
+            # Raft 5.4.2: leader only commits entries from its current term by counting replicas
+            # For now, we assume current term for simplicity in scaffolding
+            old_commit = self.commit_index
+            self.commit_index = N
+            self._trigger_commit_callbacks(old_commit + 1, self.commit_index)
+
+    def _trigger_commit_callbacks(self, start: int, end: int) -> None:
+        """Notify observers of committed entries."""
+        entries = self.log.get_entries(start, end + 1)
+        for entry in entries:
+            for callback in self.on_commit_callbacks:
+                callback(entry)
+
+    def propose(self, command: Dict[str, Any]) -> int:
+        """Propose a new command to the cluster (Leader only)."""
+        if self.state != "leader":
+            return -1
+
+        entry = {"term": self.current_term, "command": command}
+        return self.log.append(entry)
