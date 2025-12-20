@@ -102,14 +102,37 @@ class BountyProjection:
                 }
             )
 
-        # 3. Advisory Signals
+        # 3. Advisory Signals (Overlay) - Scan explicitly for v17 advisory events
+        # Note: We scan recent history or use a filtered query if available.
+        # For this phase, we rely on the bus fetch from get_bounty_state if possible,
+        # but since F-layer excludes them, we might miss them if not fetching separately.
+        # Ideally, we fetch relevant advisories here.
+        advisory_events = self.bus.get_events(limit=1000)  # Simple overlay scan
+
+        for envelope in advisory_events:
+            event = envelope.get("event", {})
+            if event.get("type") == "AGENT_ADVISORY_BOUNTY":
+                payload = event.get("payload", {})
+                signal = payload.get("signal", {})
+                if signal.get("target_id", "").startswith(bounty_id):
+                    timeline.append(
+                        {
+                            "stage": "Agent Suggestion",
+                            "timestamp": payload.get("timestamp"),
+                            "actor": f"Agent:{signal.get('model_version')}",
+                            "description": f"Score: {signal.get('score')} - {', '.join(signal.get('reasons', []))}",
+                            "is_advisory": True,
+                        }
+                    )
+
+        # Legacy v16 signals (if any in state)
         for adv in state.advisory_signals:
             if isinstance(adv, dict):
                 content_score = adv.get("content_score", {})
                 if content_score:
                     timeline.append(
                         {
-                            "stage": "Advisory Signal",
+                            "stage": "Advisory Signal (Legacy)",
                             "timestamp": adv.get("timestamp"),
                             "actor": f"Agent:{adv.get('provider')}",
                             "description": f"Quality Score: {content_score.get('quality'):.2f}",
