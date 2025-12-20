@@ -112,3 +112,11 @@ The v18 architecture maps the logical layers (A-D) to physical hardware tiers, e
 | **Tier C** | Write-only, low bandwidth | Cannot execute logic; filtered at gateway |
 
 All nodes run the **Minimal Deterministic Kernel**: EvidenceBus Client + Replay Tools.
+
+## 7. Supplemental Documentation
+
+- [v18 Backbone Completion Report](RELEASES/v18_BACKBONE_COMPLETE.md)
+- [Cluster Operations Guide](CLUSTER_OPERATIONS_GUIDE.md)
+- [PQC Security Profile](PQC_SECURITY_PROFILE.md)
+- [Network Governance Charter](NETWORK_GOVERNANCE_CHARTER.md)
+- [Agent Fabric Specification](architecture/AGENT_FABRIC_SPEC.md)

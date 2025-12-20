@@ -36,7 +36,13 @@
 - **Bounties & Contributions**: Fair reward allocation with transparent formulas
 - **Disputes**: Evidence-backed escalation and resolution
 
-Together, they solve a fundamental problem: **How do we coordinate fairly without trusting intermediaries?**
+### Physical & Network Layer (Fabric Architecture)
+
+With the arrival of **v18**, the platform expands from a single-node core to a tiered, distributed fabric:
+
+- **Tier A (Cluster Backbone)**: High-availability validators running Raft consensus and PQC anchoring.
+- **Tier B (Edge Advisory)**: Read-only nodes hosting UI and local SLM agents (planned).
+- **Tier C (Telemetry/Sensors)**: Write-only edge devices submitting telemetry via consensus (planned).
 
 ---
 

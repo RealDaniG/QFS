@@ -11,7 +11,15 @@ This map defines the boundaries between the different components sharing the "QF
 graph TD
     User[User / Operator] --> Product[Layer 1: QFS Product]
     User --> Protocol[Layer 2: QFS × ATLAS Protocol]
+    User --> Fabric[Layer 0: Distributed Fabric]
     User --> Reports[Layer 3: NODE REPORTS]
+
+    subgraph Fabric [Layer 0: Distributed Fabric]
+        direction TB
+        Consensus[Raft Consensus]
+        PQC_Anchors[PQC Anchors]
+        EBus_Wiring[EvidenceBus Replicator]
+    end
 
     subgraph Product [Layer 1: Product Tools]
         direction TB
@@ -38,11 +46,25 @@ graph TD
 
 ---
 
+## 0. Distributed Fabric — The Backbone (v18)
+
+### Secure, Verifiable, Multi-Node Core
+
+* **Scope:** Distributed consensus and cryptographic segments sealing.
+* **Components:**
+  * **Raft Consensus:** v18 Deterministic replication and log ordering.
+  * **PQC Anchors:** v18 Batch segment signing (Tier A core).
+  * **EvidenceBus Replicator:** v18 committed entry propagation.
+* **Key Docs:**
+  * `docs/V18_DESIGN_AND_DEPLOYMENT.md` (Blueprint)
+  * `docs/RELEASES/v18_BACKBONE_COMPLETE.md` (Implementation)
+
+---
+
 ## 1. QFS (Quick File Share) — The Product
 
-**Standalone Go-based File Sharing Tool**
+### Standalone Go-based File Sharing Tool
 
-* **Scope:** User-facing utility for file transfer and URL shortening.
 * **Repo Role:** Host for the OSS tool code (if applicable) or distinct repository.
 * **Governance:** None (Standalone).
 * **Key Doc:** `docs/PRODUCT/QUICK_FILE_SHARE_ANALYSIS.md` (Example path)
@@ -51,7 +73,7 @@ graph TD
 
 ## 2. QFS × ATLAS — The Protocol
 
-**Deterministic Governance & Economic Infrastructure**
+### Deterministic Governance & Economic Infrastructure
 
 * **Scope:** The core engine ensuring sovereign, verifiable governance.
 * **Components:**
@@ -70,7 +92,7 @@ graph TD
 
 ## 3. NODE REPORTS — The Pulse
 
-**State Snapshots & Strategic Updates**
+### State Snapshots & Strategic Updates
 
 * **Scope:** Communication to paid members and operators about *what is happening now*.
 * **Content:**

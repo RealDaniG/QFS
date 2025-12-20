@@ -1,10 +1,10 @@
 # Repository Structure
 
-**Version**: v17.0.0-beta-governance-bounties
-**Purpose**: Define canonical repository organization for v17 (v13 legacy + v15 PoE + v17 governance/bounties/social/advisory)
-**Status**: Beta (F-Layer Complete)
-**Last Updated**: 2025-12-20 (v17.0 Beta)
-**Next Review**: Start of v18 Design (Multi-Node Distribution)
+**Version**: v18.0.0-alpha-distributed-backbone
+**Purpose**: Define canonical repository organization for v18 (v17 F-layer core + v18 distributed backbone)
+**Status**: Alpha (Backbone Core Complete)
+**Last Updated**: 2025-12-20 (v18.0 Alpha)
+**Next Review**: v18 Phase 4 (Observability)
 
 ## Overview
 
@@ -14,10 +14,19 @@ QFS × ATLAS operates as a multi-layered engine. The repository reflects the gen
 - **v15**: Proof-of-Execution (PoE), EvidenceBus, and verification infrastructure.
 - **v16**: Authentication, Session Management, and User Tables.
 - **v17**: Deterministic Governance, Bounties, Social Surface, and Agent Advisory (Layer D).
+- **v18**: Distributed Fabric (Consensus, PQC Anchors, Multi-node Wiring).
 
 ## Top-Level Directories
 
 ### Core
+
+**`v18/`** - Distributed Fabric (Core & Backbone)
+
+- Purpose: Consensus replication, PQC anchors, and cluster simulation
+- Structure:
+  - `v18/consensus/` - Raft engine, State Machine, Simulators
+  - `v18/pqc/` - PQC Batch Anchor Service
+  - `v18/tests/` - Multi-node simulation and integration tests
 
 **`v17/`** - Current F-Layer (Governance, Bounties, Social)
 
@@ -88,11 +97,13 @@ QFS × ATLAS operates as a multi-layered engine. The repository reflects the gen
 
 - **Governance/Bounties/Social**: `v17/` (appropriate submodule)
 - **Advisory Agents**: `v17/agents/`
+- **Distributed Fabric / Consensus**: `v18/`
 - **Core Infrastructure (Bus, Auth)**: `v15/`
 
 ### New Tests
 
 - **Feature Tests**: `v17/tests/`
+- **Distributed Fabric Tests**: `v18/tests/`
 - **Regression/Invariant Checks**: `v13/tests/` (only if strictly legacy-bound)
 
 ### New Documentation
@@ -100,12 +111,12 @@ QFS × ATLAS operates as a multi-layered engine. The repository reflects the gen
 - **Feature Specs**: `docs/` or Root (if major)
 - **Release Notes**: `docs/RELEASES/`
 
-## Maintenance (v17 Pipeline)
+## Maintenance (v18 Pipeline)
 
 ### Before Major Releases
 
 1. Run Pipeline: `python run_pipeline.py`
-2. Test Suite: `pytest v17/tests` and `pytest v13/tests`
+2. Test Suite: `pytest v18/tests`, `pytest v17/tests`, and `pytest v13/tests`
 3. Zero-Sim Check: `python scripts/check_zero_sim.py --fail-on-critical`
 4. Update `REPO_STRUCTURE.md` if layout changes
 
@@ -120,5 +131,5 @@ The repository structure supports the following constitutional guarantees:
 
 ---
 
-**Last Updated**: 2025-12-20 (v17.0-beta)
-**Next Review**: v18 (Distributed Consensus)
+**Last Updated**: 2025-12-20 (v18.0-alpha)
+**Next Review**: v18 Phase 4 (Observability)

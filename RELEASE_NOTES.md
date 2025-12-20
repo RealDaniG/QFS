@@ -1,8 +1,44 @@
 # QFS × ATLAS — Release Notes
 
-> **Current Version:** v17.0.0-beta-governance-bounties
-> **Theme:** Deterministic Governance, Bounties, Social Surface, and Agent Advisory (Layer D)
-> **Status:** Full Feature Complete (Beta)
+> **Current Version:** v18.0.0-alpha-distributed-fabric
+> **Theme:** Distributed Consensus, PQC Anchoring, and Multi-node EvidenceBus
+> **Status:** Alpha (Backbone Core Complete)
+
+---
+
+## 🌐 v18.0.0-alpha (December 20, 2025)
+
+**Major Milestone**: "Distributed Backbone". Transitioned from single-node governance to a multi-node PQC-anchored fabric.
+
+### v18 New Features
+
+#### 1. Distributed Consensus (`v18/consensus`)
+
+- Deterministic Raft-style replication engine.
+- Multi-node simulation harness with failover verification.
+- Majority-based commitment for EvidenceBus events.
+
+#### 2. PQC Batch Anchors (`v18/pqc`)
+
+- Deterministic segment sealing for EvidenceBus.
+- Environment-aware signing (MOCKQPC or real Dilithium).
+- Distributed anchor verification.
+
+#### 3. Fabric Governance
+
+- Wiring EvidenceBus commits to Raft.
+- Audit metadata (`v18_consensus_term`) for all consensus-driven events.
+
+### Documentation
+
+- [Cluster Operations Guide](docs/CLUSTER_OPERATIONS_GUIDE.md)
+- [PQC Security Profile](docs/PQC_SECURITY_PROFILE.md)
+- [Backbone Completion Report](docs/RELEASES/v18_BACKBONE_COMPLETE.md)
+
+### v18 Verification
+
+- **14/14 tests passing** in multi-node simulation.
+- **Zero-Sim Compliance** verified across distributed layers.
 
 ---
 
@@ -10,7 +46,7 @@
 
 **Major Milestone**: "Compression and Reveal". The core F-Layer engine is now fully deterministic and surfaced via human-readable UI projections.
 
-### New Features
+### v17 New Features
 
 #### 1. Governance F-Layer (`v17/governance`)
 
@@ -37,7 +73,7 @@
   - **Bounties**: Reference links, content quality.
   - **Social**: Urgency keywords ("scam", "fraud").
 
-### Verification
+### v17 Verification
 
 - **Zero-Sim**: 100% Deterministic execution enforced by CI.
 - **Replay**: Full state reconstruction from EvidenceBus.
@@ -48,11 +84,8 @@
 
 **Theme**: Foundations (Auth, Admin, PoE)
 
-- **Authentication**: EIP-191 Wallet Signatures + Session Management.
-- **Admin Dashboard**: Evidence Chain Viewer.
-- **Infrastructure**: EvidenceBus v1, MOCKQPC v1.
+### v16 Stable Features
 
 ## 🕰️ v15.5 (Legacy)
 
-- Initial PoE prototypes.
-- Cost-efficient architecture basics.
+### v15 Legacy Prototypes
