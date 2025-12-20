@@ -6,8 +6,9 @@
 ## Phase 1: Multi-Node Core (Consensus)
 
 - [ ] Define Node Identity Protocol (Keys, Registration)
-- [ ] Implement Raft/PBFT Log Replication for `EvidenceBus`
-- [ ] Add `v18/consensus/` module (Interface only first)
+- [ ] Define Node Identity Protocol (Keys, Registration)
+- [/] Implement Raft/PBFT Log Replication for `EvidenceBus` (Interfaces & Logic Scaffold Done)
+- [x] Add `v18/consensus/` module (Interfaces, Schemas, State Machine Core)
 
 ## Phase 2: PQC Anchors (Tier A)
 
