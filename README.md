@@ -12,9 +12,9 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** Production-ready v16.1.x baseline • v17.0.0-beta governance & bounty F-layer  
+**Status:** Production-ready v16.1.x baseline • v18.0.0-alpha distributed backbone  
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • AGPL-3.0 licensed  
-**Focus:** Deterministic governance • Contribution tracking • Cost-efficient coordination
+**Focus:** Distributed consensus • PQC anchoring • Deterministic governance • Edge expansion
 
 </div>
 
@@ -303,24 +303,27 @@ Optimal balance between strength and efficiency. MOCKQPC-first architecture, red
 
 Wallet auth, admin dashboard, agent advisory layer, full EvidenceBus integration.
 
-### v17.0.0-beta — Governance & Bounty F-Layer (Current Development)
+### v17.0.0-beta — Governance & Bounty F-Layer
 
-Deterministic governance and bounty management with full PoE logging. Engine complete, UI/UX layer in progress.
+Determinism-locked governance and bounty management with full PoE logging. Platform feature complete for single-node operation.
+
+### v18.0.0-alpha — Distributed Fabric Backbone (Current)
+
+Consensus-driven Tier A backbone complete. Deterministic replication (Raft), PQC batch anchoring, and integrated EvidenceBus wiring achieved.
 
 ---
 
 ## 🗺️ Roadmap: v18 Distributed Fabric
 
-Future enhancements (Design Phase):
+The distributed Tier A backbone is now consensus-driven, PQC-anchored, and cleanly wired into the existing F-layer.
 
-- **Physical Tiering**: Tier A (Core), Tier B (Edge), Tier C (Sensor).
-- **Multi-Node Consensus**: Deterministic replication for Tier A.
-- **PQC Anchors**: Real post-quantum signatures (Dilithium/Kyber) to anchor EvidenceBus batches.
-- **Edge Expansion**: UI and Advisory agents deployed to edge nodes.
+- **✅ Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core.
+- **✅ PQC Anchors**: Real post-quantum signatures (Dilithium) to anchor EvidenceBus batches.
+- **✅ F-Layer Wiring**: Consensus-driven EvidenceBus commits with audit metadata.
+- **🔄 Phase 4: Observability**: Cluster and anchor monitoring dashboards.
+- **🔮 Phase 5: Edge Expansion**: UI and Advisory agents deployed to Tier B/C nodes.
 
-See [V18_DESIGN_AND_DEPLOYMENT.md](docs/V18_DESIGN_AND_DEPLOYMENT.md) for the full blueprint.
-
-> **Note:** v18 work begins after v17.0.0-beta validation.
+See [V18_BACKBONE_COMPLETE.md](docs/RELEASES/v18_BACKBONE_COMPLETE.md) for details.
 
 ---
 

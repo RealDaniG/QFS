@@ -1,8 +1,8 @@
 # QFS × ATLAS — Platform Evolution Plan
 
 > **Status:** Authoritative Strategic Roadmap  
-> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
-> **Foundation:** v16.1.1-pre-v17-ready (Deterministic, Cost-Efficient, MOCKQPC-First)  
+> **Current Version:** v18.0.0-alpha (Distributed Backbone)  
+> **Foundation:** v17.0.0-beta (Deterministic Governing F-Layer)  
 > **Agent Strategy:** CrewAI/LangGraph (replacing OpenAGI)
 
 ---
@@ -436,8 +436,12 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 **Goal**: Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
 
-**Blueprint**: See [V18_DESIGN_AND_DEPLOYMENT.md](V18_DESIGN_AND_DEPLOYMENT.md).
+**Current Status**: Backbone Core Complete (Phase 1-3).
 
-- **Phase 1: Multi-Node Core**: Introduce deterministic consensus (Raft/PBFT) between Tier A nodes sharing the EvidenceBus.
-- **Phase 2: PQC Anchors**: Replace MOCKQPC with real PQC signatures for batch sealing at Tier A.
-- **Phase 3: Edge Expansion**: Deploy UI and Advisory logic to Tier B (PoE++ Edge Nodes) and Tier C (Sensors).
+- **✅ Phase 1: Multi-Node Core**: Introduced deterministic consensus (Raft) between Tier A nodes sharing the EvidenceBus.
+- **✅ Phase 2: PQC Anchors**: Real PQC signatures for batch sealing at Tier A (v15 Crypto Adapter powered).
+- **✅ Phase 3: Consensus & Bus Wiring**: `EvidenceBusConsensusAdapter` wiring complete with integration tests.
+- **🔄 Phase 4: Observability**: Cluster Status Dashboards and PQC anchor timelines (Next).
+- **🔮 Phase 5: Edge Expansion**: UI and Advisory logic deployment to Tier B and Tier C nodes.
+
+**Reference**: [V18_BACKBONE_COMPLETE.md](RELEASES/v18_BACKBONE_COMPLETE.md)

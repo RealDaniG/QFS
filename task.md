@@ -1,7 +1,7 @@
 # QFS × ATLAS Task Tracker
 
-> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
-> **Status:** Engine complete, UI/UX layer in progress  
+> **Current Version:** v18.0.0-alpha (Distributed Backbone)  
+> **Status:** Consensus driven & PQC anchored (Tier A backbone complete)  
 > **Last Updated:** 2025-12-20
 
 ---
@@ -196,12 +196,37 @@
 - [ ] Tag: `v17.0.0-beta-governance-bounties`
 - [ ] Release summary
 
-### Roadmap: v18 Distributed Fabric 🔮
+## v18 Distributed Fabric ✅ BACKBONE COMPLETE
 
-- [ ] Design Node Tiering (A/B/C)
-- [ ] Implement Raft/PBFT Consensus (Layer A)
-- [ ] Implement PQC Anchor Service (Layer A)
-- [ ] Deploy Edge Advisory Nodes (Layer B)
+> **Goal:** Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
+
+### Phase 1: Multi-Node Core (Tier A) ✅
+
+- [x] Raft/PBFT Consensus Implementation (v18/consensus/)
+- [x] Multi-node Simulation Harness (v18/consensus/simulator.py)
+- [x] Election & Failover Logic
+- [x] Log Replication & Majority Commitment
+- [x] Determinism Verified (Zero-Sim)
+
+### Phase 2: PQC Anchors (Tier A) ✅
+
+- [x] PQC Batch Anchor Service (v18/pqc/anchors.py)
+- [x] Environment-Aware Batch Signing (MOCKQPC or liboqs)
+- [x] Batch Verification Logic
+- [x] Deterministic Signature Tests
+
+### Phase 3: Consensus & Bus integration ✅
+
+- [x] EvidenceBusConsensusAdapter Implementation
+- [x] Consensus Commit -> EvidenceBus.emit Wiring
+- [x] Integration Test (Propose -> Replicate -> Commit -> Append)
+
+### Phase 4: Observability & Edge Expansion 🔄
+
+- [ ] Cluster Status Dashboard (Leader, Term, Indices)
+- [ ] PQC Anchor Timeline & Verification API
+- [ ] Tier B Edge Node Config (UI+Advisory)
+- [ ] Tier C Sensor Gateways
 
 ---
 
@@ -214,21 +239,23 @@
 - ✅ v16 Health Check & Hardening
 - ✅ v17 Engine Implementation (governance + bounties)
 - ✅ v17 UI/UX (Timelines, Explanations, Advisory Overlays)
-- ✅ v17 Documentation Alignment
+- ✅ v18 Phase 1: Multi-Node Core
+- ✅ v18 Phase 2: PQC Anchors
+- ✅ v18 Phase 3: Consensus & Bus Integration
 
 **In Progress:**
 
-- 🔄 v17 Beta Testing
+- 🔄 v18 Phase 4: Observability & Edge Expansion
 
 **Next Steps:**
 
-1. Merge `docs/v17-repo-alignment`
-2. Tag `v17.0.0-beta`
-3. Begin v18 Design
+1. Implement Cluster Dashboards
+2. Wire Tier B Edge Nodes to Distributed Bus
+3. Implement Tier C Gateways
 
 ---
 
-**Branch:** `docs/v17-repo-alignment`
+**Branch:** `feat/v18-distributed-fabric`
 **Foundation:** v17.0.0-beta-governance-bounties
-**Target:** v18 Design Phase
+**Target:** v18 Observability Phase
 **Contract:** Deterministic Core Preserved

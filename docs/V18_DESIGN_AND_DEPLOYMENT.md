@@ -1,8 +1,8 @@
 # QFS × ATLAS — v18 Design & Deployment Blueprint
 
-> **Status:** Draft Design (Pending v17 Beta Validation)
+> **Status:** Implementation Baseline Complete (Phase 1-3)
 > **Goal:** Extend v17 single-node deterministic system to a distributed, heterogeneous, verifiable fabric with PQC readiness and minimal risk to the deterministic core.
-> **Dependencies:** Complete v17 F-Layer (Governance/Bounties/Social)
+> **Dependencies:** v17 F-Layer (Governance/Bounties/Social) Architecture Stable
 
 ---
 
@@ -71,30 +71,31 @@ The v18 architecture maps the logical layers (A-D) to physical hardware tiers, e
 
 ## 5. v18 Integration Phases
 
-### Phase 1 – Multi-Node Core (Tier A)
+### Phase 1 – Multi-Node Core (Tier A) ✅
 
 - **Objective**: Turn single-node v17 into a cluster sharing one EvidenceBus.
 - **Tasks**:
-  - Implement deterministic consensus (Raft/PBFT) for EvidenceBus ordering.
-  - Define Node Identity & Join Protocol (keys, registration).
-  - "Cluster Healthy" checks.
+  - [x] Implement deterministic consensus (Raft) for EvidenceBus ordering.
+  - [x] Multi-node Simulation Harness (v18/consensus/simulator.py).
+  - [x] Raft Log Replication & Majority Commitment logic.
 
-### Phase 2 – PQC Anchors & Crypto-Agility
+### Phase 2 – PQC Anchors & Crypto-Agility ✅
 
 - **Objective**: Replace MOCKQPC with real PQC at critical anchors.
 - **Tasks**:
-  - Implement PQC Anchor Service on Tier A.
-  - Batch signing of EvidenceBus segments.
-  - Crypto-agility config.
+  - [x] Implement PQC Anchor Service on Tier A (v18/pqc/anchors.py).
+  - [x] Batch signing of EvidenceBus segments with audit roots.
+  - [x] Environment-aware verification logic.
 
-### Phase 3 – Edge Expansion (Tier B & C)
+### Phase 3 – Consensus → EvidenceBus Wiring ✅
 
-- **Objective**: Deploy UI/Agents to edge.
+- **Objective**: Bind Raft commitment to the canonical EvidenceBus.
 - **Tasks**:
-  - Tier B: Bundle UI + Advisory Agent. Connect to Tier A bus.
-  - Tier C: Telemetry client (write-only).
+  - [x] Implement `EvidenceBusConsensusAdapter`.
+  - [x] Wire consensus commit events to `EvidenceBus.emit`.
+  - [x] Integration testing of the full proposal -> commit -> append pipeline.
 
-### Phase 4 – Observability
+### Phase 4 – Observability & Edge Expansion 🔄
 
 - **Tasks**:
   - Cluster dashboards (Node health, Anchor status).
