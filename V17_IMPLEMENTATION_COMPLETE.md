@@ -295,3 +295,11 @@ Extend `v15/ui/admin_dashboard.py` to show:
 **Prepared by:** Autonomous Agent (Antigravity)  
 **Foundation:** v16.1.1-pre-v17-ready  
 **Contract Compliance:** ZERO_SIM_QFS_ATLAS_CONTRACT.md § 2.6, § 4.4
+
+## Hardening & Robustness (CI Fixes)
+
+- **Reward Caps**: Implemented `BountyConfig` with `max_reward_per_contributor_ratio` to prevent over-allocation.
+- **Validation**: Strict `try/except` schema validation in state reconstruction to ignore malformed events.
+- **Double-Voting**: Enforced via mandatory state check in `cast_vote`.
+- **History**: Increased EvidenceBus limits to 1,000,000 events to prevent truncation of long-lived proposals.
+- **Privacy**: Verified structured event storage (EvidenceBus) is compliant; no stdout leaks.

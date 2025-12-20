@@ -5,7 +5,7 @@ Deterministic functions for vote casting and validation.
 Enforces deterministic rules: no double-voting, deterministic tie-breaking.
 """
 
-from typing import Dict, List, Optional
+from typing import Optional
 from v15.evidence.bus import EvidenceBus
 from v17.governance.schemas import Vote, ProposalState, GovernanceConfig
 
@@ -45,20 +45,28 @@ def cast_vote(
             f"Invalid choice '{choice}'. Must be one of: {config.allowed_choices}"
         )
 
-    # Check for double voting (if state provided)
-    if existing_state:
-        for existing_vote in existing_state.votes:
-            if existing_vote.voter_wallet == voter_wallet:
-                raise ValueError(
-                    f"Wallet {voter_wallet} has already voted on proposal {proposal_id}"
-                )
+    # Fetch state if not provided to enforce rules
+    if existing_state is None:
+        from v17.governance.f_proposals import get_proposal_state
 
-        # Check if voting period has ended
-        if timestamp > existing_state.proposal.voting_ends_at:
+        existing_state = get_proposal_state(proposal_id)
+
+    if not existing_state:
+        raise ValueError(f"Proposal {proposal_id} not found")
+
+    # Check for double voting
+    for existing_vote in existing_state.votes:
+        if existing_vote.voter_wallet == voter_wallet:
             raise ValueError(
-                f"Voting period ended at {existing_state.proposal.voting_ends_at}, "
-                f"cannot vote at {timestamp}"
+                f"Wallet {voter_wallet} has already voted on proposal {proposal_id}"
             )
+
+    # Check if voting period has ended
+    if timestamp > existing_state.proposal.voting_ends_at:
+        raise ValueError(
+            f"Voting period ended at {existing_state.proposal.voting_ends_at}, "
+            f"cannot vote at {timestamp}"
+        )
 
     # Create vote
     vote = Vote(

@@ -5,8 +5,19 @@ Pydantic models for deterministic bounty and reward operations.
 All state transitions are pure functions consuming EvidenceBus history.
 """
 
-from typing import Dict, List, Optional, Literal
+from typing import Dict, List, Optional, Literal, Any
 from pydantic import BaseModel, Field
+
+
+class BountyConfig(BaseModel):
+    """Configuration for bounty parameters."""
+
+    max_reward_per_contributor_ratio: float = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        description="Max reward ratio per contributor (0-1)",
+    )
 
 
 class Bounty(BaseModel):
@@ -26,7 +37,9 @@ class Bounty(BaseModel):
     deadline: Optional[int] = Field(None, description="Optional deadline timestamp")
 
     tags: List[str] = Field(default_factory=list, description="Bounty tags/categories")
-    metadata: Optional[Dict] = Field(default=None, description="Additional bounty data")
+    metadata: Optional[Dict[str, Any]] = Field(
+        default=None, description="Additional bounty data"
+    )
 
     class Config:
         json_schema_extra = {
@@ -57,7 +70,7 @@ class Contribution(BaseModel):
     submitted_at: int = Field(..., description="Deterministic timestamp")
 
     # Optional: proof of work
-    proof: Optional[Dict] = Field(None, description="Proof of contribution")
+    proof: Optional[Dict[str, Any]] = Field(None, description="Proof of contribution")
 
     class Config:
         json_schema_extra = {
@@ -124,7 +137,7 @@ class BountyState(BaseModel):
     )
 
     # Advisory signals (from agent layer)
-    advisory_signals: List[Dict] = Field(
+    advisory_signals: List[Dict[str, Any]] = Field(
         default_factory=list, description="Agent advisory events"
     )
 

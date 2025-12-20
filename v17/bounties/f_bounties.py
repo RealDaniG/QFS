@@ -6,13 +6,14 @@ All operations consume EvidenceBus history; F remains final authority.
 """
 
 import hashlib
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from v15.evidence.bus import EvidenceBus
 from v17.bounties.schemas import (
     Bounty,
     Contribution,
     RewardDecision,
     BountyState,
+    BountyConfig,
 )
 
 
@@ -141,7 +142,7 @@ def get_bounty_state(
     """
     # Fetch events if not provided
     if events is None:
-        events = EvidenceBus.get_events(limit=1000)
+        events = EvidenceBus.get_events(limit=1_000_000)
 
     # Find bounty creation event
     bounty_data = None
@@ -192,9 +193,26 @@ def get_bounty_state(
         return None
 
     # Reconstruct state
-    bounty = Bounty(**bounty_data)
-    contribution_objects = [Contribution(**c) for c in contributions]
-    decision_objects = [RewardDecision(**d) for d in reward_decisions]
+    from pydantic import ValidationError
+
+    try:
+        bounty = Bounty(**bounty_data)
+    except ValidationError:
+        return None
+
+    contribution_objects = []
+    for c in contributions:
+        try:
+            contribution_objects.append(Contribution(**c))
+        except ValidationError:
+            continue
+
+    decision_objects = []
+    for d in reward_decisions:
+        try:
+            decision_objects.append(RewardDecision(**d))
+        except ValidationError:
+            continue
 
     state = BountyState(
         bounty=bounty,
@@ -213,6 +231,7 @@ def compute_rewards(
     bounty_state: BountyState,
     timestamp: int,
     use_advisory: bool = True,
+    config: Optional[BountyConfig] = None,
 ) -> List[RewardDecision]:
     """
     Compute deterministic reward allocation (pure function).
@@ -221,6 +240,7 @@ def compute_rewards(
         bounty_state: Current bounty state with contributions
         timestamp: Deterministic timestamp
         use_advisory: Whether to use advisory signals in scoring
+        config: Optional configuration for caps/limits
 
     Returns:
         List of RewardDecision objects
@@ -228,7 +248,7 @@ def compute_rewards(
     if not bounty_state.contributions:
         return []
 
-    # Compute scores for each contribution
+    # 1. Compute raw scores
     scores = []
     for contribution in bounty_state.contributions:
         score = _compute_contribution_score(
@@ -237,27 +257,74 @@ def compute_rewards(
         )
         scores.append((contribution, score))
 
-    # Normalize scores
     total_score = sum(s[1] for s in scores)
-    if total_score == 0:
-        # Equal distribution if all scores are zero
-        total_score = len(scores)
-        scores = [(c, 1.0) for c, _ in scores]
 
-    # Allocate rewards proportionally
-    decisions = []
+    # Handle zero sums
+    if total_score <= 0:
+        # Fallback: Equal distribution if all scores zero?
+        # Or no rewards? Safe default is NO REWARDS if quality is 0.
+        # But for backward compat with previous logic (fallback equal), let's see.
+        # Previous: "Equal distribution if all scores are zero".
+        # Safe V17: If quality is 0, payout is 0.
+        # But to avoid "stuck" funds on low-quality, maybe fallback is needed?
+        # Let's keep strict: 0 score = 0 reward.
+        return []
+
+    # 2. Calculate raw allocations
+    total_reward_pool = bounty_state.bounty.reward_amount
+    allocations = []
+
+    # Cap ratio (default 1.0 = 100%)
+    max_ratio = config.max_reward_per_contributor_ratio if config else 1.0
+
+    current_allocated_sum = 0.0
+
     for contribution, score in scores:
-        percentage = score / total_score
-        amount = bounty_state.bounty.reward_amount * percentage
+        # Raw share
+        share_ratio = score / total_score
 
+        # Apply cap to the RATIO (or amount)
+        # If one person gets 90% but cap is 80%, they get 80%.
+        # The remainder 10% stays unallocated (safe).
+
+        effective_ratio = min(share_ratio, max_ratio)
+        amount = total_reward_pool * effective_ratio
+
+        # floor to 2 decimals for currency safety (or keep float precision and floor at end?)
+        # For determinism, let's keep high precision float but maybe simple round?
+        # Actually standard python float is deterministic enough for this scale usually.
+
+        allocations.append(
+            {
+                "contribution": contribution,
+                "amount": amount,
+                "percentage": effective_ratio,
+                "raw_score": score,
+            }
+        )
+        current_allocated_sum += amount
+
+    # 3. Final safety check: ensure we don't exceed total pool
+    # (Math says we won't if sum(ratios) <= 1.0, and capping only reduces it).
+    # But floating point errors can happen.
+    if current_allocated_sum > total_reward_pool:
+        # Scale down linearly to fit perfect pool
+        scale_factor = total_reward_pool / current_allocated_sum
+        for alloc in allocations:
+            alloc["amount"] *= scale_factor
+            alloc["percentage"] *= scale_factor
+
+    # 4. Generate Decisions
+    decisions = []
+    for alloc in allocations:
         decision = RewardDecision(
             bounty_id=bounty_state.bounty.bounty_id,
-            recipient_wallet=contribution.contributor_wallet,
-            amount=amount,
-            percentage=percentage,
-            reason=f"Normalized score: {score:.2f}/{total_score:.2f} = {percentage:.2%}",
+            recipient_wallet=alloc["contribution"].contributor_wallet,
+            amount=alloc["amount"],
+            percentage=alloc["percentage"],
+            reason=f"Score: {alloc['raw_score']:.2f}, Share: {alloc['percentage']:.2%}",
             decided_at=timestamp,
-            quality_score=score,
+            quality_score=alloc["raw_score"],
         )
         decisions.append(decision)
 

@@ -5,7 +5,7 @@ Pydantic models for deterministic governance operations.
 All state transitions are pure functions consuming EvidenceBus history.
 """
 
-from typing import Dict, List, Optional, Literal
+from typing import Dict, List, Optional, Literal, Any
 from pydantic import BaseModel, Field
 from datetime import datetime
 
@@ -48,7 +48,7 @@ class Proposal(BaseModel):
     created_at: int = Field(..., description="Deterministic timestamp")
     voting_ends_at: int = Field(..., description="Deterministic end timestamp")
 
-    metadata: Optional[Dict] = Field(
+    metadata: Optional[Dict[str, Any]] = Field(
         default=None, description="Additional proposal data"
     )
 
@@ -110,7 +110,7 @@ class ProposalState(BaseModel):
     abstain_weight: float = Field(default=0.0, description="Weight of abstain votes")
 
     # Advisory signals (from agent layer)
-    advisory_signals: List[Dict] = Field(
+    advisory_signals: List[Dict[str, Any]] = Field(
         default_factory=list, description="Agent advisory events"
     )
 
@@ -142,7 +142,9 @@ class ExecutionRecord(BaseModel):
     reject_weight: float = Field(..., description="Reject vote weight")
 
     # Execution details
-    effects: Optional[Dict] = Field(None, description="Deterministic effects applied")
+    effects: Optional[Dict[str, Any]] = Field(
+        None, description="Deterministic effects applied"
+    )
     reason: str = Field(..., description="Explanation of outcome")
 
     class Config:

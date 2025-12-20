@@ -83,7 +83,8 @@ def get_proposal_state(
     """
     # Fetch events if not provided
     if events is None:
-        events = EvidenceBus.get_events(limit=1000)
+        # Fetch effectively all events (no silent truncation)
+        events = EvidenceBus.get_events(limit=1_000_000)
 
     # Find proposal creation event
     proposal_data = None
@@ -128,9 +129,21 @@ def get_proposal_state(
 
     # Reconstruct state
     from v17.governance.schemas import Vote
+    from pydantic import ValidationError
 
-    proposal = Proposal(**proposal_data)
-    vote_objects = [Vote(**v) for v in votes]
+    try:
+        proposal = Proposal(**proposal_data)
+    except ValidationError:
+        # Malformed proposal event - ignore
+        return None
+
+    vote_objects = []
+    for v in votes:
+        try:
+            vote_objects.append(Vote(**v))
+        except ValidationError:
+            # Malformed vote - ignore
+            continue
 
     state = ProposalState(
         proposal=proposal,
