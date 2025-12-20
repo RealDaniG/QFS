@@ -246,10 +246,28 @@ docker-compose down
 
 ```bash
 # Windows
+pytest v17\tests\
 pytest v13\tests\
 
-# macOS/Linux
+# macOS/Linux/GitBash
+pytest v17/tests/
 pytest v13/tests/
+```
+
+### Verification Checks
+
+```bash
+# Zero-Sim Enforcement (Mandatory)
+python scripts/check_zero_sim.py --fail-on-critical
+
+# Advisory Smoke Test (Layer D)
+python scripts/smoke_test_layer_d.py
+```
+
+# macOS/Linux
+
+pytest v13/tests/
+
 ```
 
 ### Run Specific Test Suites

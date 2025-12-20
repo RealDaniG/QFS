@@ -105,7 +105,9 @@ def test_bounty_projection_advisory(mock_events_advisory):
         mock_state.return_value = BountyState(
             bounty=Bounty(
                 bounty_id="b1",
+                space_id="s1",
                 title="Bug",
+                description="Fix bug",
                 created_by="0xA",
                 reward_amount=100,
                 currency="QFS",

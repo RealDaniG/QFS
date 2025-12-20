@@ -52,42 +52,28 @@ Most digital platforms suffer from structural issues:
 
 ---
 
-## 📈 Current Baseline: v16.1.x + v17 Beta
+## 📈 Current Status: v17.0.0-beta (Full Feature Complete)
 
-### v16.1.x — Production-Ready Baseline (main)
+### v17 — Governance, Bounties, Social & Advisory
 
-**Core Infrastructure:**
+**Engine Layers (F-Layer):**
 
-- ✅ Deterministic wallet authentication (EIP-191 signatures)
-- ✅ Session management with scope-based access control
-- ✅ EvidenceBus as canonical event spine
-- ✅ Admin dashboard with Evidence Chain Viewer
-- ✅ Agent advisory layer (non-authoritative, schema-validated)
-- ✅ Zero-Sim enforcement in CI
-- ✅ MOCKQPC adapter for zero-cost crypto
+- ✅ **Governance**: Deterministic proposals, voting, execution, and quorum logic.
+- ✅ **Bounties**: Lifecycle management, contribution tracking, and reward allocation.
+- ✅ **Social**: Thread-binding, dispute lifecycle, and profile history.
 
-**Status:** Stable, tested, deployed
+**User Visibility Layers (Projection):**
 
-### v17.0.0-beta — Governance & Bounty F-Layer (branch)
+- ✅ **Timelines**: Human-readable governance and bounty flows.
+- ✅ **Explanations**: Plain-text summaries linked to cryptographic PoE.
+- ✅ **Advisory**: Agent signals (Layer D) overlaid as "Suggestions" or "Flags".
 
-**Engine Complete:**
+**Verification:**
 
-- ✅ Deterministic governance (proposals, voting, execution)
-- ✅ Deterministic bounty management (creation, contributions, rewards)
-- ✅ Full PoE logging to EvidenceBus
-- ✅ Pure functions—state reconstructed from events only
-- ✅ Advisory signal integration (agents suggest, F decides)
-- ✅ Comprehensive test coverage
+- ✅ **Zero-Sim**: Enforced determinism in CI.
+- ✅ **PoE**: Full EvidenceBus logging for replay.
 
-**UI/UX Layer In Progress:**
-
-- 🔄 Governance timelines (proposal → votes → outcome → execution)
-- 🔄 Bounty timelines (creation → contributions → rewards)
-- 🔄 Decision explanation panels
-- 🔄 Evidence links and progressive disclosure
-- 🔄 User-facing contribution history
-
-**Status:** Engine frozen, UI implementation ongoing
+**Status:** Beta (Ready for Testing)
 
 ---
 
@@ -184,7 +170,8 @@ In QFS × ATLAS, **governance and PoE form a single, fused system**:
 
 ### v16 Baseline
 
-* ✅ Non-custodial wallet auth (EIP-191, session management, scopes)
+- ✅ Non-custodial wallet auth (EIP-191, session management, scopes)
+
 - ✅ Protected API routes (bounty, contribution endpoints)
 - ✅ Admin dashboard with Evidence Chain Viewer
 - ✅ Agent advisory layer (read-only, non-authoritative)
@@ -192,14 +179,16 @@ In QFS × ATLAS, **governance and PoE form a single, fused system**:
 
 ### v17 Governance F-Layer
 
-* ✅ Deterministic proposal creation and state reconstruction
+- ✅ Deterministic proposal creation and state reconstruction
+
 - ✅ Vote casting with validation and eligibility checks
 - ✅ Outcome computation (quorum, approval thresholds, tie-breaking)
 - ✅ Full PoE logging and replayability
 
 ### v17 Bounty F-Layer
 
-* ✅ Deterministic bounty and contribution lifecycle
+- ✅ Deterministic bounty and contribution lifecycle
+
 - ✅ Reward computation with advisory integration
 - ✅ Normalized score-based distribution
 - ✅ Full PoE logging and replayability

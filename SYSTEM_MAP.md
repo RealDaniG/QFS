@@ -55,9 +55,12 @@ graph TD
 
 * **Scope:** The core engine ensuring sovereign, verifiable governance.
 * **Components:**
-  * **Governance Engine:** Proposal life-cycle, voting, execution.
-  * **PoE Layer:** Artifact generation, indexing, replay.
-  * **AEGIS:** Coherence and invariant protection.
+  * **Governance F-Layer:** v17 Deterministic proposals, voting, execution.
+  * **Bounty F-Layer:** v17 Reward allocation and contribution tracking.
+  * **Social Surface:** v17 Thread-binding and dispute lifecycle.
+  * **Agent Advisory:** v17.1 Heuristic signals overlaid on social flows.
+  * **PoE Layer:** v15 EvidenceBus artifact generation, indexing, replay.
+  * **AEGIS:** Coherence and invariant protection (v13+).
 * **Key Docs:**
   * [README.md](/README.md) (Architecture)
   * [HOW_TO_AUDIT_QFS_V15.md](/HOW_TO_AUDIT_QFS_V15.md) (Verification)
