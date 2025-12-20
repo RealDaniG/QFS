@@ -1,111 +1,226 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e3]:
       - generic [ref=e4]:
         - generic [ref=e5]:
-          - generic [ref=e6]: AT
-          - text: ATLAS v18
-        - button [ref=e7]:
-          - img [ref=e8]
-      - navigation [ref=e14]:
-        - button "Home" [ref=e15]:
-          - img [ref=e16]
-          - text: Home
-        - button "Create" [ref=e19]:
+          - generic [ref=e7]: AT
+          - generic [ref=e8]: ATLAS v18
+        - button [ref=e9]:
+          - img
+      - navigation [ref=e13]:
+        - button "Home" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: Home
+        - button "Discover" [active] [ref=e19]:
           - img [ref=e20]
-          - text: Create
-        - button "Messages" [ref=e22]:
-          - img [ref=e23]
-          - text: Messages
-        - button "Communities" [ref=e25]:
-          - img [ref=e26]
-          - text: Communities
-        - button "Governance" [ref=e31]:
+          - generic [ref=e25]: Discover
+        - button "Messages" [ref=e27]:
+          - img [ref=e28]
+          - generic [ref=e30]: Messages
+        - button "Wallet" [ref=e31]:
           - img [ref=e32]
-          - text: Governance
-        - button "Ledger & Explain" [ref=e34]:
-          - img [ref=e35]
-          - text: Ledger & Explain
-        - button "Wallet & Reputation" [ref=e37]:
-          - img [ref=e38]
-          - text: Wallet & Reputation
-        - button "Settings & Safety" [ref=e41]:
-          - img [ref=e42]
-          - text: Settings & Safety
-      - generic [ref=e46]:
-        - generic [ref=e47]: JD
-        - generic [ref=e48]:
-          - paragraph [ref=e49]: Not Connected
-          - paragraph [ref=e50]: Unauthenticated
-    - generic [ref=e51]:
-      - banner [ref=e52]:
+          - generic [ref=e35]: Wallet
+        - button "Bounties" [ref=e36]:
+          - img [ref=e37]
+          - generic [ref=e39]: Bounties
+        - button "Ledger & Explain" [ref=e40]:
+          - img [ref=e41]
+          - generic [ref=e43]: Ledger & Explain
+        - button "Settings" [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e48]: Settings
+      - generic [ref=e50]:
+        - generic [ref=e52]: JD
         - generic [ref=e53]:
-          - generic [ref=e54]:
-            - heading "home" [level=2] [ref=e55]
-            - text: v18-ALPHA
-          - generic [ref=e56]:
-            - img [ref=e57]
-            - textbox "Search v18 clusters..." [ref=e60]
-        - generic [ref=e61]:
-          - button [ref=e62]:
+          - paragraph [ref=e54]: Not Connected
+          - paragraph [ref=e55]: Unauthenticated
+    - generic [ref=e56]:
+      - banner [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "discover" [level=2] [ref=e60]
+            - generic [ref=e61]: v18-ALPHA
+          - generic [ref=e62]:
             - img [ref=e63]
-          - button "Connect Wallet" [ref=e67]:
-            - img [ref=e68]
+            - textbox "Search v18 clusters..." [ref=e66]
+        - generic [ref=e67]:
+          - button [ref=e68] [cursor=pointer]:
+            - img
+          - button "Connect Wallet" [ref=e72]:
+            - img
             - text: Connect Wallet
-      - main [ref=e71]:
-        - generic [ref=e72]:
-          - generic [ref=e73]:
-            - generic [ref=e74]:
-              - generic [ref=e75]:
-                - img [ref=e76]
+      - main [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - img [ref=e78]
                 - text: Authentication Required
-              - generic [ref=e78]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
-            - paragraph [ref=e81]:
+              - generic [ref=e80]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
+            - paragraph [ref=e83]:
               - text: Your v18 session will be sealed with
-              - strong [ref=e82]: ASCON-128
+              - strong [ref=e84]: ASCON-128
               - text: authenticated encryption.
-          - generic [ref=e84]:
-            - generic [ref=e85]:
-              - generic [ref=e86]:
-                - generic [ref=e87]:
-                  - generic [ref=e88]: JD
-                  - textbox "Share deterministic content..." [ref=e89]
-                - generic [ref=e90]:
-                  - button "Preview Economics" [ref=e91]
-                  - button "Publish Event" [ref=e92]
-              - generic [ref=e93]:
-                - generic [ref=e95]:
-                  - generic [ref=e96]:
-                    - generic [ref=e97]:
-                      - img [ref=e98]
-                      - generic [ref=e101]: QFS Node Network
-                    - combobox [ref=e102]:
-                      - img [ref=e103]
-                    - combobox [ref=e105]
-                  - generic [ref=e106]:
-                    - text: You are viewing the content reality computed by
-                    - strong [ref=e107]: did:key:qfs_...
-                    - text: . Verifiable by Merkle Proofs.
-                - generic [ref=e109]: Connecting to distributed node...
-            - generic [ref=e110]:
-              - generic [ref=e111]:
-                - generic [ref=e113]:
-                  - img [ref=e114]
-                  - text: System Health
-                - generic [ref=e116]:
-                  - generic [ref=e117]: qfs StatusOperational
-                  - generic [ref=e118]: coherence RankingActive
-                  - generic [ref=e119]: guard SystemAll Green
-                  - generic [ref=e120]: ledger SyncReal-time
-                  - generic [ref=e121]: node Health98.2%
-              - generic [ref=e122]:
-                - generic [ref=e124]: Total Internal Credits
-                - generic [ref=e125]:
-                  - generic [ref=e126]: 1,000.00 FLX
-                  - paragraph [ref=e127]: Non-Transferable (v18 Plan)
+          - generic [ref=e87]:
+            - tablist [ref=e88]:
+              - tab "Communities" [selected] [ref=e89]
+              - tab "Trending Topics" [ref=e90]
+              - tab "Network & Trust" [ref=e91]
+              - tab "Discover" [ref=e92]
+              - tab "Raw Ledger" [ref=e93]
+            - tabpanel "Communities" [ref=e94]:
+              - generic [ref=e95]:
+                - generic [ref=e97]:
+                  - generic [ref=e98]:
+                    - generic [ref=e99]: Communities
+                    - generic [ref=e100]: Join communities that align with your interests and values
+                  - button "Create Community" [ref=e101]:
+                    - img
+                    - text: Create Community
+                - generic [ref=e103]:
+                  - img [ref=e104]
+                  - textbox "Search communities by name, description, or tags..." [ref=e107]
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - generic [ref=e111]:
+                    - generic [ref=e112]:
+                      - generic [ref=e114]: QD
+                      - generic [ref=e115]:
+                        - generic [ref=e116]:
+                          - heading "QFS Developers" [level=3] [ref=e117]
+                          - img [ref=e118]
+                        - generic [ref=e120]:
+                          - img [ref=e121]
+                          - generic [ref=e126]: 2,847 members
+                          - img [ref=e127]
+                    - generic [ref=e130]: +12.5%
+                  - generic [ref=e131]:
+                    - paragraph [ref=e132]: Discussion and development of Quantum Financial System features and protocols
+                    - generic [ref=e133]:
+                      - generic [ref=e134]: "#Development"
+                      - generic [ref=e135]: "#QFS"
+                      - generic [ref=e136]: "#Technical"
+                    - generic [ref=e137]:
+                      - generic [ref=e138]:
+                        - generic [ref=e139]:
+                          - img [ref=e140]
+                          - generic [ref=e143]: Coherence
+                        - generic [ref=e144]: "0.94"
+                      - generic [ref=e145]:
+                        - generic [ref=e146]:
+                          - img [ref=e147]
+                          - generic [ref=e149]: Reward Pool
+                        - generic [ref=e150]: 15421 FLX
+                    - generic [ref=e151]:
+                      - button "Join Community" [ref=e152]
+                      - button [ref=e153]:
+                        - img
+                - generic [ref=e154]:
+                  - generic [ref=e156]:
+                    - generic [ref=e157]:
+                      - generic [ref=e159]: DG
+                      - generic [ref=e160]:
+                        - generic [ref=e161]:
+                          - heading "DeFi Governance" [level=3] [ref=e162]
+                          - img [ref=e163]
+                        - generic [ref=e165]:
+                          - img [ref=e166]
+                          - generic [ref=e171]: 1,523 members
+                          - img [ref=e172]
+                    - generic [ref=e175]: +8.3%
+                  - generic [ref=e176]:
+                    - paragraph [ref=e177]: Exploring decentralized governance models and transparent decision-making
+                    - generic [ref=e178]:
+                      - generic [ref=e179]: "#Governance"
+                      - generic [ref=e180]: "#DeFi"
+                      - generic [ref=e181]: "#DAO"
+                    - generic [ref=e182]:
+                      - generic [ref=e183]:
+                        - generic [ref=e184]:
+                          - img [ref=e185]
+                          - generic [ref=e188]: Coherence
+                        - generic [ref=e189]: "0.89"
+                      - generic [ref=e190]:
+                        - generic [ref=e191]:
+                          - img [ref=e192]
+                          - generic [ref=e194]: Reward Pool
+                        - generic [ref=e195]: 8750 FLX
+                    - generic [ref=e196]:
+                      - button "Join Community" [ref=e197]
+                      - button [ref=e198]:
+                        - img
+                - generic [ref=e199]:
+                  - generic [ref=e201]:
+                    - generic [ref=e202]:
+                      - generic [ref=e204]: CC
+                      - generic [ref=e205]:
+                        - heading "Content Creators" [level=3] [ref=e207]
+                        - generic [ref=e208]:
+                          - img [ref=e209]
+                          - generic [ref=e214]: 3,421 members
+                          - img [ref=e215]
+                    - generic [ref=e218]: +15.7%
+                  - generic [ref=e219]:
+                    - paragraph [ref=e220]: Community for content creators exploring transparent reward systems
+                    - generic [ref=e221]:
+                      - generic [ref=e222]: "#Content"
+                      - generic [ref=e223]: "#Creative"
+                      - generic [ref=e224]: "#Rewards"
+                    - generic [ref=e225]:
+                      - generic [ref=e226]:
+                        - generic [ref=e227]:
+                          - img [ref=e228]
+                          - generic [ref=e231]: Coherence
+                        - generic [ref=e232]: "0.87"
+                      - generic [ref=e233]:
+                        - generic [ref=e234]:
+                          - img [ref=e235]
+                          - generic [ref=e237]: Reward Pool
+                        - generic [ref=e238]: 12341 FLX
+                    - generic [ref=e239]:
+                      - button "Join Community" [ref=e240]
+                      - button [ref=e241]:
+                        - img
+                - generic [ref=e242]:
+                  - generic [ref=e244]:
+                    - generic [ref=e245]:
+                      - generic [ref=e247]: TA
+                      - generic [ref=e248]:
+                        - generic [ref=e249]:
+                          - heading "Transparency Advocates" [level=3] [ref=e250]
+                          - img [ref=e251]
+                        - generic [ref=e253]:
+                          - img [ref=e254]
+                          - generic [ref=e259]: 892 members
+                          - img [ref=e260]
+                    - generic [ref=e263]: +6.2%
+                  - generic [ref=e264]:
+                    - paragraph [ref=e265]: Promoting transparency and accountability in digital platforms
+                    - generic [ref=e266]:
+                      - generic [ref=e267]: "#Transparency"
+                      - generic [ref=e268]: "#Advocacy"
+                      - generic [ref=e269]: "#Ethics"
+                    - generic [ref=e270]:
+                      - generic [ref=e271]:
+                        - generic [ref=e272]:
+                          - img [ref=e273]
+                          - generic [ref=e276]: Coherence
+                        - generic [ref=e277]: "0.92"
+                      - generic [ref=e278]:
+                        - generic [ref=e279]:
+                          - img [ref=e280]
+                          - generic [ref=e282]: Reward Pool
+                        - generic [ref=e283]: 5670 FLX
+                    - generic [ref=e284]:
+                      - button "Join Community" [ref=e285]
+                      - button [ref=e286]:
+                        - img
   - region "Notifications (F8)":
     - list
+  - alert [ref=e287]
+  - button "Open Next.js Dev Tools" [ref=e293] [cursor=pointer]:
+    - img [ref=e294]
 ```

@@ -6,106 +6,113 @@
     - generic [ref=e3]:
       - generic [ref=e4]:
         - generic [ref=e5]:
-          - generic [ref=e6]: AT
-          - text: ATLAS v18
-        - button [ref=e7]:
-          - img [ref=e8]
-      - navigation [ref=e14]:
-        - button "Home" [active] [ref=e15]:
-          - img [ref=e16]
-          - text: Home
-        - button "Create" [ref=e19]:
-          - img [ref=e20]
-          - text: Create
-        - button "Messages" [ref=e22]:
-          - img [ref=e23]
-          - text: Messages
-        - button "Communities" [ref=e25]:
-          - img [ref=e26]
-          - text: Communities
-        - button "Governance" [ref=e31]:
+          - generic [ref=e7]: AT
+          - generic [ref=e8]: ATLAS v18
+        - button [ref=e9]:
+          - img
+      - navigation [ref=e13]:
+        - button "Home" [active] [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: Home
+        - button "Discover" [ref=e20]:
+          - img [ref=e21]
+          - generic [ref=e26]: Discover
+        - button "Messages" [ref=e27]:
+          - img [ref=e28]
+          - generic [ref=e30]: Messages
+        - button "Wallet" [ref=e31]:
           - img [ref=e32]
-          - text: Governance
-        - button "Ledger & Explain" [ref=e34]:
-          - img [ref=e35]
-          - text: Ledger & Explain
-        - button "Wallet & Reputation" [ref=e37]:
-          - img [ref=e38]
-          - text: Wallet & Reputation
-        - button "Settings & Safety" [ref=e41]:
-          - img [ref=e42]
-          - text: Settings & Safety
-      - generic [ref=e46]:
-        - generic [ref=e47]: JD
-        - generic [ref=e48]:
-          - paragraph [ref=e49]: Not Connected
-          - paragraph [ref=e50]: Unauthenticated
-    - generic [ref=e51]:
-      - banner [ref=e52]:
+          - generic [ref=e35]: Wallet
+        - button "Bounties" [ref=e36]:
+          - img [ref=e37]
+          - generic [ref=e39]: Bounties
+        - button "Ledger & Explain" [ref=e40]:
+          - img [ref=e41]
+          - generic [ref=e43]: Ledger & Explain
+        - button "Settings" [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e48]: Settings
+      - generic [ref=e50]:
+        - generic [ref=e52]: JD
         - generic [ref=e53]:
-          - generic [ref=e54]:
-            - heading "home" [level=2] [ref=e55]
-            - text: v18-ALPHA
-          - generic [ref=e56]:
-            - img [ref=e57]
-            - textbox "Search v18 clusters..." [ref=e60]
-        - generic [ref=e61]:
-          - button [ref=e62]:
+          - paragraph [ref=e54]: Not Connected
+          - paragraph [ref=e55]: Unauthenticated
+    - generic [ref=e56]:
+      - banner [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "home" [level=2] [ref=e60]
+            - generic [ref=e61]: v18-ALPHA
+          - generic [ref=e62]:
             - img [ref=e63]
-          - button "Connect Wallet" [ref=e67]:
-            - img [ref=e68]
+            - textbox "Search v18 clusters..." [ref=e66]
+        - generic [ref=e67]:
+          - button [ref=e68] [cursor=pointer]:
+            - img
+          - button "Connect Wallet" [ref=e72]:
+            - img
             - text: Connect Wallet
-      - main [ref=e71]:
-        - generic [ref=e72]:
-          - generic [ref=e73]:
-            - generic [ref=e74]:
-              - generic [ref=e75]:
-                - img [ref=e76]
+      - main [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - img [ref=e78]
                 - text: Authentication Required
-              - generic [ref=e78]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
-            - paragraph [ref=e81]:
+              - generic [ref=e80]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
+            - paragraph [ref=e83]:
               - text: Your v18 session will be sealed with
-              - strong [ref=e82]: ASCON-128
+              - strong [ref=e84]: ASCON-128
               - text: authenticated encryption.
-          - generic [ref=e84]:
-            - generic [ref=e85]:
-              - generic [ref=e86]:
-                - generic [ref=e87]:
-                  - generic [ref=e88]: JD
-                  - textbox "Share deterministic content..." [ref=e89]
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]:
                 - generic [ref=e90]:
-                  - button "Preview Economics" [ref=e91]
-                  - button "Publish Event" [ref=e92]
-              - generic [ref=e93]:
-                - generic [ref=e95]:
-                  - generic [ref=e96]:
-                    - generic [ref=e97]:
-                      - img [ref=e98]
-                      - generic [ref=e101]: QFS Node Network
-                    - combobox [ref=e102]:
-                      - img [ref=e103]
-                    - combobox [ref=e105]
-                  - generic [ref=e106]:
-                    - text: You are viewing the content reality computed by
-                    - strong [ref=e107]: did:key:qfs_...
-                    - text: . Verifiable by Merkle Proofs.
-                - generic [ref=e109]: Connecting to distributed node...
-            - generic [ref=e110]:
-              - generic [ref=e111]:
-                - generic [ref=e113]:
-                  - img [ref=e114]
-                  - text: System Health
+                  - generic [ref=e92]: JD
+                  - textbox "Share deterministic content..." [ref=e93]
+                - generic [ref=e94]:
+                  - button "Preview Economics" [ref=e95]
+                  - button "Publish Event" [ref=e96]
+              - generic [ref=e98]:
+                - generic [ref=e99]:
+                  - generic [ref=e100]:
+                    - img [ref=e101]
+                    - text: Public Feed Mode
+                  - generic [ref=e104]: Connect your wallet to see your personalized distributed feed from trusted QFS nodes.
+                - generic [ref=e106]:
+                  - paragraph [ref=e108]: The distributed feed shows content verified across multiple QFS nodes. Authentication is required to participate and view node-specific content.
+                  - generic [ref=e109]:
+                    - img [ref=e110]
+                    - generic [ref=e112]: All content is cryptographically verified
+            - generic [ref=e113]:
+              - generic [ref=e114]:
                 - generic [ref=e116]:
-                  - generic [ref=e117]: qfs StatusOperational
-                  - generic [ref=e118]: coherence RankingActive
-                  - generic [ref=e119]: guard SystemAll Green
-                  - generic [ref=e120]: ledger SyncReal-time
-                  - generic [ref=e121]: node Health98.2%
-              - generic [ref=e122]:
-                - generic [ref=e124]: Total Internal Credits
-                - generic [ref=e125]:
-                  - generic [ref=e126]: 1,000.00 FLX
-                  - paragraph [ref=e127]: Non-Transferable (v18 Plan)
+                  - img [ref=e117]
+                  - text: System Health
+                - generic [ref=e119]:
+                  - generic [ref=e120]:
+                    - generic [ref=e121]: qfs Status
+                    - generic [ref=e122]: Operational
+                  - generic [ref=e123]:
+                    - generic [ref=e124]: coherence Ranking
+                    - generic [ref=e125]: Active
+                  - generic [ref=e126]:
+                    - generic [ref=e127]: guard System
+                    - generic [ref=e128]: All Green
+                  - generic [ref=e129]:
+                    - generic [ref=e130]: ledger Sync
+                    - generic [ref=e131]: Real-time
+                  - generic [ref=e132]:
+                    - generic [ref=e133]: node Health
+                    - generic [ref=e134]: 98.2%
+              - generic [ref=e135]:
+                - generic [ref=e137]: Total Internal Credits
+                - generic [ref=e138]:
+                  - generic [ref=e139]: 1,000.00 FLX
+                  - paragraph [ref=e140]: Non-Transferable (v18 Plan)
   - region "Notifications (F8)":
     - list
+  - alert [ref=e141]
+  - button "Open Next.js Dev Tools" [ref=e147] [cursor=pointer]:
+    - img [ref=e148]
 ```

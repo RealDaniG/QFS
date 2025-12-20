@@ -160,17 +160,21 @@ test.describe('ATLAS v18 Dashboard - Full Verification Suite', () => {
     // 3. COMPONENT-LEVEL VERIFICATION (Unauthenticated State)
     // ============================================================================
 
-    test('3.1 DistributedFeed - Unauthenticated behavior', async ({ page }) => {
+    test('3.1 DistributedFeed - Shows Public Feed Mode gate', async ({ page }) => {
         await page.goto('http://localhost:3000');
         await page.waitForLoadState('networkidle');
 
         // Should be on home view by default
-        // Check for feed or auth gate
-        const feedContent = page.locator('text=/feed|connect|initialize/i').first();
-        await expect(feedContent).toBeVisible();
+        // DistributedFeed should show "Public Feed Mode" auth gate
+        const publicFeedText = page.getByText(/public feed mode/i);
+        await expect(publicFeedText).toBeVisible();
+
+        // Should explain authentication requirement
+        const authRequirement = page.getByText(/connect your wallet/i);
+        await expect(authRequirement).toBeVisible();
     });
 
-    test('3.2 WalletInterface - Unauthenticated behavior', async ({ page }) => {
+    test('3.2 WalletInterface - Shows connection required gate', async ({ page }) => {
         await page.goto('http://localhost:3000');
         await page.waitForLoadState('networkidle');
 
@@ -178,12 +182,21 @@ test.describe('ATLAS v18 Dashboard - Full Verification Suite', () => {
         await page.getByRole('button', { name: /wallet/i }).click();
         await page.waitForTimeout(500);
 
-        // Should show connect wallet message or gate
-        const walletGate = page.getByText(/connect.*wallet|initialize.*identity/i);
-        await expect(walletGate).toBeVisible();
+        // Should show "Wallet Connection Required" gate
+        const walletGateTitle = page.getByText(/wallet connection required/i);
+        await expect(walletGateTitle).toBeVisible();
+
+        // Should have WalletConnectButton
+        const connectButton = page.getByRole('button', { name: /connect wallet/i });
+        await expect(connectButton).toBeVisible();
+
+        // Should NOT show balance or transaction data
+        const balanceText = page.getByText(/balance/i);
+        const balanceCount = await balanceText.count();
+        // Balance might appear in the gate description, so we just verify no crash
     });
 
-    test('3.3 BountyDashboard - Unauthenticated behavior', async ({ page }) => {
+    test('3.3 BountyDashboard - Shows bounty auth gate', async ({ page }) => {
         await page.goto('http://localhost:3000');
         await page.waitForLoadState('networkidle');
 
@@ -191,13 +204,16 @@ test.describe('ATLAS v18 Dashboard - Full Verification Suite', () => {
         await page.getByRole('button', { name: /bounties/i }).click();
         await page.waitForTimeout(500);
 
-        // Should show some content or gate
-        // Bounties might show public list even when unauthenticated
-        const bountyContent = page.locator('text=/bounty|connect|available/i').first();
-        await expect(bountyContent).toBeVisible();
+        // Should show bounty dashboard or auth gate
+        const bountyText = page.getByText(/bounty/i);
+        await expect(bountyText.first()).toBeVisible();
+
+        // Should have connect wallet option
+        const connectButton = page.getByRole('button', { name: /connect wallet/i });
+        await expect(connectButton).toBeVisible();
     });
 
-    test('3.4 Ledger & Explain - Unauthenticated behavior', async ({ page }) => {
+    test('3.4 Ledger & Explain - Shows auth requirement', async ({ page }) => {
         await page.goto('http://localhost:3000');
         await page.waitForLoadState('networkidle');
 
@@ -205,7 +221,11 @@ test.describe('ATLAS v18 Dashboard - Full Verification Suite', () => {
         await page.getByRole('button', { name: /ledger.*explain/i }).click();
         await page.waitForTimeout(500);
 
-        // Should not crash (ErrorBoundary should catch any issues)
+        // Should show ExplainRewardFlow with auth gate
+        const authRequirement = page.getByText(/reward explanation requires authentication|authentication required/i);
+        await expect(authRequirement).toBeVisible();
+
+        // Should not crash
         const pageContent = page.locator('body');
         await expect(pageContent).toBeVisible();
     });

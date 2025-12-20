@@ -20,15 +20,15 @@
         - button "Messages" [ref=e26]:
           - img [ref=e27]
           - generic [ref=e29]: Messages
-        - button "Wallet" [active] [ref=e30]:
+        - button "Wallet" [ref=e30]:
           - img [ref=e31]
           - generic [ref=e34]: Wallet
-        - button "Bounties" [ref=e36]:
-          - img [ref=e37]
-          - generic [ref=e39]: Bounties
-        - button "Ledger & Explain" [ref=e40]:
-          - img [ref=e41]
-          - generic [ref=e43]: Ledger & Explain
+        - button "Bounties" [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e38]: Bounties
+        - button "Ledger & Explain" [active] [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e42]: Ledger & Explain
         - button "Settings" [ref=e44]:
           - img [ref=e45]
           - generic [ref=e48]: Settings
@@ -41,7 +41,7 @@
       - banner [ref=e57]:
         - generic [ref=e58]:
           - generic [ref=e59]:
-            - heading "wallet" [level=2] [ref=e60]
+            - heading "ledger" [level=2] [ref=e60]
             - generic [ref=e61]: v18-ALPHA
           - generic [ref=e62]:
             - img [ref=e63]
@@ -64,24 +64,26 @@
               - text: Your v18 session will be sealed with
               - strong [ref=e84]: ASCON-128
               - text: authenticated encryption.
-          - generic [ref=e87]:
+          - generic [ref=e86]:
             - generic [ref=e88]:
               - generic [ref=e89]:
-                - img [ref=e90]
-                - text: Wallet Connection Required
-              - generic [ref=e92]: Connect your wallet to view your balance, transaction history, and internal credits.
-            - generic [ref=e93]:
+                - generic [ref=e90]:
+                  - img [ref=e91]
+                  - text: Reward Explanation Requires Authentication
+                - generic [ref=e93]: Connect your wallet to inspect reward explanations and verify economic calculations.
               - generic [ref=e94]:
-                - img [ref=e95]
-                - generic [ref=e98]:
-                  - paragraph [ref=e99]: Secure Wallet Authentication
-                  - paragraph [ref=e100]: Your wallet is used for cryptographic identity only. No transfers are supported.
-              - button "Connect Wallet" [ref=e103]:
-                - img
-                - text: Connect Wallet
+                - paragraph [ref=e96]: The Explain Reward feature provides deterministic, auditable explanations for all reward calculations in the QFS system. Authentication is required to access this feature.
+                - button "Connect Wallet" [ref=e99]:
+                  - img
+                  - text: Connect Wallet
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - generic [ref=e102]: v18 Event Ledger
+                - generic [ref=e103]: ASCON-sealed deterministic audit trail
+              - paragraph [ref=e105]: Detailed event streams for v18 are being synchronized from primary clusters.
   - region "Notifications (F8)":
     - list
-  - alert [ref=e104]
-  - button "Open Next.js Dev Tools" [ref=e110] [cursor=pointer]:
-    - img [ref=e111]
+  - alert [ref=e106]
+  - button "Open Next.js Dev Tools" [ref=e112] [cursor=pointer]:
+    - img [ref=e113]
 ```

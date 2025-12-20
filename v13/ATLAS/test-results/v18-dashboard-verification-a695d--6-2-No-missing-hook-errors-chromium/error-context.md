@@ -6,106 +6,128 @@
     - generic [ref=e3]:
       - generic [ref=e4]:
         - generic [ref=e5]:
-          - generic [ref=e6]: AT
-          - text: ATLAS v18
-        - button [ref=e7]:
-          - img [ref=e8]
-      - navigation [ref=e14]:
-        - button "Home" [ref=e15]:
-          - img [ref=e16]
-          - text: Home
-        - button "Create" [ref=e19]:
+          - generic [ref=e7]: AT
+          - generic [ref=e8]: ATLAS v18
+        - button [ref=e9]:
+          - img
+      - navigation [ref=e13]:
+        - button "Home" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: Home
+        - button "Discover" [ref=e19]:
           - img [ref=e20]
-          - text: Create
-        - button "Messages" [active] [ref=e22]:
-          - img [ref=e23]
-          - text: Messages
-        - button "Communities" [ref=e25]:
-          - img [ref=e26]
-          - text: Communities
-        - button "Governance" [ref=e31]:
+          - generic [ref=e25]: Discover
+        - button "Messages" [active] [ref=e26]:
+          - img [ref=e27]
+          - generic [ref=e29]: Messages
+        - button "Wallet" [ref=e31]:
           - img [ref=e32]
-          - text: Governance
-        - button "Ledger & Explain" [ref=e34]:
-          - img [ref=e35]
-          - text: Ledger & Explain
-        - button "Wallet & Reputation" [ref=e37]:
-          - img [ref=e38]
-          - text: Wallet & Reputation
-        - button "Settings & Safety" [ref=e41]:
-          - img [ref=e42]
-          - text: Settings & Safety
-      - generic [ref=e46]:
-        - generic [ref=e47]: JD
-        - generic [ref=e48]:
-          - paragraph [ref=e49]: Not Connected
-          - paragraph [ref=e50]: Unauthenticated
-    - generic [ref=e51]:
-      - banner [ref=e52]:
+          - generic [ref=e35]: Wallet
+        - button "Bounties" [ref=e36]:
+          - img [ref=e37]
+          - generic [ref=e39]: Bounties
+        - button "Ledger & Explain" [ref=e40]:
+          - img [ref=e41]
+          - generic [ref=e43]: Ledger & Explain
+        - button "Settings" [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e48]: Settings
+      - generic [ref=e50]:
+        - generic [ref=e52]: JD
         - generic [ref=e53]:
-          - generic [ref=e54]:
-            - heading "home" [level=2] [ref=e55]
-            - text: v18-ALPHA
-          - generic [ref=e56]:
-            - img [ref=e57]
-            - textbox "Search v18 clusters..." [ref=e60]
-        - generic [ref=e61]:
-          - button [ref=e62]:
+          - paragraph [ref=e54]: Not Connected
+          - paragraph [ref=e55]: Unauthenticated
+    - generic [ref=e56]:
+      - banner [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "messages" [level=2] [ref=e60]
+            - generic [ref=e61]: v18-ALPHA
+          - generic [ref=e62]:
             - img [ref=e63]
-          - button "Connect Wallet" [ref=e67]:
-            - img [ref=e68]
+            - textbox "Search v18 clusters..." [ref=e66]
+        - generic [ref=e67]:
+          - button [ref=e68] [cursor=pointer]:
+            - img
+          - button "Connect Wallet" [ref=e72]:
+            - img
             - text: Connect Wallet
-      - main [ref=e71]:
-        - generic [ref=e72]:
-          - generic [ref=e73]:
-            - generic [ref=e74]:
-              - generic [ref=e75]:
-                - img [ref=e76]
+      - main [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - img [ref=e78]
                 - text: Authentication Required
-              - generic [ref=e78]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
-            - paragraph [ref=e81]:
+              - generic [ref=e80]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
+            - paragraph [ref=e83]:
               - text: Your v18 session will be sealed with
-              - strong [ref=e82]: ASCON-128
+              - strong [ref=e84]: ASCON-128
               - text: authenticated encryption.
-          - generic [ref=e84]:
-            - generic [ref=e85]:
-              - generic [ref=e86]:
-                - generic [ref=e87]:
-                  - generic [ref=e88]: JD
-                  - textbox "Share deterministic content..." [ref=e89]
-                - generic [ref=e90]:
-                  - button "Preview Economics" [ref=e91]
-                  - button "Publish Event" [ref=e92]
-              - generic [ref=e93]:
-                - generic [ref=e95]:
-                  - generic [ref=e96]:
-                    - generic [ref=e97]:
-                      - img [ref=e98]
-                      - generic [ref=e101]: QFS Node Network
-                    - combobox [ref=e102]:
-                      - img [ref=e103]
-                    - combobox [ref=e105]
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - heading "Messages" [level=3] [ref=e90]
+                  - button [ref=e91]:
+                    - img
+                - generic [ref=e92]:
+                  - img [ref=e93]
+                  - textbox "Search conversations..." [ref=e96]
+              - generic [ref=e100]:
+                - generic [ref=e102] [cursor=pointer]:
+                  - generic [ref=e105]: AC
                   - generic [ref=e106]:
-                    - text: You are viewing the content reality computed by
-                    - strong [ref=e107]: did:key:qfs_...
-                    - text: . Verifiable by Merkle Proofs.
-                - generic [ref=e109]: Connecting to distributed node...
-            - generic [ref=e110]:
-              - generic [ref=e111]:
-                - generic [ref=e113]:
-                  - img [ref=e114]
-                  - text: System Health
-                - generic [ref=e116]:
-                  - generic [ref=e117]: qfs StatusOperational
-                  - generic [ref=e118]: coherence RankingActive
-                  - generic [ref=e119]: guard SystemAll Green
-                  - generic [ref=e120]: ledger SyncReal-time
-                  - generic [ref=e121]: node Health98.2%
-              - generic [ref=e122]:
-                - generic [ref=e124]: Total Internal Credits
-                - generic [ref=e125]:
-                  - generic [ref=e126]: 1,000.00 FLX
-                  - paragraph [ref=e127]: Non-Transferable (v18 Plan)
+                    - generic [ref=e107]:
+                      - heading "Alice Chen" [level=4] [ref=e108]
+                      - generic [ref=e109]: 2 min ago
+                    - generic [ref=e110]:
+                      - img [ref=e111]
+                      - paragraph [ref=e113]: The QFS transparency features are amazing!
+                    - generic [ref=e115]: "2"
+                - generic [ref=e117] [cursor=pointer]:
+                  - generic [ref=e118]:
+                    - generic [ref=e120]: QD
+                    - img [ref=e122]
+                  - generic [ref=e127]:
+                    - generic [ref=e128]:
+                      - heading "QFS Developers" [level=4] [ref=e129]
+                      - generic [ref=e130]: 15 min ago
+                    - generic [ref=e131]:
+                      - img [ref=e132]
+                      - paragraph [ref=e134]: "Bob: New guard system proposal is ready for review"
+                    - generic [ref=e136]: 12 members
+                - generic [ref=e138] [cursor=pointer]:
+                  - generic [ref=e141]: CD
+                  - generic [ref=e142]:
+                    - generic [ref=e143]:
+                      - heading "Carol Davis" [level=4] [ref=e144]
+                      - generic [ref=e145]: 1 hour ago
+                    - generic [ref=e146]:
+                      - img [ref=e147]
+                      - paragraph [ref=e149]: Can you explain the coherence scoring algorithm?
+                    - generic [ref=e151]: "1"
+                - generic [ref=e153] [cursor=pointer]:
+                  - generic [ref=e154]:
+                    - generic [ref=e156]: GC
+                    - img [ref=e158]
+                  - generic [ref=e163]:
+                    - generic [ref=e164]:
+                      - heading "Governance Committee" [level=4] [ref=e165]
+                      - generic [ref=e166]: 2 hours ago
+                    - generic [ref=e167]:
+                      - img [ref=e168]
+                      - paragraph [ref=e170]: Meeting scheduled for tomorrow at 3 PM UTC
+                    - generic [ref=e171]:
+                      - generic [ref=e172]: 8 members
+                      - generic [ref=e173]: "5"
+            - generic [ref=e175]:
+              - img [ref=e176]
+              - heading "Select a conversation" [level=3] [ref=e178]
+              - paragraph [ref=e179]: Choose a conversation from the list to start messaging with full transparency
   - region "Notifications (F8)":
     - list
+  - alert [ref=e180]
+  - button "Open Next.js Dev Tools" [ref=e186] [cursor=pointer]:
+    - img [ref=e187]
 ```
