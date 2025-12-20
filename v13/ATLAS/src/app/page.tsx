@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import {
   Home,
   PlusCircle,
@@ -68,13 +69,23 @@ export default function AtlasDashboard() {
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
-  const systemHealth = {
-    qfsStatus: 'Operational',
-    coherenceRanking: 'Active',
-    guardSystem: 'All Green',
-    ledgerSync: 'Real-time',
-    nodeHealth: '98.2%'
-  };
+  // Fetch system health from API
+  const { data: systemHealth } = useQuery({
+    queryKey: ['systemHealth'],
+    queryFn: async () => {
+      const res = await fetch('/api/v18/system/health');
+      if (!res.ok) throw new Error('Failed to fetch system health');
+      return res.json();
+    },
+    refetchInterval: 10000, // Refresh every 10 seconds
+    initialData: {
+      qfsStatus: 'Loading...',
+      coherenceRanking: 'Loading...',
+      guardSystem: 'Loading...',
+      ledgerSync: 'Loading...',
+      nodeHealth: '—'
+    }
+  });
 
   if (authLoading) {
     return (
