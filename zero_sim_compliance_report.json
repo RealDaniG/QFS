@@ -1,5 +1,5 @@
 {
-  "files_analyzed": 1592,
+  "files_analyzed": 1596,
   "files_with_violations": 56,
   "total_violations": 112,
   "standard_violations": 112,
@@ -1726,7 +1726,7 @@
       },
       {
         "type": "FORBIDDEN_FLOAT_LITERAL",
-        "line": 32,
+        "line": 34,
         "col": 29,
         "rule": {
           "code": "FORBIDDEN_FLOAT_LITERAL",
@@ -1743,7 +1743,7 @@
       },
       {
         "type": "FORBIDDEN_FLOAT_LITERAL",
-        "line": 32,
+        "line": 34,
         "col": 53,
         "rule": {
           "code": "FORBIDDEN_FLOAT_LITERAL",
