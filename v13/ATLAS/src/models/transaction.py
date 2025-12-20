@@ -2,7 +2,7 @@
 Transaction models for the ATLAS API.
 """
 
-from libs.deterministic_helpers import (
+from v13.libs.deterministic_helpers import (
     ZeroSimAbort,
     det_time_now,
     det_perf_counter,
@@ -13,11 +13,13 @@ from libs.deterministic_helpers import (
 
 from v13.libs.economics.QAmount import QAmount
 from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, ConfigDict
 
 
 class TransactionBase(BaseModel):
     """Base transaction model with common fields."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     sender: str = Field(..., description="Sender's wallet address")
     receiver: str = Field(..., description="Recipient's wallet address")
@@ -75,6 +77,8 @@ class TransactionStatus(BaseModel):
 class TransactionFeeEstimate(BaseModel):
     """Transaction fee estimation model."""
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     estimated_fee: QAmount = Field(..., description="Estimated fee in base currency")
     fee_rate: QAmount = Field(..., description="Fee rate in satoshis/byte")
     fee_asset: str = Field("QFS", description="Asset used for fees")
@@ -101,6 +105,8 @@ class TransactionBroadcastRequest(BaseModel):
 class TransactionSearchQuery(BaseModel):
     """Model for searching transactions."""
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     address: Optional[str] = Field(
         None, description="Filter by address (sender or receiver)"
     )
@@ -112,3 +118,4 @@ class TransactionSearchQuery(BaseModel):
     status: Optional[str] = Field(None, description="Transaction status")
     page: int = Field(1, ge=1, description="Page number")
     page_size: int = Field(20, ge=1, le=100, description="Items per page")
+

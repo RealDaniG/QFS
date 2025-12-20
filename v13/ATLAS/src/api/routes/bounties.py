@@ -76,3 +76,4 @@ async def my_bounties(session: dict = Depends(get_current_session)):
     """
     # Mock filtering
     return [b for b in BOUNTIES if b["claimant"] == session["wallet_address"]]
+

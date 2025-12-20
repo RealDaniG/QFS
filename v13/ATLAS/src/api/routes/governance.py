@@ -62,3 +62,4 @@ async def get_audit_log(
     if type:
         logs = [l for l in logs if l["type"] == type]
     return logs[:limit]
+

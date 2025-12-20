@@ -82,3 +82,4 @@ async def logout(session_token: str = Body(..., embed=True)):
     """Revokes the current session."""
     session_manager.revoke_session(session_token)
     return {"status": "success"}
+

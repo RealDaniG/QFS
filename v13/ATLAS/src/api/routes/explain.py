@@ -17,7 +17,7 @@ from v13.core.QFSReplaySource import QFSReplaySource
 from ..dependencies import get_replay_source, get_current_user
 
 logger = logging.getLogger(__name__)
-from ..config import EXPLAIN_THIS_SOURCE
+from ...config import EXPLAIN_THIS_SOURCE
 
 # EXPLAIN_THIS_SOURCE = os.getenv('EXPLAIN_THIS_SOURCE', 'qfs_ledger') - Removed, using config import
 if EXPLAIN_THIS_SOURCE != "qfs_ledger":
@@ -32,15 +32,15 @@ humor_policy = HumorSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "chronos": Fraction(3, 20),
-            "lexicon": Fraction(1, 10),
-            "surreal": Fraction(1, 10),
-            "empathy": Fraction(1, 5),
-            "critique": Fraction(3, 20),
-            "slapstick": Fraction(1, 10),
-            "meta": Fraction(1, 5),
+            "chronos": float(Fraction(3, 20)),
+            "lexicon": float(Fraction(1, 10)),
+            "surreal": float(Fraction(1, 10)),
+            "empathy": float(Fraction(1, 5)),
+            "critique": float(Fraction(3, 20)),
+            "slapstick": float(Fraction(1, 10)),
+            "meta": float(Fraction(1, 5)),
         },
-        max_bonus_ratio=Fraction(1, 4),
+        max_bonus_ratio=float(Fraction(1, 4)),
         per_user_daily_cap_atr=1,
     )
 )
@@ -49,13 +49,13 @@ artistic_policy = ArtisticSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "composition": Fraction(1, 5),
-            "originality": Fraction(1, 4),
-            "emotional_resonance": Fraction(1, 4),
-            "technical_execution": Fraction(3, 20),
-            "cultural_context": Fraction(3, 20),
+            "composition": float(Fraction(1, 5)),
+            "originality": float(Fraction(1, 4)),
+            "emotional_resonance": float(Fraction(1, 4)),
+            "technical_execution": float(Fraction(3, 20)),
+            "cultural_context": float(Fraction(3, 20)),
         },
-        max_bonus_ratio=Fraction(3, 10),
+        max_bonus_ratio=float(Fraction(3, 10)),
         per_user_daily_cap_atr=2,
     )
 )

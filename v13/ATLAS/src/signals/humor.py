@@ -210,3 +210,4 @@ class HumorSignalAddon(SignalAddon):
                 scaled_confidence = min(10000, total_engagement * 1000)
                 return QAmount(scaled_confidence) // QAmount(10000)
         return QAmount(0)
+

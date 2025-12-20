@@ -18,6 +18,8 @@ from .routes import (
     explain,
     auth,
     bounties,
+    governance_v18,
+    content_v18,
 )
 from .dependencies import get_current_user
 
@@ -42,8 +44,10 @@ api_routes = [
     explain.router,
     auth.router,
     bounties.router,
+    governance_v18.router,
+    content_v18.router,
 ]
-for router in sorted(api_routes):
+for router in api_routes:
     if router == transactions.router or router == wallets.router:
         app.include_router(router, dependencies=[Depends(get_current_user)])
     else:

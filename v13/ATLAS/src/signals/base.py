@@ -126,3 +126,4 @@ class SignalAddon:
             "type": self.__class__.__name__,
             "config": self.config,
         }
+

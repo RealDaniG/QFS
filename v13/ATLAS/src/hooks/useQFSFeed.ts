@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { QFSExecutor } from '@/lib/qfs/executor';
+import { atlasFetch } from '../lib/api';
 
 export interface FeedItem {
     id: string;
@@ -15,60 +15,50 @@ export interface FeedItem {
     timestamp: number;
 }
 
+export interface NetworkNode {
+    nodeDID: string;
+}
 
-const NETWORK_NODES = [
-    new QFSExecutor('did:key:node_1'),
-    new QFSExecutor('did:key:node_2'),
-    new QFSExecutor('did:key:node_3')
+const NETWORK_NODES: NetworkNode[] = [
+    { nodeDID: 'did:key:qfs_primary_01' },
+    { nodeDID: 'did:key:qfs_primary_02' },
+    { nodeDID: 'did:key:qfs_replica_01' }
 ];
 
 export function useQFSFeed() {
     const [feed, setFeed] = useState<FeedItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedNode, setSelectedNode] = useState(NETWORK_NODES[0]);
+    const [selectedNode, setSelectedNode] = useState<NetworkNode>(NETWORK_NODES[0]);
 
     useEffect(() => {
         fetchFeed();
-    }, [selectedNode]);
+    }, [selectedNode]); // Re-fetch if node changes (logical simulation)
 
     const fetchFeed = async () => {
         setLoading(true);
         try {
-            // In a real implementation, we would query the node's API
-            // Here we simulate the node "computing" the feed
+            // Use atlasFetch to get real data from backend
+            const res = await atlasFetch('/api/v18/content/feed?limit=20');
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const data = await res.json();
 
-            
-            const mockRawData = [
-                { id: '1', author: 'did:key:alice', text: 'Decentralized AI is the future.' },
-                { id: '2', author: 'did:key:bob', text: 'Just setup my QFS node! #Atlas' },
-                { id: '3', author: 'did:key:charlie', text: 'Governance proposal #12 is live, go vote!' }
-            ];
-
-            const computedFeed = await Promise.all(mockRawData.map(async (item) => {
-                const task = {
-                    taskId: `score_${item.id}`,
-                    type: 'coherence_scoring',
-                    dataCID: `cid_${item.id}`,
-                    policyVersion: 'v0.0.1'
-                };
-
-                // Executor computes score and proof
-                const result = await selectedNode.executeTask(task as any, item);
-
-                return {
-                    id: item.id,
-                    cid: `cid_${item.id}`,
-                    authorDID: item.author,
-                    content: { text: item.text },
-                    coherenceScore: 0.85 + (Math.random() * 0.1), 
-                    proof: result.proof.root,
-                    timestamp: result.timestamp
-                };
+            // Map Backend MessageSummary to Frontend FeedItem
+            // Backend keys: id, channel_id, sender, content, content_hash, timestamp
+            const items: FeedItem[] = data.map((msg: any) => ({
+                id: msg.id,
+                cid: msg.content_hash,
+                authorDID: msg.sender,
+                content: { text: msg.content },
+                coherenceScore: 1.0, // Default for now
+                proof: `ledger_${msg.content_hash.slice(0, 8)}`, // Simulated proof reference
+                // Convert seconds (Backend) to milliseconds (JS)
+                timestamp: msg.timestamp * 1000
             }));
 
-            setFeed(computedFeed);
+            setFeed(items);
         } catch (err) {
             console.error('Failed to fetch QFS feed:', err);
+            // On error, we might want to clear feed or show error
         } finally {
             setLoading(false);
         }

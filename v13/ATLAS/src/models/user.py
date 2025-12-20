@@ -1,11 +1,15 @@
 """
 User model for ATLAS authentication and authorization.
 """
+
+from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
 
+
 class User(BaseModel):
     """User model for ATLAS"""
+
     id: str
     username: str
     email: EmailStr
@@ -18,21 +22,27 @@ class User(BaseModel):
     class Config:
         json_encoders = {datetime: lambda v: v.isoformat() if v else None}
 
+
 class UserCreate(BaseModel):
     """User creation model"""
+
     username: str
     email: EmailStr
     password: str
 
+
 class UserUpdate(BaseModel):
     """User update model"""
+
     username: Optional[str] = None
     email: Optional[EmailStr] = None
     is_active: Optional[bool] = None
     metadata: Optional[Dict[str, Any]] = None
 
+
 class UserResponse(BaseModel):
     """User response model (without sensitive data)"""
+
     id: str
     username: str
     email: EmailStr

@@ -3,7 +3,7 @@ import json
 import base64
 import asyncio
 from typing import Dict, Optional, Tuple
-from libs.PQC import PQC, KeyPair
+from v13.libs.PQC import PQC, KeyPair
 from .secure_message_v2 import SecureMessageV2, MessageSequenceManager
 from .aegis_bootstrap import AEGISDIDBootstrap
 
@@ -203,3 +203,4 @@ class ConnectionManager:
             logger.error(f"Connection error with {peer_id}: {e}")
         finally:
             self.peers.pop(peer_id, None)
+

@@ -196,5 +196,37 @@ async def send_secure_message(peer_id: str, message: dict, crypto=None):
     payload = json.dumps(message).encode()
     encrypted = crypto.encrypt_message(payload, peer_id)
     if not encrypted:
-        raise RuntimeError(f"Encryption failed for {peer_id}")
+        raise RuntimeException(f"Encryption failed for {peer_id}")
     return encrypted
+
+
+async def get_current_wallet(token: str = Depends(oauth2_scheme)) -> str:
+    """
+    Extract wallet address from Ascon session token.
+
+    Args:
+        token: Bearer token from Authorization header
+
+    Returns:
+        str: Wallet address
+
+    Raises:
+        HTTPException: If token is invalid or expired
+    """
+    session = session_manager.validate_session(token)
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired session token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    wallet_address = session.get("wallet_address")
+    if not wallet_address:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session missing wallet address",
+        )
+
+    return wallet_address
+
