@@ -5,7 +5,9 @@
 
 ## Executive Summary
 
-The transition from simulated/mock data to the real V18 API is complete. The Frontend (ATLAS) now successfully consumes the Backend (QFS V18 Cluster) services for Governance, Content Feed, and Wallet interactions. End-to-End (E2E) verification has been performed at both the API and UI levels.
+The transition from simulated/mock data to the real V18 API is complete. The Frontend (ATLAS) now successfully consumes the Backend (QFS V18 Cluster) services for Governance, Content Feed, and Wallet interactions.
+
+> **Verification:** Use the single-terminal orchestrator `run_atlas_full.ps1` to verify all components end-to-end.
 
 ## 1. Backend Integration (QFS V18)
 

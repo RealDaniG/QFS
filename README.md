@@ -22,6 +22,27 @@
 
 ---
 
+## ⚡ Full System Verification
+
+To verify the entire V18 integration (Backend, Frontend, Auth, E2E Flows) in one go, use the **Orchestrator**:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File run_atlas_full.ps1
+```
+
+This script:
+
+1. Starts the Backend (Port 8001) and Frontend (Port 3000).
+2. Waits for health checks to pass.
+3. Runs:
+   - `verify_atlas_e2e.py` (API Check)
+   - `verify_auth.py` (Auth Flow)
+   - `pytest` (Route Regression)
+   - `npm run test:e2e` (Playwright UI Smoke Tests)
+4. Logs results to `logs/atlas_full_run.log`.
+
+**Exit Code 0** indicates a fully healthy system.
+
 ## 🏛️ What is QFS × ATLAS?
 
 **QFS** is the deterministic truth engine and event spine:
