@@ -1,7 +1,8 @@
 # QFS × ATLAS — Platform Evolution Plan
 
 > **Status:** Authoritative Strategic Roadmap  
-> **Foundation:** Evergreen v16 Baseline (Deterministic, Cost-Efficient, MOCKQPC-First)  
+> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
+> **Foundation:** v16.1.1-pre-v17-ready (Deterministic, Cost-Efficient, MOCKQPC-First)  
 > **Agent Strategy:** CrewAI/LangGraph (replacing OpenAGI)
 
 ---
@@ -170,6 +171,15 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 **Implementation Plan**
 
+**v17 Governance F-Layer** ✅ COMPLETE:
+
+- ✅ Deterministic proposal creation and state reconstruction
+- ✅ Vote casting with validation and eligibility checks
+- ✅ Outcome computation with quorum/approval thresholds
+- ✅ Deterministic tie-breaking rules
+- ✅ Full PoE logging to EvidenceBus
+- ✅ Pure functions (state from events only)
+
 **`F_moderation_v1` as Single Decision Engine**:
 
 - Inputs: content, scores, rules, roles
@@ -180,10 +190,12 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 - API endpoints: `/admin/mod/queue`, `/admin/mod/decision`, `/admin/mod/history`
 - Every decision emits an EvidenceBus event and is included in PoE batches
 
-**Governance**:
+**Governance UI** 🔄 IN PROGRESS:
 
-- Ensure `F`-style deterministic function is used for governance scenarios (proposal lifecycle)
-- PoE artifacts produced for each governance execution, with CLI replay tools
+- Governance timelines (proposal → votes → execution)
+- Decision explanation panels
+- Evidence links to PoE events
+- CLI replay tools
 
 ### 3.2 Lean Agent Layer
 
@@ -226,22 +238,33 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 **Implementation Plan**
 
+**v17 Bounty F-Layer** ✅ COMPLETE:
+
+- ✅ Deterministic bounty creation and contribution submission
+- ✅ State reconstruction from EvidenceBus events
+- ✅ Deterministic reward computation with advisory integration
+- ✅ Normalized score-based distribution
+- ✅ Full PoE logging to EvidenceBus
+- ✅ Pure functions (state from events only)
+
 **Bounty Lifecycle**:
 
-- Creation → EvidenceBus `bounty_created`
-- Claim → `bounty_claimed` (wallet, scope, timestamp)
-- Submission → `bounty_submitted`
-- Approval/Payment → `bounty_paid`, all batched into PoE
+- Creation → EvidenceBus `BOUNTY_CREATED`
+- Contribution → `BOUNTY_CONTRIBUTION_SUBMITTED`
+- Reward Decision → `BOUNTY_REWARD_DECIDED`
+- All batched into PoE
 
 **Dual-Proof Enforcement**:
 
 - Wallet ↔ GitHub link required for dev bounties
 - Indexer verifies PR/commit references
 
-**Bounty UI**:
+**Bounty UI** 🔄 IN PROGRESS:
 
 - Views: "Open", "My Bounties", "History"
+- Bounty timelines (creation → contributions → rewards)
 - Each entry links to PoE artifacts for audit
+- Advisory vs F-layer distinction visible
 
 ### 4.2 Cost-Efficient Verification
 

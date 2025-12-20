@@ -1,67 +1,211 @@
-# QFS × ATLAS v16 Operationalization Plan
+# QFS × ATLAS Task Tracker
+
+> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
+> **Status:** Engine complete, UI/UX layer in progress  
+> **Last Updated:** 2025-12-20
+
+---
+
+## v16 Operationalization Plan ✅ COMPLETE
 
 > **Goal:** Operationalize the v16 baseline by encoding governance rules, maintainer workflows, and onboarding clarity.
 
-## 1. Governance & PR Process Enforcement
+### 1. Governance & PR Process Enforcement ✅
 
-- [x] Update `docs/PR_TEMPLATE_v16.md` (and `v15.5`) with "Core Invariant" checklist
-- [x] Requirements:
-  - State touched invariants (MOCKQPC, EvidenceBus, Determinism, Cost)
-  - Reference capability area (Governance, Wallet, Agents, Bounties, UI)
+- [x] Update `docs/PR_TEMPLATE_v16.md` with "Core Invariant" checklist
+- [x] Requirements: State invariants, reference capability areas
 
-## 2. Maintainer Workflow & Labels
+### 2. Maintainer Workflow & Labels ✅
 
-- [x] Add "Maintainer Guide" section to `docs/QFS_ATLAS_PRODUCTION_READINESS.md`
-- [x] Define standard labels: `area:governance`, `area:wallet-auth`, `area:evidencebus`, `area:agent-advisory`, `area:bounties`, `area:ui`, `type:cost`, `type:determinism`
+- [x] Add "Maintainer Guide" to `docs/QFS_ATLAS_PRODUCTION_READINESS.md`
+- [x] Define standard labels (area:*, type:*)
 - [x] Document triage process
 
-## 3. Onboarding and FAQ
+### 3. Onboarding and FAQ ✅
 
 - [x] Create `docs/FAQ_MOCKQPC_AND_AGENTS.md`
-- [x] Content:
-  - Why MOCKQPC? Safety?
-  - Real PQC timeline?
-  - "Advisory-only" definition?
-  - How to avoid breaking Zero-Sim?
 - [x] Link from `README.md` and `CONTRIBUTING.md`
 
-## 4. Release Tagging
+### 4. Release Tagging ✅
 
 - [x] Create `docs/RELEASES/v16_EVERGREEN_BASELINE.md`
-- [x] Content:
-  - Summary
-  - Links to Canon (State of Union, Cost Arch, Readiness)
 
-## 5. Branch Protection & Maintenance
+### 5. Branch Protection & Maintenance ✅
 
 - [x] Create `docs/MAINTAINERS_GUIDE.md`
-- [x] Document required checks:
-  - `ci.yml` pass (Zero-Sim)
-  - Review requirements for `v15/crypto`, EvidenceBus, Governance
+- [x] Document required checks
 
-## 6. Final Verification
+### 6. Final Verification ✅
 
-- [x] Verify all new docs are linked
-- [x] Commit with message: "docs: v16 operationalization complete"
+- [x] All docs linked
+- [x] Committed: "docs: v16 operationalization complete"
 
-# QFS × ATLAS v16 Integration Plan
+---
 
-> **Goal:** Build the user-facing and admin-facing layers on top of the deterministic v16 baseline.
+## v16 Integration Plan ✅ COMPLETE
 
-## 1. Wallet Authentication (`area:wallet-auth`)
+> **Goal:** Build user-facing and admin-facing layers on v16 baseline.
 
-- [x] Implement `v15/auth/wallet_connect.py` adapter
-- [x] Connect EIP-191 signatures to `SessionManager`
-- [x] Emit `auth_event` to EvidenceBus on login/logout
+### 1. Wallet Authentication ✅
 
-## 2. Admin Panel & Observability (`area:ui`)
+- [x] Implement `v15/auth/wallet_connect.py` (EIP-191)
+- [x] Connect to `SessionManager`
+- [x] Emit `auth_event` to EvidenceBus
 
-- [x] Create `v15/ui/admin_dashboard.py` (FastAPI + React/Next.js routes)
-- [x] Implement "Evidence Chain Viewer" (read-only view of PoE log)
-- [x] Connect `CostProfile` metrics to UI
+### 2. Admin Panel & Observability ✅
 
-## 3. Agent Advisory Migration (`area:agent-advisory`)
+- [x] Create `v15/ui/admin_dashboard.py`
+- [x] Implement "Evidence Chain Viewer"
+- [x] Connect `CostProfile` metrics
+
+### 3. Agent Advisory Migration ✅
 
 - [x] Audit `v14` agents for write-access violations
 - [x] Refactor into `AdvisorySignal` emitters
-- [x] Enforce "read-only" permissions in `v15/scenarios`
+- [x] Enforce read-only permissions
+
+---
+
+## v16 Health Check & Hardening ✅ COMPLETE
+
+> **Goal:** Full pipeline preflight before v17 development.
+
+### Health Check Execution ✅
+
+- [x] Baseline confirmation (v16.1.0-integration-complete)
+- [x] Full test & determinism sweep
+- [x] Zero-Sim compliance (0 critical violations)
+- [x] Issues identified and fixed (dict access safety)
+- [x] All tests passing
+- [x] Tagged: `v16.1.1-pre-v17-ready`
+
+### CI Wiring Fixes ✅
+
+- [x] Updated artifact actions (v3 → v4)
+- [x] Created `notify_discord.py` stub
+- [x] Verified CI operational
+- [x] Documentation complete
+
+---
+
+## v17 Governance & Bounty F-Layer ✅ ENGINE COMPLETE
+
+> **Goal:** Deterministic governance and bounty management with full PoE logging.
+
+### Phase 1: Engine Implementation ✅
+
+#### Governance F-Layer ✅
+
+- [x] `v17/governance/schemas.py` - Pydantic models
+- [x] `v17/governance/f_proposals.py` - Proposal creation & state reconstruction
+- [x] `v17/governance/f_voting.py` - Vote casting & validation
+- [x] `v17/governance/f_execution.py` - Outcome computation & finalization
+- [x] All functions pure (state from events only)
+- [x] Full PoE logging to EvidenceBus
+
+#### Bounty F-Layer ✅
+
+- [x] `v17/bounties/schemas.py` - Pydantic models
+- [x] `v17/bounties/f_bounties.py` - Bounty lifecycle & reward computation
+- [x] Deterministic reward allocation
+- [x] Advisory signal integration
+- [x] Full PoE logging to EvidenceBus
+
+#### Testing ✅
+
+- [x] `v17/tests/test_governance_f_layer.py` - All tests passing
+- [x] `v17/tests/test_bounties_f_layer.py` - All tests passing
+- [x] Determinism verified
+- [x] PoE logging verified
+- [x] Zero-Sim compliance (0 critical violations)
+
+### Phase 2: UI/UX Layer (Compression & Reveal) 🔄 IN PROGRESS
+
+> **Constraint:** Engine frozen - no new mechanisms, only visibility
+
+#### Layer B: Authority Visibility (Admin & Steward) 🔄
+
+- [ ] Extend `v15/ui/admin_dashboard.py` with Governance Timeline
+  - [ ] Proposal → votes → outcome → execution
+  - [ ] "View evidence" links to PoE events
+  - [ ] Tests for timeline rendering
+- [ ] Add Bounty Timeline view
+  - [ ] Bounty → contributions → advisory → rewards
+  - [ ] Show advisory vs F-layer distinction
+  - [ ] Tests for bounty timeline
+- [ ] Implement Decision Explanation panels
+  - [ ] Governance outcomes
+  - [ ] Bounty rewards
+  - [ ] Dispute resolutions
+  - [ ] "Show record" to Evidence View
+- [ ] Implement Dispute Resolution panel
+  - [ ] Steward-facing interface
+  - [ ] Evidence chain preview
+  - [ ] Mandatory PoE reference
+
+#### Layer C: Social Surface (User-Facing) 🔄
+
+- [ ] Wire conversations to governance/bounty events
+  - [ ] Inline indicators
+  - [ ] Links to explanation panels
+- [ ] Implement Contribution History view
+  - [ ] Per-user activity log
+  - [ ] Plain language summaries
+  - [ ] "Show record" for each item
+- [ ] Implement Escalation/Dispute flow
+  - [ ] Clear lifecycle
+  - [ ] Evidence links
+  - [ ] Guardrails
+
+#### Layer E: Progressive Disclosure 🔄
+
+- [ ] Level 1: Summary (human explanation)
+- [ ] Level 2: Evidence View (PoE events)
+- [ ] Level 3: Replay/Technical (deterministic reconstruction)
+
+### Phase 3: Documentation & Testing 🔄
+
+- [ ] Update `MAINTAINERS_GUIDE.md` with v17 layers
+- [ ] Create user-facing docs
+- [ ] Add diagrams (Outcome → Explanation → Evidence → Replay)
+- [ ] End-to-end tests
+- [ ] CI integration
+
+### Phase 4: Release 🔄
+
+- [ ] Open PR: `feat/v17-governance-bounty-f-layer` → `main`
+- [ ] CI verification (all tests green)
+- [ ] Tag: `v17.0.0-beta-governance-bounties`
+- [ ] Release summary
+
+---
+
+## Current Status Summary
+
+**Completed:**
+
+- ✅ v16 Operationalization
+- ✅ v16 Integration (wallet auth, admin panel, agent advisory)
+- ✅ v16 Health Check & Hardening
+- ✅ CI Wiring Fixes
+- ✅ v17 Engine Implementation (governance + bounties)
+
+**In Progress:**
+
+- 🔄 v17 UI/UX Layer (compression & reveal)
+
+**Next Steps:**
+
+1. Extend admin dashboard with governance/bounty timelines
+2. Implement decision explanation panels
+3. Add user-facing contribution history
+4. Create comprehensive documentation
+5. End-to-end testing
+6. PR and release
+
+---
+
+**Branch:** `feat/v17-governance-bounty-f-layer`  
+**Foundation:** v16.1.1-pre-v17-ready  
+**Target:** v17.0.0-beta-governance-bounties  
+**Contract:** No new authority, only legibility

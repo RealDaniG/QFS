@@ -1,8 +1,9 @@
-# QFS × ATLAS: Deterministic v16 Baseline
+# QFS × ATLAS: Deterministic Governance & Bounty Platform
 
-> **Status:** Production-Ready (v16.1.0 Integration Complete)  
+> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
+> **Status:** Engine Complete, UI/UX Layer In Progress  
 > **Architecture:** MOCKQPC-First, Zero-Sim Enforced, EvidenceBus-Centric, AGPL-3.0 Licensed  
-> **Focus:** Deterministic Governance & Cost-Efficient Coordination
+> **Focus:** Deterministic Governance, Bounty Management & Cost-Efficient Coordination
 
 ---
 
@@ -42,7 +43,7 @@ This makes QFS × ATLAS credible and efficient at any scale—from a small commu
 
 ---
 
-## 📈 Product Evolution (v14 → v16)
+## 📈 Product Evolution (v14 → v17)
 
 ### v14 — Strong Foundations
 
@@ -56,9 +57,13 @@ Strategic reset where processes became structured and coherent. Decisions became
 
 Achieves an optimal balance between strength and efficiency. Preserves earlier guarantees while drastically lowering operating costs via MOCKQPC, reducing dependencies, and making deployment feasible in standard environments.
 
-### v16.1.0 — Integration Complete (Current)
+### v16.1.0 — Integration Complete
 
 Adds deterministic wallet authentication, admin observability dashboard, and agent advisory layer. All components are fully integrated with EvidenceBus for complete audit trails. Agents provide non-authoritative suggestions while deterministic functions (F) remain the final authority.
+
+### v17.0.0-beta — Governance & Bounty F-Layer (Current)
+
+Implements deterministic governance (proposals, voting, execution) and bounty management (creation, contributions, rewards) with full PoE logging. Engine complete with pure functions and state reconstruction from events. UI/UX layer in progress to surface existing guarantees through human-legible interfaces.
 
 ---
 
