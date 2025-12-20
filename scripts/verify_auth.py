@@ -25,7 +25,7 @@ def test_auth_flow():
         print(f"Got Nonce: {nonce}")
     except Exception as e:
         print(f"Failed to get nonce: {e}")
-        return
+        sys.exit(1)
 
     # 2. Sign Nonce
     try:

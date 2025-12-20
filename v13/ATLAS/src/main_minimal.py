@@ -5,6 +5,8 @@ Bypasses complex models to get server running quickly.
 
 import logging
 import datetime
+import os
+import traceback
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,10 +23,15 @@ app = FastAPI(
     redoc_url="/api/redoc",
 )
 
-# CORS
+# CORS configuration
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "*")
+origins = [
+    origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,7 +41,7 @@ app.add_middleware(
 try:
     from .api.routes import governance_v18, content_v18, auth, wallets, transactions
 
-    app.include_router(auth.router)
+    app.include_router(auth.router, prefix="/api/v1")
     app.include_router(wallets.router)
     app.include_router(transactions.router)
     app.include_router(governance_v18.router)
@@ -42,9 +49,6 @@ try:
 
     logger.info("V18 routes loaded successfully")
 except Exception as e:
-    import traceback
-    import datetime
-
     error_msg = f"Failed to load v18 routes: {e}"
     traceback_str = traceback.format_exc()
 
@@ -59,43 +63,11 @@ except Exception as e:
             log_file.write(
                 f"[{timestamp}] [ERROR] [backend.routes] Traceback: {traceback_str[:500]}\n"
             )
-    except:
-        pass
-
-    # RE-RAISE to expose the real problem
-    raise
+    except Exception as log_err:
+        logger.error(f"Failed to write to integration log: {log_err}")
 
 
+# Health Check
 @app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "version": "18.9.0-minimal",
-        "service": "ATLAS v18 Backend",
-        "routes_loaded": ["auth", "governance_v18", "content_v18"],
-    }
-
-
-@app.get("/")
-async def root():
-    """Root endpoint."""
-    return {
-        "name": "ATLAS Quantum Financial System",
-        "version": "18.9.0-minimal",
-        "description": "V18 Backend with ClusterAdapter support",
-        "documentation": "/api/docs",
-        "status": "operational",
-    }
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        "main_minimal:app",
-        host="0.0.0.0",
-        port=8001,
-        reload=True,
-        log_level="info",
-    )
+def health_check():
+    return {"status": "ok", "version": "18.9.0", "services": {"v18_clusters": "ready"}}

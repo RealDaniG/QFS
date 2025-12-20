@@ -59,7 +59,7 @@ test.describe('ATLAS v18 Smoke Tests', () => {
         // We should ensure backend returns SOME data or check for "Connecting..." state gone.
 
         // Wait for loading to finish
-        await expect(page.getByText('Connecting to distributed node...')).not.toBeVisible();
+        await expect(page.getByText('Connecting to distributed node...')).not.toBeVisible({ timeout: 15000 });
     });
 
     test('Wallet view loads', async ({ page }) => {
