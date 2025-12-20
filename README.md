@@ -309,17 +309,18 @@ Deterministic governance and bounty management with full PoE logging. Engine com
 
 ---
 
-## 🗺️ Roadmap: v18 and Beyond
+## 🗺️ Roadmap: v18 Distributed Fabric
 
-Future enhancements (vision, not current state):
+Future enhancements (Design Phase):
 
-- **Multi-node coordination**: Distributed deployment patterns
-- **Advanced economic layers**: Multi-token coordination (NOD, CHR, ATR)
-- **Enhanced agent capabilities**: Expanded advisory signals
-- **Cross-chain bridges**: External settlement rails
-- **Advanced governance**: Nested proposals, delegation trees
+- **Physical Tiering**: Tier A (Core), Tier B (Edge), Tier C (Sensor).
+- **Multi-Node Consensus**: Deterministic replication for Tier A.
+- **PQC Anchors**: Real post-quantum signatures (Dilithium/Kyber) to anchor EvidenceBus batches.
+- **Edge Expansion**: UI and Advisory agents deployed to edge nodes.
 
-> **Note:** v18+ features are future-facing. Current focus is v17 completion and v16/v17 hardening.
+See [V18_DESIGN_AND_DEPLOYMENT.md](docs/V18_DESIGN_AND_DEPLOYMENT.md) for the full blueprint.
+
+> **Note:** v18 work begins after v17.0.0-beta validation.
 
 ---
 
