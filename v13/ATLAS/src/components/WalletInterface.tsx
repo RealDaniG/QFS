@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTreasury } from '@/hooks/useTreasury';
 import { useAuth } from '@/hooks/useAuth';
+import { useWalletAuth } from '@/hooks/useWalletAuth';
 import { WalletConnectButton } from '@/components/WalletConnectButton';
 
 import { ExplainThisPanel } from '@/components/ExplainThisPanel';
@@ -21,6 +22,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 export default function WalletInterface() {
     const { balance, history, isLoading } = useTreasury();
     const { did } = useAuth();
+    const { isConnected, address: walletAddress } = useWalletAuth();
     const { explanation, fetchRewardExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
 
     // Fallback if loading or no auth (although auth is likely present)
@@ -38,7 +40,15 @@ export default function WalletInterface() {
                         <CardHeader>
                             <CardTitle>Token Balances</CardTitle>
                             <div className="flex justify-between items-center">
-                                <CardDescription>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</CardDescription>
+                                <CardDescription>
+                                    {isConnected ? (
+                                        <span className="text-blue-600 font-mono">
+                                            Connected: {walletAddress?.slice(0, 6)}...{walletAddress?.slice(-4)}
+                                        </span>
+                                    ) : (
+                                        <span>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</span>
+                                    )}
+                                </CardDescription>
                                 <WalletConnectButton />
                             </div>
                         </CardHeader>
@@ -84,8 +94,8 @@ export default function WalletInterface() {
                                     history.map((tx) => (
                                         <Dialog key={tx.id} onOpenChange={(open) => {
                                             if (open) {
-                                                // Assuming wallet_id is effectively the DID here, and mocking epoch
-                                                fetchRewardExplanation(did || "wallet_123", 10);
+                                                // Using walletAddress or fallback DID
+                                                fetchRewardExplanation(walletAddress || did || "wallet_123", 10);
                                             } else {
                                                 clearExplanation();
                                             }

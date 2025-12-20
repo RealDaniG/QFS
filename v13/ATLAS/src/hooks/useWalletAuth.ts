@@ -7,6 +7,7 @@
 
 import { useState, useCallback } from 'react';
 import { ethers } from 'ethers';
+import { atlasFetch } from '@/lib/api';
 
 // Types representing the backend response
 interface LoginResponse {
@@ -71,7 +72,8 @@ export function useWalletAuth() {
             const address = await signer.getAddress();
 
             // 1. Get Nonce
-            const nonceRes = await fetch('/api/auth/nonce');
+            // v18: Endpoint is /api/v1/auth/nonce
+            const nonceRes = await atlasFetch('/api/v1/auth/nonce', { auth: false });
             if (!nonceRes.ok) throw new Error("Failed to fetch nonce");
             const { nonce } = await nonceRes.json();
 
@@ -79,9 +81,10 @@ export function useWalletAuth() {
             const signature = await signer.signMessage(nonce);
 
             // 3. Login
-            const loginRes = await fetch('/api/auth/login', {
+            // v18: Endpoint is /api/v1/auth/login
+            const loginRes = await atlasFetch('/api/v1/auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                auth: false,
                 body: JSON.stringify({
                     nonce,
                     signature,
@@ -126,9 +129,8 @@ export function useWalletAuth() {
         // Optional: Call backend logout to revoke token
         if (state.sessionToken) {
             try {
-                await fetch('/api/auth/logout', {
+                await atlasFetch('/api/v1/auth/logout', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_token: state.sessionToken })
                 });
             } catch (e) {

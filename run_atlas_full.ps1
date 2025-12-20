@@ -10,6 +10,7 @@ $Env:PYTHONPATH = "$Root;$Root\v13\atlas"
 $Env:QFS_FORCE_MOCK_PQC = "1"
 $Env:ALLOWED_ORIGINS = "http://localhost:3000"
 $Env:EXPLAIN_THIS_SOURCE = "qfs_ledger"
+$Env:NEXT_PUBLIC_API_URL = "http://localhost:8001"
 
 if (-not (Test-Path "$Root\logs")) { New-Item -ItemType Directory -Path "$Root\logs" | Out-Null }
 New-Item -ItemType File -Path $LogFile -Force | Out-Null
@@ -121,7 +122,7 @@ do {
     
     if (-not $Loop) {
         # Clean Shutdown
-        Log-Section "SYSTEM" "Press Enter to stop backend/frontend..."
+        Log-Section "SYSTEM" "Verification Complete. Press Enter to shutdown services and close this window..."
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         
         Log-Section "SYSTEM" "Stopping services..."
@@ -129,9 +130,12 @@ do {
         if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
         Log-Section "SYSTEM" "Services stopped."
         
-        if ($Success) { exit 0 } else { exit 1 }
+        # Don't use exit 0/1 here if we want to keep the window open via -NoExit in BAT
+        # But we also shouldn't block indefinitely if the user pressed enter.
+        # Returning from script is fine.
+        return
     }
-    
+
     if ($Success) {
         Log-Section "SYSTEM" "Loop Mode: Checks passed. Stopping services and waiting..."
         if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
@@ -146,3 +150,6 @@ do {
     }
 
 } while ($true)
+
+Log-Section "SYSTEM" "Script exiting. Press Enter to close window..."
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

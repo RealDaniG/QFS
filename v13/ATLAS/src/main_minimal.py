@@ -58,7 +58,8 @@ except Exception as e:
     # Log to integration file for dashboard
     try:
         timestamp = datetime.datetime.utcnow().isoformat() + "Z"
-        with open("../../logs/v18_integration_log.txt", "a") as log_file:
+        log_path = "logs/v18_integration_log.txt"
+        with open(log_path, "a") as log_file:
             log_file.write(f"[{timestamp}] [ERROR] [backend.routes] {error_msg}\n")
             log_file.write(
                 f"[{timestamp}] [ERROR] [backend.routes] Traceback: {traceback_str[:500]}\n"
