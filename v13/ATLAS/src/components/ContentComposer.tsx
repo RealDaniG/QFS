@@ -30,6 +30,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useWalletAuth } from '@/hooks/useWalletAuth'
 import { useContentPublisher } from '@/hooks/useContentPublisher'
 import type { Visibility } from '@/types/storage'
 
@@ -40,6 +41,7 @@ interface ContentComposerProps {
 
 export default function ContentComposer({ isOpen, onClose }: ContentComposerProps) {
   const { isAuthenticated, did } = useAuth()
+  const { isConnected } = useWalletAuth()
   const { publish, isPublishing } = useContentPublisher()
   const [content, setContent] = useState('')
   const [tags, setTags] = useState('')
@@ -116,9 +118,12 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
     setEconomicAnalysis(updatedAnalysis)
   }
 
+  const [authError, setAuthError] = useState(false)
+
   const handlePublish = async () => {
-    if (!isAuthenticated) {
-      alert("Please initialize identity (managed by useAuth hook)")
+    // Check wallet connection first
+    if (!isConnected) {
+      setAuthError(true)
       return
     }
 
@@ -126,6 +131,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
       return
     }
 
+    setAuthError(false)
     const tagArray = tags.split(',').map(t => t.trim()).filter(Boolean)
 
     const result = await publish(content, {
@@ -137,6 +143,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
       console.log('Published:', result)
       setContent('')
       setTags('')
+      setAuthError(false)
       onClose()
     } else {
       console.error('Publish failed')
