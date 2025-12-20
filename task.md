@@ -123,34 +123,38 @@
 
 > **Constraint:** Engine frozen - no new mechanisms, only visibility
 
-#### Layer B: Authority Visibility (Admin & Steward) 🔄
+#### Layer B: Authority Visibility (Admin & Steward) ✅
 
-- [ ] Extend `v15/ui/admin_dashboard.py` with Governance Timeline
-  - [ ] Proposal → votes → outcome → execution
-  - [ ] "View evidence" links to PoE events
-  - [ ] Tests for timeline rendering
-- [ ] Add Bounty Timeline view
-  - [ ] Bounty → contributions → advisory → rewards
-  - [ ] Show advisory vs F-layer distinction
-  - [ ] Tests for bounty timeline
-- [ ] Implement Decision Explanation panels
-  - [ ] Governance outcomes
-  - [ ] Bounty rewards
-  - [ ] Dispute resolutions
-  - [ ] "Show record" to Evidence View
-- [ ] Implement Dispute Resolution panel
-  - [ ] Steward-facing interface
-  - [ ] Evidence chain preview
-  - [ ] Mandatory PoE reference
+- [x] Extend `v15/ui/admin_dashboard.py` with Governance Timeline
+  - [x] Proposal → votes → outcome → execution
+  - [x] "View evidence" links to PoE events
+  - [x] Tests for timeline rendering
+- [x] Add Bounty Timeline view
+  - [x] Bounty → contributions → advisory → rewards
+  - [x] Show advisory vs F-layer distinction
+  - [x] Tests for bounty timeline
+- [x] Implement Decision Explanation panels
+  - [x] Governance outcomes
+  - [x] Bounty rewards
+  - [x] Dispute resolutions
+  - [x] "Show record" to Evidence View
+- [x] Implement Dispute Resolution panel
+  - [x] Steward-facing interface
+  - [x] Evidence chain preview
+  - [x] Mandatory PoE reference
 
-#### Layer C: Social Surface (User-Facing) 🔄
+#### Layer C: Social Surface (User-Facing) ✅
 
-- [ ] Wire conversations to governance/bounty events
-  - [ ] Inline indicators
-  - [ ] Links to explanation panels
-- [ ] Implement Contribution History view
-  - [ ] Per-user activity log
-  - [ ] Plain language summaries
+- [x] Wire conversations to governance/bounty events
+  - [x] Inline indicators
+  - [x] Links to explanation panels
+- [x] Implement "Explanation First" flow
+  - [x] Summary → Click → Evidence Graph
+  - [x] User-accessible verification
+- [x] Tests for social/user timeline flows
+- [x] Implement Contribution History view
+  - [x] Per-user activity log
+  - [x] Plain language summaries
   - [ ] "Show record" for each item
 - [ ] Implement Escalation/Dispute flow
   - [ ] Clear lifecycle
