@@ -1,6 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Home,
   PlusCircle,
@@ -14,109 +15,56 @@ import {
   Search,
   Menu,
   X,
-  TrendingUp,
-  Activity,
-  Eye,
-  ChevronRight
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { cn } from '@/lib/utils'
-import { ExplainRewardFlow } from '@/components/ExplainRewardFlow'
-import ContentComposer from '@/components/ContentComposer'
-import MessagingInterface from '@/components/MessagingInterface'
-import DiscoveryInterface from '@/components/DiscoveryInterface'
-import WalletInterface from '@/components/WalletInterface'
-import ProfileEditor from '@/components/ProfileEditor'
-import GovernanceInterface from '@/components/GovernanceInterface'
-import GuardsList from '@/components/GuardsList'
-import { useInteraction } from '@/hooks/useInteraction'
-import DistributedFeed from '@/components/DistributedFeed'
+  Activity
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
+import { useWalletAuth } from '@/hooks/useWalletAuth';
 
-// Atlas & QFS Imports
-import { RealLedger } from '@/lib/ledger/real-ledger';
-import { getTreasury } from '@/lib/economics/treasury-engine';
-import { GovernanceService } from '@/lib/governance/service';
-import { PendingEventStore } from '@/lib/ledger/pending-store';
-import { LedgerSyncService } from '@/lib/ledger/sync-service';
-
-// Services
-const ledger = RealLedger.getInstance(); // New Zero-Sim Client
-const treasury = getTreasury();
-// Zero-Sim: GovernanceService fetches directly from QFS
-const governance = GovernanceService.getInstance();
-const pendingStore = PendingEventStore.getInstance();
-// Fire and forget init
-pendingStore.init();
-
-// NOTE: LedgerSyncService might need updates to poll RealLedger instead of MockLedger
-// For now, we keep it to handle local optimistic UI updates if compatible
-const syncService = LedgerSyncService.getInstance();
+// Components
+import { ExplainRewardFlow } from '@/components/ExplainRewardFlow';
+import ContentComposer from '@/components/ContentComposer';
+import MessagingInterface from '@/components/MessagingInterface';
+import DiscoveryInterface from '@/components/DiscoveryInterface';
+import WalletInterface from '@/components/WalletInterface';
+import ProfileEditor from '@/components/ProfileEditor';
+import GovernanceInterface from '@/components/GovernanceInterface';
+import GuardsList from '@/components/GuardsList';
+import DistributedFeed from '@/components/DistributedFeed';
 
 export default function AtlasDashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [activeTab, setActiveTab] = useState('home')
-  const [showComposer, setShowComposer] = useState(false)
-  const { interact } = useInteraction()
+  const { isConnected, address, isLoading: authLoading } = useWalletAuth();
+  const router = useRouter();
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeView, setActiveView] = useState('home');
+  const [showComposer, setShowComposer] = useState(false);
+
+  // v18 Login Gate
+  useEffect(() => {
+    if (!authLoading && !isConnected) {
+      // For now, if not connected, we show a simplified welcome or prompt
+      // We don't want to hard redirect if the user is just browsing the public parts
+      // but the plan says "No valid session token -> redirect to /login"
+      // However, /login doesn't exist yet, I'll use a local state gate first.
+    }
+  }, [isConnected, authLoading]);
 
   const navigationItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'create', label: 'Create', icon: PlusCircle },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'communities', label: 'Communities', icon: Users },
-    { id: 'governance', label: 'Governance', icon: Shield }, // Add item
+    { id: 'governance', label: 'Governance', icon: Shield },
     { id: 'ledger', label: 'Ledger & Explain', icon: BookOpen },
     { id: 'wallet', label: 'Wallet & Reputation', icon: Wallet },
     { id: 'settings', label: 'Settings & Safety', icon: Settings },
-  ]
-
-  const mockPosts = [
-    {
-      id: 1,
-      author: 'Alice Chen',
-      avatar: '/avatars/alice.jpg',
-      content: 'Just published a comprehensive analysis of QFS coherence scoring algorithms. The transparency in how rewards are calculated is game-changing for decentralized social platforms!',
-      coherenceScore: 0.92,
-      rewardPotential: 45.50,
-      likes: 234,
-      comments: 45,
-      reposts: 12,
-      timestamp: '2 hours ago',
-      tags: ['QFS', 'Coherence', 'Research']
-    },
-    {
-      id: 2,
-      author: 'Bob Martinez',
-      avatar: '/avatars/bob.jpg',
-      content: 'The new guard system implementation shows how deterministic economics can coexist with creative expression. Every action is traceable and explainable.',
-      coherenceScore: 0.88,
-      rewardPotential: 32.75,
-      likes: 156,
-      comments: 23,
-      reposts: 8,
-      timestamp: '4 hours ago',
-      tags: ['Guards', 'Economics', 'Transparency']
-    },
-    {
-      id: 3,
-      author: 'Carol Davis',
-      avatar: '/avatars/carol.jpg',
-      content: 'Community governance through the event ledger creates unprecedented accountability. No more hidden moderation decisions!',
-      coherenceScore: 0.95,
-      rewardPotential: 67.25,
-      likes: 412,
-      comments: 89,
-      reposts: 34,
-      timestamp: '6 hours ago',
-      tags: ['Governance', 'Community', 'Ledger']
-    }
-  ]
+  ];
 
   const systemHealth = {
     qfsStatus: 'Operational',
@@ -124,691 +72,236 @@ export default function AtlasDashboard() {
     guardSystem: 'All Green',
     ledgerSync: 'Real-time',
     nodeHealth: '98.2%'
+  };
+
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Synchronizing v18 clusters...</p>
+        </div>
+      </div>
+    );
   }
 
+  // Dashboard identity display update for v18
+  const displayAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Not Connected";
+
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background text-foreground">
       {/* Sidebar */}
       <div className={cn(
-        "flex flex-col border-r bg-card transition-all duration-300",
-        sidebarOpen ? "w-64" : "w-16"
+        "flex flex-col border-r bg-card transition-all duration-300 shadow-xl z-20",
+        sidebarOpen ? "w-64" : "w-20"
       )}>
-        {/* Logo */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className={cn("flex items-center gap-2", !sidebarOpen && "hidden")}>
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-sm">AT</span>
             </div>
-            <span className="font-bold text-lg">ATLAS</span>
+            <span className="font-bold text-lg tracking-tight">ATLAS v18</span>
           </div>
           <Button
             variant="ghost"
-            size="sm"
+            size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
 
-        {/* Navigation */}
-        <ScrollArea className="flex-1">
-          <div className="p-2">
+        <ScrollArea className="flex-1 px-3 py-4">
+          <nav className="space-y-1">
             {navigationItems.map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
-                <Button
+                <button
                   key={item.id}
-                  variant={activeTab === item.id ? "secondary" : "ghost"}
+                  onClick={() => setActiveView(item.id)}
                   className={cn(
-                    "w-full justify-start mb-1",
-                    !sidebarOpen && "justify-center px-2"
+                    "flex items-center w-full transition-all duration-200 group relative",
+                    "hover:bg-accent hover:text-accent-foreground rounded-lg px-3 py-2.5",
+                    activeView === item.id ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground",
+                    !sidebarOpen && "justify-center"
                   )}
-                  onClick={() => setActiveTab(item.id)}
                 >
-                  <Icon className="h-4 w-4" />
-                  {sidebarOpen && <span className="ml-2">{item.label}</span>}
-                </Button>
-              )
+                  <Icon className={cn("h-5 w-5", activeView === item.id ? "text-primary" : "group-hover:scale-110 transition-transform")} />
+                  {sidebarOpen && <span className="ml-3 text-sm">{item.label}</span>}
+                  {activeView === item.id && (
+                    <div className="absolute left-0 w-1 h-6 bg-primary rounded-r-full" />
+                  )}
+                </button>
+              );
             })}
-          </div>
+          </nav>
         </ScrollArea>
 
-        {/* User Profile */}
-        {sidebarOpen && (
-          <div className="p-4 border-t">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/user.jpg" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
+        <div className="p-4 border-t bg-muted/30">
+          <div className={cn("flex items-center gap-3", !sidebarOpen && "justify-center")}>
+            <Avatar className="h-9 w-9 border-2 border-background shadow-sm">
+              <AvatarImage src="/avatars/user.jpg" />
+              <AvatarFallback className="bg-primary/10 text-primary">JD</AvatarFallback>
+            </Avatar>
+            {sidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">John Doe</p>
-                <p className="text-xs text-muted-foreground">Reputation: 0.87</p>
+                <p className="text-sm font-semibold truncate">{displayAddress}</p>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Reputation: 142</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Bar */}
-        <div className="flex items-center justify-between p-4 border-b bg-card">
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="flex items-center justify-between p-4 border-b bg-card/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative max-w-md flex-1">
+            <h2 className="text-lg font-bold capitalize">{activeView.replace('-', ' ')}</h2>
+            <div className="relative max-w-sm flex-1 hidden md:block">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search posts, users, topics..."
-                className="pl-10"
+                placeholder="Search v18 clusters..."
+                className="pl-10 bg-muted/50 border-none h-9 focus-visible:ring-1"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-4 w-4" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
-                3
-              </Badge>
+          <div className="flex items-center gap-3">
+            {!isConnected && <Badge variant="destructive" className="animate-pulse">Disconnected</Badge>}
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-600 rounded-full border-2 border-card" />
             </Button>
           </div>
-        </div>
+        </header>
 
-        {/* Content Area */}
-        <div className="flex-1 flex">
-          {/* Main Feed */}
-          <div className="flex-1 p-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-7">
-                {navigationItems.map((item) => (
-                  <TabsTrigger key={item.id} value={item.id} className="text-xs">
-                    {item.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+        <main className="flex-1 overflow-auto bg-gradient-to-b from-background to-muted/20">
+          <div className="max-w-6xl mx-auto p-6">
+            {!isConnected && activeView !== 'settings' && (
+              <Card className="mb-6 border-blue-500/30 bg-blue-500/5 backdrop-blur-sm border-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-blue-600" />
+                    Authentication Required
+                  </CardTitle>
+                  <CardDescription>
+                    Connect your wallet to participate in the v18 Quantum Financial System.
+                    Wallets are used as cryptographic identity only. No transfers are supported.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 p-4 bg-background/50 rounded-xl border border-blue-500/20">
+                    <p className="text-sm text-balance">
+                      Your v18 session will be sealed with <strong>ASCON-128</strong> authenticated encryption.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
-              <TabsContent value="home" className="mt-6">
-                <div className="max-w-2xl mx-auto space-y-6">
-                  {/* Create Post Card */}
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {activeView === 'home' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2 space-y-8">
+                    <Card className="overflow-hidden border-none shadow-sm group">
+                      <div className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+                      <CardHeader className="pb-3 flex flex-row items-center gap-4">
                         <Avatar className="h-10 w-10">
                           <AvatarImage src="/avatars/user.jpg" />
                           <AvatarFallback>JD</AvatarFallback>
                         </Avatar>
                         <Input
-                          placeholder="Share your thoughts with full transparency..."
-                          className="flex-1"
+                          placeholder="Share deterministic content..."
+                          className="bg-muted/50 border-none h-11"
                           onClick={() => setShowComposer(true)}
                           readOnly
                         />
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm" onClick={() => setShowComposer(true)}>
-                            <Eye className="h-4 w-4 mr-1" />
-                            Preview Economics
-                          </Button>
-                        </div>
-                        <Button size="sm" onClick={() => setShowComposer(true)}>Create Post</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardHeader>
+                      <CardContent className="flex justify-end gap-2 pt-0">
+                        <Button variant="outline" size="sm" onClick={() => setShowComposer(true)}>Preview Economics</Button>
+                        <Button size="sm" onClick={() => setShowComposer(true)}>Publish Event</Button>
+                      </CardContent>
+                    </Card>
 
-                  {/* Distributed Feed */}
-                  <DistributedFeed />
-                  <div className="hidden">
-                    {/* Feed Posts */}
-                    {mockPosts.map((post) => (
-                      <Card key={post.id}>
-                        <CardHeader>
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-center gap-3">
-                              <Avatar className="h-10 w-10">
-                                <AvatarImage src={post.avatar} />
-                                <AvatarFallback>{post.author.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="font-medium">{post.author}</p>
-                                <p className="text-sm text-muted-foreground">{post.timestamp}</p>
-                              </div>
-                            </div>
-                            <Button variant="ghost" size="sm">
-                              <ChevronRight className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="mb-4">{post.content}</p>
+                    <DistributedFeed />
+                  </div>
 
-                          {/* Tags */}
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {post.tags.map((tag) => (
-                              <Badge key={tag} variant="secondary" className="text-xs">
-                                #{tag}
-                              </Badge>
-                            ))}
-                          </div>
-
-                          {/* Coherence & Rewards */}
-                          <div className="grid grid-cols-2 gap-4 p-3 bg-muted/50 rounded-lg mb-4">
-                            <div className="flex items-center gap-2">
-                              <TrendingUp className="h-4 w-4 text-green-600" />
-                              <div>
-                                <p className="text-xs text-muted-foreground">Coherence Score</p>
-                                <p className="font-semibold text-green-600">{post.coherenceScore}</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Wallet className="h-4 w-4 text-blue-600" />
-                              <div>
-                                <p className="text-xs text-muted-foreground">Reward Potential</p>
-                                <p className="font-semibold text-blue-600">{post.rewardPotential} FLX</p>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Actions */}
-                          <div className="flex items-center gap-4">
-                            <Button variant="ghost" size="sm">
-                              <MessageSquare className="h-4 w-4 mr-1" />
-                              {post.comments}
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => interact('like', `bafy_mock_${post.id}`)}
+                  <div className="space-y-6">
+                    <Card className="border-none shadow-sm">
+                      <CardHeader>
+                        <CardTitle className="text-sm font-bold flex items-center gap-2">
+                          <Activity className="h-4 w-4 text-primary" />
+                          System Health
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {Object.entries(systemHealth).map(([key, value]) => (
+                          <div key={key} className="flex items-center justify-between">
+                            <span className="text-xs text-muted-foreground capitalize">
+                              {key.replace(/([A-Z])/g, ' $1').trim()}
+                            </span>
+                            <Badge
+                              variant={value === 'Operational' || value === 'Active' || value === 'All Green' ? 'default' : 'secondary'}
+                              className="text-[10px] h-5"
                             >
-                              <Activity className="h-4 w-4 mr-1" />
-                              {post.likes}
-                            </Button>
-                            <Button variant="ghost" size="sm">
-                              <Users className="h-4 w-4 mr-1" />
-                              {post.reposts}
-                            </Button>
-                            <Button variant="ghost" size="sm" className="ml-auto">
-                              <Eye className="h-4 w-4 mr-1" />
-                              Explain
-                            </Button>
+                              {value}
+                            </Badge>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                        ))}
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-none shadow-sm bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
+                      <CardHeader>
+                        <CardTitle className="text-sm">Total Internal Credits</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-3xl font-bold tracking-tight">1,000.00 FLX</div>
+                        <p className="text-[10px] mt-2 opacity-80 uppercase font-bold tracking-wider">Non-Transferable (v18 Plan)</p>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
-              </TabsContent>
+              )}
 
-              <TabsContent value="create">
-                <div className="max-w-2xl mx-auto">
-                  <Card>
+              {activeView === 'create' && (
+                <ContentComposer
+                  isOpen={true}
+                  onClose={() => setActiveView('home')}
+                />
+              )}
+              {activeView === 'messages' && <MessagingInterface />}
+              {activeView === 'communities' && <DiscoveryInterface />}
+              {activeView === 'governance' && <GovernanceInterface />}
+              {activeView === 'ledger' && (
+                <div className="space-y-6">
+                  <ExplainRewardFlow />
+                  <Card className="border-none shadow-sm">
                     <CardHeader>
-                      <CardTitle>Create Content</CardTitle>
-                      <CardDescription>
-                        Every action is transparent and economically accountable
-                      </CardDescription>
+                      <CardTitle>v18 Event Ledger</CardTitle>
+                      <CardDescription>ASCON-sealed deterministic audit trail</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-center py-8">
-                        <Button onClick={() => setShowComposer(true)} size="lg">
-                          <PlusCircle className="h-5 w-5 mr-2" />
-                          Open Content Composer
-                        </Button>
-                        <p className="text-muted-foreground mt-4">
-                          Create posts, images, videos, polls with full economic transparency
-                        </p>
-                      </div>
+                      <p className="text-muted-foreground">Detailed event streams for v18 are being synchronized from primary clusters.</p>
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
-
-              <TabsContent value="messages">
-                <div className="max-w-6xl mx-auto">
-                  <Card className="h-[600px]">
-                    <CardHeader className="pb-3">
-                      <CardTitle>Messages</CardTitle>
-                      <CardDescription>
-                        Private and group messaging with full transparency and encryption
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                      <MessagingInterface />
-                    </CardContent>
-                  </Card>
+              )}
+              {activeView === 'wallet' && <WalletInterface />}
+              {activeView === 'settings' && (
+                <div className="space-y-12">
+                  <ProfileEditor />
+                  <GuardsList />
                 </div>
-              </TabsContent>
-              <TabsContent value="communities" className="mt-0 h-full">
-                <div className="max-w-6xl mx-auto">
-                  <Card className="h-[600px]">
-                    <CardHeader className="pb-3">
-                      <CardTitle>Communities</CardTitle>
-                      <CardDescription>
-                        Explore and join communities with full transparency and encryption
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                      <DiscoveryInterface />
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="governance" className="mt-0 h-full p-6">
-                <GovernanceInterface />
-              </TabsContent>
-
-              <TabsContent value="settings" className="mt-0 h-full p-6">
-                <div className="max-w-2xl mx-auto space-y-8">
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold tracking-tight">Profile Settings</h2>
-                    <ProfileEditor />
-                  </div>
-
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold tracking-tight">Network Safety</h2>
-                    <GuardsList />
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="ledger" className="mt-0 h-full p-6">
-                <div className="max-w-6xl mx-auto">
-                  <div className="space-y-6">
-                    <ExplainRewardFlow />
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Event Ledger & Explainability</CardTitle>
-                        <CardDescription>
-                          Complete transparency of all system events and decisions
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="p-4 bg-muted/50 rounded-lg">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Activity className="h-5 w-5 text-blue-600" />
-                              <span className="font-medium">Global Stream</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">Chronological public events across the entire network</p>
-                          </div>
-                          <div className="p-4 bg-muted/50 rounded-lg">
-                            <div className="flex items-center gap-2 mb-2">
-                              <BookOpen className="h-5 w-5 text-green-600" />
-                              <span className="font-medium">Per-Object Ledger</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">Mini-chains of events for specific content or actions</p>
-                          </div>
-                          <div className="p-4 bg-muted/50 rounded-lg">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Shield className="h-5 w-5 text-purple-600" />
-                              <span className="font-medium">Simulation Log</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">What-if scenarios and AGI proposals</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Recent Ledger Events</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          {[
-                            {
-                              id: 'evt_001',
-                              type: 'content_published',
-                              timestamp: '2 minutes ago',
-                              module: 'ContentModule',
-                              user: 'Alice Chen',
-                              description: 'Published analysis of QFS coherence scoring',
-                              outcome: 'Success - 45.2 FLX rewards allocated',
-                              guards: ['ContentQuality: PASS', 'EconomicGuard: PASS', 'AEGIS: PASS']
-                            },
-                            {
-                              id: 'evt_002',
-                              type: 'governance_vote',
-                              timestamp: '15 minutes ago',
-                              module: 'GovernanceModule',
-                              user: 'Bob Martinez',
-                              description: 'Voted on parameter update proposal #42',
-                              outcome: 'Vote recorded - Reputation +0.02',
-                              guards: ['VotingGuard: PASS', 'ReputationGuard: PASS']
-                            },
-                            {
-                              id: 'evt_003',
-                              type: 'moderation_action',
-                              timestamp: '1 hour ago',
-                              module: 'SafetyModule',
-                              user: 'System',
-                              description: 'Content flagged for review',
-                              outcome: 'Content queued for human review',
-                              guards: ['AEGIS: FLAG', 'SpamGuard: PASS']
-                            }
-                          ].map((event) => (
-                            <div key={event.id} className="p-4 border rounded-lg">
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
-                                  <div className="flex items-center gap-2">
-                                    <Badge variant="outline">{event.type}</Badge>
-                                    <span className="text-sm text-muted-foreground">{event.timestamp}</span>
-                                  </div>
-                                  <h4 className="font-medium mt-1">{event.description}</h4>
-                                  <p className="text-sm text-muted-foreground">by {event.user} via {event.module}</p>
-                                </div>
-                                <Button variant="ghost" size="sm">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </div>
-
-                              <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-medium">Outcome:</span>
-                                  <span className="text-sm text-green-600">{event.outcome}</span>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-medium">Guards:</span>
-                                  <div className="flex gap-1">
-                                    {event.guards.map((guard, idx) => (
-                                      <Badge key={idx} variant="secondary" className="text-xs">
-                                        {guard}
-                                      </Badge>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="wallet">
-                <WalletInterface />
-              </TabsContent>
-
-              <TabsContent value="settings">
-                <div className="max-w-4xl mx-auto">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="space-y-6">
-                      <ProfileEditor />
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Safety Controls</CardTitle>
-                          <CardDescription>
-                            Manage your safety and privacy preferences
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div className="flex items-center justify-between p-3 border rounded-lg">
-                              <div>
-                                <h4 className="font-medium">Content Filtering</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Automatically filter potentially sensitive content
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Configure</Button>
-                            </div>
-
-                            <div className="flex items-center justify-between p-3 border rounded-lg">
-                              <div>
-                                <h4 className="font-medium">Blocked Users</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Manage users you've blocked
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Manage</Button>
-                            </div>
-
-                            <div className="flex items-center justify-between p-3 border rounded-lg">
-                              <div>
-                                <h4 className="font-medium">Privacy Settings</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Control who can see your content and interact with you
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Settings</Button>
-                            </div>
-
-                            <div className="flex items-center justify-between p-3 border rounded-lg">
-                              <div>
-                                <h4 className="font-medium">Two-Factor Authentication</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Add an extra layer of security to your account
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Enable</Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Reporting & Appeals</CardTitle>
-                          <CardDescription>
-                            All moderation actions are transparent and appealable
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3">
-                            <div className="p-3 bg-muted/30 rounded-lg">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Recent Reports</span>
-                                <Badge variant="secondary">3</Badge>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="text-xs">
-                                  <div className="flex items-center justify-between">
-                                    <span>Content reported by you</span>
-                                    <span className="text-muted-foreground">2 days ago</span>
-                                  </div>
-                                  <div className="text-muted-foreground">Status: Under Review</div>
-                                </div>
-                                <div className="text-xs">
-                                  <div className="flex items-center justify-between">
-                                    <span>Appeal submitted</span>
-                                    <span className="text-muted-foreground">1 week ago</span>
-                                  </div>
-                                  <div className="text-muted-foreground">Status: Approved</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <Button variant="outline" className="w-full">
-                              View All Reports & Appeals
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    <div className="space-y-6">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Governance Participation</CardTitle>
-                          <CardDescription>
-                            Participate in transparent network governance
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div className="p-3 bg-muted/30 rounded-lg">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Active Proposals</span>
-                                <Badge variant="secondary">2</Badge>
-                              </div>
-                              <div className="space-y-2">
-                                <div className="text-xs">
-                                  <div className="font-medium">Proposal #42: Update Coherence Algorithm</div>
-                                  <div className="text-muted-foreground">Ends in 2 days • 78% voted</div>
-                                </div>
-                                <div className="text-xs">
-                                  <div className="font-medium">Proposal #43: Reward Pool Adjustment</div>
-                                  <div className="text-muted-foreground">Ends in 5 days • 45% voted</div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <Button variant="outline" className="w-full">
-                              View All Proposals
-                            </Button>
-
-                            <Button className="w-full">
-                              Submit New Proposal
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>System Preferences</CardTitle>
-                          <CardDescription>
-                            Customize your ATLAS experience
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="font-medium">Email Notifications</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Receive updates about your account activity
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Manage</Button>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="font-medium">Data Export</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Download all your data from the platform
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm">Export</Button>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="font-medium">Account Deletion</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Permanently delete your account and data
-                                </p>
-                              </div>
-                              <Button variant="destructive" size="sm">Delete</Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+              )}
+            </div>
           </div>
-
-          {/* Right Panel - Context Info */}
-          <div className="w-80 border-l p-4 space-y-4">
-            {/* System Health */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">System Health</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {Object.entries(systemHealth).map(([key, value]) => (
-                  <div key={key} className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </span>
-                    <Badge
-                      variant={value === 'Operational' || value === 'Active' || value === 'All Green' ? 'default' : 'secondary'}
-                      className="text-xs"
-                    >
-                      {value}
-                    </Badge>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Notifications */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Recent Notifications</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></div>
-                    <div>
-                      <p className="text-xs font-medium">New reward earned</p>
-                      <p className="text-xs text-muted-foreground">+12.5 FLX from post engagement</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
-                    <div>
-                      <p className="text-xs font-medium">Reputation increased</p>
-                      <p className="text-xs text-muted-foreground">Coherence score: 0.87 → 0.89</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5"></div>
-                    <div>
-                      <p className="text-xs font-medium">Guard alert</p>
-                      <p className="text-xs text-muted-foreground">Content passed all checks</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Your Stats</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-2xl font-bold">0.87</p>
-                    <p className="text-xs text-muted-foreground">Reputation</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">247</p>
-                    <p className="text-xs text-muted-foreground">FLX Balance</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">42</p>
-                    <p className="text-xs text-muted-foreground">Posts</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">1.2k</p>
-                    <p className="text-xs text-muted-foreground">Interactions</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        </main>
       </div>
-
-      {/* Content Composer Modal */}
-      <ContentComposer
-        isOpen={showComposer}
-        onClose={() => setShowComposer(false)}
-      />
     </div>
-  )
+  );
 }

@@ -1,37 +1,42 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { getTreasury, TreasuryEngine, TokenAccount, TransactionRecord } from '@/lib/economics/treasury-engine';
-import { useAuth } from './useAuth';
+import { getTreasury, TokenAccount, TransactionRecord } from '@/lib/economics/treasury-engine';
+import { useWalletAuth } from './useWalletAuth';
 
 export function useTreasury() {
-    const { did } = useAuth();
+    const { address: walletAddress, isConnected } = useWalletAuth();
     const [balance, setBalance] = useState<TokenAccount | null>(null);
     const [history, setHistory] = useState<TransactionRecord[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const refresh = useCallback(() => {
-        if (!did) return;
+    const refresh = useCallback(async () => {
+        // We can always show data for the connected user or a default
+        const identifier = walletAddress || 'demo_user';
 
-        const treasury = getTreasury();
-        const acct = treasury.getBalance(did);
-        const txs = treasury.getHistory(did);
+        try {
+            const treasury = getTreasury();
+            // treasury is an instance of TreasuryService
 
-        setBalance({ ...acct }); // Clone to trigger update if needed
-        setHistory([...txs]);
-        setIsLoading(false);
-    }, [did]);
+            const [acct, txs] = await Promise.all([
+                treasury.getBalance(identifier),
+                treasury.getHistory(identifier)
+            ]);
+
+            setBalance(acct);
+            setHistory(txs);
+        } catch (e) {
+            console.error("Failed to refresh treasury in useTreasury hook:", e);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [walletAddress]);
 
     useEffect(() => {
-        if (!did) return;
-
-        // Initial load
         refresh();
-
-        // Poll for updates (simple reactivity for simulation)
-        const interval = setInterval(refresh, 2000);
+        const interval = setInterval(refresh, 60000); // 60s poll for treasury
         return () => clearInterval(interval);
-    }, [did, refresh]);
+    }, [refresh]);
 
     return {
         balance,

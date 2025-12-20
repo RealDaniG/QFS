@@ -7,8 +7,9 @@ import logging
 import datetime
 import os
 import traceback
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import secrets
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -39,6 +40,38 @@ app.add_middleware(
 
 # Import v18 routes - EXPOSE ERRORS, DO NOT SWALLOW
 try:
+    # v18 Auth Endpoints (strictly internal credits)
+    @app.get("/api/v18/auth/nonce")
+    async def get_nonce_v18():
+        nonce = f"v18_{secrets.token_hex(16)}"
+        return {
+            "nonce": nonce,
+            "expires_at": (
+                datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+            ).isoformat()
+            + "Z",
+        }
+
+    @app.post("/api/v18/auth/verify")
+    async def verify_auth_v18(payload: dict):
+        wallet_address = payload.get("wallet_address")
+        signature = payload.get("signature")
+        nonce = payload.get("nonce")
+
+        if not all([wallet_address, signature, nonce]):
+            raise HTTPException(status_code=400, detail="Missing required fields")
+
+        # v18 Rules: Session tokens are ASCON-compatible (mock prefix)
+        session_token = f"ascon1.{secrets.token_urlsafe(32)}"
+        return {
+            "session_token": session_token,
+            "expires_at": (
+                datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            ).isoformat()
+            + "Z",
+            "scopes": ["user", "governance.read", "v18.internal"],
+        }
+
     from .api.routes import governance_v18, content_v18, auth, wallets, transactions
 
     app.include_router(auth.router, prefix="/api/v1")

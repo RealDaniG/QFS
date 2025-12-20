@@ -1,0 +1,84 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e7]: AT
+          - generic [ref=e8]: ATLAS v18
+        - button [ref=e9]:
+          - img
+      - navigation [ref=e13]:
+        - button "Home" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: Home
+        - button "Create" [ref=e19]:
+          - img [ref=e20]
+          - generic [ref=e22]: Create
+        - button "Messages" [ref=e23]:
+          - img [ref=e24]
+          - generic [ref=e26]: Messages
+        - button "Communities" [ref=e27]:
+          - img [ref=e28]
+          - generic [ref=e33]: Communities
+        - button "Governance" [active] [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e37]: Governance
+        - button "Ledger & Explain" [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e42]: Ledger & Explain
+        - button "Wallet & Reputation" [ref=e43]:
+          - img [ref=e44]
+          - generic [ref=e47]: Wallet & Reputation
+        - button "Settings & Safety" [ref=e48]:
+          - img [ref=e49]
+          - generic [ref=e52]: Settings & Safety
+      - generic [ref=e54]:
+        - generic [ref=e56]: JD
+        - generic [ref=e57]:
+          - paragraph [ref=e58]: Not Connected
+          - paragraph [ref=e61]: "Reputation: 142"
+    - generic [ref=e62]:
+      - banner [ref=e63]:
+        - generic [ref=e64]:
+          - heading "governance" [level=2] [ref=e65]
+          - generic [ref=e66]:
+            - img [ref=e67]
+            - textbox "Search v18 clusters..." [ref=e70]
+        - generic [ref=e71]:
+          - generic [ref=e72]: Disconnected
+          - button [ref=e73]:
+            - img
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - img [ref=e80]
+                - text: Authentication Required
+              - generic [ref=e82]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
+            - paragraph [ref=e85]:
+              - text: Your v18 session will be sealed with
+              - strong [ref=e86]: ASCON-128
+              - text: authenticated encryption.
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - heading "Protocol Governance" [level=2] [ref=e91]
+                - paragraph [ref=e92]: Vote on parameter updates and policy changes.
+              - button "New Proposal" [ref=e93]:
+                - img
+                - text: New Proposal
+            - generic [ref=e94]:
+              - tablist [ref=e95]:
+                - tab "Active" [selected] [ref=e96]
+                - tab "Passed" [ref=e97]
+                - tab "Rejected" [ref=e98]
+              - tabpanel "Active" [ref=e99]:
+                - generic [ref=e100]: Loading proposals...
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e101]
+```

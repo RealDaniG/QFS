@@ -38,7 +38,7 @@ export default function WalletInterface() {
                 <div className="lg:col-span-2 space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Token Balances</CardTitle>
+                            <CardTitle>Wallet Balance</CardTitle>
                             <div className="flex justify-between items-center">
                                 <CardDescription>
                                     {isConnected ? (

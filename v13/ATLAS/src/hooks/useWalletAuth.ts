@@ -72,17 +72,20 @@ export function useWalletAuth() {
             const address = await signer.getAddress();
 
             // 1. Get Nonce
-            // v18: Endpoint is /api/v1/auth/nonce
-            const nonceRes = await atlasFetch('/api/v1/auth/nonce', { auth: false });
+            // v18: Endpoint is /api/v18/auth/nonce
+            const nonceRes = await atlasFetch('/api/v18/auth/nonce', {
+                method: 'GET',
+                auth: false
+            });
             if (!nonceRes.ok) throw new Error("Failed to fetch nonce");
             const { nonce } = await nonceRes.json();
 
             // 2. Sign Nonce
             const signature = await signer.signMessage(nonce);
 
-            // 3. Login
-            // v18: Endpoint is /api/v1/auth/login
-            const loginRes = await atlasFetch('/api/v1/auth/login', {
+            // 3. Login / Verify
+            // v18: Endpoint is /api/v18/auth/verify
+            const loginRes = await atlasFetch('/api/v18/auth/verify', {
                 method: 'POST',
                 auth: false,
                 body: JSON.stringify({
