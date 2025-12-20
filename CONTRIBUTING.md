@@ -91,11 +91,12 @@ See the [Maintainer's Guide](docs/MAINTAINERS_GUIDE.md) for triage, labeling, an
 
 Your PR **will be rejected** if it fails any of these checks:
 
-1. **Tests Passing**: `pytest v13/tests/` must be 100% green.
+1. **Tests Passing**: `pytest v13/tests/`, `pytest v18/tests/` (backbone), and `pytest v18/tests/test_ascon_sessions.py` must be 100% green.
 2. **Regression Verified**: `python v13/tests/regression/phase_v14_social_full.py` must complete successfully.
 3. **Core Invariants**: PR description must include the [Core Invariant Checklist](docs/PR_TEMPLATE_v15.5.md).
 4. **Type Safety**: No new `mypy` errors introduced.
-4. **Deterministic**: No non-deterministic code (e.g., `random.random()`, `time.time()` outside of controlled contexts).
+5. **Deterministic**: No non-deterministic code (e.g., `random.random()`, `time.time()` outside of controlled contexts).
+6. **Distributed Proof**: For ATLAS App changes, verify compatibility with the v18 Cluster simulator.
 
 ---
 

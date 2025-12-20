@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ValueNodeRewardExplanation, ContentRankingExplanation, SimplifiedExplanation } from '@/lib/qfs/explain-this';
+import { atlasFetch } from '../lib/api';
 
 type ExplanationType = ValueNodeRewardExplanation | ContentRankingExplanation | SimplifiedExplanation;
 
@@ -13,13 +14,6 @@ interface UseExplainResult {
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
-
-function getAuthToken() {
-    if (typeof window !== 'undefined') {
-        return localStorage.getItem('token') || '';
-    }
-    return '';
-}
 
 export function useExplain(): UseExplainResult {
     const [isLoading, setIsLoading] = useState(false);

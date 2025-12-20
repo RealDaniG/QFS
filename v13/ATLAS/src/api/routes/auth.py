@@ -5,16 +5,12 @@ Handles wallet authentication via challenge-response.
 
 from fastapi import APIRouter, HTTPException, Body
 from pydantic import BaseModel
+from ..dependencies import session_manager
 from v15.atlas.auth.nonce_manager import NonceManager
 from v15.atlas.auth.wallet_auth import WalletAuth
-from v15.atlas.auth.session_manager import SessionManager
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-# Instantiate Managers (Singleton for now)
-# In production, these should be initialized at app startup or via dependency injection
 nonce_manager = NonceManager()
-session_manager = SessionManager()
 
 
 class LoginRequest(BaseModel):

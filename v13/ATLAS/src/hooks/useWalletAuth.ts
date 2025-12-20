@@ -96,6 +96,11 @@ export function useWalletAuth() {
 
             const sessionData: LoginResponse = await loginRes.json();
 
+            // v18.5: Verify Ascon token prefix
+            if (!sessionData.session_token.startsWith('ascon1.')) {
+                console.warn("Received non-Ascon token. Expected 'ascon1.' prefix for v18 Distributed compliance.");
+            }
+
             // Store session
             localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 

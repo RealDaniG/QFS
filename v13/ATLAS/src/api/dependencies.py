@@ -11,13 +11,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 from ..qfs_client import QFSClient
-from ..qfs_client import QFSClient
 from ..real_ledger import RealLedger
-from ..models.user import User
 from v13.core.CoherenceLedger import CoherenceLedger
 from v13.core.StorageEngine import StorageEngine
 from v13.core.QFSReplaySource import QFSReplaySource
 from v13.libs.CertifiedMath import CertifiedMath
+from v15.auth.session_manager import SessionManager
 
 logger = logging.getLogger(__name__)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
@@ -140,16 +139,15 @@ async def get_current_active_user(
     return current_user
 
 
-from v15.atlas.auth.session_manager import SessionManager
-
-_session_manager = SessionManager()
+# Session Manager Singleton
+session_manager = SessionManager()
 
 
 async def get_current_session(token: str = Depends(oauth2_scheme)) -> dict:
     """
     Validates the session token and returns session data.
     """
-    session = _session_manager.validate_session(token)
+    session = session_manager.validate_session(token)
     if not session:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

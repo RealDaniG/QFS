@@ -42,4 +42,14 @@ The distributed Tier A backbone is now consensus-driven, PQC-anchored, and clean
     - Anchor generation under stress.  
     - Replay of a full cluster history onto a fresh node, verifying both consensus state and anchors.
 
-The system now has a deterministic, cryptographically anchored core suitable for real Tier A deployment experiments, with v17’s governance, bounty, social, and advisory layers riding on top without modification.
+The system now has a deterministic, cryptographically anchored core suitable for real Tier A deployment experiments, with v17’s governance, bounty, social, and advisory layers ready for the **v18.9 ATLAS App Alpha** transition.
+
+## Transition to v18.9 ATLAS App Alpha
+
+The backbone completion marks the start of unifying the **ATLAS User Application** with the distributed fabric. The upcoming phase focuses on:
+
+- **Unified Ascon Auth**: Moving from legacy UUID sessions to Ascon-protected v18.5 tokens.
+- **Consensus Bridge**: Replacing `StubAdapter` with `v18ClusterAdapter` for real social/governance writes.
+- **Live Projections**: Driving Secure Chat and Governance views directly from the consensus-backed EvidenceBus.
+
+Reference: [ATLAS_V18_GAP_REPORT.md](../ATLAS_V18_GAP_REPORT.md)

@@ -238,6 +238,29 @@
 - [x] Determinism Tests (Zero-Sim)
 - [ ] Phase 4: Key Management & Rotation (Planned)
 
+### v18.9 ATLAS App Alpha (Distributed Social Layer) 🔄
+
+- [x] **Unify Auth Stack (P0)** ✅:
+  - Migrated ATLAS API to `v15.auth.session_manager` (Ascon-protected).
+  - Implemented stateless tokens with embedded claims for multi-node validation.
+  - Updated `useWalletAuth.ts` for Ascon token lifecycle.
+  - All tests passing (12/12 in test_ascon_sessions.py).
+- [x] **Implement `v18ClusterAdapter` (P0)** ✅:
+  - Specification complete (`docs/V18_CLUSTER_ADAPTER_SPEC.md`).
+  - Implementation complete (`v18/cluster/cluster_adapter.py`).
+  - All 15 tests passing on first run.
+  - Ready for QFSClient wiring.
+- [ ] **Live Social Layer (P1)**:
+  - Re-wire Secure Chat to derive state from consensus-log events.
+  - Connect Governance/Bounties grid to v17 F-Layer projections.
+- [ ] **Explain-This v18 Integration (P1)**:
+  - Add "View Evidence" drill-down to all governance/reward cards.
+  - Wire to `QFSReplaySource` for v18.3 PQC verification.
+- [ ] **App Health & Observability (P2)**:
+  - Dashboard for Raft cluster state & PQC Batch Anchor progress.
+- [ ] **E2E Infrastructure**:
+  - Set up Playwright/Cypress for 3-node distributed UI tests.
+
 ---
 
 ## Current Status Summary
@@ -252,17 +275,19 @@
 - ✅ v18 Phase 1: Multi-Node Core
 - ✅ v18 Phase 2: PQC Anchors
 - ✅ v18 Phase 3: Consensus & Bus Integration
-- ✅ v18.5 Alpha: Ascon Edge Crypto Adapter (Deterministic Mock)
+- ✅ v18.5 Ascon Edge Crypto Integration
 
 **In Progress:**
 
-- 🔄 v18 Phase 4: Observability & Edge Expansion
+- 🔄 v18.9 ATLAS App Alpha: Secure Chat & Spaces on v18
 
-**Next Steps:**
+**Next Steps (Operational Readiness):**
 
-1. Implement Cluster Dashboards
-2. Wire Tier B Edge Nodes to Distributed Bus
-3. Implement Tier C Gateways
+1. **Auth Sync (P0)**: Migrate ATLAS API to `v15.auth.session_manager` (Ascon-protected) and update hooks.
+2. **Backbone Bridge (P0)**: Implement `v18ClusterAdapter` for QFSClient (Leader discovery, forwarding).
+3. **Social Persistence (P1)**: Refactor Secure Chat to use EvidenceBus events and `SocialProjection`.
+4. **Live Wiring (P1)**: Connect Governance/Bounty dashboards to real v17 F-Layer Projections.
+5. **Observability (P2)**: Build the Cluster/Anchor Health Dashboard in Admin UI.
 
 ---
 

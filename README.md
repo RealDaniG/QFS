@@ -12,9 +12,9 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** Production-ready v16.1.x baseline • v18.0.0-alpha distributed backbone  
-**Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • AGPL-3.0 licensed  
-**Focus:** Distributed consensus • PQC anchoring • Deterministic governance • Edge expansion
+**Status:** v18.0.0-alpha Distributed Backbone (Complete) • v18.5 Ascon Edge (Complete) • v18.6 Auth Sync (Complete)  
+**Current Focus:** v18.9 ATLAS App Alpha (Distributed App Integration)  
+**Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
 </div>
 
@@ -80,10 +80,6 @@ Most digital platforms suffer from structural issues:
 - ✅ **PoE**: Full EvidenceBus logging for replay.
 
 **Status:** Beta (Ready for Testing)
-
----
-
-## 💎 Key Benefits
 
 ### For Users
 
@@ -325,11 +321,11 @@ The distributed Tier A backbone is now consensus-driven, PQC-anchored, and clean
 
 - **✅ Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core.
 - **✅ PQC Anchors**: Real post-quantum signatures (Dilithium) to anchor EvidenceBus batches.
-- **✅ F-Layer Wiring**: Consensus-driven EvidenceBus commits with audit metadata.
-- **🔄 Phase 4: Observability**: Cluster and anchor monitoring dashboards.
+- **✅ Ascon Edge Crypto**: Session protection and message AEAD.
+- **🔄 v18.9 ATLAS App Alpha**: Unifying UI with distributed backbone and real data projections (In Progress).
 - **🔮 Phase 5: Edge Expansion**: UI and Advisory agents deployed to Tier B/C nodes.
 
-See [V18_BACKBONE_COMPLETE.md](docs/RELEASES/v18_BACKBONE_COMPLETE.md) for details.
+See [V18_BACKBONE_COMPLETE.md](docs/RELEASES/v18_BACKBONE_COMPLETE.md) and [ATLAS_V18_GAP_REPORT.md](docs/ATLAS_V18_GAP_REPORT.md) for details.
 
 ---
 
