@@ -10,6 +10,25 @@
   - Verify `RealLedger` connection strings.
   - Ensure persistence layer (e.g., PostgreSQL or File Store) is writable.
 
+## Infrastructure Diagram (Phase 1)
+
+```mermaid
+graph TD
+    Client[User Browser/App] -->|HTTPS| CDN[CDN / Load Balancer]
+    CDN -->|Next.js| FE[Frontend Server]
+    CDN -->|API Req| API[FastAPI Backend - Workers]
+    
+    subgraph "Backend Cluster (Private)"
+        API -->|Read/Write| Ledger[RealLedger / DB]
+        API -->|Sign| PQC[PQC Crypto Service / HSM]
+        API -->|Gossip| P2P[P2P Network Node]
+    end
+    
+    subgraph "External"
+        P2P <-->|Sync| OtherNodes[Other QFS Nodes]
+    end
+```
+
 ## Application Server (FastAPI)
 
 - [ ] **Process Manager**:
