@@ -1,8 +1,8 @@
 {
-  "files_analyzed": 1577,
-  "files_with_violations": 52,
-  "total_violations": 101,
-  "standard_violations": 101,
+  "files_analyzed": 1592,
+  "files_with_violations": 56,
+  "total_violations": 112,
+  "standard_violations": 112,
   "mockqpc_violations": 0,
   "critical_violations": 0,
   "violations": {
@@ -1723,6 +1723,193 @@
         },
         "context": "1.0",
         "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 29,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.3",
+        "file": ".\\v15\\ui\\admin_dashboard.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 53,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.5",
+        "file": ".\\v15\\ui\\admin_dashboard.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 16,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v17\\bounties\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 17,
+        "col": 11,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v17\\bounties\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 18,
+        "col": 11,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v17\\bounties\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 41,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v17\\bounties\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 19,
+        "col": 20,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v17\\governance\\f_voting.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 17,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v17\\governance\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 17,
+        "col": 24,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v17\\governance\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 20,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v17\\governance\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 20,
+        "col": 24,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v17\\governance\\schemas.py"
       }
     ],
     "mockqpc": []
