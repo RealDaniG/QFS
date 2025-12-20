@@ -39,7 +39,6 @@ def test_admin_dashboard_integration():
 
         # 5. Test Social Profile
         profile = dashboard.get_user_profile("0xAdmin")
-        print(f"DEBUG PROFILE: {profile}")
         assert profile["stats"]["proposals"] == 1
 
         # 6. Test Conversations (Empty)
