@@ -6,7 +6,6 @@ Ensures all agent outputs are PoE-logged and non-authoritative.
 """
 
 from typing import Dict, List, Optional
-import hashlib
 
 from v15.evidence.bus import EvidenceBus
 from v15.agents.schemas import (
@@ -230,9 +229,20 @@ class AdvisoryRouter:
         if entity_id or advisory_type:
             filtered = []
             for e in advisory_events:
-                advisory_data = (
-                    e.get("event", {}).get("payload", {}).get("advisory", {})
-                )
+                if not isinstance(e, dict):
+                    continue
+
+                event_data = e.get("event", {})
+                if not isinstance(event_data, dict):
+                    continue
+
+                payload = event_data.get("payload", {})
+                if not isinstance(payload, dict):
+                    continue
+
+                advisory_data = payload.get("advisory", {})
+                if not isinstance(advisory_data, dict):
+                    continue
 
                 # Filter by type
                 if (
@@ -249,9 +259,18 @@ class AdvisoryRouter:
                     risk_flag = advisory_data.get("risk_flag", {})
 
                     if not (
-                        content_score.get("content_id") == entity_id
-                        or recommendation.get("entity_id") == entity_id
-                        or risk_flag.get("entity_id") == entity_id
+                        (
+                            isinstance(content_score, dict)
+                            and content_score.get("content_id") == entity_id
+                        )
+                        or (
+                            isinstance(recommendation, dict)
+                            and recommendation.get("entity_id") == entity_id
+                        )
+                        or (
+                            isinstance(risk_flag, dict)
+                            and risk_flag.get("entity_id") == entity_id
+                        )
                     ):
                         continue
 
