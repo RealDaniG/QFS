@@ -77,8 +77,29 @@
                 - tab "Passed" [ref=e97]
                 - tab "Rejected" [ref=e98]
               - tabpanel "Active" [ref=e99]:
-                - generic [ref=e100]: Loading proposals...
+                - generic [ref=e100]:
+                  - generic [ref=e102]:
+                    - generic [ref=e103]:
+                      - generic [ref=e104]: Increase Treasury Allocation
+                      - generic [ref=e105]: "ID: prop_001... • Creator: 0xABC123..."
+                    - generic [ref=e106]: ACTIVE
+                  - generic [ref=e107]:
+                    - paragraph [ref=e108]: Proposal to increase FLX allocation for bounties
+                    - generic [ref=e109]:
+                      - generic [ref=e110]:
+                        - generic [ref=e111]: Current Votes (57)
+                        - generic [ref=e112]: 78.9% Yes
+                      - progressbar [ref=e113]
+                  - generic [ref=e115]:
+                    - button "Reject" [ref=e116]:
+                      - img
+                      - text: Reject
+                    - button "Approve" [ref=e117]:
+                      - img
+                      - text: Approve
   - region "Notifications (F8)":
     - list
-  - alert [ref=e101]
+  - alert [ref=e118]
+  - button "Open Next.js Dev Tools" [ref=e124] [cursor=pointer]:
+    - img [ref=e125]
 ```

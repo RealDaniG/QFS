@@ -235,4 +235,4 @@ QFS × ATLAS follows a clean, organized structure with clear separation between 
 ---
 
 **Last Updated**: 2025-12-18 (v14.0 release)  
-**Next Review**: Before v15.0 release
+**Next Review**: Before current baseline.0 release

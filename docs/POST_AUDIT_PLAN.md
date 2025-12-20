@@ -1,4 +1,4 @@
-# QFS v15 Post-Audit Plan
+# QFS current baseline Post-Audit Plan
 
 > **Status:** Ready for External Review  
 > **Date:** Dec 19, 2025  
@@ -32,7 +32,7 @@
 
 **Scope:**
 
-- Deploy v15 governance to isolated testnet environment
+- Deploy current baseline governance to isolated testnet environment
 - Enable community NOD operators to participate
 - Run 30-day governance dry-run period
 
@@ -43,7 +43,7 @@
 - Zero AEGIS coherence violations
 - All PoE artifacts publicly verifiable
 
-**Timeline:** Q1 2026 (Jan-Feb)
+**Timeline:** Implementation Baseline (Jan-Feb)
 
 ---
 
@@ -57,7 +57,7 @@
 
 **Deliverables to Provide:**
 
-1. Complete codebase (`v15/` directory)
+1. Complete codebase (`current baseline/` directory)
 2. `AUDIT_PLAN.md` and `AUDIT_RESULTS_SUMMARY.md`
 3. All test suites and PoE artifacts
 4. Documentation package (specs, playbooks, onboarding)
@@ -69,7 +69,7 @@
 - Economic parameter manipulation risks
 - AEGIS coherence bypass attempts
 
-**Timeline:** Q1 2026 (Feb-Mar)
+**Timeline:** Implementation Baseline (Feb-Mar)
 
 ---
 
@@ -173,7 +173,7 @@ The following conditions **MUST** be met before declaring mainnet governance ful
 
 1. **Prepare Testnet Deployment**
    - Configure isolated network
-   - Deploy v15 governance contracts
+   - Deploy current baseline governance contracts
    - Set up monitoring infrastructure
 
 2. **Engage Security Firms**

@@ -77,11 +77,21 @@ export function ExplainRewardFlow() {
       {showExplanation && explanation && (
         <ExplainThisPanel
           type="reward"
-          data={{
-            base: explanation.base,
+          explanation={{
+            wallet_id: explanation.wallet_id,
+            user_id: explanation.wallet_id, // Mapping for compatibility
+            reward_event_id: "demo",
+            epoch: explanation.epoch,
+            timestamp: Date.now(),
+            base_reward: { ATR: explanation.base },
             bonuses: explanation.bonuses,
             caps: explanation.caps,
             guards: explanation.guards,
+            policy_version: "v18",
+            policy_hash: "demo",
+            total_reward: { ATR: explanation.total },
+            explanation_hash: explanation.metadata.replay_hash,
+            reason_codes: [],
           }}
           onClose={() => setShowExplanation(false)}
         />

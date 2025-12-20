@@ -37,6 +37,10 @@ import GovernanceInterface from '@/components/GovernanceInterface';
 import GuardsList from '@/components/GuardsList';
 import DistributedFeed from '@/components/DistributedFeed';
 
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { WalletConnectButton } from '@/components/WalletConnectButton';
+import { NotificationPanel } from '@/components/NotificationPanel';
+
 export default function AtlasDashboard() {
   const { isConnected, address, isLoading: authLoading } = useWalletAuth();
   const router = useRouter();
@@ -44,14 +48,13 @@ export default function AtlasDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeView, setActiveView] = useState('home');
   const [showComposer, setShowComposer] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // v18 Login Gate
   useEffect(() => {
     if (!authLoading && !isConnected) {
       // For now, if not connected, we show a simplified welcome or prompt
-      // We don't want to hard redirect if the user is just browsing the public parts
-      // but the plan says "No valid session token -> redirect to /login"
-      // However, /login doesn't exist yet, I'll use a local state gate first.
     }
   }, [isConnected, authLoading]);
 
@@ -118,6 +121,7 @@ export default function AtlasDashboard() {
               return (
                 <button
                   key={item.id}
+                  data-testid={`nav-${item.id}`}
                   onClick={() => setActiveView(item.id)}
                   className={cn(
                     "flex items-center w-full transition-all duration-200 group relative",
@@ -146,10 +150,15 @@ export default function AtlasDashboard() {
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{displayAddress}</p>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Reputation: 142</p>
-                </div>
+                {isConnected && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Reputation: 142</p>
+                  </div>
+                )}
+                {!isConnected && (
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Unauthenticated</p>
+                )}
               </div>
             )}
           </div>
@@ -160,22 +169,48 @@ export default function AtlasDashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="flex items-center justify-between p-4 border-b bg-card/80 backdrop-blur-md sticky top-0 z-10">
           <div className="flex items-center gap-4 flex-1">
-            <h2 className="text-lg font-bold capitalize">{activeView.replace('-', ' ')}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-bold capitalize">{activeView.replace('-', ' ')}</h2>
+              <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[10px] font-mono">
+                v18-ALPHA
+              </Badge>
+            </div>
             <div className="relative max-w-sm flex-1 hidden md:block">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search v18 clusters..."
                 className="pl-10 bg-muted/50 border-none h-9 focus-visible:ring-1"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {!isConnected && <Badge variant="destructive" className="animate-pulse">Disconnected</Badge>}
-            <Button variant="ghost" size="icon" className="relative">
+          <div className="flex items-center gap-3 relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "relative cursor-pointer hover:bg-muted transition-colors",
+                showNotifications && "bg-muted"
+              )}
+              onClick={() => setShowNotifications(!showNotifications)}
+              id="notification-bell"
+            >
               <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-600 rounded-full border-2 border-card" />
+              {!showNotifications && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-600 rounded-full border-2 border-card animate-pulse" />
+              )}
             </Button>
+
+            {showNotifications && (
+              <div className="absolute top-full right-0 mt-2 z-50 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+                <NotificationPanel />
+              </div>
+            )}
+
+            <div className="h-8 w-px bg-border mx-1" />
+            <WalletConnectButton />
           </div>
         </header>
 
@@ -204,100 +239,103 @@ export default function AtlasDashboard() {
             )}
 
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {activeView === 'home' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2 space-y-8">
-                    <Card className="overflow-hidden border-none shadow-sm group">
-                      <div className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
-                      <CardHeader className="pb-3 flex flex-row items-center gap-4">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src="/avatars/user.jpg" />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <Input
-                          placeholder="Share deterministic content..."
-                          className="bg-muted/50 border-none h-11"
-                          onClick={() => setShowComposer(true)}
-                          readOnly
-                        />
-                      </CardHeader>
-                      <CardContent className="flex justify-end gap-2 pt-0">
-                        <Button variant="outline" size="sm" onClick={() => setShowComposer(true)}>Preview Economics</Button>
-                        <Button size="sm" onClick={() => setShowComposer(true)}>Publish Event</Button>
-                      </CardContent>
-                    </Card>
+              <ErrorBoundary name={activeView}>
+                {activeView === 'home' && (
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-8">
+                      <Card className="overflow-hidden border-none shadow-sm group">
+                        <div className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+                        <CardHeader className="pb-3 flex flex-row items-center gap-4">
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src="/avatars/user.jpg" />
+                            <AvatarFallback>JD</AvatarFallback>
+                          </Avatar>
+                          <Input
+                            data-testid="composer-trigger"
+                            placeholder="Share deterministic content..."
+                            className="bg-muted/50 border-none h-11"
+                            onClick={() => setShowComposer(true)}
+                            readOnly
+                          />
+                        </CardHeader>
+                        <CardContent className="flex justify-end gap-2 pt-0">
+                          <Button variant="outline" size="sm" onClick={() => setShowComposer(true)}>Preview Economics</Button>
+                          <Button size="sm" onClick={() => setShowComposer(true)}>Publish Event</Button>
+                        </CardContent>
+                      </Card>
 
-                    <DistributedFeed />
+                      <DistributedFeed />
+                    </div>
+
+                    <div className="space-y-6">
+                      <Card className="border-none shadow-sm">
+                        <CardHeader>
+                          <CardTitle className="text-sm font-bold flex items-center gap-2">
+                            <Activity className="h-4 w-4 text-primary" />
+                            System Health
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {Object.entries(systemHealth).map(([key, value]) => (
+                            <div key={key} className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground capitalize">
+                                {key.replace(/([A-Z])/g, ' $1').trim()}
+                              </span>
+                              <Badge
+                                variant={value === 'Operational' || value === 'Active' || value === 'All Green' ? 'default' : 'secondary'}
+                                className="text-[10px] h-5"
+                              >
+                                {value}
+                              </Badge>
+                            </div>
+                          ))}
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-none shadow-sm bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
+                        <CardHeader>
+                          <CardTitle className="text-sm">Total Internal Credits</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="text-3xl font-bold tracking-tight">1,000.00 FLX</div>
+                          <p className="text-[10px] mt-2 opacity-80 uppercase font-bold tracking-wider">Non-Transferable (v18 Plan)</p>
+                        </CardContent>
+                      </Card>
+                    </div>
                   </div>
+                )}
 
+                {activeView === 'create' && (
+                  <ContentComposer
+                    isOpen={true}
+                    onClose={() => setActiveView('home')}
+                  />
+                )}
+                {activeView === 'messages' && <MessagingInterface />}
+                {activeView === 'communities' && <DiscoveryInterface />}
+                {activeView === 'governance' && <GovernanceInterface />}
+                {activeView === 'ledger' && (
                   <div className="space-y-6">
+                    <ExplainRewardFlow />
                     <Card className="border-none shadow-sm">
                       <CardHeader>
-                        <CardTitle className="text-sm font-bold flex items-center gap-2">
-                          <Activity className="h-4 w-4 text-primary" />
-                          System Health
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {Object.entries(systemHealth).map(([key, value]) => (
-                          <div key={key} className="flex items-center justify-between">
-                            <span className="text-xs text-muted-foreground capitalize">
-                              {key.replace(/([A-Z])/g, ' $1').trim()}
-                            </span>
-                            <Badge
-                              variant={value === 'Operational' || value === 'Active' || value === 'All Green' ? 'default' : 'secondary'}
-                              className="text-[10px] h-5"
-                            >
-                              {value}
-                            </Badge>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card className="border-none shadow-sm bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
-                      <CardHeader>
-                        <CardTitle className="text-sm">Total Internal Credits</CardTitle>
+                        <CardTitle>v18 Event Ledger</CardTitle>
+                        <CardDescription>ASCON-sealed deterministic audit trail</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="text-3xl font-bold tracking-tight">1,000.00 FLX</div>
-                        <p className="text-[10px] mt-2 opacity-80 uppercase font-bold tracking-wider">Non-Transferable (v18 Plan)</p>
+                        <p className="text-muted-foreground">Detailed event streams for v18 are being synchronized from primary clusters.</p>
                       </CardContent>
                     </Card>
                   </div>
-                </div>
-              )}
-
-              {activeView === 'create' && (
-                <ContentComposer
-                  isOpen={true}
-                  onClose={() => setActiveView('home')}
-                />
-              )}
-              {activeView === 'messages' && <MessagingInterface />}
-              {activeView === 'communities' && <DiscoveryInterface />}
-              {activeView === 'governance' && <GovernanceInterface />}
-              {activeView === 'ledger' && (
-                <div className="space-y-6">
-                  <ExplainRewardFlow />
-                  <Card className="border-none shadow-sm">
-                    <CardHeader>
-                      <CardTitle>v18 Event Ledger</CardTitle>
-                      <CardDescription>ASCON-sealed deterministic audit trail</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">Detailed event streams for v18 are being synchronized from primary clusters.</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
-              {activeView === 'wallet' && <WalletInterface />}
-              {activeView === 'settings' && (
-                <div className="space-y-12">
-                  <ProfileEditor />
-                  <GuardsList />
-                </div>
-              )}
+                )}
+                {activeView === 'wallet' && <WalletInterface />}
+                {activeView === 'settings' && (
+                  <div className="space-y-12">
+                    <ProfileEditor />
+                    <GuardsList />
+                  </div>
+                )}
+              </ErrorBoundary>
             </div>
           </div>
         </main>

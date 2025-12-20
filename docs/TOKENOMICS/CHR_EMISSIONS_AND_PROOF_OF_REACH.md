@@ -1,8 +1,8 @@
 # CHR Emissions, Proof-of-Reach, and Governance
 
-## The Logic of QFS Emissions (v13 - v15)
+## The Logic of QFS Emissions (v13 - current baseline)
 
-The QFS economic model is activity-based, capped, and now (as of v15 Stage 5) self-amending.
+The QFS economic model is activity-based, capped, and now (as of current baseline Stage 5) self-amending.
 
 ## 1. Proof-of-Reach (Stage 3 Integration)
 
@@ -17,7 +17,7 @@ The QFS economic model is activity-based, capped, and now (as of v15 Stage 5) se
 - **Hard Caps (`ECON-I1`)**: The total distributed amount *cannot* exceed `VIRAL_POOL_CAP`.
 - **Outcome**: High activity days dilute the per-point reward, preventing runaway inflation.
 
-## 3. Governance of Emissions (Stage 5 v15)
+## 3. Governance of Emissions (Stage 5 current baseline)
 
 The `ProposalEngine` provides a mechanism to adjust economic parameters:
 
@@ -28,7 +28,7 @@ The `ProposalEngine` provides a mechanism to adjust economic parameters:
 
 1. **Proposal**: "Increase Viral Pool Cap to 2M CHR."
 2. **Vote**: NOD holders approve.
-3. **Execute**: v15 Registry updates `VIRAL_POOL_CAP`.
+3. **Execute**: current baseline Registry updates `VIRAL_POOL_CAP`.
 4. **Effect**: The very next batch of rewards uses the new 2M limit.
 
 This ensures the economy can adapt to growth while maintaining mathematical safety guarantees.

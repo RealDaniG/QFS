@@ -52,15 +52,15 @@ No security findings have been suppressed.
 
 **Limitation**: No formal governance or dispute resolution  
 **Impact**: Cannot resolve conflicts or update parameters  
-**Mitigation**: v15 will add GovernanceStateMachine  
-**Timeline**: v15 (11-15 weeks)
+**Mitigation**: current baseline will add GovernanceStateMachine  
+**Timeline**: current baseline (11-15 weeks)
 
 ### 2. Fixed Economic Parameters
 
 **Limitation**: Reward amounts are hardcoded  
 **Impact**: Cannot adjust economics without redeployment  
-**Mitigation**: v15 governance will enable parameter updates  
-**Timeline**: v15 (11-15 weeks)
+**Mitigation**: current baseline governance will enable parameter updates  
+**Timeline**: current baseline (11-15 weeks)
 
 ### 3. No Rate Limiting
 

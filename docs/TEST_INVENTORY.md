@@ -1,4 +1,4 @@
-# QFS v15 Complete Test Inventory
+# QFS current baseline Complete Test Inventory
 
 > **Purpose:** Complete mapping of all 87 test files to categories, invariants, and execution status  
 > **Date:** Dec 19, 2025  
@@ -7,43 +7,43 @@
 ## Summary Statistics
 
 - **Total Test Files:** 87
-- **Currently Executed:** 5 (v15 governance core)
+- **Currently Executed:** 5 (current baseline governance core)
 - **To Be Integrated:** 15 (v13 economics, determinism, ops)
-- **Legacy/Deprecated:** 67 (v13 API, old harness, pre-v15)
+- **Legacy/Deprecated:** 67 (v13 API, old harness, pre-current baseline)
 
 ---
 
-## Category 1: v15 Governance Tests (CORE - ALL EXECUTED)
+## Category 1: current baseline Governance Tests (CORE - ALL EXECUTED)
 
-### 1. `v15/atlas/governance/tests/test_proposal_engine.py`
+### 1. `current baseline/atlas/governance/tests/test_proposal_engine.py`
 
 - **Status:** ✓ EXECUTED
 - **Invariants:** GOV-I1, GOV-I2, GOV-R1
 - **Category:** Governance Core
 - **Notes:** Primary governance unit tests
 
-### 2. `v15/tests/autonomous/test_governance_replay.py`
+### 2. `current baseline/tests/autonomous/test_governance_replay.py`
 
 - **Status:** ✓ EXECUTED
 - **Invariants:** REPLAY-I1
 - **Category:** Determinism
 - **Notes:** Bit-for-bit replay verification
 
-### 3. `v15/tests/autonomous/test_stage_6_simulation.py`
+### 3. `current baseline/tests/autonomous/test_stage_6_simulation.py`
 
 - **Status:** ✓ EXECUTED
 - **Invariants:** TRIG-I1, ECON-I1, AEGIS-G1
 - **Category:** Integration
 - **Notes:** End-to-end governance → economics flow
 
-### 4. `v15/tests/autonomous/test_stress_campaign.py`
+### 4. `current baseline/tests/autonomous/test_stress_campaign.py`
 
 - **Status:** ✓ EXECUTED
 - **Invariants:** REPLAY-I1, GOV-R1, AEGIS-G1
 - **Category:** Stress Testing
 - **Notes:** 50-proposal stress test with 0 drift
 
-### 5. `v15/tests/autonomous/test_full_audit_suite.py`
+### 5. `current baseline/tests/autonomous/test_full_audit_suite.py`
 
 - **Status:** ✓ EXECUTED
 - **Invariants:** ALL (orchestrator)
@@ -59,7 +59,7 @@
 - **Status:** ⚠ TO BE VERIFIED
 - **Invariants:** ECON-I2 (viral scoring)
 - **Category:** Economics
-- **Action:** Verify existence, integrate if relevant to v15
+- **Action:** Verify existence, integrate if relevant to current baseline
 
 ### 7. `v13/tests/integration/test_viral_reward_binder.py` (if exists)
 
@@ -75,22 +75,22 @@
 ### 8. `v13/core/tests/test_qfs_replay_source.py`
 
 - **Status:** 📦 LEGACY_EXCLUDED
-- **Invariants:** REPLAY-I1 (superseded by v15 tests)
+- **Invariants:** REPLAY-I1 (superseded by current baseline tests)
 - **Category:** Determinism
-- **Rationale:** v13 determinism tests superseded by v15 `test_governance_replay.py` and `test_stress_campaign.py`
+- **Rationale:** v13 determinism tests superseded by current baseline `test_governance_replay.py` and `test_stress_campaign.py`
 
 ---
 
 ## Category 4: Operational Tools Tests (TO BE CREATED)
 
-### 9. `v15/tests/test_protocol_health_check.py`
+### 9. `current baseline/tests/test_protocol_health_check.py`
 
 - **Status:** ❌ MISSING
 - **Invariants:** HEALTH-I1, HEALTH-I2, HEALTH-I3
 - **Category:** Ops Tools
 - **Action:** CREATE - Test automated health monitoring
 
-### 10. `v15/tests/test_governance_dashboard.py`
+### 10. `current baseline/tests/test_governance_dashboard.py`
 
 - **Status:** ❌ MISSING
 - **Invariants:** DASH-I1, DASH-I2, DASH-I3
@@ -101,7 +101,7 @@
 
 ## Category 5: v13 ATLAS API Tests (LEGACY - EXCLUDED)
 
-**Rationale:** These tests are for the v13 ATLAS API layer, which is separate from v15 governance. They remain valid for ATLAS but are not part of the v15 governance audit scope.
+**Rationale:** These tests are for the v13 ATLAS API layer, which is separate from current baseline governance. They remain valid for ATLAS but are not part of the current baseline governance audit scope.
 
 - `v13/atlas/src/tests/test_transactions_api_boundary.py` - LEGACY (API layer)
 - `v13/atlas/src/tests/test_qfs_client.py` - LEGACY (API client)
@@ -119,7 +119,7 @@
 
 ## Category 6: v13 Signal Tests (LEGACY - EXCLUDED)
 
-**Rationale:** Signal layer tests (humor, base, integration) are for ATLAS social features, not v15 governance.
+**Rationale:** Signal layer tests (humor, base, integration) are for ATLAS social features, not current baseline governance.
 
 - `v13/atlas/src/signals/test_zerosim_compliance.py` - LEGACY (signals)
 - `v13/atlas/src/signals/test_integration.py` - LEGACY (signals)
@@ -132,7 +132,7 @@
 
 ## Category 7: v13 Social Layer Tests (LEGACY - EXCLUDED)
 
-**Rationale:** Social layer (Wall, Spaces, Chat) tests are for ATLAS v14, not v15 governance.
+**Rationale:** Social layer (Wall, Spaces, Chat) tests are for ATLAS v14, not current baseline governance.
 
 - `v13/tests/atlas/test_wall.py` - LEGACY (social)
 - `v13/tests/atlas/test_spaces.py` - LEGACY (social)
@@ -146,7 +146,7 @@
 
 ## Category 8: v13 Value Node Tests (LEGACY - EXCLUDED)
 
-**Rationale:** Value node tests are for ATLAS platform infrastructure, not v15 governance.
+**Rationale:** Value node tests are for ATLAS platform infrastructure, not current baseline governance.
 
 - `v13/atlas/tests/value_node/test_value_node_replay.py` - LEGACY (infrastructure)
 - `v13/atlas/tests/value_node/test_value_graph_ref.py` - LEGACY (infrastructure)
@@ -161,7 +161,7 @@
 
 ## Category 9: v13 Audit Trail Tests (LEGACY - EXCLUDED)
 
-**Rationale:** CertifiedMath audit tests are for v13 math library, not v15 governance.
+**Rationale:** CertifiedMath audit tests are for v13 math library, not current baseline governance.
 
 - `v13/docs/audit/test_serialization_audit.py` - LEGACY (math audit)
 - `v13/docs/audit/test_certified_math_enhanced_audit.py` - LEGACY (math audit)
@@ -175,7 +175,7 @@
 
 ## Category 10: Miscellaneous Tests (LEGACY - EXCLUDED)
 
-**Rationale:** Various other tests not relevant to v15 governance scope.
+**Rationale:** Various other tests not relevant to current baseline governance scope.
 
 - `scripts/test_uuid_fix.py` - LEGACY (utility script)
 - `v13/tools/test_cir302_handler.py` - LEGACY (handler test)
@@ -185,7 +185,7 @@
 - `v13/tests/api/test_explain_api.py` - LEGACY (API test)
 - `v13/tests/api/test_atlas_p0_surfaces.py` - LEGACY (API test)
 - `v13/tests/e2e/test_storage_user_flow.py` - LEGACY (e2e test)
-- `v15/tests/autonomous/test_release_candidate.py` - SUPERSEDED (by test_full_audit_suite.py)
+- `current baseline/tests/autonomous/test_release_candidate.py` - SUPERSEDED (by test_full_audit_suite.py)
 
 **Total Miscellaneous Legacy Tests:** 9 + 38 more (truncated in find results)
 
@@ -203,16 +203,16 @@
 
 ### Test Suite Composition (Final)
 
-- **Core v15 Governance:** 5 files ✅
-- **v15 Ops Tools:** 2 files ✅
+- **Core current baseline Governance:** 5 files ✅
+- **current baseline Ops Tools:** 2 files ✅
 - **Total Executed:** 7 files (23 tests, 13 invariants)
 - **Total Legacy (Excluded):** ~80 files
 
 ### Legacy Tests Excluded
 
 - v13/v14 Golden Hash generation (v14 social layer scope)
-- v13 Wallet tests (superseded by v15 governance tests)
-- v13 Economics tests (not in v15 governance scope)
+- v13 Wallet tests (superseded by current baseline governance tests)
+- v13 Economics tests (not in current baseline governance scope)
 - v13 API/social/infrastructure tests (ATLAS v14 scope)
 
 ### Coverage Target
@@ -238,9 +238,9 @@
 
 ## Test File Inventory
 
-### Core Governance Tests (v15)
+### Core Governance Tests (current baseline)
 
-#### 1. `v15/atlas/governance/tests/test_proposal_engine.py`
+#### 1. `current baseline/atlas/governance/tests/test_proposal_engine.py`
 
 **Coverage:**
 
@@ -259,7 +259,7 @@
 
 ---
 
-#### 2. `v15/tests/autonomous/test_governance_replay.py`
+#### 2. `current baseline/tests/autonomous/test_governance_replay.py`
 
 **Coverage:**
 
@@ -276,7 +276,7 @@
 
 ---
 
-#### 3. `v15/tests/autonomous/test_stage_6_simulation.py`
+#### 3. `current baseline/tests/autonomous/test_stage_6_simulation.py`
 
 **Coverage:**
 
@@ -293,7 +293,7 @@
 
 ---
 
-#### 4. `v15/tests/autonomous/test_stress_campaign.py`
+#### 4. `current baseline/tests/autonomous/test_stress_campaign.py`
 
 **Coverage:**
 
@@ -310,7 +310,7 @@
 
 ---
 
-#### 5. `v15/tests/autonomous/test_release_candidate.py`
+#### 5. `current baseline/tests/autonomous/test_release_candidate.py`
 
 **Coverage:**
 
@@ -325,16 +325,16 @@
 
 ---
 
-#### 6. `v15/tests/autonomous/test_full_audit_suite.py`
+#### 6. `current baseline/tests/autonomous/test_full_audit_suite.py`
 
 **Coverage:**
 
-- All v15 governance invariants (GOV-I1, GOV-I2, GOV-R1, TRIG-I1, REPLAY-I1, AEGIS-G1, ECON-I1)
+- All current baseline governance invariants (GOV-I1, GOV-I2, GOV-R1, TRIG-I1, REPLAY-I1, AEGIS-G1, ECON-I1)
 - Machine-readable audit reporting
 
 **Tests:**
 
-- Orchestrates all v15 test suites
+- Orchestrates all current baseline test suites
 - Generates JSON audit report
 
 **Status:** ✓ Primary audit runner
@@ -383,7 +383,7 @@
 **Coverage:**
 
 - Social layer regression
-- v14 → v15 compatibility
+- v14 → current baseline compatibility
 
 **Status:** ⚠ TO BE VERIFIED
 
@@ -391,7 +391,7 @@
 
 ### Operational Tools Tests
 
-#### 11. `v15/tests/test_protocol_health_check.py` (if exists)
+#### 11. `current baseline/tests/test_protocol_health_check.py` (if exists)
 
 **Coverage:**
 
@@ -402,7 +402,7 @@
 
 ---
 
-#### 12. `v15/tests/test_governance_dashboard.py` (if exists)
+#### 12. `current baseline/tests/test_governance_dashboard.py` (if exists)
 
 **Coverage:**
 

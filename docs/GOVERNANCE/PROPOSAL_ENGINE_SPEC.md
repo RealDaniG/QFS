@@ -1,4 +1,4 @@
-# Proposal Engine Specification (v15)
+# Proposal Engine Specification (current baseline)
 
 ## Overview
 
@@ -41,4 +41,4 @@ Every finalized proposal generates a **PoE Artifact** that mathematically proves
 ## Governance Invariants
 
 - **Zero-Sim Compliance**: No non-deterministic logic (randomness, system time) permitted in tallying.
-- **Constitutional Protection**: Attempts to modify immutable parameters (e.g., `CHR_DAILY_EMISSION_CAP` is immutable in v15) are strictly rejected by the execution logic.
+- **Constitutional Protection**: Attempts to modify immutable parameters (e.g., `CHR_DAILY_EMISSION_CAP` is immutable in current baseline) are strictly rejected by the execution logic.

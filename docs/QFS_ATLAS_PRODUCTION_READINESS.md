@@ -44,7 +44,7 @@ This roadmap tracks the production readiness of QFS × ATLAS based on **capabili
 - [ ] **CrewAI/LangGraph Integration**: Replacing legacy Open-AGI harnesses with efficient OSS stacks.
 - [ ] **Sampling Strategy**: Enforce 10-20% sampling to reduce compute costs <$0.2/decision.
 
-## 4. Governance & Monetization (⏭ Planned)
+## 4. Governance & Monetization (⏭ implemented)
 
 **Capability:** Community-driven upgrades and transparent value distribution.
 

@@ -16,63 +16,25 @@ interface LoginResponse {
     expires_at: number;
 }
 
-interface WalletAuthState {
-    isConnected: boolean;
-    address: string | null;
-    sessionToken: string | null;
-    isLoading: boolean;
-    error: string | null;
-}
+import { useAuthStore } from '@/lib/store/useAuthStore';
 
 const SESSION_KEY = 'atlas_session_v1';
 
 export function useWalletAuth() {
-    const [state, setState] = useState<WalletAuthState>(() => {
-        // Load session from local storage on init
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem(SESSION_KEY);
-            if (stored) {
-                try {
-                    const session = JSON.parse(stored);
-                    const now = Date.now() / 1000;
-                    if (session.expires_at > now) {
-                        return {
-                            isConnected: true,
-                            address: session.wallet_address,
-                            sessionToken: session.session_token,
-                            isLoading: false,
-                            error: null
-                        };
-                    } else {
-                        localStorage.removeItem(SESSION_KEY);
-                    }
-                } catch (e) {
-                    localStorage.removeItem(SESSION_KEY);
-                }
-            }
-        }
-        return {
-            isConnected: false,
-            address: null,
-            sessionToken: null,
-            isLoading: false,
-            error: null
-        };
-    });
+    const { isConnected, address, sessionToken, isLoading, error, setState, logout: storeLogout } = useAuthStore();
 
     const connect = useCallback(async () => {
-        setState(prev => ({ ...prev, isLoading: true, error: null }));
+        setState({ isLoading: true, error: null });
         try {
-            if (!window.ethereum) {
+            if (!(window as any).ethereum) {
                 throw new Error("No crypto wallet found. Please install MetaMask.");
             }
 
-            const provider = new ethers.BrowserProvider(window.ethereum);
+            const provider = new ethers.BrowserProvider((window as any).ethereum);
             const signer = await provider.getSigner();
             const address = await signer.getAddress();
 
             // 1. Get Nonce
-            // v18: Endpoint is /api/v18/auth/nonce
             const nonceRes = await atlasFetch('/api/v18/auth/nonce', {
                 method: 'GET',
                 auth: false
@@ -84,7 +46,6 @@ export function useWalletAuth() {
             const signature = await signer.signMessage(nonce);
 
             // 3. Login / Verify
-            // v18: Endpoint is /api/v18/auth/verify
             const loginRes = await atlasFetch('/api/v18/auth/verify', {
                 method: 'POST',
                 auth: false,
@@ -100,7 +61,7 @@ export function useWalletAuth() {
                 throw new Error(errData.detail || "Login failed");
             }
 
-            const sessionData: LoginResponse = await loginRes.json();
+            const sessionData = await loginRes.json();
 
             // v18.5: Verify Ascon token prefix
             if (!sessionData.session_token.startsWith('ascon1.')) {
@@ -120,39 +81,33 @@ export function useWalletAuth() {
 
         } catch (err: any) {
             console.error("Wallet Auth Error:", err);
-            setState(prev => ({
-                ...prev,
+            setState({
                 isLoading: false,
                 error: err.message || "Authentication failed"
-            }));
+            });
         }
-    }, []);
+    }, [setState]);
 
     const logout = useCallback(async () => {
-        // Optional: Call backend logout to revoke token
-        if (state.sessionToken) {
+        if (sessionToken) {
             try {
                 await atlasFetch('/api/v1/auth/logout', {
                     method: 'POST',
-                    body: JSON.stringify({ session_token: state.sessionToken })
+                    body: JSON.stringify({ session_token: sessionToken })
                 });
             } catch (e) {
-                // Ignore backend logout error, client cleanup is priority
+                // Ignore backend logout error
             }
         }
-
-        localStorage.removeItem(SESSION_KEY);
-        setState({
-            isConnected: false,
-            address: null,
-            sessionToken: null,
-            isLoading: false,
-            error: null
-        });
-    }, [state.sessionToken]);
+        storeLogout();
+    }, [sessionToken, storeLogout]);
 
     return {
-        ...state,
+        isConnected,
+        address,
+        sessionToken,
+        isLoading,
+        error,
         connect,
         logout
     };

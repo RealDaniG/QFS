@@ -150,7 +150,7 @@ One ATLAS shell containing:
 
 - Wallet connect/session
 - Bounties (BountyList, MyBounties, BountyDashboard)
-- Admin/Mod Panel (v15.5)
+- Admin/Mod Panel (current baseline.5)
 - GitHub linking & contributions dashboard
 
 **Use SSG/ISR** for public/read-only pages to reduce backend load.
@@ -314,7 +314,7 @@ Before implementing any new feature, verify:
 
 ## 7. Example: Admin/Moderator Panel Cost Analysis
 
-### Feature: v15.5 Admin/Moderator Panel
+### Feature: current baseline.5 Admin/Moderator Panel
 
 **Cost-Aware Design**:
 
@@ -335,9 +335,9 @@ Before implementing any new feature, verify:
 
 ---
 
-## 8. Integration with v15.5 Planning
+## 8. Integration with current baseline.5 Planning
 
-All v15.5 Admin/Moderator Panel work follows this cost-efficient architecture:
+All current baseline.5 Admin/Moderator Panel work follows this cost-efficient architecture:
 
 ### Phase 1: Backend Foundations (MOCKQPC)
 

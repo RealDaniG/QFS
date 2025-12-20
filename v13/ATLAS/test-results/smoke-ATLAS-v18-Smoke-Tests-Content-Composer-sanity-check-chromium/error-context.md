@@ -1,0 +1,134 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e7]: AT
+          - generic [ref=e8]: ATLAS v18
+        - button [ref=e9]:
+          - img
+      - navigation [ref=e13]:
+        - button "Home" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e18]: Home
+        - button "Create" [ref=e20]:
+          - img [ref=e21]
+          - generic [ref=e23]: Create
+        - button "Messages" [ref=e24]:
+          - img [ref=e25]
+          - generic [ref=e27]: Messages
+        - button "Communities" [ref=e28]:
+          - img [ref=e29]
+          - generic [ref=e34]: Communities
+        - button "Governance" [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e38]: Governance
+        - button "Ledger & Explain" [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e42]: Ledger & Explain
+        - button "Wallet & Reputation" [ref=e43]:
+          - img [ref=e44]
+          - generic [ref=e47]: Wallet & Reputation
+        - button "Settings & Safety" [ref=e48]:
+          - img [ref=e49]
+          - generic [ref=e52]: Settings & Safety
+      - generic [ref=e54]:
+        - generic [ref=e56]: JD
+        - generic [ref=e57]:
+          - paragraph [ref=e58]: Not Connected
+          - paragraph [ref=e61]: "Reputation: 142"
+    - generic [ref=e62]:
+      - banner [ref=e63]:
+        - generic [ref=e64]:
+          - heading "home" [level=2] [ref=e65]
+          - generic [ref=e66]:
+            - img [ref=e67]
+            - textbox "Search v18 clusters..." [ref=e70]
+        - generic [ref=e71]:
+          - generic [ref=e72]: Disconnected
+          - button [ref=e73]:
+            - img
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - img [ref=e80]
+                - text: Authentication Required
+              - generic [ref=e82]: Connect your wallet to participate in the v18 Quantum Financial System. Wallets are used as cryptographic identity only. No transfers are supported.
+            - paragraph [ref=e85]:
+              - text: Your v18 session will be sealed with
+              - strong [ref=e86]: ASCON-128
+              - text: authenticated encryption.
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - generic [ref=e92]:
+                  - generic [ref=e94]: JD
+                  - textbox "Share deterministic content..." [active] [ref=e95]
+                - generic [ref=e96]:
+                  - button "Preview Economics" [ref=e97]
+                  - button "Publish Event" [ref=e98]
+              - generic [ref=e99]:
+                - generic [ref=e101]:
+                  - generic [ref=e102]:
+                    - generic [ref=e103]:
+                      - img [ref=e104]
+                      - generic [ref=e107]: QFS Node Network
+                    - combobox [ref=e108]:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: did:key:qfs_prim...
+                      - img
+                  - generic [ref=e109]:
+                    - text: You are viewing the content reality computed by
+                    - strong [ref=e110]: did:key:qfs_...
+                    - text: . Verifiable by Merkle Proofs.
+                - generic [ref=e113]:
+                  - generic [ref=e114]:
+                    - generic [ref=e118]:
+                      - generic [ref=e119]: "0xABC123"
+                      - generic [ref=e120]: 4:23:30 PM
+                    - generic [ref=e121]:
+                      - generic [ref=e122]: "Coherence: 1.000"
+                      - generic [ref=e123]:
+                        - img [ref=e124]
+                        - text: Verified Proof
+                  - paragraph [ref=e127]: Hello from ATLAS v18!
+                  - generic [ref=e128]: "Proof Root: ledger_abc123.."
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - generic [ref=e132]:
+                  - img [ref=e133]
+                  - text: System Health
+                - generic [ref=e135]:
+                  - generic [ref=e136]:
+                    - generic [ref=e137]: qfs Status
+                    - generic [ref=e138]: Operational
+                  - generic [ref=e139]:
+                    - generic [ref=e140]: coherence Ranking
+                    - generic [ref=e141]: Active
+                  - generic [ref=e142]:
+                    - generic [ref=e143]: guard System
+                    - generic [ref=e144]: All Green
+                  - generic [ref=e145]:
+                    - generic [ref=e146]: ledger Sync
+                    - generic [ref=e147]: Real-time
+                  - generic [ref=e148]:
+                    - generic [ref=e149]: node Health
+                    - generic [ref=e150]: 98.2%
+              - generic [ref=e151]:
+                - generic [ref=e153]: Total Internal Credits
+                - generic [ref=e154]:
+                  - generic [ref=e155]: 1,000.00 FLX
+                  - paragraph [ref=e156]: Non-Transferable (v18 Plan)
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e157]
+  - button "Open Next.js Dev Tools" [ref=e163] [cursor=pointer]:
+    - img [ref=e164]
+```

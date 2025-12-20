@@ -2,7 +2,7 @@
 
 ## Overview
 
-Discord notifications provide operational visibility for QFS v15 pipeline status without creating alert fatigue.
+Discord notifications provide operational visibility for QFS current baseline pipeline status without creating alert fatigue.
 
 ## Setup Instructions
 
@@ -34,7 +34,7 @@ python notify_discord.py \
   --type success \
   --commit a3f5b2c1 \
   --branch main \
-  --tag v15.0.0
+  --tag current baseline.0.0
 
 # Test failure notification
 python notify_discord.py \
@@ -47,7 +47,7 @@ python notify_discord.py \
 python notify_discord.py \
   --type deployment \
   --commit a3f5b2c1 \
-  --tag v15.0.0 \
+  --tag current baseline.0.0 \
   --deployment-success
 ```
 

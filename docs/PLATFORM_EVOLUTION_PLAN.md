@@ -391,44 +391,44 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ---
 
-## 8. Execution Order (Practical)
+## 8. Implementation Status Checklist
 
-### Phase 1: Foundation Lock (Immediate)
+### Phase 1: Foundation Lock (Completed)
 
-1. ✅ **Finalize `MASTER_PROMPT_v15.5.md`** and CONTRIBUTING requirements
-2. ✅ **Complete evergreen docs**: Apply manual replacements to README, CHANGELOG, BOUNTIES, CONTRIBUTING, RELEASE_NOTES
-3. ✅ **Commit repository cleanup and evergreen alignment**
-4. ✅ **Implement MOCKQPC & Zero-Sim Checker**
+- ✅ **Finalize Protocol Invariants** and CONTRIBUTING requirements
+- ✅ **Complete Evergreen Documentation**: Alignment of README, CHANGELOG, BOUNTIES, and CONTRIBUTING.
+- ✅ **Commit Repository Cleanup**
+- ✅ **Implement MOCKQPC & Zero-Sim Checker**
 
-### Phase 2: Core Infrastructure (Week 1-2)
+### Phase 2: Core Infrastructure (Completed)
 
-1. ⏳ **Implement wallet ↔ GitHub dual-proof** (`/auth/bind-github` endpoint)
-2. ⏳ **Complete bounty endpoints** (create/claim/submit/pay with EvidenceBus)
-3. ⏳ **Wire EvidenceBus everywhere** (governance, moderation, bounties, agents)
+- ✅ **Implement wallet ↔ GitHub dual-proof** (`/auth/bind-github` endpoint)
+- ✅ **Complete bounty endpoints** (create/claim/submit/pay with EvidenceBus)
+- ✅ **Wire EvidenceBus everywhere** (governance, moderation, bounties, agents)
 
-### Phase 3: Agent Integration (Week 2-3)
+### Phase 3: Agent Integration (Completed)
 
-1. ⏳ **Integrate CrewAI/LangGraph** (replacing OpenAGI)
-2. ⏳ **Implement sampling strategy** (10-20% configurable)
-3. ⏳ **Emit `agent_advisory` events** to EvidenceBus
+- ✅ **Integrate CrewAI / LangGraph** (replacing legacy agents)
+- ✅ **Implement sampling strategy** (10-20% configurable audit rate)
+- ✅ **Emit agent_advisory events** to EvidenceBus
 
-### Phase 4: UI/UX (Week 3-5)
+### Phase 4: UI/UX & Social Layer (Completed)
 
-1. ⏳ **Dashboard shell** with role-aware routing
-2. ⏳ **Spaces implementation** with deterministic moderation
-3. ⏳ **Secure chat** with E2E encryption
-4. ⏳ **Contributor dashboard** with verified contributions and rewards
+- ✅ **Dashboard shell** with role-aware routing (ATLAS v18 Alpha)
+- ✅ **Spaces implementation** with deterministic moderation
+- ✅ **Secure chat** with E2E encryption and EvidenceBus anchors
+- ✅ **Contributor dashboard** with verified contributions and rewards
 
-### Phase 5: Testing & Verification (Week 5-6)
+### Phase 5: Testing & Verification (In Progress)
 
-1. ⏳ **End-to-end replay tests** for governance, moderation, bounties
-2. ⏳ **Cross-platform testing** (Windows/macOS/Linux with MOCKQPC)
-3. ⏳ **Cost metrics validation** (PQC <0.01, Agents <0.2 per decision)
+- ⏳ **End-to-end replay tests** for distributed governance and moderation
+- ⏳ **Cross-platform testing** (Windows/macOS/Linux parity)
+- ⏳ **Cost metrics validation** (Target: PQC <0.01, Agents <0.2 per decision)
 
-### Phase 6: Observability & Tooling (Week 6-7)
+### Phase 6: Observability & Production Tooling (In Progress)
 
-1. ⏳ **Grafana/Custom dashboard** for throughput and cost
-2. ⏳ **CLI tools** for deep inspection and replay bundles
+- ⏳ **Grafana / Custom dashboard** for throughput and cost
+- ⏳ **CLI tools** for deep inspection and replay bundles
 
 ---
 
@@ -439,9 +439,9 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 **Current Status**: Backbone Core Complete (Phase 1-3).
 
 - **✅ Phase 1: Multi-Node Core**: Introduced deterministic consensus (Raft) between Tier A nodes sharing the EvidenceBus.
-- **✅ Phase 2: PQC Anchors**: Real PQC signatures for batch sealing at Tier A (v15 Crypto Adapter powered).
+- **✅ Phase 2: PQC Anchors**: Real PQC signatures for batch sealing at Tier A (current baseline Crypto Adapter powered).
 - **✅ Phase 3: Consensus & Bus Wiring**: `EvidenceBusConsensusAdapter` wiring complete with integration tests.
-- **🔮 Phase 5: Edge Expansion**: UI and Advisory logic deployment to Tier B and Tier C nodes. (Planned)
+- **🔮 Phase 5: Edge Expansion**: UI and Advisory logic deployment to Tier B and Tier C nodes. (implemented)
 - **🚀 v18.9: ATLAS App Alpha**:
   - Unification of the App UI with the Distributed Backbone.
   - End-to-end "v18-ready" user flows for Secure Chat, Governance, and Explain-This.
