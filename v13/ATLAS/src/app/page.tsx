@@ -99,9 +99,11 @@ export default function AtlasDashboard() {
       )}>
         <div className="flex items-center justify-between p-4 border-b">
           <div className={cn("flex items-center gap-2", !sidebarOpen && "hidden")}>
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-sm">AT</span>
-            </div>
+            <img
+              src="/atlas-logo.png"
+              alt="ATLAS Logo"
+              className="w-8 h-8 rounded-lg shadow-lg object-cover"
+            />
             <span className="font-bold text-lg tracking-tight">ATLAS v18</span>
           </div>
           <Button
