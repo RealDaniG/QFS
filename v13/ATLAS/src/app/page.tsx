@@ -37,6 +37,7 @@ import ProfileEditor from '@/components/ProfileEditor'
 import GovernanceInterface from '@/components/GovernanceInterface'
 import GuardsList from '@/components/GuardsList'
 import { useInteraction } from '@/hooks/useInteraction'
+import DistributedFeed from '@/components/DistributedFeed'
 
 // Atlas & QFS Imports
 import { RealLedger } from '@/lib/ledger/real-ledger';
@@ -46,17 +47,17 @@ import { PendingEventStore } from '@/lib/ledger/pending-store';
 import { LedgerSyncService } from '@/lib/ledger/sync-service';
 
 // Services
-const ledger = new RealLedger(); // New Zero-Sim Client
+const ledger = RealLedger.getInstance(); // New Zero-Sim Client
 const treasury = getTreasury();
 // Zero-Sim: GovernanceService fetches directly from QFS
-const governance = new GovernanceService();
-const pendingStore = new PendingEventStore();
+const governance = GovernanceService.getInstance();
+const pendingStore = PendingEventStore.getInstance();
 // Fire and forget init
 pendingStore.init();
 
 // NOTE: LedgerSyncService might need updates to poll RealLedger instead of MockLedger
 // For now, we keep it to handle local optimistic UI updates if compatible
-const syncService = new LedgerSyncService(ledger);
+const syncService = LedgerSyncService.getInstance();
 
 export default function AtlasDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -257,82 +258,86 @@ export default function AtlasDashboard() {
                     </CardContent>
                   </Card>
 
-                  {/* Feed Posts */}
-                  {mockPosts.map((post) => (
-                    <Card key={post.id}>
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                              <AvatarImage src={post.avatar} />
-                              <AvatarFallback>{post.author.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-medium">{post.author}</p>
-                              <p className="text-sm text-muted-foreground">{post.timestamp}</p>
+                  {/* Distributed Feed */}
+                  <DistributedFeed />
+                  <div className="hidden">
+                    {/* Feed Posts */}
+                    {mockPosts.map((post) => (
+                      <Card key={post.id}>
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-10 w-10">
+                                <AvatarImage src={post.avatar} />
+                                <AvatarFallback>{post.author.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">{post.author}</p>
+                                <p className="text-sm text-muted-foreground">{post.timestamp}</p>
+                              </div>
+                            </div>
+                            <Button variant="ghost" size="sm">
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="mb-4">{post.content}</p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {post.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary" className="text-xs">
+                                #{tag}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Coherence & Rewards */}
+                          <div className="grid grid-cols-2 gap-4 p-3 bg-muted/50 rounded-lg mb-4">
+                            <div className="flex items-center gap-2">
+                              <TrendingUp className="h-4 w-4 text-green-600" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Coherence Score</p>
+                                <p className="font-semibold text-green-600">{post.coherenceScore}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Wallet className="h-4 w-4 text-blue-600" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Reward Potential</p>
+                                <p className="font-semibold text-blue-600">{post.rewardPotential} FLX</p>
+                              </div>
                             </div>
                           </div>
-                          <Button variant="ghost" size="sm">
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="mb-4">{post.content}</p>
 
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {post.tags.map((tag) => (
-                            <Badge key={tag} variant="secondary" className="text-xs">
-                              #{tag}
-                            </Badge>
-                          ))}
-                        </div>
-
-                        {/* Coherence & Rewards */}
-                        <div className="grid grid-cols-2 gap-4 p-3 bg-muted/50 rounded-lg mb-4">
-                          <div className="flex items-center gap-2">
-                            <TrendingUp className="h-4 w-4 text-green-600" />
-                            <div>
-                              <p className="text-xs text-muted-foreground">Coherence Score</p>
-                              <p className="font-semibold text-green-600">{post.coherenceScore}</p>
-                            </div>
+                          {/* Actions */}
+                          <div className="flex items-center gap-4">
+                            <Button variant="ghost" size="sm">
+                              <MessageSquare className="h-4 w-4 mr-1" />
+                              {post.comments}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => interact('like', `bafy_mock_${post.id}`)}
+                            >
+                              <Activity className="h-4 w-4 mr-1" />
+                              {post.likes}
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Users className="h-4 w-4 mr-1" />
+                              {post.reposts}
+                            </Button>
+                            <Button variant="ghost" size="sm" className="ml-auto">
+                              <Eye className="h-4 w-4 mr-1" />
+                              Explain
+                            </Button>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Wallet className="h-4 w-4 text-blue-600" />
-                            <div>
-                              <p className="text-xs text-muted-foreground">Reward Potential</p>
-                              <p className="font-semibold text-blue-600">{post.rewardPotential} FLX</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex items-center gap-4">
-                          <Button variant="ghost" size="sm">
-                            <MessageSquare className="h-4 w-4 mr-1" />
-                            {post.comments}
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => interact('like', `bafy_mock_${post.id}`)}
-                          >
-                            <Activity className="h-4 w-4 mr-1" />
-                            {post.likes}
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Users className="h-4 w-4 mr-1" />
-                            {post.reposts}
-                          </Button>
-                          <Button variant="ghost" size="sm" className="ml-auto">
-                            <Eye className="h-4 w-4 mr-1" />
-                            Explain
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
               </TabsContent>
 
