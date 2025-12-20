@@ -37,6 +37,15 @@ def test_admin_dashboard_integration():
         bounty_view = dashboard.get_bounty_dashboard()
         assert bounty_view["count"] == 0
 
+        # 5. Test Social Profile
+        profile = dashboard.get_user_profile("0xAdmin")
+        print(f"DEBUG PROFILE: {profile}")
+        assert profile["stats"]["proposals"] == 1
+
+        # 6. Test Conversations (Empty)
+        convs = dashboard.get_conversations("prop_X")
+        assert len(convs) == 0
+
         print("✅ AdminDashboard Integration Verified")
 
     finally:

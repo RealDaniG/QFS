@@ -23,10 +23,12 @@ class AdminDashboard:
         # Lazy load v17 projections to avoid circular deps if any
         from v17.ui.governance_projection import GovernanceProjection
         from v17.ui.bounty_projection import BountyProjection
+        from v17.ui.social_projection import SocialProjection
         from v17.governance.schemas import GovernanceConfig
 
         self.gov_proj = GovernanceProjection(self.bus)
         self.bounty_proj = BountyProjection(self.bus)
+        self.social_proj = SocialProjection(self.bus)
         # Default config for viewing - in production this comes from chain state
         self.gov_config = GovernanceConfig(
             quorum_threshold=0.3, approval_threshold=0.5, voting_period_seconds=86400
@@ -137,6 +139,14 @@ class AdminDashboard:
             "events_checked": len(events),
             "broken_links": broken_links,
         }
+
+    def get_user_profile(self, wallet_address: str) -> Dict:
+        """Get comprehensive user history."""
+        return self.social_proj.get_user_history(wallet_address)
+
+    def get_conversations(self, entity_id: str) -> List[Dict]:
+        """Get social threads for an entity."""
+        return self.social_proj.get_threads_for_entity(entity_id)
 
 
 class EvidenceChainViewer:
