@@ -12,7 +12,7 @@ class SocialProjection:
     def __init__(self, bus=EvidenceBus):
         self.bus = bus
 
-    def get_threads_for_entity(self, entity_id: str) -> List[Dict]:
+    def get_threads_for_entity(self, entity_id: str) -> List[Dict[str, Any]]:
         """Find threads bound to a specific entity (Proposal/Bounty)."""
         limit = 1_000_000  # Full scan
         events = self.bus.get_events(limit=limit)
