@@ -7,7 +7,8 @@ Part of the "compression and reveal" strategy.
 
 from typing import Dict, List, Optional
 from v15.evidence.bus import EvidenceBus
-from v17.governance import get_proposal_state, GovernanceConfig
+from v17.governance.f_proposals import get_proposal_state
+from v17.governance.schemas import GovernanceConfig
 
 
 class GovernanceTimelineView:

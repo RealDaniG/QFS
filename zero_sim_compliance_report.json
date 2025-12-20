@@ -1,8 +1,8 @@
 {
-  "files_analyzed": 358,
-  "files_with_violations": 15,
-  "total_violations": 32,
-  "standard_violations": 32,
+  "files_analyzed": 1577,
+  "files_with_violations": 52,
+  "total_violations": 101,
+  "standard_violations": 101,
   "mockqpc_violations": 0,
   "critical_violations": 0,
   "violations": {
@@ -74,6 +74,975 @@
         },
         "context": "print('Testing Wallet...')",
         "file": ".\\test_wallet.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 25,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self.candidate)",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 83,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._hash = hash(self._equal)",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 83,
+        "col": 21,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self._equal)",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 12,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_lint_dependency_groups.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_pip_wrapper.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 10,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\__main__.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 11,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(repr(self))",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\packaging\\_structures.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print(where())",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\requests\\certs.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 35,
+        "col": 39,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.1",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\resolvelib\\resolvers\\resolution.py"
+      },
+      {
+        "type": "FORBIDDEN_DIVISION",
+        "line": 35,
+        "col": 33,
+        "rule": {
+          "code": "FORBIDDEN_DIVISION",
+          "name": "Float Division",
+          "pattern": "a / b (where result is float)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_floor_or_certified",
+          "risk_level": "Medium",
+          "reason": "Floating-point precision varies; use // or CertifiedMath.idiv()"
+        },
+        "context": "1 / self.refresh_per_second",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\live.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\spinner.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 30,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 31,
+        "col": 36,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "12.5",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 70,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.status = status",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 72,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.spinner_style = spinner_style",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 74,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.speed = speed",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 76,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._spinner = Spinner(spinner, text=self.status, style=self.spinner_style, spe",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_CALL",
+        "line": 4,
+        "col": 0,
+        "rule": {
+          "code": "FORBIDDEN_CALL",
+          "name": "Non-deterministic Call",
+          "pattern": "random.randint(), np.random.*, etc.",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "seed_based_or_deterministic_alternative",
+          "risk_level": "High",
+          "reason": "Randomness breaks reproducibility; seed or refactor"
+        },
+        "context": "from random import randint",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\rich\\style.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 13,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.queue = collections.deque()",
+        "file": ".\\AGENT\\Lib\\site-packages\\pip\\_vendor\\urllib3\\util\\queue.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 25,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self.candidate)",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 83,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._hash = hash(self._equal)",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 83,
+        "col": 21,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self._equal)",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 12,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_lint_dependency_groups.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_pip_wrapper.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 10,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\__main__.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 11,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(repr(self))",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\packaging\\_structures.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print(where())",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\requests\\certs.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 35,
+        "col": 39,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.1",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\resolvelib\\resolvers\\resolution.py"
+      },
+      {
+        "type": "FORBIDDEN_DIVISION",
+        "line": 35,
+        "col": 33,
+        "rule": {
+          "code": "FORBIDDEN_DIVISION",
+          "name": "Float Division",
+          "pattern": "a / b (where result is float)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_floor_or_certified",
+          "risk_level": "Medium",
+          "reason": "Floating-point precision varies; use // or CertifiedMath.idiv()"
+        },
+        "context": "1 / self.refresh_per_second",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\live.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\spinner.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 30,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 31,
+        "col": 36,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "12.5",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 70,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.status = status",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 72,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.spinner_style = spinner_style",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 74,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.speed = speed",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 76,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._spinner = Spinner(spinner, text=self.status, style=self.spinner_style, spe",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_CALL",
+        "line": 4,
+        "col": 0,
+        "rule": {
+          "code": "FORBIDDEN_CALL",
+          "name": "Non-deterministic Call",
+          "pattern": "random.randint(), np.random.*, etc.",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "seed_based_or_deterministic_alternative",
+          "risk_level": "High",
+          "reason": "Randomness breaks reproducibility; seed or refactor"
+        },
+        "context": "from random import randint",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\rich\\style.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 13,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.queue = collections.deque()",
+        "file": ".\\CODERV1\\QUANTUM\\Lib\\site-packages\\pip\\_vendor\\urllib3\\util\\queue.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 25,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self.candidate)",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 83,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._hash = hash(self._equal)",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 83,
+        "col": 21,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(self._equal)",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_internal\\resolution\\resolvelib\\requirements.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 12,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_lint_dependency_groups.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\_pip_wrapper.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 10,
+        "col": 8,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print('Usage error: dependency-groups CLI requires tomli or Python 3.11+', file=",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\dependency_groups\\__main__.py"
+      },
+      {
+        "type": "FORBIDDEN_HASH",
+        "line": 11,
+        "col": 15,
+        "rule": {
+          "code": "FORBIDDEN_HASH",
+          "name": "Hash Function",
+          "pattern": "hash(...)",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "manual_review_context_dependent",
+          "risk_level": "High",
+          "reason": "Non-deterministic across runs; requires manual refactoring"
+        },
+        "context": "hash(repr(self))",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\packaging\\_structures.py"
+      },
+      {
+        "type": "FORBIDDEN_PRINT",
+        "line": 17,
+        "col": 4,
+        "rule": {
+          "code": "FORBIDDEN_PRINT",
+          "name": "Print Statement",
+          "pattern": "print(...)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "remove_or_convert_to_logging",
+          "risk_level": "Low",
+          "reason": "Output non-determinism; replace with logging or remove"
+        },
+        "context": "print(where())",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\requests\\certs.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 35,
+        "col": 39,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.1",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\resolvelib\\resolvers\\resolution.py"
+      },
+      {
+        "type": "FORBIDDEN_DIVISION",
+        "line": 35,
+        "col": 33,
+        "rule": {
+          "code": "FORBIDDEN_DIVISION",
+          "name": "Float Division",
+          "pattern": "a / b (where result is float)",
+          "severity": "High",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_floor_or_certified",
+          "risk_level": "Medium",
+          "reason": "Floating-point precision varies; use // or CertifiedMath.idiv()"
+        },
+        "context": "1 / self.refresh_per_second",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\live.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 32,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\spinner.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 30,
+        "col": 23,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 31,
+        "col": 36,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "12.5",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 70,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.status = status",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 72,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.spinner_style = spinner_style",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 74,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.speed = speed",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 76,
+        "col": 12,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self._spinner = Spinner(spinner, text=self.status, style=self.spinner_style, spe",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\status.py"
+      },
+      {
+        "type": "FORBIDDEN_CALL",
+        "line": 4,
+        "col": 0,
+        "rule": {
+          "code": "FORBIDDEN_CALL",
+          "name": "Non-deterministic Call",
+          "pattern": "random.randint(), np.random.*, etc.",
+          "severity": "High",
+          "auto_fixable": false,
+          "fix_strategy": "seed_based_or_deterministic_alternative",
+          "risk_level": "High",
+          "reason": "Randomness breaks reproducibility; seed or refactor"
+        },
+        "context": "from random import randint",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\rich\\style.py"
+      },
+      {
+        "type": "MUTATION_STATE",
+        "line": 13,
+        "col": 8,
+        "rule": {
+          "code": "MUTATION_STATE",
+          "name": "Persistent State Mutation",
+          "pattern": "self.x += 1, self.x = val (outside init)",
+          "severity": "Medium",
+          "auto_fixable": false,
+          "fix_strategy": "use_functional_updates",
+          "risk_level": "Medium",
+          "reason": "In-place mutation complicates state tracking; prefer functional updates"
+        },
+        "context": "self.queue = collections.deque()",
+        "file": ".\\CURRENCY\\QFS\\V13\\venv\\Lib\\site-packages\\pip\\_vendor\\urllib3\\util\\queue.py"
       },
       {
         "type": "FORBIDDEN_PRINT",
@@ -550,6 +1519,210 @@
         },
         "context": "time.time()",
         "file": ".\\v13\\policy\\bounties\\bounty_events.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 22,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 22,
+        "col": 24,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 24,
+        "col": 38,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 24,
+        "col": 46,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 26,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 26,
+        "col": 24,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 37,
+        "col": 16,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 37,
+        "col": 24,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 67,
+        "col": 38,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 67,
+        "col": 46,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 90,
+        "col": 38,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "0.0",
+        "file": ".\\v15\\agents\\schemas.py"
+      },
+      {
+        "type": "FORBIDDEN_FLOAT_LITERAL",
+        "line": 90,
+        "col": 46,
+        "rule": {
+          "code": "FORBIDDEN_FLOAT_LITERAL",
+          "name": "Float Literal",
+          "pattern": "3.14, 0.1, etc.",
+          "severity": "Medium",
+          "auto_fixable": true,
+          "fix_strategy": "convert_to_fraction_or_integer",
+          "risk_level": "Low",
+          "reason": "Floating-point representation varies; use Fraction or integers"
+        },
+        "context": "1.0",
+        "file": ".\\v15\\agents\\schemas.py"
       }
     ],
     "mockqpc": []

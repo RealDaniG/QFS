@@ -7,7 +7,7 @@ Explicitly distinguishes "what agents suggested" vs "what protocol decided".
 
 from typing import Dict, List, Optional
 from v15.evidence.bus import EvidenceBus
-from v17.bounties import get_bounty_state
+from v17.bounties.f_bounties import get_bounty_state
 
 
 class BountyTimelineView:

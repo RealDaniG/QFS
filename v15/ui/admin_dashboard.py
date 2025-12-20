@@ -15,10 +15,56 @@ class AdminDashboard:
     """
     Admin Panel for viewing EvidenceBus events.
     All operations are read-only and deterministic.
+    Now includes v17 Governance and Bounty projections.
     """
 
     def __init__(self):
         self.bus = EvidenceBus
+        # Lazy load v17 projections to avoid circular deps if any
+        from v17.ui.governance_projection import GovernanceProjection
+        from v17.ui.bounty_projection import BountyProjection
+        from v17.governance.schemas import GovernanceConfig
+
+        self.gov_proj = GovernanceProjection(self.bus)
+        self.bounty_proj = BountyProjection(self.bus)
+        # Default config for viewing - in production this comes from chain state
+        self.gov_config = GovernanceConfig(
+            quorum_threshold=0.3, approval_threshold=0.5, voting_period_seconds=86400
+        )
+
+    def get_governance_dashboard(self, limit: int = 50) -> Dict:
+        """Get high-level governance dashboard view."""
+        proposals = self.gov_proj.list_proposals(limit)
+        return {
+            "proposals": proposals,
+            "count": len(proposals),
+            "stats": self._compute_gov_stats(proposals),
+        }
+
+    def get_proposal_detail(self, proposal_id: str) -> Optional[Dict]:
+        """Get detailed proposal timeline and explanation."""
+        return self.gov_proj.get_proposal_timeline(proposal_id, self.gov_config)
+
+    def get_bounty_dashboard(self, limit: int = 50) -> Dict:
+        """Get high-level bounty dashboard view."""
+        bounties = self.bounty_proj.list_bounties(limit)
+        return {
+            "bounties": bounties,
+            "count": len(bounties),
+            "total_active_rewards": sum(
+                float(b["reward"].split()[0]) for b in bounties if b["status"] == "open"
+            ),
+        }
+
+    def get_bounty_detail(self, bounty_id: str) -> Optional[Dict]:
+        """Get detailed bounty timeline and reward info."""
+        return self.bounty_proj.get_bounty_timeline(bounty_id)
+
+    def _compute_gov_stats(self, proposals: List[Dict]) -> Dict:
+        return {
+            "open": sum(1 for p in proposals if p["status"] == "open"),
+            "closed": sum(1 for p in proposals if p["status"] == "closed"),
+        }
 
     def get_recent_events(self, limit: int = 100) -> List[Dict]:
         """Get recent events from the Evidence Chain."""
