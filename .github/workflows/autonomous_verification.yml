@@ -30,7 +30,7 @@ jobs:
                   python autonomous_verification.py
 
             - name: Upload verification status
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: verification-status
                   path: |
