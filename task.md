@@ -161,6 +161,20 @@
   - [ ] Evidence links
   - [ ] Guardrails
 
+#### Layer D: Agent Advisory (User-Facing) ✅
+
+- [x] Implement Advisory Interpreters (v17/agents/)
+  - [x] Governance Heuristics
+  - [x] Bounty Heuristics
+  - [x] Social Heuristics
+- [x] Wire to UI Projections
+  - [x] Governance Overlay
+  - [x] Bounty Overlay
+  - [x] Social Overlay
+- [x] Verification
+  - [x] Deterministic Tests
+  - [x] Zero-Sim Compliance
+
 #### Layer E: Progressive Disclosure 🔄
 
 - [ ] Level 1: Summary (human explanation)
@@ -182,6 +196,13 @@
 - [ ] Tag: `v17.0.0-beta-governance-bounties`
 - [ ] Release summary
 
+### Roadmap: v18 Distributed Fabric 🔮
+
+- [ ] Design Node Tiering (A/B/C)
+- [ ] Implement Raft/PBFT Consensus (Layer A)
+- [ ] Implement PQC Anchor Service (Layer A)
+- [ ] Deploy Edge Advisory Nodes (Layer B)
+
 ---
 
 ## Current Status Summary
@@ -191,25 +212,23 @@
 - ✅ v16 Operationalization
 - ✅ v16 Integration (wallet auth, admin panel, agent advisory)
 - ✅ v16 Health Check & Hardening
-- ✅ CI Wiring Fixes
 - ✅ v17 Engine Implementation (governance + bounties)
+- ✅ v17 UI/UX (Timelines, Explanations, Advisory Overlays)
+- ✅ v17 Documentation Alignment
 
 **In Progress:**
 
-- 🔄 v17 UI/UX Layer (compression & reveal)
+- 🔄 v17 Beta Testing
 
 **Next Steps:**
 
-1. Extend admin dashboard with governance/bounty timelines
-2. Implement decision explanation panels
-3. Add user-facing contribution history
-4. Create comprehensive documentation
-5. End-to-end testing
-6. PR and release
+1. Merge `docs/v17-repo-alignment`
+2. Tag `v17.0.0-beta`
+3. Begin v18 Design
 
 ---
 
-**Branch:** `feat/v17-governance-bounty-f-layer`  
-**Foundation:** v16.1.1-pre-v17-ready  
-**Target:** v17.0.0-beta-governance-bounties  
-**Contract:** No new authority, only legibility
+**Branch:** `docs/v17-repo-alignment`
+**Foundation:** v17.0.0-beta-governance-bounties
+**Target:** v18 Design Phase
+**Contract:** Deterministic Core Preserved

@@ -17,16 +17,33 @@ class SocialProjection:
         limit = 1_000_000  # Full scan
         events = self.bus.get_events(limit=limit)
         threads = []
+        advisories = {}
 
         for envelope in events:
             if not isinstance(envelope, dict):
                 continue
             event = envelope.get("event", {})
-            if event.get("type") == "SOCIAL_THREAD_CREATED":
-                payload = event.get("payload", {})
+            etype = event.get("type")
+            payload = event.get("payload", {})
+
+            if etype == "SOCIAL_THREAD_CREATED":
                 t = payload.get("thread", {})
                 if t.get("reference_id") == entity_id:
                     threads.append(t)
+
+            elif etype == "AGENT_ADVISORY_SOCIAL":
+                signal = payload.get("signal", {})
+                target_id = signal.get("target_id")
+                if target_id:
+                    if target_id not in advisories:
+                        advisories[target_id] = []
+                    advisories[target_id].append(signal)
+
+        # Attach advisories to threads
+        for t in threads:
+            tid = t.get("thread_id")
+            if tid in advisories:
+                t["advisory"] = advisories[tid]
 
         return threads
 

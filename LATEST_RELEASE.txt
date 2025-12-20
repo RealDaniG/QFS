@@ -1,7 +1,5 @@
-QFS_VERSION=v16.1.0-integration-complete
-ATLAS_VERSION=1.4.0
-GOVERNANCE_ENGINE=v16 (Zero-Sim + EvidenceBus + Advisory Agents)
-RELEASE_DATE=2025-12-19
-STATUS=STABLE (Integration Complete)
-VALIDATION_SUITE=PASSING
-COMMIT_HASH=732b509
+VERSION=v17.0.0-beta-governance-bounties
+DATE=2025-12-20
+STATUS=BETA
+LAYERS=A,B,C,D
+NOTE=Full F-Layer + Advisory + UI Projections

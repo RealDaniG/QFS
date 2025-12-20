@@ -78,6 +78,20 @@ class GovernanceProjection:
                     proposals[pid]["status"] = "closed"
                     proposals[pid]["outcome"] = record.get("final_outcome")
 
+            elif event_type == "AGENT_ADVISORY_PROPOSAL":
+                signal = payload.get("signal", {})
+                pid = signal.get("target_id")
+                if pid in proposals:
+                    if "advisory" not in proposals[pid]:
+                        proposals[pid]["advisory"] = []
+                    proposals[pid]["advisory"].append(
+                        {
+                            "score": signal.get("score"),
+                            "reasons": signal.get("reasons"),
+                            "model": signal.get("model_version"),
+                        }
+                    )
+
         # Sort by creation time desc
         result = list(proposals.values())
         result.sort(key=lambda x: x["created_at"], reverse=True)

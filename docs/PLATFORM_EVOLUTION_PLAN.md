@@ -427,4 +427,17 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### Phase 6: Observability & Tooling (Week 6-7)
 
-...
+18. ⏳ **Grafana/Custom dashboard** for throughput and cost
+19. ⏳ **CLI tools** for deep inspection and replay bundles
+
+---
+
+## 9. v18 Outlook: Distributed Fabric
+
+**Goal**: Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
+
+**Blueprint**: See [V18_DESIGN_AND_DEPLOYMENT.md](V18_DESIGN_AND_DEPLOYMENT.md).
+
+- **Phase 1: Multi-Node Core**: Introduce deterministic consensus (Raft/PBFT) between Tier A nodes sharing the EvidenceBus.
+- **Phase 2: PQC Anchors**: Replace MOCKQPC with real PQC signatures for batch sealing at Tier A.
+- **Phase 3: Edge Expansion**: Deploy UI and Advisory logic to Tier B (PoE++ Edge Nodes) and Tier C (Sensors).
