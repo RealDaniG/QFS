@@ -23,6 +23,14 @@ Full decentralized security requires PQC at the network and identity layers.
 - **Secure Channels:** Hybrid TLS (Classical Diffie-Hellman + PQC KEM) for node-to-node communication.
 - **Status:** Under research for Phase 5.
 
+## 2.5 Edge Cryptography: Ascon (Alpha)
+
+While PQC secures the global backbone (Tier A), **Ascon** provides lightweight, deterministic security for the heterogeneous edge (Tier B/C).
+
+- **Role:** Fast integrity & confidentiality for high-volume telemetry and local caches.
+- **Invariants:** 100% deterministic nonces derived from EvidenceBus sequence.
+- **Independence:** Ascon does **not** replace PQC anchors; PQC remains the primary trust root for global history.
+
 ## 3. Wallet & Auth Migration (Future)
 
 - **User Wallets:** Current EIP-191 (ECDSA) remains the baseline.

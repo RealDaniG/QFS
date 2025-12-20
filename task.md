@@ -228,6 +228,14 @@
 - [ ] Tier B Edge Node Config (UI+Advisory)
 - [ ] Tier C Sensor Gateways
 
+### v18.5 Edge Security (Ascon) ✅ ALPHA COMPLETE
+
+- [x] Deterministic Ascon Adapter (v18/crypto/ascon_adapter.py)
+- [x] EvidenceBus Event Logging (`ASYNC_CRYPTO_EVENT`)
+- [x] Pydantic Schema for Context & Operations
+- [x] Determinism Tests (Zero-Sim)
+- [ ] Tier B/C Integrated Wiring (Planned)
+
 ---
 
 ## Current Status Summary
@@ -242,6 +250,7 @@
 - ✅ v18 Phase 1: Multi-Node Core
 - ✅ v18 Phase 2: PQC Anchors
 - ✅ v18 Phase 3: Consensus & Bus Integration
+- ✅ v18.5 Alpha: Ascon Edge Crypto Adapter (Deterministic Mock)
 
 **In Progress:**
 

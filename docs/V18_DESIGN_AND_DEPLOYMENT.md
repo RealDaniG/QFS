@@ -69,6 +69,13 @@ The v18 architecture maps the logical layers (A-D) to physical hardware tiers, e
 
 ---
 
+### 4.4 Edge Crypto Overlay (v18.5)
+
+- **Service**: Ascon Adapter (`v18/crypto/ascon_adapter.py`).
+- **Role**: Lightweight AEAD/Hash for Tier B/C nodes (Advisory, Telemetry).
+- **Invariants**: 100% deterministic (no random nonces), log-linked (emits `ASYNC_CRYPTO_EVENT`).
+- **Relationship**: Augments Tier A PQC anchors with fast edge integrity.
+
 ## 5. v18 Integration Phases
 
 ### Phase 1 – Multi-Node Core (Tier A) ✅
@@ -120,3 +127,4 @@ All nodes run the **Minimal Deterministic Kernel**: EvidenceBus Client + Replay 
 - [PQC Security Profile](PQC_SECURITY_PROFILE.md)
 - [Network Governance Charter](NETWORK_GOVERNANCE_CHARTER.md)
 - [Agent Fabric Specification](architecture/AGENT_FABRIC_SPEC.md)
+- [Ascon Edge Crypto Adapter](../ASYNC_CRYPTO_ASCON_ADAPTER.md)
