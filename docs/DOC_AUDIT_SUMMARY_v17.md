@@ -320,12 +320,12 @@ Before each release:
 
 ## Conclusion
 
-The QFS documentation now reflects the **v17+ capability baseline** with zero version drift. All planning documents describing future work have been removed, core specifications use evergreen naming, and temporal language has been eliminated.
+The QFS documentation now hopefully fully reflects the **v17+ capability baseline** with zero version drift. All planning documents describing future work have been removed, core specifications use evergreen naming, and temporal language has been eliminated.
 
 **Priority Achieved:** Documentation now accurately represents the current implementation state, eliminating confusion for new contributors and auditors.
 
 **Next Steps:**
 
-1. Monitor for new version drift in PRs
+1. Monitor for any other version drift in PRs
 2. Implement automated CI check for temporal language
 3. Update CONTRIBUTING.md with evergreen documentation guidelines

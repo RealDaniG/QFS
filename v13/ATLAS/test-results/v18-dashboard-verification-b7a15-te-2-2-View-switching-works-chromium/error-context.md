@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e1]:
+- generic [active] [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e3]:
       - generic [ref=e4]:
@@ -29,7 +29,7 @@
         - button "Ledger & Explain" [ref=e34]:
           - img [ref=e35]
           - text: Ledger & Explain
-        - button "Wallet & Reputation" [active] [ref=e37]:
+        - button "Wallet & Reputation" [ref=e37]:
           - img [ref=e38]
           - text: Wallet & Reputation
         - button "Settings & Safety" [ref=e41]:

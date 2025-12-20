@@ -25,6 +25,39 @@ export default function WalletInterface() {
     const { isConnected, address: walletAddress } = useWalletAuth();
     const { explanation, fetchRewardExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
 
+    // Auth Gate: Show connect wallet message if not authenticated
+    if (!isConnected) {
+        return (
+            <div className="max-w-4xl mx-auto">
+                <Card className="border-blue-500/30 bg-blue-500/5">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Shield className="h-5 w-5 text-blue-600" />
+                            Wallet Connection Required
+                        </CardTitle>
+                        <CardDescription>
+                            Connect your wallet to view your balance, transaction history, and internal credits.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-4 p-4 bg-background/50 rounded-xl border border-blue-500/20">
+                            <Wallet className="h-8 w-8 text-blue-600" />
+                            <div className="flex-1">
+                                <p className="text-sm font-semibold">Secure Wallet Authentication</p>
+                                <p className="text-xs text-muted-foreground">
+                                    Your wallet is used for cryptographic identity only. No transfers are supported.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex justify-center pt-4">
+                            <WalletConnectButton />
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
     // Fallback if loading or no auth (although auth is likely present)
     const displayBalance = balance?.balance.toFixed(2) || '0.00';
     const displayRewards = balance?.rewards.toFixed(2) || '0.00';

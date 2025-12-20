@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { atlasFetch } from '../lib/api';
+import { useWalletAuth } from './useWalletAuth';
 
 export interface FeedItem {
     id: string;
@@ -26,20 +26,33 @@ const NETWORK_NODES: NetworkNode[] = [
 ];
 
 export function useQFSFeed() {
+    const { isConnected, address } = useWalletAuth();
     const [feed, setFeed] = useState<FeedItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedNode, setSelectedNode] = useState<NetworkNode>(NETWORK_NODES[0]);
 
     useEffect(() => {
+        // Only fetch when connected
+        if (!isConnected || !address) {
+            setLoading(false);
+            setFeed([]);
+            return;
+        }
         fetchFeed();
-    }, [selectedNode]); // Re-fetch if node changes (logical simulation)
+    }, [selectedNode, isConnected, address]); // Re-fetch if node changes or auth state changes
 
     const fetchFeed = async () => {
+        // Auth Guard: Don't fetch if not connected
+        if (!isConnected || !address) {
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         try {
             // Use atlasFetch to get real data from backend
             const res = await atlasFetch('/api/v18/content/feed?limit=20');
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status} `);
             const data = await res.json();
 
             // Map Backend MessageSummary to Frontend FeedItem
@@ -50,7 +63,7 @@ export function useQFSFeed() {
                 authorDID: msg.sender,
                 content: { text: msg.content },
                 coherenceScore: 1.0, // Default for now
-                proof: `ledger_${msg.content_hash.slice(0, 8)}`, // Simulated proof reference
+                proof: `ledger_${msg.content_hash.slice(0, 8)} `, // Simulated proof reference
                 // Convert seconds (Backend) to milliseconds (JS)
                 timestamp: msg.timestamp * 1000
             }));

@@ -60,13 +60,12 @@ export default function AtlasDashboard() {
 
   const navigationItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'create', label: 'Create', icon: PlusCircle },
+    { id: 'discover', label: 'Discover', icon: Users },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
-    { id: 'communities', label: 'Communities', icon: Users },
-    { id: 'governance', label: 'Governance', icon: Shield },
+    { id: 'wallet', label: 'Wallet', icon: Wallet },
+    { id: 'bounties', label: 'Bounties', icon: Activity },
     { id: 'ledger', label: 'Ledger & Explain', icon: BookOpen },
-    { id: 'wallet', label: 'Wallet & Reputation', icon: Wallet },
-    { id: 'settings', label: 'Settings & Safety', icon: Settings },
+    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   const systemHealth = {
@@ -305,15 +304,21 @@ export default function AtlasDashboard() {
                   </div>
                 )}
 
-                {activeView === 'create' && (
-                  <ContentComposer
-                    isOpen={true}
-                    onClose={() => setActiveView('home')}
-                  />
-                )}
+                {activeView === 'discover' && <DiscoveryInterface />}
                 {activeView === 'messages' && <MessagingInterface />}
-                {activeView === 'communities' && <DiscoveryInterface />}
-                {activeView === 'governance' && <GovernanceInterface />}
+                {activeView === 'bounties' && (
+                  <div className="space-y-6">
+                    <Card className="border-none shadow-sm">
+                      <CardHeader>
+                        <CardTitle>Available Bounties</CardTitle>
+                        <CardDescription>Contribute to QFS development and earn rewards</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground">Bounty system integration in progress for v18.</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
                 {activeView === 'ledger' && (
                   <div className="space-y-6">
                     <ExplainRewardFlow />
@@ -340,6 +345,14 @@ export default function AtlasDashboard() {
           </div>
         </main>
       </div>
+
+      {/* Content Composer Modal */}
+      {showComposer && (
+        <ContentComposer
+          isOpen={showComposer}
+          onClose={() => setShowComposer(false)}
+        />
+      )}
     </div>
   );
 }

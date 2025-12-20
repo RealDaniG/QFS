@@ -17,7 +17,7 @@
         - button "Create" [ref=e19]:
           - img [ref=e20]
           - text: Create
-        - button "Messages" [ref=e22]:
+        - button "Messages" [active] [ref=e22]:
           - img [ref=e23]
           - text: Messages
         - button "Communities" [ref=e25]:
@@ -29,7 +29,7 @@
         - button "Ledger & Explain" [ref=e34]:
           - img [ref=e35]
           - text: Ledger & Explain
-        - button "Wallet & Reputation" [active] [ref=e37]:
+        - button "Wallet & Reputation" [ref=e37]:
           - img [ref=e38]
           - text: Wallet & Reputation
         - button "Settings & Safety" [ref=e41]:

@@ -11,7 +11,7 @@
         - button [ref=e7]:
           - img [ref=e8]
       - navigation [ref=e14]:
-        - button "Home" [ref=e15]:
+        - button "Home" [active] [ref=e15]:
           - img [ref=e16]
           - text: Home
         - button "Create" [ref=e19]:
@@ -29,7 +29,7 @@
         - button "Ledger & Explain" [ref=e34]:
           - img [ref=e35]
           - text: Ledger & Explain
-        - button "Wallet & Reputation" [active] [ref=e37]:
+        - button "Wallet & Reputation" [ref=e37]:
           - img [ref=e38]
           - text: Wallet & Reputation
         - button "Settings & Safety" [ref=e41]:

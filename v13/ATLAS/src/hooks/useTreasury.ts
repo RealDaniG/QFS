@@ -11,16 +11,19 @@ export function useTreasury() {
     const [isLoading, setIsLoading] = useState(true);
 
     const refresh = useCallback(async () => {
-        // We can always show data for the connected user or a default
-        const identifier = walletAddress || 'demo_user';
+        // Auth Guard: Don't fetch if not connected
+        if (!isConnected || !walletAddress) {
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const treasury = getTreasury();
             // treasury is an instance of TreasuryService
 
             const [acct, txs] = await Promise.all([
-                treasury.getBalance(identifier),
-                treasury.getHistory(identifier)
+                treasury.getBalance(walletAddress),
+                treasury.getHistory(walletAddress)
             ]);
 
             setBalance(acct);
@@ -30,13 +33,19 @@ export function useTreasury() {
         } finally {
             setIsLoading(false);
         }
-    }, [walletAddress]);
+    }, [walletAddress, isConnected]);
 
     useEffect(() => {
+        // Only fetch when connected
+        if (!isConnected) {
+            setIsLoading(false);
+            return;
+        }
+
         refresh();
         const interval = setInterval(refresh, 60000); // 60s poll for treasury
         return () => clearInterval(interval);
-    }, [refresh]);
+    }, [refresh, isConnected]);
 
     return {
         balance,

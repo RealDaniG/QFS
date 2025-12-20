@@ -1,16 +1,51 @@
-
 'use client';
 
 import { useQFSFeed } from '@/hooks/useQFSFeed';
+import { useWalletAuth } from '@/hooks/useWalletAuth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Shield, CheckCircle2, Server } from 'lucide-react';
+import { Shield, CheckCircle2, Server, Lock } from 'lucide-react';
 
 export default function DistributedFeed() {
+    const { isConnected } = useWalletAuth();
     const { feed, loading, nodes, selectedNode, selectNode } = useQFSFeed();
+
+    // Show public feed mode when unauthenticated
+    if (!isConnected) {
+        return (
+            <div className="space-y-6">
+                <Card className="border-blue-500/30 bg-blue-500/5">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Lock className="h-5 w-5 text-blue-600" />
+                            Public Feed Mode
+                        </CardTitle>
+                        <CardDescription>
+                            Connect your wallet to see your personalized distributed feed from trusted QFS nodes.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            <div className="p-4 bg-background/50 rounded-xl border border-blue-500/20">
+                                <p className="text-sm text-muted-foreground">
+                                    The distributed feed shows content verified across multiple QFS nodes.
+                                    Authentication is required to participate and view node-specific content.
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <Shield className="h-4 w-4 text-green-500" />
+                                <span>All content is cryptographically verified</span>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
 
     return (
         <div className="space-y-6">
