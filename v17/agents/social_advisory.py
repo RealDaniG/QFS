@@ -5,6 +5,7 @@ from v17.agents.schemas import AdvisorySignal
 def process_social_event(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
     Consumer for social events. Generates advisory signals.
+    Implements v17.1 heuristics.
     """
     etype = event.get("type")
     payload = event.get("payload", {})
@@ -16,15 +17,22 @@ def process_social_event(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         timestamp = payload.get("timestamp", 0)
 
         reasons = []
-        score = 0.5  # Urgency
+        score = 0.5  # Baseline Urgency
 
-        # Deterministic Heuristics
-        if "scam" in reason or "fraud" in reason:
-            reasons.append("High urgency keyword detected")
+        # 1. High Urgency Keywords
+        critical_terms = ["scam", "fraud", "stolen", "emergency", "exploit"]
+        found_critical = [t for t in critical_terms if t in reason]
+
+        if found_critical:
+            reasons.append(f"Urgency: Critical keywords ({', '.join(found_critical)})")
             score = 0.9
 
-        if "typo" in reason:
-            reasons.append("Low urgency: likely minor")
+        # 2. Low Urgency / Noise
+        minor_terms = ["typo", "mistake", "rename", "label"]
+        found_minor = [t for t in minor_terms if t in reason]
+
+        if found_minor and not found_critical:
+            reasons.append("Urgency: Appears to be administrative/minor")
             score = 0.2
 
         signal = AdvisorySignal(
@@ -32,7 +40,7 @@ def process_social_event(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             target_id=dispute_id,
             score=max(0.0, min(1.0, score)),
             reasons=reasons,
-            model_version="social-heuristic-v1",
+            model_version="social-heuristic-v1.1",
         )
 
         return {

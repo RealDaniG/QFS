@@ -161,6 +161,20 @@
   - [ ] Evidence links
   - [ ] Guardrails
 
+#### Layer D: Agent Advisory (User-Facing) ✅
+
+- [x] Implement Advisory Interpreters (v17/agents/)
+  - [x] Governance Heuristics
+  - [x] Bounty Heuristics
+  - [x] Social Heuristics
+- [x] Wire to UI Projections
+  - [x] Governance Overlay
+  - [x] Bounty Overlay
+  - [x] Social Overlay
+- [x] Verification
+  - [x] Deterministic Tests
+  - [x] Zero-Sim Compliance
+
 #### Layer E: Progressive Disclosure 🔄
 
 - [ ] Level 1: Summary (human explanation)
