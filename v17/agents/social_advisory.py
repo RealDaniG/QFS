@@ -43,9 +43,14 @@ def process_social_event(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             model_version="social-heuristic-v1.1",
         )
 
-        return {
+        event_out = {
             "type": "AGENT_ADVISORY_SOCIAL",
             "payload": {"signal": signal.model_dump(), "timestamp": timestamp},
         }
+
+        # v18.5 Ascon Integration
+        from v18.crypto.advisory_wrap import wrap_advisory_event
+
+        return wrap_advisory_event(event_out, seq=int(timestamp % 1000))
 
     return None

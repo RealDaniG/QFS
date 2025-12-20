@@ -228,13 +228,15 @@
 - [ ] Tier B Edge Node Config (UI+Advisory)
 - [ ] Tier C Sensor Gateways
 
-### v18.5 Edge Security (Ascon) ✅ ALPHA COMPLETE
+### v18.5 Edge Security (Ascon) ✅ PHASE 1-3 COMPLETE
 
 - [x] Deterministic Ascon Adapter (v18/crypto/ascon_adapter.py)
+- [x] WalletAuthCryptoAdapter & EdgeCryptoAdapter Infrastructure
 - [x] EvidenceBus Event Logging (`ASYNC_CRYPTO_EVENT`)
-- [x] Pydantic Schema for Context & Operations
+- [x] Wallet Session Integration (Ascon-protected tokens)
+- [x] Edge/Advisory Integration (Governance/Social/Bounty wrappers)
 - [x] Determinism Tests (Zero-Sim)
-- [ ] Tier B/C Integrated Wiring (Planned)
+- [ ] Phase 4: Key Management & Rotation (Planned)
 
 ---
 
