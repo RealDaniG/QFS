@@ -121,9 +121,9 @@ do {
     
     if (-not $Loop) {
         # Clean Shutdown
-        Log-Section "SYSTEM" "Press Enter to stop backend/frontend (or Ctrl+C to keep running)..."
-        # Non-blocking check? No, script ends here.
-        # Just auto-kill as per requirement "Clean shutdown... stops both"
+        Log-Section "SYSTEM" "Press Enter to stop backend/frontend..."
+        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        
         Log-Section "SYSTEM" "Stopping services..."
         if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
         if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
