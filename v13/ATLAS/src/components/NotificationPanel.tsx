@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Bell, Shield, Wallet, Zap, Clock, CheckCircle2 } from 'lucide-react';
+import { Bell, Shield, Wallet, Zap, Clock, CheckCircle2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Notification {
@@ -17,39 +17,42 @@ export interface Notification {
     data?: any;
 }
 
-const MOCK_NOTIFICATIONS: Notification[] = [
-    {
-        id: '1',
-        type: 'reward',
-        title: 'Reward Distributed',
-        message: 'You received 12.50 FLX for your last post "Deterministic QFS...".',
-        timestamp: Date.now() - 1000 * 60 * 5,
-        read: false,
-        data: { amount: 12.5, currency: 'FLX' }
-    },
-    {
-        id: '2',
-        type: 'security',
-        title: 'Session Sealed',
-        message: 'Your current v18 session has been successfully sealed with ASCON-128.',
-        timestamp: Date.now() - 1000 * 60 * 30,
-        read: true
-    },
-    {
-        id: '3',
-        type: 'system',
-        title: 'Coherence Ranking Updated',
-        message: 'Network-wide coherence ranking epoch #14 has been finalized.',
-        timestamp: Date.now() - 1000 * 60 * 60 * 2,
-        read: true
-    }
-];
-
 export function NotificationPanel() {
-    const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
+    const queryClient = useQueryClient();
+
+    // Fetch notifications from API
+    const { data: notifications = [], isLoading } = useQuery<Notification[]>({
+        queryKey: ['notifications'],
+        queryFn: async () => {
+            const res = await fetch('/api/v18/notifications');
+            if (!res.ok) throw new Error('Failed to fetch notifications');
+            return res.json();
+        },
+        refetchInterval: 30000, // Refresh every 30 seconds
+    });
+
+    // Mark all as read mutation
+    const markReadMutation = useMutation({
+        mutationFn: async () => {
+            const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
+            const res = await fetch('/api/v18/notifications', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    notificationIds: unreadIds,
+                    action: 'markRead'
+                })
+            });
+            if (!res.ok) throw new Error('Failed to mark as read');
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        }
+    });
 
     const markAllRead = () => {
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+        markReadMutation.mutate();
     };
 
     const getIcon = (type: string) => {
