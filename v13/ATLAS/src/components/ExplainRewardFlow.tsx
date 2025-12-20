@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ExplainThisPanel } from "./ExplainThisPanel";
 import { useExplainReward } from "@/hooks/useExplainReward";
-import { Loader2, AlertCircle } from "lucide-react";
+import { useWalletAuth } from "@/hooks/useWalletAuth";
+import { Loader2, AlertCircle, Shield } from "lucide-react";
+import { WalletConnectButton } from "./WalletConnectButton";
 
 export function ExplainRewardFlow() {
+  const { isConnected } = useWalletAuth();
   const [walletId, setWalletId] = useState("");
   const [epoch, setEpoch] = useState<number | undefined>(undefined);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -20,6 +23,36 @@ export function ExplainRewardFlow() {
     error,
     refetch,
   } = useExplainReward(walletId, epoch);
+
+  // Auth Gate: Show connect wallet message if not authenticated
+  if (!isConnected) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-blue-500/30 bg-blue-500/5">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-blue-600" />
+              Reward Explanation Requires Authentication
+            </CardTitle>
+            <CardDescription>
+              Connect your wallet to inspect reward explanations and verify economic calculations.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="p-4 bg-background/50 rounded-xl border border-blue-500/20">
+              <p className="text-sm text-muted-foreground">
+                The Explain Reward feature provides deterministic, auditable explanations for all
+                reward calculations in the QFS system. Authentication is required to access this feature.
+              </p>
+            </div>
+            <div className="flex justify-center pt-4">
+              <WalletConnectButton />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleExplain = () => {
     if (walletId.trim()) {
