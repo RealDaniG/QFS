@@ -16,7 +16,8 @@ import {
   Search,
   Menu,
   X,
-  Activity
+  Activity,
+  LayoutGrid
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,24 +27,27 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { useWalletAuth } from '@/hooks/useWalletAuth';
+import { useTreasury } from '@/hooks/useTreasury';
 
 // Components
 import { ExplainRewardFlow } from '@/components/ExplainRewardFlow';
 import ContentComposer from '@/components/ContentComposer';
 import MessagingInterface from '@/components/MessagingInterface';
 import DiscoveryInterface from '@/components/DiscoveryInterface';
-import WalletInterface from '@/components/WalletInterface';
+import WalletInterface from "@/components/WalletInterface";
+import { DailyRewardCard } from "@/components/DailyRewardCard";
 import ProfileEditor from '@/components/ProfileEditor';
 import GovernanceInterface from '@/components/GovernanceInterface';
 import GuardsList from '@/components/GuardsList';
 import DistributedFeed from '@/components/DistributedFeed';
-
+import { AuthGate } from '@/components/AuthGate';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { WalletConnectButton } from '@/components/WalletConnectButton';
 import { NotificationPanel } from '@/components/NotificationPanel';
 
 export default function AtlasDashboard() {
-  const { isConnected, address, isLoading: authLoading } = useWalletAuth();
+  const { isConnected, address, sessionToken, isLoading: authLoading } = useWalletAuth();
+  const { balance, isLoading: treasuryLoading } = useTreasury();
   const router = useRouter();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -61,16 +65,23 @@ export default function AtlasDashboard() {
 
   const navigationItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'discover', label: 'Discover', icon: Users },
+    { id: 'spaces', label: 'Spaces', icon: LayoutGrid },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'wallet', label: 'Wallet', icon: Wallet },
     { id: 'bounties', label: 'Bounties', icon: Activity },
     { id: 'ledger', label: 'Ledger & Explain', icon: BookOpen },
+    { id: 'governance', label: 'Governance', icon: Shield },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   // Fetch system health from API
-  const { data: systemHealth } = useQuery({
+  const { data: systemHealth = {
+    qfsStatus: 'Loading...',
+    coherenceRanking: 'Loading...',
+    guardSystem: 'Loading...',
+    ledgerSync: 'Loading...',
+    nodeHealth: '—'
+  } } = useQuery<Record<string, string>>({
     queryKey: ['systemHealth'],
     queryFn: async () => {
       const res = await fetch('/api/v18/system/health');
@@ -78,13 +89,28 @@ export default function AtlasDashboard() {
       return res.json();
     },
     refetchInterval: 10000, // Refresh every 10 seconds
-    initialData: {
-      qfsStatus: 'Loading...',
-      coherenceRanking: 'Loading...',
-      guardSystem: 'Loading...',
-      ledgerSync: 'Loading...',
-      nodeHealth: '—'
-    }
+  });
+
+  // Fetch bounties from API
+  const { data: bounties = [], isLoading: bountiesLoading } = useQuery({
+    queryKey: ['bounties'],
+    queryFn: async () => {
+      const res = await fetch('/api/v18/bounties');
+      if (!res.ok) throw new Error('Failed to fetch bounties');
+      return res.json();
+    },
+  });
+
+
+  // Fetch ledger events from API
+  const { data: ledgerEvents = [], isLoading: ledgerLoading } = useQuery({
+    queryKey: ['ledger'],
+    queryFn: async () => {
+      const res = await fetch('/api/v18/ledger');
+      if (!res.ok) throw new Error('Failed to fetch ledger');
+      return res.json();
+    },
+    refetchInterval: 5000,
   });
 
   if (authLoading) {
@@ -92,7 +118,16 @@ export default function AtlasDashboard() {
       <div className="flex items-center justify-center h-screen bg-background">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Synchronizing v18 clusters...</p>
+          <p className="text-muted-foreground mb-4">Synchronizing v18 clusters...</p>
+          <Button
+            variant="outline"
+            onClick={() => window.location.reload()}
+            className="mr-2"
+          >
+            Reload
+          </Button>
+          {/* We can't easily call handleAuth here because it's inside the hook, 
+              but reloading is a safe fallback for "stuck" states since checking !session on load triggers auth. */}
         </div>
       </div>
     );
@@ -162,15 +197,18 @@ export default function AtlasDashboard() {
             {sidebarOpen && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{displayAddress}</p>
-                {isConnected && (
+                {isConnected && sessionToken && (
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Reputation: 142</p>
+                    <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+                      Reputation: {treasuryLoading ? "..." : (balance?.reputation?.toFixed(0) || "0")}
+                    </p>
                   </div>
                 )}
-                {!isConnected && (
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Unauthenticated</p>
+                {(!isConnected || !sessionToken) && (
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Unverified Session</p>
                 )}
+
               </div>
             )}
           </div>
@@ -280,6 +318,7 @@ export default function AtlasDashboard() {
                     </div>
 
                     <div className="space-y-6">
+                      <DailyRewardCard />
                       <Card className="border-none shadow-sm">
                         <CardHeader>
                           <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -304,54 +343,162 @@ export default function AtlasDashboard() {
                         </CardContent>
                       </Card>
 
-                      <Card className="border-none shadow-sm bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
-                        <CardHeader>
-                          <CardTitle className="text-sm">Total Internal Credits</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-3xl font-bold tracking-tight">1,000.00 FLX</div>
-                          <p className="text-[10px] mt-2 opacity-80 uppercase font-bold tracking-wider">Non-Transferable (v18 Plan)</p>
-                        </CardContent>
-                      </Card>
+                      {isConnected && (
+                        <Card className="border-none shadow-sm bg-gradient-to-br from-indigo-600 to-blue-700 text-white">
+                          <CardHeader>
+                            <CardTitle className="text-sm">Total Internal Credits</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="text-3xl font-bold tracking-tight">
+                              {treasuryLoading ? "..." : (balance?.balance?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00")} FLX
+                            </div>
+                            <p className="text-[10px] mt-2 opacity-80 uppercase font-bold tracking-wider">Non-Transferable (v18 Plan)</p>
+                          </CardContent>
+                        </Card>
+                      )}
                     </div>
                   </div>
                 )}
 
-                {activeView === 'discover' && <DiscoveryInterface />}
-                {activeView === 'messages' && <MessagingInterface />}
+                {activeView === 'spaces' && (
+                  <AuthGate title="Spaces Portal Locked" description="Connect your wallet to explore v18 spaces and clusters.">
+                    <DiscoveryInterface />
+                  </AuthGate>
+                )}
+                {activeView === 'messages' && (
+                  <AuthGate title="Secure Messaging Locked" description="An authenticated session is required to access end-to-end encrypted messages.">
+                    <MessagingInterface />
+                  </AuthGate>
+                )}
                 {activeView === 'bounties' && (
-                  <div className="space-y-6">
-                    <Card className="border-none shadow-sm">
-                      <CardHeader>
-                        <CardTitle>Available Bounties</CardTitle>
-                        <CardDescription>Contribute to QFS development and earn rewards</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">Bounty system integration in progress for v18.</p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <AuthGate title="Bounty Dashboard Locked" description="Verify your identity to claim development bounties and earn QFS rewards.">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h2 className="text-2xl font-bold">Available Bounties</h2>
+                          <p className="text-muted-foreground">Contribute to QFS development and earn real FLX rewards.</p>
+                        </div>
+                        <Badge variant="outline" className="h-6">
+                          {bounties?.length || 0} active
+                        </Badge>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {bountiesLoading ? (
+                          <div className="col-span-2 flex justify-center py-12">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                          </div>
+                        ) : bounties.length === 0 ? (
+                          <Card className="col-span-2 border-dashed">
+                            <CardContent className="py-12 text-center text-muted-foreground">
+                              No active bounties found in your cluster.
+                            </CardContent>
+                          </Card>
+                        ) : (
+                          bounties.map((bounty: any) => (
+                            <Card key={bounty.id} className="group hover:border-primary/50 transition-colors">
+                              <CardHeader className="pb-3">
+                                <div className="flex justify-between items-start">
+                                  <Badge variant="secondary" className="mb-2 uppercase text-[10px] tracking-wider">
+                                    {bounty.type}
+                                  </Badge>
+                                  <div className="text-lg font-bold text-green-600">
+                                    {bounty.reward} FLX
+                                  </div>
+                                </div>
+                                <CardTitle className="text-base group-hover:text-primary transition-colors">{bounty.title}</CardTitle>
+                                <CardDescription className="line-clamp-2">{bounty.description}</CardDescription>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <Badge variant={bounty.difficulty === 'Hard' ? 'destructive' : bounty.difficulty === 'Medium' ? 'default' : 'outline'} className="text-[10px]">
+                                      {bounty.difficulty}
+                                    </Badge>
+                                    <span className="text-xs text-muted-foreground">{bounty.status}</span>
+                                  </div>
+                                  <Button size="sm">Claim Bounty</Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))
+                        )}
+                      </div>
+                    </div>
+
+                  </AuthGate>
+                )}
+                {activeView === 'governance' && (
+                  <AuthGate title="Governance Portal Locked" description="QFS token holders only. Connect wallet to vote on protocol upgrades.">
+                    <GovernanceInterface />
+                  </AuthGate>
                 )}
                 {activeView === 'ledger' && (
-                  <div className="space-y-6">
-                    <ExplainRewardFlow />
-                    <Card className="border-none shadow-sm">
-                      <CardHeader>
-                        <CardTitle>v18 Event Ledger</CardTitle>
-                        <CardDescription>ASCON-sealed deterministic audit trail</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">Detailed event streams for v18 are being synchronized from primary clusters.</p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <AuthGate title="Deterministic Ledger Locked" description="Cryptographic proof of participation is required to view the event stream.">
+                    <div className="space-y-6">
+                      <ExplainRewardFlow />
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <h2 className="text-2xl font-bold">Deterministic Ledger</h2>
+                          <p className="text-muted-foreground text-sm">ASCON-sealed audit trail of v18 cluster events.</p>
+                        </div>
+                        <Badge variant="outline" className="text-green-600 border-green-200">
+                          {ledgerEvents.length} events synced
+                        </Badge>
+                      </div>
+
+                      <div className="space-y-3">
+                        {ledgerLoading ? (
+                          <div className="flex justify-center py-12">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                          </div>
+                        ) : ledgerEvents.length === 0 ? (
+                          <Card className="border-dashed py-12 flex items-center justify-center text-muted-foreground">
+                            No events found in the current term.
+                          </Card>
+                        ) : (
+                          ledgerEvents.map((event: any) => (
+                            <Card key={event.id} className="border-none shadow-sm hover:bg-accent/5 transition-colors group">
+                              <CardContent className="p-4 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                                    <BookOpen className="h-5 w-5 text-primary" />
+                                  </div>
+                                  <div>
+                                    <p className="font-mono text-sm font-bold tracking-tight">{event.type}</p>
+                                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
+                                      <span>{new Date(event.timestamp).toLocaleTimeString()}</span>
+                                      <span>•</span>
+                                      <span className="font-mono">{event.id}</span>
+                                      <span>•</span>
+                                      <span className="truncate max-w-[100px]">{event.payload_hash}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <Badge variant={event.status === 'ASCON_SEALED' ? 'default' : 'secondary'} className="text-[10px]">
+                                  {event.status}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                          ))
+                        )}
+                      </div>
+                    </div>
+
+                  </AuthGate>
                 )}
-                {activeView === 'wallet' && <WalletInterface />}
+                {activeView === 'wallet' && (
+                  <AuthGate title="Wallet Interface Locked" description="Authenticate to view your QFS internal credit balance and history.">
+                    <WalletInterface />
+                  </AuthGate>
+                )}
                 {activeView === 'settings' && (
-                  <div className="space-y-12">
-                    <ProfileEditor />
-                    <GuardsList />
-                  </div>
+                  <AuthGate title="Identity Settings Locked" description="Verify session to manage your v18 profile and guard configuration.">
+                    <div className="space-y-12">
+                      <ProfileEditor />
+                      <GuardsList />
+                    </div>
+                  </AuthGate>
                 )}
               </ErrorBoundary>
             </div>

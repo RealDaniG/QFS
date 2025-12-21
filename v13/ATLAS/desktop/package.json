@@ -1,0 +1,76 @@
+{
+    "name": "atlas-v18-beta",
+    "version": "18.0.0-beta.1",
+    "description": "QFS × ATLAS Closed Beta - Systems Validation",
+    "author": "QFS Team",
+    "main": "main.js",
+    "scripts": {
+        "dev": "electron .",
+        "dev:web": "cross-env NODE_ENV=development electron .",
+        "build:win": "electron-builder --win --x64",
+        "build:mac": "electron-builder --mac --x64",
+        "build:linux": "electron-builder --linux AppImage",
+        "build:all": "npm run build:win && npm run build:mac && npm run build:linux",
+        "pack": "electron-builder --dir"
+    },
+    "build": {
+        "appId": "com.qfs.atlas.v18beta",
+        "productName": "ATLAS v18 Beta",
+        "directories": {
+            "output": "dist",
+            "buildResources": "build"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "renderer/**/*",
+            "backend/**/*",
+            "node_modules/**/*"
+        ],
+        "extraResources": [
+            {
+                "from": "backend/",
+                "to": "backend",
+                "filter": [
+                    "**/*"
+                ]
+            },
+            {
+                "from": "data/",
+                "to": "data",
+                "filter": [
+                    "**/*"
+                ]
+            }
+        ],
+        "win": {
+            "target": [
+                "portable"
+            ],
+            "icon": "build/icon.ico"
+        },
+        "mac": {
+            "target": [
+                "dmg"
+            ],
+            "icon": "build/icon.icns",
+            "category": "public.app-category.finance"
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "icon": "build/icon.png",
+            "category": "Finance"
+        }
+    },
+    "devDependencies": {
+        "cross-env": "^10.1.0",
+        "electron": "^39.2.7",
+        "electron-builder": "^26.0.12"
+    },
+    "dependencies": {
+        "ascon-js": "^1.0.4",
+        "js-sha3": "^0.9.3"
+    }
+}

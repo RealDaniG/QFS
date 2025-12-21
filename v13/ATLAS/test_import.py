@@ -1,18 +1,39 @@
 import sys
+import os
 
-sys.path.insert(0, "src")
-
+print("Testing imports...")
 try:
-    print("Attempting to import governance_v18...")
-    from api.routes import governance_v18
+    print("Importing config...")
+    from src import config
 
-    print("SUCCESS: governance_v18 imported")
-    print(f"Router: {governance_v18.router}")
+    print("Config imported.")
+
+    print("Importing models...")
+    from src.api import models
+
+    print("Models imported.")
+
+    print("Importing dependencies...")
+    from src.api import dependencies
+
+    print("Dependencies imported.")
+
+    print("Importing cycles...")
+    from src.lib import cycles
+
+    print("Cycles imported.")
+
+    print("Importing storage...")
+    from src.lib import storage
+
+    print("Storage imported.")
+
+    print("Importing auth...")
+    from src.api.routes import auth
+
+    print("Auth imported.")
+
+except ImportError as e:
+    print(f"ImportError: {e}")
 except Exception as e:
-    import traceback
-
-    print("FAILED TO IMPORT governance_v18")
     print(f"Error: {e}")
-    print("\nFull traceback:")
-    traceback.print_exc()
-    sys.exit(1)

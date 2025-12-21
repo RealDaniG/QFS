@@ -1,0 +1,11 @@
+[INFO] Starting ATLAS desktop dev environment 
+[Sun 12/21/2025 15:54:16.53] ========================================== 
+[Sun 12/21/2025 15:54:16.53] [INFO] Checking for existing Python backend... 
+[Sun 12/21/2025 15:54:16.63] [INFO] No existing Python backend found. 
+[Sun 12/21/2025 15:54:16.63] [INFO] Launching backend from ..\backend\main.py... 
+[Sun 12/21/2025 15:54:16.65] [INFO] Waiting for backend to start... 
+INFO:     Started server process [20024]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53897 - "GET /health HTTP/1.1" 200 OK

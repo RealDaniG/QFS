@@ -16,9 +16,19 @@
 **Current Focus:** Production Deployment & UX Polish  
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
-[**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](TESTING.md)
+[**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
 
 </div>
+
+---
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- Python 3.11+
+- MetaMask browser extension (or other Web3 wallet)
+
+Run `scripts/check_prerequisites.ps1` to verify and auto-install dependencies.
 
 ---
 
@@ -103,6 +113,14 @@ Most digital platforms suffer from structural issues:
 - ✅ **PoE**: Full EvidenceBus logging for replay.
 
 **Status:** Beta (Ready for Testing)
+
+### v18 — Real Wallet & Cryptographic Auth
+
+- ✅ **Real Web3 wallet connection** (RainbowKit + wagmi)
+- ✅ **Cryptographic auth** (nonce → sign → verify → session token)
+- ✅ **Internal credit economy** (non-transferable FLX)
+- ✅ **Distributed Interface**: DistributedFeed and WalletInterface live
+- ✅ **Secure Infrastructure**: AuthGate-protected views and route guards
 
 ### For Users
 

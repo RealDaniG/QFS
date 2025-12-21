@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   ],
   creator: "ATLAS Team",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon.ico",
   },
   openGraph: {
     type: "website",
@@ -56,7 +56,21 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        suppressHydrationWarning
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+               window.addEventListener('error', (event) => {
+                 if (event.message.includes('chrome.runtime.sendMessage') || event.message.includes('invocation of runtime.sendMessage')) {
+                   event.stopImmediatePropagation();
+                   event.preventDefault();
+                   console.warn('[Suppressed] External extension error:', event.message);
+                 }
+               });
+             `
+          }}
+        />
         <Providers>
           {children}
           <Toaster />

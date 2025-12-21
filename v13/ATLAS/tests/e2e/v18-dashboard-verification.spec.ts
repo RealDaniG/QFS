@@ -15,6 +15,7 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('ATLAS v18 Dashboard - Full Verification Suite', () => {
+    test.describe.configure({ mode: 'serial' });
 
     // ============================================================================
     // 1. COLD START VERIFICATION (Unauthenticated)

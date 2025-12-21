@@ -1,114 +1,115 @@
-/**
- * useWalletAuth Hook
- * Manages EVM Wallet Authentication via the ATLAS Backend.
- */
+import { useAccount, useSignMessage } from 'wagmi'
+import { useState, useEffect } from 'react'
 
-'use client';
-
-import { useState, useCallback } from 'react';
-import { ethers } from 'ethers';
-import { atlasFetch } from '@/lib/api';
-
-// Types representing the backend response
-interface LoginResponse {
-    session_token: string;
-    wallet_address: string;
-    expires_at: number;
+interface AuthSession {
+    sessionToken: string
+    walletAddress: string
+    expiresAt: number
 }
 
-import { useAuthStore } from '@/lib/store/useAuthStore';
-
-const SESSION_KEY = 'atlas_session_v1';
-
 export function useWalletAuth() {
-    const { isConnected, address, sessionToken, isLoading, error, setState, logout: storeLogout } = useAuthStore();
+    const { address, isConnected } = useAccount()
+    const { signMessageAsync } = useSignMessage()
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticating, setIsAuthenticating] = useState(false)
+    // v18 Rule: Session token handles access to local services
+    const [sessionToken, setSessionToken] = useState<string | null>(null);
+    const [session, setSession] = useState<AuthSession | null>(null)
 
-    const connect = useCallback(async () => {
-        setState({ isLoading: true, error: null });
+    // Check for existing session on mount
+    useEffect(() => {
+        const storedSession = localStorage.getItem('atlas_session')
+        if (storedSession) {
+            const parsed = JSON.parse(storedSession)
+            if (parsed.expiresAt > Date.now() / 1000) {
+                setSession(parsed)
+                setSessionToken(parsed.sessionToken) // Compatibility with other hooks
+                setIsAuthenticated(true)
+            } else {
+                localStorage.removeItem('atlas_session')
+            }
+        }
+    }, [])
+
+    const authenticate = async () => {
+        if (!address || !isConnected) return
+
+        setIsAuthenticating(true)
+
         try {
-            if (!(window as any).ethereum) {
-                throw new Error("No crypto wallet found. Please install MetaMask.");
-            }
-
-            const provider = new ethers.BrowserProvider((window as any).ethereum);
-            const signer = await provider.getSigner();
-            const address = await signer.getAddress();
-
-            // 1. Get Nonce
-            const nonceRes = await atlasFetch('/api/v18/auth/nonce', {
-                method: 'GET',
-                auth: false
-            });
-            if (!nonceRes.ok) throw new Error("Failed to fetch nonce");
-            const { nonce } = await nonceRes.json();
-
-            // 2. Sign Nonce
-            const signature = await signer.signMessage(nonce);
-
-            // 3. Login / Verify
-            const loginRes = await atlasFetch('/api/v18/auth/verify', {
+            // 1. Get challenge from backend
+            const challengeRes = await fetch('http://localhost:8000/api/auth/challenge', {
                 method: 'POST',
-                auth: false,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wallet_address: address })
+            })
+
+            if (!challengeRes.ok) throw new Error('Failed to get challenge')
+
+            const { message } = await challengeRes.json()
+
+            // 2. Sign message
+            const signature = await signMessageAsync({ message })
+
+            // 3. Verify signature and get session
+            const verifyRes = await fetch('http://localhost:8000/api/auth/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    nonce,
+                    wallet_address: address,
                     signature,
-                    wallet_address: address
+                    message
                 })
-            });
+            })
 
-            if (!loginRes.ok) {
-                const errData = await loginRes.json();
-                throw new Error(errData.detail || "Login failed");
-            }
+            if (!verifyRes.ok) throw new Error('Signature verification failed')
 
-            const sessionData = await loginRes.json();
+            const sessionData = await verifyRes.json()
 
-            // v18.5: Verify Ascon token prefix
-            if (!sessionData.session_token.startsWith('ascon1.')) {
-                console.warn("Received non-Ascon token. Expected 'ascon1.' prefix for v18 Distributed compliance.");
-            }
+            // 4. Store session
+            localStorage.setItem('atlas_session', JSON.stringify(sessionData))
+            setSession(sessionData)
+            setSessionToken(sessionData.sessionToken)
+            setIsAuthenticated(true)
 
-            // Store session
-            localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
-
-            setState({
-                isConnected: true,
-                address: sessionData.wallet_address,
-                sessionToken: sessionData.session_token,
-                isLoading: false,
-                error: null
-            });
-
-        } catch (err: any) {
-            console.error("Wallet Auth Error:", err);
-            setState({
-                isLoading: false,
-                error: err.message || "Authentication failed"
-            });
+        } catch (error) {
+            console.error('Authentication failed:', error)
+            setIsAuthenticated(false)
+        } finally {
+            setIsAuthenticating(false)
         }
-    }, [setState]);
+    }
 
-    const logout = useCallback(async () => {
-        if (sessionToken) {
+    const logout = async () => {
+        if (session) {
             try {
-                await atlasFetch('/api/v1/auth/logout', {
+                await fetch('http://localhost:8000/api/auth/logout', {
                     method: 'POST',
-                    body: JSON.stringify({ session_token: sessionToken })
-                });
+                    headers: {
+                        'Authorization': `Bearer ${session.sessionToken}`
+                    }
+                })
             } catch (e) {
-                // Ignore backend logout error
+                console.warn("Logout failed on backend", e);
             }
         }
-        storeLogout();
-    }, [sessionToken, storeLogout]);
+
+        localStorage.removeItem('atlas_session')
+        setSession(null)
+        setSessionToken(null)
+        setIsAuthenticated(false)
+    }
 
     return {
         isConnected,
+        isAuthenticated,
+        isAuthenticating,
         address,
-        sessionToken,
-        isLoading,
-        error,
-        connect,
+        session,
+        sessionToken, // Exposed for compatibility
+        authenticate,
+        // Alias authenticate to triggerAuth for compatibility if needed
+        triggerAuth: authenticate,
         logout
-    };
+    }
 }

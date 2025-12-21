@@ -1,0 +1,16 @@
+{
+  "git_hash": "e83cdf319052701f548811e6afdfc7b60746d296",
+  "phases": {
+    "phase_0": {
+      "name": "Environment Scan",
+      "status": "PASS",
+      "git_hash": "e83cdf319052701f548811e6afdfc7b60746d296"
+    },
+    "phase_2": {
+      "name": "Guard Validation",
+      "status": "FAIL",
+      "git_hash": "e83cdf319052701f548811e6afdfc7b60746d296"
+    }
+  },
+  "overall_status": "FAIL"
+}

@@ -17,7 +17,7 @@ def main():
     wallet_priv = bytes.fromhex("01" * 32)
     session_key = bytes.fromhex("000102030405060708090a0b0c0d0e0f")
     space_id = "parity-test-space"
-    sender_pub = "02" * 32
+    sender_pub = "01" * 32  # Must match priv for MOCKQPC self-verify
     payload = {"message": "hello world", "timestamp": 1234567890}
     intent = "chat.message"
 

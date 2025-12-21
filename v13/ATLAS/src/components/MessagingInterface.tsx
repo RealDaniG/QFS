@@ -10,23 +10,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { 
-  Send, 
-  Search, 
-  Plus, 
-  Users, 
-  MessageSquare, 
+import {
+  Send,
+  Search,
+  Plus,
+  Users,
+  MessageSquare,
   Clock,
   Check,
   CheckCheck,
   Shield,
   Eye
 } from 'lucide-react'
+import { useSecureChat } from '@/hooks/useSecureChat';
+import { useWalletAuth } from '@/hooks/useWalletAuth';
+import { useQuery } from '@tanstack/react-query';
+import { atlasFetch } from '@/lib/api';
 
 interface Message {
   id: string
   sender: string
-  content: string
+  text: string
   timestamp: string
   isOwn: boolean
   status?: 'sent' | 'delivered' | 'read'
@@ -46,82 +50,24 @@ interface Conversation {
 }
 
 export default function MessagingInterface() {
-  const [activeConversation, setActiveConversation] = useState<string | null>(null)
+  const { isConnected, address } = useWalletAuth();
+  const { messages, sendMessage, isLoading: chatLoading } = useSecureChat();
+  const [activeConversation, setActiveConversation] = useState<string | null>('conv_1')
   const [messageInput, setMessageInput] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
-  const conversations: Conversation[] = [
-    {
-      id: 'conv_1',
-      name: 'Alice Chen',
-      avatar: '/avatars/alice.jpg',
-      lastMessage: 'The QFS transparency features are amazing!',
-      timestamp: '2 min ago',
-      unread: 2,
-      isGroup: false,
-      isEncrypted: true
-    },
-    {
-      id: 'conv_2',
-      name: 'QFS Developers',
-      avatar: '/avatars/group.jpg',
-      lastMessage: 'Bob: New guard system proposal is ready for review',
-      timestamp: '15 min ago',
-      unread: 0,
-      isGroup: true,
-      members: 12,
-      isEncrypted: true
-    },
-    {
-      id: 'conv_3',
-      name: 'Carol Davis',
-      avatar: '/avatars/carol.jpg',
-      lastMessage: 'Can you explain the coherence scoring algorithm?',
-      timestamp: '1 hour ago',
-      unread: 1,
-      isGroup: false,
-      isEncrypted: true
-    },
-    {
-      id: 'conv_4',
-      name: 'Governance Committee',
-      avatar: '/avatars/gov.jpg',
-      lastMessage: 'Meeting scheduled for tomorrow at 3 PM UTC',
-      timestamp: '2 hours ago',
-      unread: 5,
-      isGroup: true,
-      members: 8,
-      isEncrypted: true
+  // Fetch conversations from backend
+  const { data: conversations = [], isLoading: conversationsLoading } = useQuery<Conversation[]>({
+    queryKey: ['conversations'],
+    queryFn: async () => {
+      const res = await atlasFetch('/api/v18/chat/conversations');
+      if (!res.ok) {
+        throw new Error('Failed to fetch conversations');
+      }
+      return res.json();
     }
-  ]
+  });
 
-  const messages: Message[] = [
-    {
-      id: 'msg_1',
-      sender: 'Alice Chen',
-      content: 'Hey! Have you seen the new transparency features in the ATLAS dashboard?',
-      timestamp: '10:30 AM',
-      isOwn: false,
-      ledgerId: 'ledger_001'
-    },
-    {
-      id: 'msg_2',
-      sender: 'You',
-      content: 'Yes! The ability to see exactly how rewards are calculated is game-changing. Every action is traceable on the ledger.',
-      timestamp: '10:32 AM',
-      isOwn: true,
-      status: 'read',
-      ledgerId: 'ledger_002'
-    },
-    {
-      id: 'msg_3',
-      sender: 'Alice Chen',
-      content: 'The QFS transparency features are amazing! I can see exactly how my content coherence score affects my rewards.',
-      timestamp: '10:35 AM',
-      isOwn: false,
-      ledgerId: 'ledger_003'
-    }
-  ]
 
   const activeConv = conversations.find(c => c.id === activeConversation)
 
@@ -169,9 +115,8 @@ export default function MessagingInterface() {
             {filteredConversations.map((conversation) => (
               <div
                 key={conversation.id}
-                className={`p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 ${
-                  activeConversation === conversation.id ? 'bg-muted' : ''
-                }`}
+                className={`p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 ${activeConversation === conversation.id ? 'bg-muted' : ''
+                  }`}
                 onClick={() => setActiveConversation(conversation.id)}
               >
                 <div className="flex items-start gap-3">
@@ -282,16 +227,14 @@ export default function MessagingInterface() {
                       </div>
                     )}
                     <div
-                      className={`p-3 rounded-lg ${
-                        message.isOwn
-                          ? 'bg-primary text-primary-foreground ml-auto'
-                          : 'bg-muted'
-                      }`}
+                      className={`p-3 rounded-lg ${message.isOwn
+                        ? 'bg-primary text-primary-foreground ml-auto'
+                        : 'bg-muted'
+                        }`}
                     >
-                      <p className="text-sm">{message.content}</p>
-                      <div className={`flex items-center gap-2 mt-1 text-xs ${
-                        message.isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                      }`}>
+                      <p className="text-sm">{message.text}</p>
+                      <div className={`flex items-center gap-2 mt-1 text-xs ${message.isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                        }`}>
                         <span>{message.timestamp}</span>
                         {message.ledgerId && (
                           <Badge variant="secondary" className="text-xs">
@@ -318,12 +261,15 @@ export default function MessagingInterface() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
-                    // Handle send message
+                    sendMessage(messageInput)
                     setMessageInput('')
                   }
                 }}
               />
-              <Button size="icon">
+              <Button size="icon" onClick={() => {
+                sendMessage(messageInput)
+                setMessageInput('')
+              }}>
                 <Send className="h-4 w-4" />
               </Button>
             </div>

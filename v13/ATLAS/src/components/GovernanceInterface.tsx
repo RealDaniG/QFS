@@ -36,9 +36,14 @@ export default function GovernanceInterface() {
 
     const handleVote = async (proposalId: string, choice: 'yes' | 'no' | 'abstain') => {
         if (!did) return;
-        // await service.castVote(did, proposalId, choice); // Not implemented in backend yet
-        console.log("Voting not yet wired to backend:", proposalId, choice);
-        // loadProposals(); 
+        try {
+            await service.vote(proposalId, did, choice);
+            // Refresh proposals to see updated vote count
+            await loadProposals();
+        } catch (error) {
+            console.error("Voting failed:", error);
+            alert("Failed to cast vote. Please try again.");
+        }
     };
 
     return (

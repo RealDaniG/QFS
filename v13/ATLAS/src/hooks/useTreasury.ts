@@ -1,51 +1,95 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { getTreasury, TokenAccount, TransactionRecord } from '@/lib/economics/treasury-engine';
+import { atlasFetch } from '../lib/api';
 import { useWalletAuth } from './useWalletAuth';
 
+export interface TokenAccount {
+    balance: number;
+    rewards: number;
+    staked: number;
+    currency: string;
+    reputation: number;
+    reputation_breakdown?: {
+        content_quality: number;
+        engagement: number;
+        governance: number;
+    };
+}
+
+export interface TransactionRecord {
+    id: string;
+    type: string;
+    reason: string;
+    amount: number;
+    timestamp: number;
+    ref?: string;
+}
+
 export function useTreasury() {
-    const { address: walletAddress, isConnected } = useWalletAuth();
+    const { address: walletAddress, isConnected, sessionToken } = useWalletAuth();
     const [balance, setBalance] = useState<TokenAccount | null>(null);
     const [history, setHistory] = useState<TransactionRecord[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const refresh = useCallback(async () => {
-        // Auth Guard: Don't fetch if not connected
-        if (!isConnected || !walletAddress) {
+        // Auth Guard: Don't fetch if not connected or no session
+        if (!isConnected || !walletAddress || !sessionToken) {
             setIsLoading(false);
             return;
         }
 
         try {
-            const treasury = getTreasury();
-            // treasury is an instance of TreasuryService
-
-            const [acct, txs] = await Promise.all([
-                treasury.getBalance(walletAddress),
-                treasury.getHistory(walletAddress)
+            const [balanceRes, historyRes] = await Promise.all([
+                fetch('http://localhost:8000/api/wallet/balance', {
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                }),
+                fetch('http://localhost:8000/api/wallet/transactions', {
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                })
             ]);
 
-            setBalance(acct);
-            setHistory(txs);
+            if (balanceRes.ok && historyRes.ok) {
+                const balanceData = await balanceRes.json();
+                const historyData = await historyRes.json();
+
+                // Adapter for new API shape
+                setBalance({
+                    balance: balanceData.balance.FLX,
+                    rewards: 0,
+                    staked: 0,
+                    currency: 'FLX',
+                    reputation: 0,
+                });
+
+                // Adapter for new transactions
+                setHistory(historyData.transactions.map((tx: any) => ({
+                    id: tx.id,
+                    type: tx.type,
+                    reason: tx.description,
+                    amount: tx.amount,
+                    timestamp: tx.timestamp
+                })));
+            }
         } catch (e) {
             console.error("Failed to refresh treasury in useTreasury hook:", e);
         } finally {
             setIsLoading(false);
         }
-    }, [walletAddress, isConnected]);
+    }, [walletAddress, isConnected, sessionToken]);
 
     useEffect(() => {
-        // Only fetch when connected
-        if (!isConnected) {
+        if (!isConnected || !sessionToken) {
             setIsLoading(false);
+            setBalance(null);
+            setHistory([]);
             return;
         }
 
         refresh();
-        const interval = setInterval(refresh, 60000); // 60s poll for treasury
+        const interval = setInterval(refresh, 30000);
         return () => clearInterval(interval);
-    }, [refresh, isConnected]);
+    }, [refresh, isConnected, sessionToken]);
 
     return {
         balance,

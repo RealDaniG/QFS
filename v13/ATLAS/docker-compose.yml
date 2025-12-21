@@ -1,0 +1,20 @@
+
+version: '3.8'
+
+services:
+  atlas-backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - ALLOWED_ORIGINS=http://localhost:3000
+      - SESSION_SECRET=${SESSION_SECRET:-dev-secret}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  # Assuming frontend is built separately or served via Vercel/Next
+  # But for local dev:
+  # atlas-frontend: ...
