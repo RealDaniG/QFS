@@ -26,6 +26,7 @@ from src.api.routes import (
     content,
     ledger,
     general,
+    v1_auth,
 )
 
 # Initialize App
@@ -57,6 +58,7 @@ app.add_middleware(
 
 # Include Routers
 app.include_router(auth.router)
+app.include_router(v1_auth.router)  # V1 compatibility layer
 app.include_router(rewards.router)
 app.include_router(wallet.router)
 app.include_router(spaces.router)
