@@ -13,42 +13,44 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1400,
         height: 900,
-        minWidth: 1200,
-        minHeight: 700,
+        show: true, // Show immediately
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
             nodeIntegration: false,
-            sandbox: true
-        },
-        icon: path.join(__dirname, 'build/icon.png'),
-        backgroundColor: '#0a0a0f',
-        show: false // Don't show until ready
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     // Start backend before loading UI
     startBackend()
 
-    // Load frontend
-    const frontendUrl = isDev
-        ? 'http://localhost:3000'
-        : `file://${path.join(__dirname, 'renderer', 'index.html')}`
+    // TEMPORARY: Use dev server while we fix static export build
+    // TODO: Switch back to file:// once webpack build is working
+    const frontendUrl = 'http://localhost:3000'
+    // const frontendUrl = `file://${path.join(__dirname, 'renderer', 'index.html')}`
 
     console.log(`[Frontend] Loading from: ${frontendUrl}`)
     mainWindow.loadURL(frontendUrl)
 
-    // Show window when ready
+    // Ensure window shows and focuses when ready
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
+        mainWindow.focus()
+        console.log('[Window] Window shown and focused')
     })
 
-    // Development tools
-    if (isDev) {
-        mainWindow.webContents.openDevTools()
-    }
+    // Open DevTools for debugging
+    mainWindow.webContents.openDevTools()
 }
 
 function startBackend() {
+    // Allow skipping backend startup if running externally (for development)
+    if (process.env.SKIP_BACKEND === 'true') {
+        console.log('[Backend] Skipping backend startup (SKIP_BACKEND=true)')
+        console.log('[Backend] Assuming backend is running externally on port 8000')
+        return
+    }
+
     console.log('[Backend] Starting QFS API...')
 
     // Basic check for python availability, in prod this would use the bundled python

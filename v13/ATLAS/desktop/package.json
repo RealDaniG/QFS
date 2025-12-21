@@ -6,6 +6,7 @@
     "main": "main.js",
     "scripts": {
         "dev": "electron .",
+        "dev:no-backend": "cross-env SKIP_BACKEND=true electron .",
         "dev:web": "cross-env NODE_ENV=development electron .",
         "build:win": "electron-builder --win --x64",
         "build:mac": "electron-builder --mac --x64",
