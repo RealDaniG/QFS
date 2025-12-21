@@ -148,12 +148,12 @@ export default function DiscoveryInterface() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="spaces">Spaces</TabsTrigger>
           <TabsTrigger value="trending">Trending Topics</TabsTrigger>
           <TabsTrigger value="network">Network & Trust</TabsTrigger>
           <TabsTrigger value="discover">Discover</TabsTrigger>
-          <TabsTrigger value="activity">Raw Ledger</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
 
         <TabsContent value="spaces" className="space-y-6">

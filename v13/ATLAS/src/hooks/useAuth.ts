@@ -1,15 +1,12 @@
 /**
  * useAuth Hook
  * Manages user identity (DID + Keys) for Phase 1
- * Uses localStorage for persistence (Note: In Phase 2/3 this moves to secure wallet)
  */
 
 'use client';
 
 import { useState, useEffect } from 'react';
 import { generateDIDKeyPair } from '@/lib/did/signer';
-import { toString as uint8ArrayToString } from 'uint8arrays/to-string';
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string';
 
 interface AuthState {
     did: string | null;
@@ -21,6 +18,22 @@ interface AuthState {
 }
 
 const STORAGE_KEY = 'atlas_identity_v1';
+
+// Inline helpers to avoid uint8arrays dependency
+function hexToBytes(hex: string): Uint8Array {
+    if (hex.length % 2 !== 0) throw new Error("Invalid hex string")
+    const bytes = new Uint8Array(hex.length / 2)
+    for (let i = 0; i < hex.length; i += 2) {
+        bytes[i / 2] = parseInt(hex.substring(i, i + 2), 16)
+    }
+    return bytes
+}
+
+function bytesToHex(bytes: Uint8Array): string {
+    return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('')
+}
 
 export function useAuth() {
     const [state, setState] = useState<AuthState>({
@@ -41,25 +54,22 @@ export function useAuth() {
             const stored = localStorage.getItem(STORAGE_KEY);
 
             if (stored) {
-                // Load existing identity
                 const data = JSON.parse(stored);
                 setState({
                     did: data.did,
-                    privateKey: uint8ArrayFromString(data.privateKey, 'base16'),
-                    publicKey: uint8ArrayFromString(data.publicKey, 'base16'),
+                    privateKey: hexToBytes(data.privateKey),
+                    publicKey: hexToBytes(data.publicKey),
                     isAuthenticated: true,
                     isLoading: false,
                     error: null,
                 });
             } else {
-                // Generate new identity
                 const keypair = await generateDIDKeyPair();
 
-                // Save to storage
                 const storageData = {
                     did: keypair.did,
-                    privateKey: uint8ArrayToString(keypair.privateKey, 'base16'),
-                    publicKey: uint8ArrayToString(keypair.publicKey, 'base16'),
+                    privateKey: bytesToHex(keypair.privateKey),
+                    publicKey: bytesToHex(keypair.publicKey),
                 };
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(storageData));
 

@@ -1,5 +1,6 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from typing import List
+from lib.dependencies import get_current_user
 
 router = APIRouter(prefix="/api/chat", tags=["Chat"])
 
@@ -9,7 +10,9 @@ active_connections: List[WebSocket] = []
 
 
 @router.get("/messages")
-async def get_messages(room_id: str = "general"):
+async def get_messages(
+    room_id: str = "general", wallet_address: str = Depends(get_current_user)
+):
     """Get chat messages for room."""
     return {
         "messages": [

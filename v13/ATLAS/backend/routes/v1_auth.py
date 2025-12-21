@@ -5,7 +5,7 @@ Thin wrapper around existing auth.py for backward compatibility with legacy scri
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from . import auth  # Import the main auth module
+from lib.dependencies import session_manager
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth-v1-compat"])
 
@@ -34,27 +34,25 @@ class VerifyResponse(BaseModel):
 async def get_nonce_v1(request: NonceRequest):
     """V1 compatibility: Get nonce for wallet authentication."""
     # Use existing auth challenge logic
-    challenge_req = auth.ChallengeRequest(wallet_address=request.wallet_address)
-    challenge_data = await auth.create_challenge(challenge_req)
-
-    return NonceResponse(
-        nonce=challenge_data["nonce"], wallet_address=request.wallet_address
-    )
+    message, nonce = session_manager.create_challenge(request.wallet_address)
+    return NonceResponse(nonce=nonce, wallet_address=request.wallet_address)
 
 
 @router.post("/verify", response_model=VerifyResponse)
 async def verify_signature_v1(request: VerifyRequest):
     """V1 compatibility: Verify signature and create session."""
-    # Use existing auth verify logic
-    verify_req = auth.VerifyRequest(
-        wallet_address=request.wallet_address,
-        signature=request.signature,
-        message=request.message,
+    is_valid = session_manager.verify_signature(
+        request.wallet_address, request.message, request.signature
     )
 
-    session_response = await auth.verify_signature(verify_req)
+    if not is_valid:
+        raise HTTPException(status_code=401, detail="Signature verification failed")
+
+    session_token = session_manager.create_session_token(
+        request.wallet_address, request.signature
+    )
 
     return VerifyResponse(
-        session_token=session_response.session_token,
-        wallet_address=session_response.wallet_address,
+        session_token=session_token,
+        wallet_address=request.wallet_address,
     )

@@ -27,6 +27,10 @@ from src.api.routes import (
     ledger,
     general,
     v1_auth,
+    wallets,
+    transactions,
+    evidence,
+    p2p,
 )
 
 # Initialize App
@@ -67,6 +71,14 @@ app.include_router(governance.router)
 app.include_router(content.router)
 app.include_router(ledger.router)
 app.include_router(general.router)
+app.include_router(evidence.router)
+app.include_router(content.discovery_router, prefix="/api/v18")
+app.include_router(p2p.router, prefix="/api/p2p", tags=["p2p"])
+
+# Explicitly register V1 legacy routers with prefixes for tool compatibility
+# Explicitly register V1 legacy routers with prefixes for tool compatibility
+app.include_router(wallets.router, tags=["wallets-v1"])
+app.include_router(transactions.router, tags=["transactions-v1"])
 
 
 # Health Check
@@ -80,5 +92,6 @@ def health_check():
 
 
 if __name__ == "__main__":
-    logger.info(f"Starting ATLAS v18 Backend on port {settings.PORT}...")
-    uvicorn.run(app, host=settings.HOST, port=settings.PORT)
+    port = int(settings.PORT)
+    logger.info(f"Starting ATLAS v18 Backend on port {port}...")
+    uvicorn.run(app, host=settings.HOST, port=port)

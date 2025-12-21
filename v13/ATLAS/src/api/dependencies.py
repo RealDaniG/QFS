@@ -3,6 +3,10 @@ from typing import Optional
 import jwt
 from datetime import datetime, timedelta
 from src.config import settings
+from backend.lib.evidence_bus import EvidenceBus
+
+# Initialize Global Services
+evidence_bus = EvidenceBus()
 
 
 class SessionManager:
@@ -49,3 +53,11 @@ async def optional_auth(authorization: Optional[str] = Header(None)) -> Optional
         return session_manager.verify_session(token)
     except Exception:
         return None
+
+
+# Aliases for compatibility
+get_current_user = require_auth
+
+
+def get_evidence_bus() -> EvidenceBus:
+    return evidence_bus

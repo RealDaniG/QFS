@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # Server
     HOST: str = "0.0.0.0"
-    PORT: int = int(os.getenv("PORT", "8001"))  # Default to 8001
+    PORT: int = int(os.getenv("PORT", "8000"))  # Default to 8000
 
     # CORS
     ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")

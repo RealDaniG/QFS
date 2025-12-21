@@ -1,29 +1,38 @@
 /** @type {import('next').NextConfig} */
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
 const nextConfig = {
     output: 'export',
-    // distDir: 'out',
     images: {
         unoptimized: true, // Required for static export
     },
     typescript: {
         ignoreBuildErrors: true,
     },
-    // Force webpack instead of Turbopack (Turbopack has Windows symlink issues)
-    webpack: (config) => {
-        // Return config as-is to use webpack
-        return config
-    },
-    // No API routes or rewrites in static export mode
-
     // Electron requires relative paths for file:// protocol loading
     assetPrefix: './',
-    trailingSlash: true, // Optional: helps with file routing consistency
+    trailingSlash: true,
+    webpack: (config, { isServer, webpack }) => {
+        if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+                net: false,
+                tls: false,
+                crypto: false,
+                os: false,
+                path: false,
+                stream: false,
+                dns: false,
+                child_process: false,
+            };
+
+            config.plugins.push(
+                new webpack.IgnorePlugin({
+                    resourceRegExp: /libp2p|@libp2p|@chainsafe\/libp2p-noise|@peculiar\/asn1-cms|@peculiar\/webcrypto/
+                })
+            );
+        }
+        return config;
+    },
 }
 
 export default nextConfig

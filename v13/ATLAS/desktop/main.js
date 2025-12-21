@@ -24,10 +24,8 @@ function createWindow() {
     // Start backend before loading UI
     startBackend()
 
-    // TEMPORARY: Use dev server while we fix static export build
-    // TODO: Switch back to file:// once webpack build is working
-    const frontendUrl = 'http://localhost:3000'
-    // const frontendUrl = `file://${path.join(__dirname, 'renderer', 'index.html')}`
+    // Load frontend from static files (Next.js 14 static export)
+    const frontendUrl = `file://${path.join(__dirname, 'renderer', 'index.html')}`
 
     console.log(`[Frontend] Loading from: ${frontendUrl}`)
     mainWindow.loadURL(frontendUrl)

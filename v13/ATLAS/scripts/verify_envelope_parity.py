@@ -34,23 +34,18 @@ def main():
         session_key=session_key,
     )
 
-    print("\n[Generated Envelope]")
     env_dict = envelope.dict()
     if isinstance(env_dict.get("payload_ciphertext"), bytes):
         env_dict["payload_ciphertext"] = env_dict["payload_ciphertext"].hex()
-    print(json.dumps(env_dict, indent=2))
 
-    print(f"\nLocked Ciphertext: {env_dict['payload_ciphertext']}")
-    print(f"Locked Hash: {envelope.payload_hash}")
+    # OUTPUT_START marker for easy parsing
+    print("\nOUTPUT_START")
+    json_out = json.dumps(env_dict)
+    print(json_out)
+    print("OUTPUT_END")
 
-    # Verify Self
-    print(
-        f"\nSelf-Verification: {factory.verify_envelope(envelope, sender_public_key=bytes.fromhex(sender_pub))}"
-    )
-
-    # Decrypt Self
-    decrypted = factory.decrypt_payload(envelope, session_key)
-    print(f"Self-Decrypted: {decrypted}")
+    with open("parity_vectors_clean.json", "w", encoding="utf-8") as f:
+        f.write(json_out)
 
 
 if __name__ == "__main__":

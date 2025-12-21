@@ -21,7 +21,7 @@ if not exist "desktop\main.js" (
 
 echo [1/3] Starting Python Backend...
 echo.
-start "ATLAS Backend" cmd /k "cd /d %~dp0 && python backend\main.py"
+start "ATLAS Backend" cmd /k "cd /d %~dp0 && set PYTHONPATH=%~dp0..\..;%~dp0;%PYTHONPATH% && python -m src.main_minimal"
 
 REM Wait for backend to initialize
 echo Waiting 5 seconds for backend to start...
@@ -40,7 +40,7 @@ echo.
 echo [3/3] Starting Desktop App...
 echo.
 cd desktop
-start "ATLAS Desktop" cmd /k "npm run dev"
+start "ATLAS Desktop" cmd /k "set SKIP_BACKEND=true && npm run dev"
 cd ..
 
 echo.

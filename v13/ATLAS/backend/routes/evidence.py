@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel
 from typing import Optional, List
 from lib.evidence_bus import EvidenceBus
-from routes.auth import validate_session
+from lib.dependencies import get_current_user
 
 router = APIRouter(prefix="/api/evidence", tags=["Evidence"])
 
@@ -24,19 +24,11 @@ class EvidenceResponse(BaseModel):
     block_height: int
 
 
-# EvidenceBus initializes in __init__, no separate initialize() needed
-
-
 @router.post("/commit")
 async def commit_evidence(
-    request: CommitRequest, authorization: Optional[str] = Header(None)
+    request: CommitRequest, wallet_address: str = Depends(get_current_user)
 ):
     """Commit an event to the EvidenceBus."""
-    # Verify session
-    try:
-        await validate_session(authorization)
-    except HTTPException as e:
-        raise e
 
     try:
         # Commit to bus
@@ -58,22 +50,18 @@ async def commit_evidence(
 
 @router.get("/sync")
 async def sync_evidence(
-    space_id: str, since: int = 0, authorization: Optional[str] = Header(None)
+    space_id: str,
+    since: int = 0,
+    wallet_address: str = Depends(get_current_user),
 ):
     """Fetch evidence events for a space since a given sequence number."""
-    # Verify session
-    try:
-        await validate_session(authorization)
-    except HTTPException as e:
-        raise e
-
     try:
         # Assuming EvidenceBus has a query/filter method
-        # If not, we might need to add one or use raw SQL in bus
-        # Reviewing evidence_bus.py content will confirm current capabilities
-        # For now, implementing basic query if available
         events = bus.query(space_id=space_id, since_seq=since)
         return events
+    except Exception as e:
+        print(f"Sync Error: {e}")
+        return []
     except Exception as e:
         # Fallback if query method differs
         print(f"Sync Error: {e}")

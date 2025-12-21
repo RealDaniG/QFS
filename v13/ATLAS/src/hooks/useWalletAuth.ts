@@ -35,10 +35,11 @@ export function useWalletAuth() {
         if (!address || !isConnected) return
 
         setIsAuthenticating(true)
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
         try {
             // 1. Get challenge from backend
-            const challengeRes = await fetch('http://localhost:8000/api/auth/challenge', {
+            const challengeRes = await fetch(`${baseUrl}/api/auth/challenge`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ wallet_address: address })

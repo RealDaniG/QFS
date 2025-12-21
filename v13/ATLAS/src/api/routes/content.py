@@ -2,10 +2,14 @@ from fastapi import APIRouter
 from src.lib.storage import db
 import datetime
 
+# Router for /api/v18/content/...
 router = APIRouter(prefix="/api/v18/content", tags=["content"])
 
+# Router for /api/v18/... (discovery items like trending, activity)
+discovery_router = APIRouter(tags=["discovery"])
 
-@router.get("/recommendations")
+
+@discovery_router.get("/recommendations")
 async def get_recommendations_v18():
     return [
         {
@@ -29,7 +33,37 @@ async def get_recommendations_v18():
     ]
 
 
-@router.get("/activity")
+@discovery_router.get("/trending")
+async def get_trending_v18():
+    return [
+        {
+            "id": "t1",
+            "name": "QFS Implementation",
+            "posts": 1250,
+            "engagement": 5400,
+            "growth": 23,
+            "coherenceScore": 0.95,
+        },
+        {
+            "id": "t2",
+            "name": "Zero-Sim Compliance",
+            "posts": 890,
+            "engagement": 3200,
+            "growth": 15,
+            "coherenceScore": 0.92,
+        },
+        {
+            "id": "t3",
+            "name": "Algorithmic Guards",
+            "posts": 650,
+            "engagement": 2100,
+            "growth": 8,
+            "coherenceScore": 0.88,
+        },
+    ]
+
+
+@discovery_router.get("/activity")
 async def get_activity_v18():
     return [
         {

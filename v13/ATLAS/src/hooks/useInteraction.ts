@@ -44,7 +44,39 @@ export function useInteraction() {
 
             const store = await getPendingEventStore();
             await store.save(event);
-            console.log(`[Interaction] Submitted ${type} on ${targetCID}`);
+            console.log(`[Interaction] Saved locally: ${type} on ${targetCID}`);
+
+            // v18 Re-integration: Commit to EvidenceBus
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+            const sessionToken = localStorage.getItem('atlas_session')
+                ? JSON.parse(localStorage.getItem('atlas_session')!).sessionToken
+                : null;
+
+            if (sessionToken) {
+                try {
+                    const commitRes = await fetch(`${baseUrl}/api/evidence/commit`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${sessionToken}`
+                        },
+                        body: JSON.stringify({
+                            type: event.eventType,
+                            payload: event.inputs,
+                            signature: null, // signatures deferred until P2P layer is full
+                            parent_hash: null
+                        })
+                    });
+
+                    if (commitRes.ok) {
+                        const commitData = await commitRes.ok ? await commitRes.json() : null;
+                        console.log(`[Interaction] Committed to EvidenceBus: ${commitData?.id}`);
+                    }
+                } catch (e) {
+                    console.warn('[Interaction] EvidenceBus commit failed (offline?), but action saved locally.', e);
+                }
+            }
+
             return pendingId;
 
         } catch (error) {

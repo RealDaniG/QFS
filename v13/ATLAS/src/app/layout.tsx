@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -29,9 +18,8 @@ export const metadata: Metadata = {
   ],
   creator: "ATLAS Team",
   icons: {
-    icon: "/favicon.ico",
-  },
-  openGraph: {
+    icon: "./favicon.ico",
+  }, openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://atlas-qfs.network",
@@ -55,22 +43,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
-        suppressHydrationWarning
+        className="antialiased bg-background text-foreground font-sans"
       >
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-               window.addEventListener('error', (event) => {
-                 if (event.message.includes('chrome.runtime.sendMessage') || event.message.includes('invocation of runtime.sendMessage')) {
-                   event.stopImmediatePropagation();
-                   event.preventDefault();
-                   console.warn('[Suppressed] External extension error:', event.message);
-                 }
-               });
-             `
-          }}
-        />
         <Providers>
           {children}
           <Toaster />

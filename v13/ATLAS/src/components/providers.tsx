@@ -7,7 +7,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { config } from '@/lib/web3/config';
 import '@rainbow-me/rainbowkit/styles.css';
 import { WalletProvider } from '@/lib/wallet/WalletProvider';
-import { P2PProvider } from '@/contexts/P2PContext';
+import { P2PProvider } from '@/lib/p2p/P2PContext';
 
 export function Providers({ children }: { children: ReactNode }) {
     const [mounted, setMounted] = useState(false);

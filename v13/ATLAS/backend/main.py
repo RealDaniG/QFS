@@ -25,7 +25,11 @@ app.include_router(evidence.router)
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "version": "18.0.0-beta.1"}
+    return {
+        "status": "ok",
+        "version": "18.9.5",
+        "services": {"v18_clusters": "ready", "architecture": "modular"},
+    }
 
 
 if __name__ == "__main__":

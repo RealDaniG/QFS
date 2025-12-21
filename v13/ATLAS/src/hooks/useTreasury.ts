@@ -39,12 +39,14 @@ export function useTreasury() {
             return;
         }
 
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
         try {
             const [balanceRes, historyRes] = await Promise.all([
-                fetch('http://localhost:8000/api/wallet/balance', {
+                fetch(`${baseUrl}/api/wallet/balance`, {
                     headers: { 'Authorization': `Bearer ${sessionToken}` }
                 }),
-                fetch('http://localhost:8000/api/wallet/transactions', {
+                fetch(`${baseUrl}/api/wallet/transactions`, {
                     headers: { 'Authorization': `Bearer ${sessionToken}` }
                 })
             ]);
