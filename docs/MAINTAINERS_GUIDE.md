@@ -28,8 +28,8 @@ To maintain the **v16 Baseline** and **Zero-Sim** integrity, the `main` and `dev
 
 **Critical Paths:**
 
-- `v15/crypto/*` → Requires Security Expert review.
-- `v15/governance/*` → Requires Governance Council review.
+- `current baseline/crypto/*` → Requires Security Expert review.
+- `current baseline/governance/*` → Requires Governance Council review.
 - `evidence_bus.py` → Requires Core Maintainer review.
 
 ---

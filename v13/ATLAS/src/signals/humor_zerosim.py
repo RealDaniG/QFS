@@ -207,3 +207,4 @@ class HumorSignalAddon(SignalAddon):
             # QAmount handles BigNum128 which supports float via division, check scaling
             return QAmount(numerator) / QAmount(denominator)
         return QAmount.zero()
+

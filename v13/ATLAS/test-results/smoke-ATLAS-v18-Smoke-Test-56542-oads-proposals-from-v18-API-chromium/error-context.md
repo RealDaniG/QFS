@@ -1,0 +1,53 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: AT
+          - text: ATLAS
+        - button [ref=e8]:
+          - img [ref=e9]
+      - generic [ref=e15]:
+        - button "Home" [ref=e16]:
+          - img [ref=e17]
+          - text: Home
+        - button "Create" [ref=e20]:
+          - img [ref=e21]
+          - text: Create
+        - button "Messages" [ref=e23]:
+          - img [ref=e24]
+          - text: Messages
+        - button "Communities" [ref=e26]:
+          - img [ref=e27]
+          - text: Communities
+        - button "Governance" [ref=e32]:
+          - img [ref=e33]
+          - text: Governance
+        - button "Ledger & Explain" [ref=e35]:
+          - img [ref=e36]
+          - text: Ledger & Explain
+        - button "Wallet & Reputation" [ref=e38]:
+          - img [ref=e39]
+          - text: Wallet & Reputation
+        - button "Settings & Safety" [ref=e42]:
+          - img [ref=e43]
+          - text: Settings & Safety
+      - paragraph [ref=e49]: Connect wallet to start
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e53]:
+          - img [ref=e54]
+          - textbox "Search posts, users, topics..." [ref=e57]
+        - button "3" [ref=e59]:
+          - img [ref=e60]
+          - text: "3"
+      - generic:
+        - main:
+          - generic:
+            - tabpanel
+  - region "Notifications (F8)":
+    - list
+```

@@ -12,13 +12,46 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** Production-ready v16.1.x baseline • v17.0.0-beta governance & bounty F-layer  
-**Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • AGPL-3.0 licensed  
-**Focus:** Deterministic governance • Contribution tracking • Cost-efficient coordination
+**Status:** V18 Integration Complete (Frontend/Backend Wired) • Distributed Backbone (Alpha)  
+**Current Focus:** Production Deployment & UX Polish  
+**Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
+
+[**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
 
 </div>
 
 ---
+
+## Prerequisites
+
+- Node.js 18+ and npm
+- Python 3.11+
+- MetaMask browser extension (or other Web3 wallet)
+
+Run `scripts/check_prerequisites.ps1` to verify and auto-install dependencies.
+
+---
+
+## ⚡ Full System Verification
+
+To verify the entire V18 integration (Backend, Frontend, Auth, E2E Flows) in one go, use the **Orchestrator**:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File run_atlas_full.ps1
+```
+
+This script:
+
+1. Starts the Backend (Port 8001) and Frontend (Port 3000).
+2. Waits for health checks to pass.
+3. Runs:
+   - `verify_atlas_e2e.py` (API Check)
+   - `verify_auth.py` (Auth Flow)
+   - `pytest` (Route Regression)
+   - `npm run test:e2e` (Playwright UI Smoke Tests)
+4. Logs results to `logs/atlas_full_run.log`.
+
+**Exit Code 0** indicates a fully healthy system.
 
 ## 🏛️ What is QFS × ATLAS?
 
@@ -36,7 +69,13 @@
 - **Bounties & Contributions**: Fair reward allocation with transparent formulas
 - **Disputes**: Evidence-backed escalation and resolution
 
-Together, they solve a fundamental problem: **How do we coordinate fairly without trusting intermediaries?**
+### Physical & Network Layer (Fabric Architecture)
+
+With the arrival of **v18**, the platform expands from a single-node core to a tiered, distributed fabric:
+
+- **Tier A (Cluster Backbone)**: High-availability validators running Raft consensus and PQC anchoring.
+- **Tier B (Edge Advisory)**: Read-only nodes hosting UI and local SLM agents (planned).
+- **Tier C (Telemetry/Sensors)**: Write-only edge devices submitting telemetry via consensus (planned).
 
 ---
 
@@ -75,9 +114,13 @@ Most digital platforms suffer from structural issues:
 
 **Status:** Beta (Ready for Testing)
 
----
+### v18 — Real Wallet & Cryptographic Auth
 
-## 💎 Key Benefits
+- ✅ **Real Web3 wallet connection** (RainbowKit + wagmi)
+- ✅ **Cryptographic auth** (nonce → sign → verify → session token)
+- ✅ **Internal credit economy** (non-transferable FLX)
+- ✅ **Distributed Interface**: DistributedFeed and WalletInterface live
+- ✅ **Secure Infrastructure**: AuthGate-protected views and route guards
 
 ### For Users
 
@@ -303,24 +346,41 @@ Optimal balance between strength and efficiency. MOCKQPC-first architecture, red
 
 Wallet auth, admin dashboard, agent advisory layer, full EvidenceBus integration.
 
-### v17.0.0-beta — Governance & Bounty F-Layer (Current Development)
+### 🌐 ATLAS V18 Status & Docs
 
-Deterministic governance and bounty management with full PoE logging. Engine complete, UI/UX layer in progress.
+The V18 integration is **Complete and Verified**, merging the Distributed Backbone with the User Application.
+
+- **Backend**: `main_minimal.py` serves real v18 routes (Governance, Content, Auth) via `v13/src/api`.
+- **Frontend**: `v13/atlas` is fully wired to live endpoints (`GovernanceInterface`, `DistributedFeed`).
+- **Verification**: Validated via [Automated Scripts](TESTING.md) and Playwright E2E tests.
+
+**Key Documentation:**
+
+- [Integration Status detailed](docs/V18_INTEGRATION_STATUS_DETAILED.md)
+- [Deployment Checklist](docs/V18_DEPLOYMENT_CHECKLIST.md)
+- [Security Debt](docs/SECURITY_DEBT.md)
+
+### v17.0.0-beta — Governance & Bounty F-Layer
+
+Determinism-locked governance and bounty management with full PoE logging. Platform feature complete for single-node operation.
+
+### v18.0.0-alpha — Distributed Fabric Backbone (Current)
+
+Consensus-driven Tier A backbone complete. Deterministic replication (Raft), PQC batch anchoring, and integrated EvidenceBus wiring achieved.
 
 ---
 
 ## 🗺️ Roadmap: v18 Distributed Fabric
 
-Future enhancements (Design Phase):
+The distributed Tier A backbone is now consensus-driven, PQC-anchored, and cleanly wired into the existing F-layer.
 
-- **Physical Tiering**: Tier A (Core), Tier B (Edge), Tier C (Sensor).
-- **Multi-Node Consensus**: Deterministic replication for Tier A.
-- **PQC Anchors**: Real post-quantum signatures (Dilithium/Kyber) to anchor EvidenceBus batches.
-- **Edge Expansion**: UI and Advisory agents deployed to edge nodes.
+- **✅ Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core.
+- **✅ PQC Anchors**: Real post-quantum signatures (Dilithium) to anchor EvidenceBus batches.
+- **✅ Ascon Edge Crypto**: Session protection and message AEAD.
+- **🔄 v18.9 ATLAS App Alpha**: Unifying UI with distributed backbone and real data projections (In Progress).
+- **🔮 Phase 5: Edge Expansion**: UI and Advisory agents deployed to Tier B/C nodes.
 
-See [V18_DESIGN_AND_DEPLOYMENT.md](docs/V18_DESIGN_AND_DEPLOYMENT.md) for the full blueprint.
-
-> **Note:** v18 work begins after v17.0.0-beta validation.
+See [V18_BACKBONE_COMPLETE.md](docs/RELEASES/v18_BACKBONE_COMPLETE.md) and [ATLAS_V18_GAP_REPORT.md](docs/ATLAS_V18_GAP_REPORT.md) for details.
 
 ---
 

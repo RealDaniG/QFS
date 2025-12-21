@@ -1,10 +1,10 @@
-# Governance Onboarding Guide (QFS v15)
+# Governance Onboarding Guide (QFS current baseline)
 
-Welcome to the Republic. As a Node Operator (NOD), you are not just a validator; you are a legislator. QFS v15 introduces a fully autonomous, deterministic governance layer. This guide ensures you can verify and execute your duties safely.
+Welcome to the Republic. As a Node Operator (NOD), you are not just a validator; you are a legislator. QFS current baseline introduces a fully autonomous, deterministic governance layer. This guide ensures you can verify and execute your duties safely.
 
 ## 1. Verify Your Environment
 
-Before participating, ensure your node is running true v15 code.
+Before participating, ensure your node is running true current baseline code.
 
 ```bash
 # Check Release Marker
@@ -17,7 +17,7 @@ cat LATEST_RELEASE.txt
 Use the Operator Dashboard to view the state of the union.
 
 ```bash
-python v15/tools/governance_dashboard.py
+python current baseline/tools/governance_dashboard.py
 ```
 
 **Key Sections:**
@@ -31,11 +31,11 @@ python v15/tools/governance_dashboard.py
 Every passed proposal generates a cryptographic artifact. You should verify these manually for high-stakes proposals.
 
 1. Locate the Proposal ID from the Dashboard.
-2. Find the artifact in your node's ledger storage (mocked at `v15/artifacts/` in prototype).
+2. Find the artifact in your node's ledger storage (mocked at `current baseline/artifacts/` in prototype).
 3. Replay the governance cycle locally:
 
 ```bash
-python v15/tests/autonomous/run_autonomous_validation.py
+python current baseline/tests/autonomous/run_autonomous_validation.py
 ```
 
 This ensures that the "Active Parameters" were derived from a legitimate history of votes, not a backdoor injection.
@@ -45,7 +45,7 @@ This ensures that the "Active Parameters" were derived from a legitimate history
 Periodically run the automated health check to report status to the network.
 
 ```bash
-python v15/ops/ProtocolHealthCheck.py
+python current baseline/ops/ProtocolHealthCheck.py
 ```
 
 **Metrics:**

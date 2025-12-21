@@ -24,7 +24,7 @@ To ensure cross-platform compatibility during development while maintaining high
   - High performance (<10ms sign/verify).
   - Requires Linux (Ubuntu 22.04 LTS recommended).
 - **Requirements**: System-level installation of `liboqs` >= 0.10.1.
-- **Status**: 🔒 Phase 3 (Planned Logic)
+- **Status**: 🔒 Phase 3 (implemented Logic)
 
 ### **MockPQC Fallback: Deterministic Simulator**
 

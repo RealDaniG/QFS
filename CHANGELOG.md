@@ -7,6 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ATLAS v18.9 App Alpha (Transition)
+
+- **Unified Auth Integration**: Migrated ATLAS API to Ascon-protected v18.5 session tokens (Complete).
+- **Distributed App Bridge**: Implementing `v18ClusterAdapter` to connect ATLAS UI to the consensus leader.
+- **Live Social Projection**: Wiring Secure Chat and Governance to consensus-backed EvidenceBus.
+- **User Data Strategy**: Implemented three-tier data classification (Class A/B/C) for deterministic, privacy-first storage.
+
+## [v18.6.0-auth-sync] - 2025-12-20
+
+### Added
+
+- **Stateless Ascon Session Tokens**:
+  - Embedded all session claims (wallet_address, scopes, created_at, expires_at) in Ascon-encrypted payload.
+  - Zero server-side session storage required for validation.
+  - Tokens validated on any Tier A node with same key_id.
+- **Multi-Node Auth Validation**:
+  - Sessions created on Node A successfully validate on Node B.
+  - Test suite: 12/12 tests passing (lifecycle, PoE, multi-node, determinism).
+- **User Data Model & Storage Strategy**:
+  - Three-tier classification: Class A (ledger-critical), Class B (social/personal), Class C (ephemeral).
+  - Pseudonymization with user_id indirection.
+  - Privacy and deletion flows documented.
+
+### Changed
+
+- **SessionManager (v15/auth)**: Refactored from in-memory to stateless token architecture.
+- **PoE Events**: Added `stateless: True` flag to AUTH_LOGIN and AUTH_LOGOUT events.
+- **Frontend Hooks**: Updated `useWalletAuth` to validate `ascon1.*` token prefix.
+- **API Client**: Created `atlasFetch` utility for centralized session token handling.
+
+### Tests
+
+- `v18/tests/test_ascon_sessions.py`: Comprehensive test suite covering:
+  - Token creation and validation
+  - Expiry and revocation
+  - PoE event emissions
+  - Multi-node validation (cross-node session verification)
+  - Deterministic session IDs and Ascon contexts
+  - Stateless token contract requirements
+
+## [v18.0.0-alpha] - 2025-12-20
+
+### Added
+
+- **Distributed Tier A Backbone**:
+  - Raft-based deterministic replication (log consensus, leader election, majority commits).
+  - Multi-node simulation harness (v18/consensus/simulator.py).
+- **PQC Anchoring Service**:
+  - Deterministic batch signatures over EvidenceBus segments.
+  - Verification logic for PQC anchors across the fabric.
+- **v18.5 Edge Security (Ascon)**:
+  - Deterministic Ascon AEAD adapter for session and message protection.
+  - `ASYNC_CRYPTO_EVENT` logging to EvidenceBus.
+- **EvidenceBus Integration**:
+  - Consensus-driven commits with term/cluster metadata.
+  - Full replayability across distributed nodes.
+
 ### Ongoing Development
 
 The system continues to evolve with the following enhancement areas:
@@ -18,7 +75,7 @@ The system continues to evolve with the following enhancement areas:
 
 ## Current Baseline Capabilities
 
-### Added
+### Summary of Core Baseline
 
 - **Cost-Efficient Architecture Documentation**:
   - `COST_EFFICIENT_ARCHITECTURE.md` - Complete cost optimization guide

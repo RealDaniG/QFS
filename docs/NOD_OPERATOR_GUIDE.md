@@ -1,12 +1,12 @@
-# QFS v15 NOD Operator Guide
+# QFS current baseline NOD Operator Guide
 
 > **For Network Operators & Governance Participants**  
-> **Version:** v15.0.0  
+> **Version:** current baseline.0.0  
 > **Last Updated:** December 19, 2025
 
 ## Overview
 
-This guide explains how to join the QFS v15 testnet as a NOD (Network Operator & Delegate) operator, participate in governance, and monitor system health.
+This guide explains how to join the QFS current baseline testnet as a NOD (Network Operator & Delegate) operator, participate in governance, and monitor system health.
 
 ## Prerequisites
 
@@ -24,8 +24,8 @@ This guide explains how to join the QFS v15 testnet as a NOD (Network Operator &
 git clone https://github.com/RealDaniG/QFS.git
 cd QFS
 
-# Checkout v15.0.0
-git checkout v15.0.0
+# Checkout current baseline.0.0
+git checkout current baseline.0.0
 
 # Install dependencies
 pip install -r requirements.txt
@@ -60,7 +60,7 @@ python testnet_init.py
 ### Creating a Proposal
 
 ```python
-from v15.atlas.governance import GovernanceParameterRegistry, ProposalEngine
+from current baseline.atlas.governance import GovernanceParameterRegistry, ProposalEngine
 from v13.libs.BigNum128 import BigNum128
 
 # Initialize
@@ -114,7 +114,7 @@ else:
 
 ```bash
 # Check system health
-python v15/tools/protocol_health_check.py
+python current baseline/tools/protocol_health_check.py
 
 # Expected output:
 # ✓ Governance Registry: HEALTHY
@@ -129,7 +129,7 @@ python v15/tools/protocol_health_check.py
 
 ```bash
 # View current governance state
-python v15/tools/governance_dashboard.py
+python current baseline/tools/governance_dashboard.py
 
 # Shows:
 # - Active parameters
@@ -141,8 +141,8 @@ python v15/tools/governance_dashboard.py
 ### Monitor AEGIS Coherence
 
 ```python
-from v15.atlas.governance import GovernanceParameterRegistry, GovernanceTrigger
-from v15.atlas.aegis import GovernanceCoherenceCheck
+from current baseline.atlas.governance import GovernanceParameterRegistry, GovernanceTrigger
+from current baseline.atlas.aegis import GovernanceCoherenceCheck
 
 # Initialize
 registry = GovernanceParameterRegistry()
@@ -389,4 +389,4 @@ A: Check the proposal status and verify your vote in the dashboard.
 
 ---
 
-**Welcome to the QFS v15 testnet! Your participation helps make the system more secure and robust.** 🚀
+**Welcome to the QFS current baseline testnet! Your participation helps make the system more secure and robust.** 🚀

@@ -1,8 +1,8 @@
 # QFS × ATLAS — Platform Evolution Plan
 
 > **Status:** Authoritative Strategic Roadmap  
-> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
-> **Foundation:** v16.1.1-pre-v17-ready (Deterministic, Cost-Efficient, MOCKQPC-First)  
+> **Current Version:** v18.0.0-alpha (Distributed Backbone)  
+> **Foundation:** v17.0.0-beta (Deterministic Governing F-Layer)  
 > **Agent Strategy:** CrewAI/LangGraph (replacing OpenAGI)
 
 ---
@@ -26,12 +26,12 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 1.1 Dashboard & UI
 
-**Goals**
+#### Goals
 
 - Single responsive dashboard surface for governance, moderation, bounties, and contributors
 - Role-aware UIs driven by wallet scopes and EvidenceBus streams
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Dashboard Shell** (Next.js/React):
 
@@ -57,11 +57,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 1.2 User Platform Features
 
-**Goals**
+#### Goals
 
 - Wallet as primary identity, with contribution intelligence surfaced directly
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Wallet Login Flows**:
 
@@ -84,11 +84,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 1.3 Decentralized Connectivity
 
-**Goals**
+#### Goals
 
 - Make MOCKQPC and EvidenceBus **visible** to users, not just infra concerns
 
-**Implementation Plan**
+#### Implementation Plan
 
 **MOCKQPC-First Enforcement**:
 
@@ -114,11 +114,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 2.1 Secure Chat
 
-**Goals**
+#### Goals
 
 - Governance/moderation discussions with E2E and PoE-backed accountability
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Wallet-Based Identity for Chat**:
 
@@ -138,11 +138,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 2.2 Spaces & Social
 
-**Goals**
+#### Goals
 
 - Social layer is fully deterministic and PoE-backed
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Spaces**:
 
@@ -165,11 +165,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 3.1 Deterministic Governance / Moderation
 
-**Goals**
+#### Goals
 
 - Every decision is reproducible and replayable
 
-**Implementation Plan**
+#### Implementation Plan
 
 **v17 Governance F-Layer** ✅ COMPLETE:
 
@@ -199,11 +199,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 3.2 Lean Agent Layer
 
-**Goals**
+#### Goals
 
 - Replace OpenAGI with minimal, pluggable advisory agents under strict cost constraints
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Agent Framework Selection**:
 
@@ -232,11 +232,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 4.1 Wallet-Linked Bounties
 
-**Goals**
+#### Goals
 
 - Deterministic, wallet-based rewards with PoE-backed proof
 
-**Implementation Plan**
+#### Implementation Plan
 
 **v17 Bounty F-Layer** ✅ COMPLETE:
 
@@ -268,11 +268,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 4.2 Cost-Efficient Verification
 
-**Goals**
+#### Goals
 
 - Keep PQC and agent costs predictable and low
 
-**Implementation Plan**
+#### Implementation Plan
 
 **MOCKQPC-Only in Dev/Beta**:
 
@@ -292,11 +292,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ## 5. Repo & Documentation Alignment
 
-**Goals**
+#### Goals
 
 - No more temporal drift; docs describe a capability baseline
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Root Directory**:
 
@@ -327,11 +327,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 6.1 Baseline Deployment
 
-**Goals**
+#### Goals
 
 - One simple, cheap path to full stack
 
-**Implementation Plan**
+#### Implementation Plan
 
 **Single-Node Setup**:
 
@@ -347,11 +347,11 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ### 6.2 Observability & Audit
 
-**Goals**
+#### Goals
 
 - Anyone can measure cost and verify behavior
 
-**Implementation Plan**
+#### Implementation Plan
 
 **CLI Tooling**:
 
@@ -391,44 +391,44 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ---
 
-## 8. Execution Order (Practical)
+## 8. Implementation Status Checklist
 
-### Phase 1: Foundation Lock (Immediate)
+### Phase 1: Foundation Lock (Completed)
 
-1. ✅ **Finalize `MASTER_PROMPT_v15.5.md`** and CONTRIBUTING requirements
-2. ✅ **Complete evergreen docs**: Apply manual replacements to README, CHANGELOG, BOUNTIES, CONTRIBUTING, RELEASE_NOTES
-3. ✅ **Commit repository cleanup and evergreen alignment**
-4. ✅ **Implement MOCKQPC & Zero-Sim Checker**
+- ✅ **Finalize Protocol Invariants** and CONTRIBUTING requirements
+- ✅ **Complete Evergreen Documentation**: Alignment of README, CHANGELOG, BOUNTIES, and CONTRIBUTING.
+- ✅ **Commit Repository Cleanup**
+- ✅ **Implement MOCKQPC & Zero-Sim Checker**
 
-### Phase 2: Core Infrastructure (Week 1-2)
+### Phase 2: Core Infrastructure (Completed)
 
-5. ⏳ **Implement wallet ↔ GitHub dual-proof** (`/auth/bind-github` endpoint)
-6. ⏳ **Complete bounty endpoints** (create/claim/submit/pay with EvidenceBus)
-7. ⏳ **Wire EvidenceBus everywhere** (governance, moderation, bounties, agents)
+- ✅ **Implement wallet ↔ GitHub dual-proof** (`/auth/bind-github` endpoint)
+- ✅ **Complete bounty endpoints** (create/claim/submit/pay with EvidenceBus)
+- ✅ **Wire EvidenceBus everywhere** (governance, moderation, bounties, agents)
 
-### Phase 3: Agent Integration (Week 2-3)
+### Phase 3: Agent Integration (Completed)
 
-8. ⏳ **Integrate CrewAI/LangGraph** (replacing OpenAGI)
-9. ⏳ **Implement sampling strategy** (10-20% configurable)
-10. ⏳ **Emit `agent_advisory` events** to EvidenceBus
+- ✅ **Integrate CrewAI / LangGraph** (replacing legacy agents)
+- ✅ **Implement sampling strategy** (10-20% configurable audit rate)
+- ✅ **Emit agent_advisory events** to EvidenceBus
 
-### Phase 4: UI/UX (Week 3-5)
+### Phase 4: UI/UX & Social Layer (Completed)
 
-11. ⏳ **Dashboard shell** with role-aware routing
-12. ⏳ **Spaces implementation** with deterministic moderation
-13. ⏳ **Secure chat** with E2E encryption
-14. ⏳ **Contributor dashboard** with verified contributions and rewards
+- ✅ **Dashboard shell** with role-aware routing (ATLAS v18 Alpha)
+- ✅ **Spaces implementation** with deterministic moderation
+- ✅ **Secure chat** with E2E encryption and EvidenceBus anchors
+- ✅ **Contributor dashboard** with verified contributions and rewards
 
-### Phase 5: Testing & Verification (Week 5-6)
+### Phase 5: Testing & Verification (In Progress)
 
-15. ⏳ **End-to-end replay tests** for governance, moderation, bounties
-16. ⏳ **Cross-platform testing** (Windows/macOS/Linux with MOCKQPC)
-17. ⏳ **Cost metrics validation** (PQC <0.01, Agents <0.2 per decision)
+- ⏳ **End-to-end replay tests** for distributed governance and moderation
+- ⏳ **Cross-platform testing** (Windows/macOS/Linux parity)
+- ⏳ **Cost metrics validation** (Target: PQC <0.01, Agents <0.2 per decision)
 
-### Phase 6: Observability & Tooling (Week 6-7)
+### Phase 6: Observability & Production Tooling (In Progress)
 
-18. ⏳ **Grafana/Custom dashboard** for throughput and cost
-19. ⏳ **CLI tools** for deep inspection and replay bundles
+- ⏳ **Grafana / Custom dashboard** for throughput and cost
+- ⏳ **CLI tools** for deep inspection and replay bundles
 
 ---
 
@@ -436,8 +436,15 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 **Goal**: Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
 
-**Blueprint**: See [V18_DESIGN_AND_DEPLOYMENT.md](V18_DESIGN_AND_DEPLOYMENT.md).
+**Current Status**: Backbone Core Complete (Phase 1-3).
 
-- **Phase 1: Multi-Node Core**: Introduce deterministic consensus (Raft/PBFT) between Tier A nodes sharing the EvidenceBus.
-- **Phase 2: PQC Anchors**: Replace MOCKQPC with real PQC signatures for batch sealing at Tier A.
-- **Phase 3: Edge Expansion**: Deploy UI and Advisory logic to Tier B (PoE++ Edge Nodes) and Tier C (Sensors).
+- **✅ Phase 1: Multi-Node Core**: Introduced deterministic consensus (Raft) between Tier A nodes sharing the EvidenceBus.
+- **✅ Phase 2: PQC Anchors**: Real PQC signatures for batch sealing at Tier A (current baseline Crypto Adapter powered).
+- **✅ Phase 3: Consensus & Bus Wiring**: `EvidenceBusConsensusAdapter` wiring complete with integration tests.
+- **🔮 Phase 5: Edge Expansion**: UI and Advisory logic deployment to Tier B and Tier C nodes. (implemented)
+- **🚀 v18.9: ATLAS App Alpha**:
+  - Unification of the App UI with the Distributed Backbone.
+  - End-to-end "v18-ready" user flows for Secure Chat, Governance, and Explain-This.
+  - Verification of cluster-wide coherence with multiple ATLAS instances.
+
+**Reference**: [V18_BACKBONE_COMPLETE.md](RELEASES/v18_BACKBONE_COMPLETE.md)

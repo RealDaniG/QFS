@@ -1,7 +1,7 @@
 # QFS × ATLAS Task Tracker
 
-> **Current Version:** v17.0.0-beta (Governance & Bounty F-Layer)  
-> **Status:** Engine complete, UI/UX layer in progress  
+> **Current Version:** v18.0.0-alpha (Distributed Backbone)  
+> **Status:** Consensus driven & PQC anchored (Tier A backbone complete)  
 > **Last Updated:** 2025-12-20
 
 ---
@@ -196,12 +196,70 @@
 - [ ] Tag: `v17.0.0-beta-governance-bounties`
 - [ ] Release summary
 
-### Roadmap: v18 Distributed Fabric 🔮
+## v18 Distributed Fabric ✅ BACKBONE COMPLETE
 
-- [ ] Design Node Tiering (A/B/C)
-- [ ] Implement Raft/PBFT Consensus (Layer A)
-- [ ] Implement PQC Anchor Service (Layer A)
-- [ ] Deploy Edge Advisory Nodes (Layer B)
+> **Goal:** Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
+
+### Phase 1: Multi-Node Core (Tier A) ✅
+
+- [x] Raft/PBFT Consensus Implementation (v18/consensus/)
+- [x] Multi-node Simulation Harness (v18/consensus/simulator.py)
+- [x] Election & Failover Logic
+- [x] Log Replication & Majority Commitment
+- [x] Determinism Verified (Zero-Sim)
+
+### Phase 2: PQC Anchors (Tier A) ✅
+
+- [x] PQC Batch Anchor Service (v18/pqc/anchors.py)
+- [x] Environment-Aware Batch Signing (MOCKQPC or liboqs)
+- [x] Batch Verification Logic
+- [x] Deterministic Signature Tests
+
+### Phase 3: Consensus & Bus integration ✅
+
+- [x] EvidenceBusConsensusAdapter Implementation
+- [x] Consensus Commit -> EvidenceBus.emit Wiring
+- [x] Integration Test (Propose -> Replicate -> Commit -> Append)
+
+### Phase 4: Observability & Edge Expansion 🔄
+
+- [ ] Cluster Status Dashboard (Leader, Term, Indices)
+- [ ] PQC Anchor Timeline & Verification API
+- [ ] Tier B Edge Node Config (UI+Advisory)
+- [ ] Tier C Sensor Gateways
+
+### v18.5 Edge Security (Ascon) ✅ PHASE 1-3 COMPLETE
+
+- [x] Deterministic Ascon Adapter (v18/crypto/ascon_adapter.py)
+- [x] WalletAuthCryptoAdapter & EdgeCryptoAdapter Infrastructure
+- [x] EvidenceBus Event Logging (`ASYNC_CRYPTO_EVENT`)
+- [x] Wallet Session Integration (Ascon-protected tokens)
+- [x] Edge/Advisory Integration (Governance/Social/Bounty wrappers)
+- [x] Determinism Tests (Zero-Sim)
+- [ ] Phase 4: Key Management & Rotation (Planned)
+
+### v18.9 ATLAS App Alpha (Distributed Social Layer) 🔄
+
+- [x] **Unify Auth Stack (P0)** ✅:
+  - Migrated ATLAS API to `v15.auth.session_manager` (Ascon-protected).
+  - Implemented stateless tokens with embedded claims for multi-node validation.
+  - Updated `useWalletAuth.ts` for Ascon token lifecycle.
+  - All tests passing (12/12 in test_ascon_sessions.py).
+- [x] **Implement `v18ClusterAdapter` (P0)** ✅:
+  - Specification complete (`docs/V18_CLUSTER_ADAPTER_SPEC.md`).
+  - Implementation complete (`v18/cluster/cluster_adapter.py`).
+  - All 15 tests passing on first run.
+  - Ready for QFSClient wiring.
+- [ ] **Live Social Layer (P1)**:
+  - Re-wire Secure Chat to derive state from consensus-log events.
+  - Connect Governance/Bounties grid to v17 F-Layer projections.
+- [ ] **Explain-This v18 Integration (P1)**:
+  - Add "View Evidence" drill-down to all governance/reward cards.
+  - Wire to `QFSReplaySource` for v18.3 PQC verification.
+- [ ] **App Health & Observability (P2)**:
+  - Dashboard for Raft cluster state & PQC Batch Anchor progress.
+- [ ] **E2E Infrastructure**:
+  - Set up Playwright/Cypress for 3-node distributed UI tests.
 
 ---
 
@@ -214,21 +272,26 @@
 - ✅ v16 Health Check & Hardening
 - ✅ v17 Engine Implementation (governance + bounties)
 - ✅ v17 UI/UX (Timelines, Explanations, Advisory Overlays)
-- ✅ v17 Documentation Alignment
+- ✅ v18 Phase 1: Multi-Node Core
+- ✅ v18 Phase 2: PQC Anchors
+- ✅ v18 Phase 3: Consensus & Bus Integration
+- ✅ v18.5 Ascon Edge Crypto Integration
 
 **In Progress:**
 
-- 🔄 v17 Beta Testing
+- 🔄 v18.9 ATLAS App Alpha: Secure Chat & Spaces on v18
 
-**Next Steps:**
+**Next Steps (Operational Readiness):**
 
-1. Merge `docs/v17-repo-alignment`
-2. Tag `v17.0.0-beta`
-3. Begin v18 Design
+1. **Auth Sync (P0)**: Migrate ATLAS API to `v15.auth.session_manager` (Ascon-protected) and update hooks.
+2. **Backbone Bridge (P0)**: Implement `v18ClusterAdapter` for QFSClient (Leader discovery, forwarding).
+3. **Social Persistence (P1)**: Refactor Secure Chat to use EvidenceBus events and `SocialProjection`.
+4. **Live Wiring (P1)**: Connect Governance/Bounty dashboards to real v17 F-Layer Projections.
+5. **Observability (P2)**: Build the Cluster/Anchor Health Dashboard in Admin UI.
 
 ---
 
-**Branch:** `docs/v17-repo-alignment`
+**Branch:** `feat/v18-distributed-fabric`
 **Foundation:** v17.0.0-beta-governance-bounties
-**Target:** v18 Design Phase
+**Target:** v18 Observability Phase
 **Contract:** Deterministic Core Preserved

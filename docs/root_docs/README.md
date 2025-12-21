@@ -76,11 +76,11 @@ QFS V14.0 runs beneath the ATLAS social layer as a zero‑simulation, multi‑to
 
 ---
 
-## 🎯 v14.0 → v15 Evolution Path
+## 🎯 v14.0 → current baseline Evolution Path
 
-### v15 Focus (Design Phase Initiated)
+### current baseline Focus (Design Phase Initiated)
 
-With the deterministic core complete in v14.0, v15 begins:
+With the deterministic core complete in v14.0, current baseline begins:
 
 **Higher-Impact Validation**:
 
@@ -91,9 +91,9 @@ With the deterministic core complete in v14.0, v15 begins:
 
 **Critical Constraint**:
 
-- v15 does NOT replace v14.0 semantics
+- current baseline does NOT replace v14.0 semantics
 - v14.0 remains the default execution layer
-- v15 adds deterministic validation, not discretionary moderation
+- current baseline adds deterministic validation, not discretionary moderation
 
 ---
 

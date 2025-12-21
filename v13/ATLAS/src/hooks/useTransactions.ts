@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { atlasFetch } from '../lib/api';
 
 export interface TransactionResponse {
   tx_id: string;
@@ -22,11 +23,8 @@ export function useTransactions() {
   const refresh = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/v1/transactions/', {
+      const res = await atlasFetch('/api/v1/transactions/', {
         method: 'GET',
-        headers: {
-          Authorization: 'Bearer test-token',
-        },
       });
 
       if (!res.ok) {

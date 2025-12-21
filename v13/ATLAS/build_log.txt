@@ -1,0 +1,51 @@
+  ▲ Next.js 14.2.18
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping validation of types
+   Linting ...
+ ⨯ ESLint: Invalid Options: - Unknown options: useEslintrc, extensions - 'extensions' has been removed.
+   Collecting page data ...
+   Generating static pages (0/4) ...
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.t [as require] (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\.next\server\webpack-runtime.js:1:128)
+    at require (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:16:18678)
+    at i (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:88294)
+    at D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:98817
+    at D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:98904
+    at t (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:99107) {
+  digest: '1764564077'
+}
+TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.t [as require] (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\.next\server\webpack-runtime.js:1:128)
+    at require (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:16:18678)
+    at I (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94362)
+    at D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:96668
+    at F._fromJSON (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:97106)
+    at JSON.parse (<anonymous>)
+    at O (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94083)
+    at t (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:100582)
+
+Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.t [as require] (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\.next\server\webpack-runtime.js:1:128)
+    at require (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:16:18678)
+    at I (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94362)
+    at D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:96668
+    at F._fromJSON (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:97106)
+    at JSON.parse (<anonymous>)
+    at O (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94083)
+    at t (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:100582)
+   Generating static pages (1/4) 
+   Generating static pages (2/4) 
+   Generating static pages (3/4) 
+ ✓ Generating static pages (4/4)
+
+> Export encountered errors on following paths:
+	/page: /

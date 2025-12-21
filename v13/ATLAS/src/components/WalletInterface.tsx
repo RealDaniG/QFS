@@ -5,13 +5,15 @@ import {
     TrendingUp,
     MessageSquare,
     Users,
-    Shield
+    Shield,
+    Zap
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTreasury } from '@/hooks/useTreasury';
 import { useAuth } from '@/hooks/useAuth';
+import { useWalletAuth } from '@/hooks/useWalletAuth';
 import { WalletConnectButton } from '@/components/WalletConnectButton';
 
 import { ExplainThisPanel } from '@/components/ExplainThisPanel';
@@ -21,7 +23,41 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 export default function WalletInterface() {
     const { balance, history, isLoading } = useTreasury();
     const { did } = useAuth();
+    const { isConnected, address: walletAddress } = useWalletAuth();
     const { explanation, fetchRewardExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
+
+    // Auth Gate: Show connect wallet message if not authenticated
+    if (!isConnected) {
+        return (
+            <div className="max-w-4xl mx-auto">
+                <Card className="border-blue-500/30 bg-blue-500/5">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Shield className="h-5 w-5 text-blue-600" />
+                            Wallet Connection Required
+                        </CardTitle>
+                        <CardDescription>
+                            Connect your wallet to view your balance, transaction history, and internal credits.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-4 p-4 bg-background/50 rounded-xl border border-blue-500/20">
+                            <Wallet className="h-8 w-8 text-blue-600" />
+                            <div className="flex-1">
+                                <p className="text-sm font-semibold">Secure Wallet Authentication</p>
+                                <p className="text-xs text-muted-foreground">
+                                    Your wallet is used for cryptographic identity only. No transfers are supported.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex justify-center pt-4">
+                            <WalletConnectButton />
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
 
     // Fallback if loading or no auth (although auth is likely present)
     const displayBalance = balance?.balance.toFixed(2) || '0.00';
@@ -36,38 +72,63 @@ export default function WalletInterface() {
                 <div className="lg:col-span-2 space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Token Balances</CardTitle>
+                            <CardTitle>Wallet Balance</CardTitle>
                             <div className="flex justify-between items-center">
-                                <CardDescription>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</CardDescription>
+                                <CardDescription>
+                                    {isConnected ? (
+                                        <span className="text-blue-600 font-mono">
+                                            Connected: {walletAddress?.slice(0, 6)}...{walletAddress?.slice(-4)}
+                                        </span>
+                                    ) : (
+                                        <span>DID: {did ? `${did.slice(0, 20)}...` : 'Not connected'}</span>
+                                    )}
+                                </CardDescription>
                                 <WalletConnectButton />
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-2 gap-4">
-                                {/* FLX Balance */}
-                                <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {/* Wallet Balance */}
+                                <div className="p-4 bg-blue-50 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Wallet className="h-5 w-5 text-blue-600" />
-                                        <span className="font-medium">FLX Token</span>
-                                        {isLoading && <Badge variant="secondary" className="ml-auto text-xs">Syncing...</Badge>}
+                                        <span className="font-medium text-blue-900">Wallet Balance</span>
                                     </div>
-                                    <div className="text-2xl font-bold text-blue-600">{displayBalance}</div>
-                                    <div className="text-sm text-muted-foreground flex justify-between">
-                                        <span>Available</span>
-                                        <span className="text-blue-700 font-medium">Staked: {displayStaked}</span>
+                                    <div className="text-2xl font-bold text-blue-600">
+                                        {displayBalance} FLX
+                                    </div>
+                                    <div className="text-sm text-blue-700 font-medium">
+                                        Staked: {displayStaked}
                                     </div>
                                 </div>
 
-                                {/* Reputation Score (Placeholder, will come from coherence) */}
+                                {/* Accrued Rewards */}
+                                <div className="p-4 bg-green-50 rounded-lg border border-green-100">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Zap className="h-5 w-5 text-green-600" />
+                                        <span className="font-medium text-green-900">Accrued Rewards</span>
+                                    </div>
+                                    <div className="text-2xl font-bold text-green-600">
+                                        {displayRewards} FLX
+                                    </div>
+                                    <div className="text-sm text-green-700 font-medium">
+                                        V18 Yield Pool
+                                    </div>
+                                </div>
+
+                                {/* Reputation Score */}
                                 <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
                                     <div className="flex items-center gap-2 mb-2">
                                         <TrendingUp className="h-5 w-5 text-purple-600" />
-                                        <span className="font-medium">Reputation</span>
+                                        <span className="font-medium text-purple-900">Reputation</span>
                                     </div>
-                                    <div className="text-2xl font-bold text-purple-600">0.000</div>
-                                    <div className="text-sm text-muted-foreground">Network reputation</div>
+                                    <div className="text-2xl font-bold text-purple-600">
+                                        {balance?.reputation?.toFixed(0) || '0'}
+                                    </div>
+                                    <div className="text-sm text-purple-700 font-medium">Network weight</div>
                                 </div>
                             </div>
+
                         </CardContent>
                     </Card>
 
@@ -84,8 +145,8 @@ export default function WalletInterface() {
                                     history.map((tx) => (
                                         <Dialog key={tx.id} onOpenChange={(open) => {
                                             if (open) {
-                                                // Assuming wallet_id is effectively the DID here, and mocking epoch
-                                                fetchRewardExplanation(did || "wallet_123", 10);
+                                                // Using walletAddress or fallback DID
+                                                fetchRewardExplanation(walletAddress || did || "wallet_123", 10);
                                             } else {
                                                 clearExplanation();
                                             }
@@ -99,7 +160,10 @@ export default function WalletInterface() {
                                                             <Badge variant="outline" className="ml-2 text-[10px] h-5">Explain</Badge>
                                                         </div>
                                                     </div>
-                                                    <div className="text-green-600 font-bold">+{tx.amount.toFixed(2)} FLX</div>
+                                                    <div className={tx.amount >= 0 ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                                                        {tx.amount >= 0 ? '+' : ''}{tx.amount.toFixed(2)} FLX
+                                                    </div>
+
                                                 </div>
                                             </DialogTrigger>
                                             <DialogContent className="max-w-2xl">
@@ -125,22 +189,23 @@ export default function WalletInterface() {
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
-                                {/* Placeholder bars */}
+                                { /* Real reputation bars from API */}
                                 {[
-                                    { label: 'Content Quality', val: 0, color: 'bg-green-600' },
-                                    { label: 'Engagement', val: 0, color: 'bg-blue-600' },
-                                    { label: 'Governance', val: 0, color: 'bg-purple-600' }
+                                    { label: 'Content Quality', val: balance?.reputation_breakdown?.content_quality || 0, color: 'bg-green-600' },
+                                    { label: 'Engagement', val: balance?.reputation_breakdown?.engagement || 0, color: 'bg-blue-600' },
+                                    { label: 'Governance', val: balance?.reputation_breakdown?.governance || 0, color: 'bg-purple-600' }
                                 ].map(item => (
                                     <div key={item.label}>
                                         <div className="flex items-center justify-between mb-1">
                                             <span className="text-sm">{item.label}</span>
-                                            <span className="text-sm font-medium">{item.val.toFixed(2)}</span>
+                                            <span className="text-sm font-medium">{(item.val * 100).toFixed(0)}%</span>
                                         </div>
                                         <div className="w-full bg-muted rounded-full h-2">
-                                            <div className={`${item.color} h-2 rounded-full`} style={{ width: `${item.val * 100}%` }}></div>
+                                            <div className={`${item.color} h-2 rounded-full transition-all duration-500`} style={{ width: `${item.val * 100}%` }}></div>
                                         </div>
                                     </div>
                                 ))}
+
                             </div>
                         </CardContent>
                     </Card>
@@ -158,7 +223,7 @@ export default function WalletInterface() {
                                 </Button>
                                 <Button variant="outline" className="w-full justify-start">
                                     <Users className="h-4 w-4 mr-2" />
-                                    Join Community
+                                    Join Space
                                 </Button>
                             </div>
                         </CardContent>

@@ -25,11 +25,13 @@ import {
   Zap,
   AlertCircle,
   CheckCircle,
-  BarChart3
+  BarChart3,
+  LayoutGrid
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useWalletAuth } from '@/hooks/useWalletAuth'
 import { useContentPublisher } from '@/hooks/useContentPublisher'
 import type { Visibility } from '@/types/storage'
 
@@ -40,6 +42,7 @@ interface ContentComposerProps {
 
 export default function ContentComposer({ isOpen, onClose }: ContentComposerProps) {
   const { isAuthenticated, did } = useAuth()
+  const { isConnected } = useWalletAuth()
   const { publish, isPublishing } = useContentPublisher()
   const [content, setContent] = useState('')
   const [tags, setTags] = useState('')
@@ -55,7 +58,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
     estimatedReach: 0,
     guardChecks: [
       { name: 'Content Quality', status: 'pending', description: 'Analyzing content structure and clarity' },
-      { name: 'Community Guidelines', status: 'pending', description: 'Checking against community standards' },
+      { name: 'Space Guidelines', status: 'pending', description: 'Checking against space standards' },
       { name: 'Economic Impact', status: 'pending', description: 'Evaluating reward distribution' },
       { name: 'Spam Detection', status: 'pending', description: 'Analyzing for spam patterns' }
     ],
@@ -101,7 +104,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
       estimatedReach,
       guardChecks: [
         { name: 'Content Quality', status: coherenceScore > 0.7 ? 'pass' : 'warning', description: coherenceScore > 0.7 ? 'High quality content detected' : 'Content could be more detailed' },
-        { name: 'Community Guidelines', status: 'pass', description: 'Content aligns with community standards' },
+        { name: 'Space Guidelines', status: 'pass', description: 'Content aligns with space standards' },
         { name: 'Economic Impact', status: rewardPotential > 30 ? 'pass' : 'warning', description: rewardPotential > 30 ? 'Positive economic impact expected' : 'Lower reward potential' },
         { name: 'Spam Detection', status: 'pass', description: 'No spam patterns detected' }
       ],
@@ -116,9 +119,12 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
     setEconomicAnalysis(updatedAnalysis)
   }
 
+  const [authError, setAuthError] = useState(false)
+
   const handlePublish = async () => {
-    if (!isAuthenticated) {
-      alert("Please initialize identity (managed by useAuth hook)")
+    // Check wallet connection first
+    if (!isConnected) {
+      setAuthError(true)
       return
     }
 
@@ -126,6 +132,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
       return
     }
 
+    setAuthError(false)
     const tagArray = tags.split(',').map(t => t.trim()).filter(Boolean)
 
     const result = await publish(content, {
@@ -137,6 +144,7 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
       console.log('Published:', result)
       setContent('')
       setTags('')
+      setAuthError(false)
       onClose()
     } else {
       console.error('Publish failed')
@@ -221,10 +229,10 @@ export default function ContentComposer({ isOpen, onClose }: ContentComposerProp
                             Public
                           </div>
                         </SelectItem>
-                        <SelectItem value="community">
+                        <SelectItem value="space">
                           <div className="flex items-center gap-2">
-                            <Users className="h-4 w-4" />
-                            Community
+                            <LayoutGrid className="h-4 w-4" />
+                            Space
                           </div>
                         </SelectItem>
                         <SelectItem value="private">

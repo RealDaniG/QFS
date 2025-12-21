@@ -1,14 +1,14 @@
-# Governance Rollback Playbook (v15 OPS)
+# Governance Rollback Playbook (current baseline OPS)
 
 > **Goal**: Deterministically revert a Governance Parameter to a previous state following an erroneous execution.
-> **Constraint**: QFS v15 cannot be "edited" via database access. All rollbacks must occur via **Counter-Proposals**.
+> **Constraint**: QFS current baseline cannot be "edited" via database access. All rollbacks must occur via **Counter-Proposals**.
 
 ## 1. Identify the Incident
 
 Use the Dashboard or Health Check to confirm the bad state.
 
 ```bash
-python v15/tools/governance_dashboard.py
+python current baseline/tools/governance_dashboard.py
 ```
 
 *Example: VIRAL_POOL_CAP is accidentally set to 500 (too low).*
@@ -25,7 +25,7 @@ You must submit a new `PARAMETER_CHANGE` proposal that explicitly sets the value
 **Script Template:**
 
 ```python
-from v15.atlas.governance.ProposalEngine import ProposalEngine, ProposalKind
+from current baseline.atlas.governance.ProposalEngine import ProposalEngine, ProposalKind
 
 engine = ProposalEngine()
 

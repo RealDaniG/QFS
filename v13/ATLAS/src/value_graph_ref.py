@@ -249,3 +249,4 @@ class ValueGraphRef:
         for ev in sorted(events, key=lambda x: json.dumps(x, sort_keys=True)):
             self.apply_event(ev)
         return self
+

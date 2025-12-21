@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { useAuth } from './useAuth';
+import { atlasFetch } from '../lib/api';
 
 export interface WalletResponse {
   wallet_id: string;
@@ -26,11 +26,8 @@ export function useWalletView() {
   const refresh = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/v1/wallets/', {
+      const res = await atlasFetch('/api/v1/wallets/', {
         method: 'GET',
-        headers: {
-          Authorization: 'Bearer test-token',
-        },
       });
 
       if (!res.ok) {

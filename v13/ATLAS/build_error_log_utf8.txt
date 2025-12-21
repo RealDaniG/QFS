@@ -1,0 +1,93 @@
+﻿
+> nextjs_tailwind_shadcn_ts@0.1.0 prebuild
+> node scripts/prebuild.js
+
+­ƒÜÇ Running pre-build optimizations...
+­ƒùæ´©Å  Clearing .next...
+node.exe : ÔÜá´©Å  
+WARNING: Using 
+placeholder 
+WalletConnect Project 
+ID!
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ÔÜá´©Å  WA   
+ RNING...ect Proje    
+ct ID!:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+   Get a real one at: 
+https://cloud.walletco
+nnect.com/
+Ô£à Pre-build complete!
+
+
+> nextjs_tailwind_shadcn_ts@0.1.0 build
+> npm run prebuild && next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+
+
+> nextjs_tailwind_shadcn_ts@0.1.0 prebuild
+> node scripts/prebuild.js
+
+­ƒÜÇ Running pre-build optimizations...
+ÔÜá´©Å  WARNING: 
+Using placeholder 
+WalletConnect Project 
+ID!
+   Get a real one at: 
+https://cloud.walletco
+nnect.com/
+Ô£à Pre-build complete!
+
+   Ôû▓ Next.js 15.3.5
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.Pac
+kFileCacheStrategy] 
+Caching failed for 
+pack: Error: ENOENT: 
+no such file or 
+directory, open 
+'D:\AI AGENT 
+CODERV1\QUANTUM CURREN
+CY\QFS\V13\v13\atlas\.
+next\cache\webpack\cli
+ent-production\0.pack_
+'
+ Ô£ô Compiled successfully in 40.0s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+
+> Build error occurred
+[Error: ENOENT: no 
+such file or 
+directory, open 
+'D:\AI AGENT 
+CODERV1\QUANTUM CURREN
+CY\QFS\V13\v13\atlas\.
+next\server\pages-mani
+fest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\AI AGENT 
+CODERV1\\QUANTUM CURRE
+NCY\\QFS\\V13\\v13\\at
+las\\.next\\server\\pa
+ges-manifest.json'
+}

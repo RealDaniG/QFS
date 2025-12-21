@@ -4,17 +4,17 @@ ATLAS API Routes for Secure Chat
 Provides REST endpoints for secure chat operations using QFSClient.
 """
 
-from libs.deterministic_helpers import det_time_isoformat
+from v13.libs.deterministic_helpers import det_time_isoformat
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import logging
 import base64
-from libs.PQC import PQC
+from v13.libs.PQC import PQC
 from ..dependencies import get_current_user, get_qfs_client
 from ...models.user import User
 from ...qfs_client import QFSClient
-from ...types import Transaction
+from ...qfs_types_models import Transaction
 from ...secure_chat.core.engine import ThreadStatus
 from ...core.pqc_session import pqc_session_manager
 

@@ -389,7 +389,7 @@ Object containing replay information:
 ### Generating PoE Artifacts
 
 ```python
-from v15.atlas.governance import ProposalEngine
+from current baseline.atlas.governance import ProposalEngine
 
 engine = ProposalEngine(registry)
 proposal_id = "..."
@@ -404,7 +404,7 @@ poe_artifact = engine.get_poe_artifact(proposal_id)
 ### Verifying PoE Artifacts
 
 ```python
-from v15.tools import verify_poe
+from current baseline.tools import verify_poe
 
 # Load artifact
 artifact = load_poe_artifact("GOV-148-EXEC-02.json")
@@ -422,7 +422,7 @@ if signature_valid and replay_valid:
 
 ## References
 
-- [v15.3 PoE Integration Plan](../implementation_plan.md)
+- [current baseline.3 PoE Integration Plan](../implementation_plan.md)
 - [HOW_TO_AUDIT_QFS_V15.md](HOW_TO_AUDIT_QFS_V15.md)
 - [SECURITY_ASSUMPTIONS.md](SECURITY_ASSUMPTIONS.md)
 

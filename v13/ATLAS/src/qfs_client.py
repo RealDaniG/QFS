@@ -11,9 +11,9 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 import logging
 from .real_ledger import RealLedger
-from .types import Transaction, DeterminismReport
+from .qfs_types_models import Transaction, DeterminismReport
 from .qfs_types import OperationBundle
-from libs.deterministic_helpers import det_time_isoformat
+from v13.libs.deterministic_helpers import det_time_isoformat
 
 logger = logging.getLogger(__name__)
 
@@ -210,7 +210,7 @@ class QFSClient:
         Returns:
             str: Signature (hex encoded)
         """
-        from libs.PQC import PQC
+        from v13.libs.PQC import PQC
 
         # We need a log context for PQC operations
         with PQC.LogContext() as log:
@@ -270,3 +270,4 @@ class QFSClient:
     def clear_pending_bundles(self):
         """Clear all pending bundles (useful for testing)"""
         self._pending_bundles.clear()
+

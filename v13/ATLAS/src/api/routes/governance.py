@@ -1,64 +1,31 @@
-"""
-Governance API endpoints for the ATLAS system.
+from fastapi import APIRouter, Body
+from src.lib.storage import db
 
-Provides access to immutable audit logs and governance state.
-"""
-
-from fastapi import APIRouter, HTTPException, status, Depends
-from typing import Dict, Any, List, Optional
-
-router = APIRouter(prefix="/governance", tags=["governance"])
+router = APIRouter(prefix="/api/v18/governance", tags=["governance"])
 
 
-@router.get("/audit-log")
-async def get_audit_log(
-    limit: int = 50, type: Optional[str] = None
-) -> List[Dict[str, Any]]:
-    """
-    Retrieve system audit logs.
-    """
-    logs = [
-        {
-            "id": "evt_1",
-            "timestamp": "2025-01-01T12:00:00Z",
-            "type": "CONTRACT",
-            "severity": "INFO",
-            "actor_did": "did:key:zAdmin",
-            "action": "Upgraded Contract to V1.3",
-            "integrity_hash": "sha256-abc...",
-            "verified": True,
-        },
-        {
-            "id": "evt_2",
-            "timestamp": "2025-01-01T11:55:00Z",
-            "type": "SIGNAL",
-            "severity": "INFO",
-            "actor_did": "did:key:zAES",
-            "action": "Registered ArtisticSignalAddon",
-            "integrity_hash": "sha256-def...",
-            "verified": True,
-        },
-        {
-            "id": "evt_3",
-            "timestamp": "2025-01-01T11:50:00Z",
-            "type": "REWARD",
-            "severity": "WARNING",
-            "actor_did": "did:key:zSystem",
-            "action": "Cap Applied to Wallet 0x123",
-            "integrity_hash": "sha256-ghi...",
-            "verified": True,
-        },
-        {
-            "id": "evt_4",
-            "timestamp": "2025-01-01T11:45:00Z",
-            "type": "STORAGE",
-            "severity": "INFO",
-            "actor_did": "did:key:zNode1",
-            "action": "Storage Proof Verified",
-            "integrity_hash": "sha256-jkl...",
-            "verified": True,
-        },
-    ]
-    if type:
-        logs = [l for l in logs if l["type"] == type]
-    return logs[:limit]
+@router.get("/proposals")
+async def get_proposals_v18(status: str = None):
+    proposals = db.get_proposals()
+    if status:
+        return [p for p in proposals if p["status"] == status]
+    return proposals
+
+
+@router.post("/vote")
+async def cast_vote_v18(payload: dict = Body(...)):
+    # payload: { proposalId, voter, choice }
+    # In future use Pydantic VotePayload
+    proposal_id = payload.get("proposalId")
+    choice = payload.get("choice")
+
+    proposals = db.get_proposals()
+    for p in proposals:
+        if p["id"] == proposal_id:
+            if choice == "yes":
+                p["votes_for"] += 1
+            elif choice == "no":
+                p["votes_against"] += 1
+            return {"status": "voted", "proposal": p}
+
+    return {"status": "error", "message": "Proposal not found"}

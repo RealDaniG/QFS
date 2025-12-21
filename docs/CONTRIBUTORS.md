@@ -2,7 +2,7 @@
 
 **Purpose**: Track contributor reputation (ATR) and bounty completion history  
 **Status**: Informational (canonical state lives in ledger)  
-**Foundation**: v15 Developer Rewards Layer
+**Foundation**: current baseline Developer Rewards Layer
 
 ---
 
@@ -103,7 +103,7 @@ governance_weight = min(1000, ATR / 10)
 
 ## HSMF Engagement Weighting
 
-ATR affects how engagement is weighted in Living Posts (v15):
+ATR affects how engagement is weighted in Living Posts (current baseline):
 
 ```python
 reputation_weight = min(1000, ATR / 10)

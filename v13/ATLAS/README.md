@@ -141,6 +141,18 @@ Every slice is backed by:
 
 ---
 
+## Current Status
+
+🚀 **ATLAS v18 Dashboard**: Zero-mock, fully integrated
+
+- ✅ Real Web3 wallet connection (RainbowKit + wagmi)
+- ✅ Cryptographic auth (nonce/sign/verify)
+- ✅ Real-time governance, spaces, messaging
+- ✅ Internal credit economy (non-transferable FLX)
+- 🚧 Bounties & Ledger (interface ready, backend in progress)
+
+[View detailed integration status →](docs/V18_INTEGRATION_STATUS_DETAILED.md)
+
 ## Quick Start
 
 ```bash
@@ -164,3 +176,19 @@ npm run build
 ## Powered by Z.ai
 
 Optimized for robust AI-assisted development.
+
+## Crypto Snapshot (v19)
+
+**P2P & Privacy Layer Parameters**:
+
+- **AEAD**: Ascon-128 (Key: 16b, Nonce: 16b).
+- **Hashing**: **SHA3-256** (FIPS 202).
+- **Signatures**: MOCKQPC (SHAKE-256).
+- **Parity**: Validated cross-language (Python <-> TS).
+
+**Verification Scripts**:
+
+1. `python scripts/verify_envelope_parity.py`
+2. `npx tsx scripts/verify_envelope_parity.ts`
+
+*Run these after any changes to `lib/p2p` or `backend/lib`.*

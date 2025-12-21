@@ -4,7 +4,7 @@
  * Provides React Query integration for:
  * - Direct Messaging
  * - Explain-This
- * - Guilds/Communities
+ * - Spaces (Communities)
  * - Appeals
  * - Onboarding Tours
  */
@@ -114,7 +114,7 @@ export function useExplainThis() {
     };
 }
 
-// ============= Guilds/Communities =============
+// ============= Spaces (Communities) =============
 
 export function useGuilds() {
     const { user, p0Api } = useAuth();
