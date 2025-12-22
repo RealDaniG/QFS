@@ -3,7 +3,7 @@
 ```yaml
 - generic [ref=e2]:
   - generic [ref=e3]:
-    - generic [ref=e4]:
+    - complementary [ref=e4]:
       - generic [ref=e5]:
         - generic [ref=e6]:
           - generic [ref=e7]: AT
@@ -11,7 +11,7 @@
         - button [ref=e8]:
           - img [ref=e9]
       - generic [ref=e15]:
-        - button "Home" [ref=e16]:
+        - button "Home" [active] [ref=e16]:
           - img [ref=e17]
           - text: Home
         - button "Create" [ref=e20]:
@@ -35,14 +35,16 @@
         - button "Settings & Safety" [ref=e42]:
           - img [ref=e43]
           - text: Settings & Safety
-      - paragraph [ref=e49]: Connect wallet to start
-    - generic [ref=e50]:
-      - generic [ref=e51]:
-        - generic [ref=e53]:
-          - img [ref=e54]
-          - textbox "Search posts, users, topics..." [ref=e57]
-        - button "3" [ref=e59]:
-          - img [ref=e60]
+      - generic [ref=e46]:
+        - paragraph [ref=e49]: Connect wallet to start
+        - generic [ref=e51]: Network Layerv14-v2-baseline
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e55]:
+          - img [ref=e56]
+          - textbox "Search posts, users, topics..." [ref=e59]
+        - button "3" [ref=e61]:
+          - img [ref=e62]
           - text: "3"
       - generic:
         - main:

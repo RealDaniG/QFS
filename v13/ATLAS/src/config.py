@@ -5,10 +5,12 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # Server
     HOST: str = "0.0.0.0"
-    PORT: int = int(os.getenv("PORT", "8000"))  # Default to 8000
+    PORT: int = int(os.getenv("PORT", "8001"))  # Default to 8001 (ATLAS v18 standard)
 
     # CORS
-    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+    ALLOWED_ORIGINS: str = os.getenv(
+        "ALLOWED_ORIGINS", "http://127.0.0.1:3000,http://localhost:3000"
+    )
 
     # Auth
     SESSION_SECRET: str = os.getenv(

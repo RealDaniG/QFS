@@ -1,13 +1,16 @@
 'use client'
 
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PlusCircle } from 'lucide-react'
+import { useQFSFeed } from '@/hooks/useQFSFeed'
 import { Button } from '@/components/ui/button'
 
-const ContentComposer = dynamic(() => import('@/components/ContentComposer'), { ssr: false })
+import ContentComposer from '@/components/ContentComposer'
 
 export function CreateTab() {
+    const [isComposerOpen, setIsComposerOpen] = useState(false)
     return (
         <div className="max-w-2xl mx-auto">
             <Card>
@@ -19,7 +22,7 @@ export function CreateTab() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-center py-8">
-                        <Button size="lg">
+                        <Button size="lg" onClick={() => setIsComposerOpen(true)}>
                             <PlusCircle className="h-5 w-5 mr-2" />
                             Open Content Composer
                         </Button>
@@ -31,7 +34,7 @@ export function CreateTab() {
               but we can put a trigger here. */}
                 </CardContent>
             </Card>
-            <ContentComposer isOpen={false} onClose={() => { }} />
+            <ContentComposer isOpen={isComposerOpen} onClose={() => setIsComposerOpen(false)} />
         </div>
     )
 }

@@ -18,11 +18,14 @@ import { Input } from '@/components/ui/input'
 import { useInteraction } from '@/hooks/useInteraction'
 import { useSystemStatus } from '@/hooks/useSystemStatus'
 import { useQFSFeed } from '@/hooks/useQFSFeed'
+import ContentComposer from '@/components/ContentComposer'
+import { GovernanceAuditDashboard } from '@/components/GovernanceAuditDashboard'
 
 export function HomeTab() {
     const { interact } = useInteraction()
     const { status } = useSystemStatus()
     const { feed, loading } = useQFSFeed()
+    const [isComposerOpen, setIsComposerOpen] = useState(false)
 
     return (
         <div className="max-w-4xl mx-auto flex gap-6">
@@ -50,7 +53,7 @@ export function HomeTab() {
                                     Preview Economics
                                 </Button>
                             </div>
-                            <Button size="sm">Create Post</Button>
+                            <Button size="sm" data-testid="composer-trigger" onClick={() => setIsComposerOpen(true)}>Create Post</Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -160,6 +163,8 @@ export function HomeTab() {
                     </CardContent>
                 </Card>
             </div>
+
+            <ContentComposer isOpen={isComposerOpen} onClose={() => setIsComposerOpen(false)} />
         </div>
     )
 }

@@ -47,7 +47,7 @@ export function useInteraction() {
             console.log(`[Interaction] Saved locally: ${type} on ${targetCID}`);
 
             // v18 Re-integration: Commit to EvidenceBus
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8001';
             const sessionToken = localStorage.getItem('atlas_session')
                 ? JSON.parse(localStorage.getItem('atlas_session')!).sessionToken
                 : null;

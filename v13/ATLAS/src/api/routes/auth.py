@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends
-from typing import Optional
+from fastapi import APIRouter, HTTPException
+
 import secrets
 import datetime
 import time
@@ -47,7 +47,7 @@ async def get_challenge(wallet: str):
 
 @router.post("/verify", response_model=SessionResponse)
 async def verify_auth_v18(payload: VerifyPayload):
-    wallet_address = payload.wallet
+    wallet_address = payload.wallet.lower()
 
     # 1. Challenge-based verification
     if payload.challenge_id:

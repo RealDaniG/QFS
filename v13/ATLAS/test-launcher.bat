@@ -44,7 +44,7 @@ timeout /t 5 /nobreak >nul
 
 echo.
 echo [Step 3/4] Checking Backend Health...
-curl -s http://localhost:8000/health
+curl -s http://127.0.0.1:8001/health
 echo.
 
 echo.

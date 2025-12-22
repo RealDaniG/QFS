@@ -3,16 +3,11 @@ Wallet models for the ATLAS API.
 """
 
 from v13.libs.deterministic_helpers import (
-    ZeroSimAbort,
     det_time_now,
-    det_perf_counter,
-    det_random,
-    det_time_isoformat,
-    qnum,
 )
 from v13.libs.economics.QAmount import QAmount
 from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field, validator, EmailStr, ConfigDict
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class WalletBalance(BaseModel):
@@ -25,7 +20,8 @@ class WalletBalance(BaseModel):
     locked: QAmount = Field(0, description="Locked balance (in orders, etc.)")
     total: QAmount = Field(..., description="Total balance (available + locked)")
 
-    @validator("balance", "locked", "total")
+    @field_validator("balance", "locked", "total")
+    @classmethod
     def validate_non_negative(cls, v):
         """Ensure balance values are non-negative."""
         if v < 0:
@@ -58,7 +54,8 @@ class WalletResponse(WalletCreate):
         default_factory=list, description="List of asset balances"
     )
 
-    @validator("created_at", "updated_at")
+    @field_validator("created_at", "updated_at")
+    @classmethod
     def validate_timestamps(cls, v):
         """Validate that timestamps are in ISO format."""
         try:
@@ -144,4 +141,3 @@ class WalletBackup(BaseModel):
     metadata: Dict[str, Any] = Field(
         default_factory=dict, description="Additional backup metadata"
     )
-
