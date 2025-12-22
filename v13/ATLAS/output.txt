@@ -1,6 +1,8 @@
-{"asctime": "2025-12-21 19:09:56,211", "levelname": "INFO", "name": "root", "message": "Starting ATLAS v18 Backend on port 8000..."}
-INFO:     Started server process [20848]
+{"asctime": "2025-12-21 19:37:57,879", "levelname": "INFO", "name": "root", "message": "Starting ATLAS v18 Backend on port 8000..."}
+INFO:     Started server process [25628]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:55404 - "GET /api/v18/recommendations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56898 - "GET /api/v1/wallets HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:56898 - "GET /api/v1/wallets/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56898 - "GET /api/v1/wallets/ HTTP/1.1" 200 OK

@@ -1,19 +1,10 @@
 import logging
 import sys
 import uvicorn
+from pythonjsonlogger import jsonlogger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.config import settings
-
-# Setup structured logging
-from pythonjsonlogger import jsonlogger
-
-logger = logging.getLogger()
-logHandler = logging.StreamHandler(sys.stdout)
-formatter = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
-logHandler.setFormatter(formatter)
-logger.addHandler(logHandler)
-logger.setLevel(logging.INFO)
 
 # Import routers
 from src.api.routes import (
@@ -32,6 +23,14 @@ from src.api.routes import (
     evidence,
     p2p,
 )
+
+# Setup structured logging
+logger = logging.getLogger()
+logHandler = logging.StreamHandler(sys.stdout)
+formatter = jsonlogger.JsonFormatter("%(asctime)s %(levelname)s %(name)s %(message)s")
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+logger.setLevel(logging.INFO)
 
 # Initialize App
 app = FastAPI(

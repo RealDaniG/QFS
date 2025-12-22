@@ -22,12 +22,12 @@ export function EvidenceLog() {
 
     const fetchEvidence = async () => {
         try {
-            // Try 8000 then 8001
-            const ports = ['8000', '8001']
+            // Use 127.0.0.1:8001 only (standard port)
+            const ports = ['8001']
             let data = null
             for (const p of ports) {
                 try {
-                    const res = await fetch(`http://localhost:${p}/api/evidence/recent?limit=20`)
+                    const res = await fetch(`http://127.0.0.1:${p}/api/evidence/recent?limit=20`)
                     if (res.ok) {
                         data = await res.json()
                         break

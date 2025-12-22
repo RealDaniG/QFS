@@ -21,7 +21,7 @@ Start-Sleep -Seconds 3
 
 # Start backend
 Log "Starting backend on :8001" "BACKEND"
-$env:PYTHONPATH = "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas"
+$env:PYTHONPATH = "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13;D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas"
 $env:PORT = "8001"
 
 $backend = Start-Process python -ArgumentList "src/main_minimal.py" `
@@ -90,10 +90,10 @@ Set-Location "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas"
 Start-Process powershell -ArgumentList `
     "-NoExit", `
     "-Command", `
-    "cd 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas'; npm run dev"
+    "cd 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas'; npm run start"
 
-Log "Waiting 60 seconds for compilation..." "WAIT"
-Start-Sleep -Seconds 60
+Log "Waiting 120 seconds for compilation..." "WAIT"
+Start-Sleep -Seconds 120
 
 # Check frontend serves
 $attempt = 0

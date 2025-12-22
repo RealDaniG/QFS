@@ -4,7 +4,7 @@ Thin wrapper around existing auth.py for backward compatibility with legacy scri
 """
 
 from typing import Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel
 from . import auth as auth_mod  # Import the main auth module
 
@@ -23,7 +23,7 @@ class NonceResponse(BaseModel):
 class VerifyRequest(BaseModel):
     wallet_address: str
     signature: str
-    message: str
+    nonce: str
 
 
 class VerifyResponse(BaseModel):
@@ -58,13 +58,14 @@ async def get_nonce_v1(
 async def verify_signature_v1(request: VerifyRequest):
     """V1 compatibility: Verify signature and create session."""
     # Use existing auth verify logic
-    verify_req = auth_mod.VerifyRequest(
+    # auth.py expects VerifyPayload with 'wallet' (mapped from 'wallet_address' via alias)
+    payload = auth_mod.VerifyPayload(
         wallet_address=request.wallet_address,
         signature=request.signature,
-        message=request.message,
+        nonce=request.nonce,
     )
 
-    session_response = await auth_mod.verify_signature(verify_req)
+    session_response = await auth_mod.verify_auth_v18(payload)
 
     return VerifyResponse(
         session_token=session_response.session_token,

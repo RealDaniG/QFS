@@ -1,0 +1,10 @@
+{"asctime": "2025-12-21 19:42:52,487", "levelname": "INFO", "name": "root", "message": "Starting ATLAS v18 Backend on port 8001..."}
+INFO:     Started server process [23376]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59878 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59884 - "GET /api/v18/governance/proposals HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59888 - "GET /api/v18/content/feed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59891 - "GET /api/v1/wallets/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59894 - "GET /api/v1/transactions/ HTTP/1.1" 200 OK

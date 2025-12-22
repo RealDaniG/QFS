@@ -138,7 +138,7 @@ export default function DiscoveryInterface() {
         throw new Error('Failed to join space');
       }
       // Optionally, refetch spaces or update UI to reflect joined status
-      alert(`Successfully joined space ${spaceId}!`);
+      alert(`Successfully joined space ${spaceId}! (Stub: Action recorded in EvidenceBus)`);
     } catch (error) {
       console.error('Error joining space:', error);
       alert('Failed to join space.');

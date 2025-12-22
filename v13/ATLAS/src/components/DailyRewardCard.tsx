@@ -18,7 +18,7 @@ interface StreakData {
 }
 
 export function DailyRewardCard() {
-    const { triggerAuth: connect, isConnected, isLoading } = useWalletAuth();
+    const { triggerAuth: connect, isConnected, isAuthenticating: isLoading } = useWalletAuth();
     const { address } = useAuthStore();
     const [streak, setStreak] = useState<StreakData | null>(null);
     const [loadingStreak, setLoadingStreak] = useState(false);

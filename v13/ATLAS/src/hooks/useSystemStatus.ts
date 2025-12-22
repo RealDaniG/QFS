@@ -15,7 +15,7 @@ export function useSystemStatus() {
     const [status, setStatus] = useState<SystemStatus>({
         backend: 'offline',
         version: 'v18.ALPHA',
-        port: '8000/8001',
+        port: '8001',
         headHash: '0x' + '0'.repeat(16) + '...',
         architecture: 'Modular',
         loading: true
@@ -23,14 +23,14 @@ export function useSystemStatus() {
 
     const fetchStatus = async () => {
         try {
-            // Attempt to fetch from port 8000 first, fallback to 8001
-            const ports = ['8000', '8001']
+            // Use 127.0.0.1:8001 only (standard port)
+            const ports = ['8001']
             let healthData = null
             let activePort = '8000'
 
             for (const p of ports) {
                 try {
-                    const res = await fetch(`http://localhost:${p}/health`)
+                    const res = await fetch(`http://127.0.0.1:${p}/health`)
                     if (res.ok) {
                         healthData = await res.json()
                         activePort = p
@@ -45,7 +45,7 @@ export function useSystemStatus() {
                 // Also fetch evidence head from the same port
                 let headHash = '0x' + '0'.repeat(16) + '...'
                 try {
-                    const headRes = await fetch(`http://localhost:${activePort}/api/evidence/head`)
+                    const headRes = await fetch(`http://127.0.0.1:${activePort}/api/evidence/head`)
                     if (headRes.ok) {
                         const headData = await headRes.json()
                         headHash = headData.head_hash

@@ -3,17 +3,12 @@ Transaction models for the ATLAS API.
 """
 
 from v13.libs.deterministic_helpers import (
-    ZeroSimAbort,
     det_time_now,
-    det_perf_counter,
-    det_random,
-    det_time_isoformat,
-    qnum,
 )
 
 from v13.libs.economics.QAmount import QAmount
 from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field, validator, ConfigDict
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class TransactionBase(BaseModel):
@@ -44,7 +39,8 @@ class TransactionResponse(TransactionBase):
     status: str = Field(..., description="Transaction status")
     signature: Optional[str] = Field(None, description="Digital signature (if signed)")
 
-    @validator("timestamp")
+    @field_validator("timestamp")
+    @classmethod
     def validate_timestamp(cls, v):
         """Validate that the timestamp is in ISO format."""
         try:
@@ -118,4 +114,3 @@ class TransactionSearchQuery(BaseModel):
     status: Optional[str] = Field(None, description="Transaction status")
     page: int = Field(1, ge=1, description="Page number")
     page_size: int = Field(20, ge=1, le=100, description="Items per page")
-

@@ -53,7 +53,7 @@ export default function GovernanceInterface() {
                     <h2 className="text-2xl font-bold tracking-tight">Protocol Governance</h2>
                     <p className="text-muted-foreground">Vote on parameter updates and policy changes.</p>
                 </div>
-                <Button>
+                <Button onClick={() => alert("Proposal creation is governed by the QFS Cluster (Coming in v18).")}>
                     <FileText className="mr-2 h-4 w-4" />
                     New Proposal
                 </Button>

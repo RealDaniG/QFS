@@ -21,14 +21,14 @@ export default function ProfileEditor() {
         e.preventDefault();
         if (!did) return;
 
-        await updateProfile({
+        const pendingId = await updateProfile({
             name: name || undefined,
             bio: bio || undefined,
             avatar: avatar || undefined
         });
 
         // Reset or show success
-        alert('Profile update submitted to ledger!');
+        alert(`Profile update submitted to local pending store! (ID: ${pendingId})`);
     };
 
     return (

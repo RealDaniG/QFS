@@ -3,22 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "prebuild": "node scripts/prebuild.js",
-    "dev": "npm run prebuild && next dev",
+    "dev": "next dev",
     "dev:fast": "next dev --turbo",
-    "build": "npm run prebuild && next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
-    "start": "NODE_ENV=production node .next/standalone/server.js 2>&1 | tee server.log",
-    "lint": "next lint",
-    "db:push": "prisma db push",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:reset": "prisma migrate reset",
+    "build": "npm run build:win",
+    "build:win": "npm run prebuild && next build && xcopy .next\\static .next\\standalone\\.next\\static /E /I /Y && xcopy public .next\\standalone\\public /E /I /Y",
+    "export:desktop": "set NEXT_PUBLIC_IS_ELECTRON_BUILD=true && next build --no-lint && if not exist desktop\\renderer mkdir desktop\\renderer && xcopy out\\* desktop\\renderer\\ /E /I /Y",
+    "start": "python scripts/proxy_server.py",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-    "build:desktop": "cross-env NEXT_PUBLIC_IS_ELECTRON_BUILD=true next build && cp -r out/* desktop/renderer/"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@base-org/account": "^2.5.1",

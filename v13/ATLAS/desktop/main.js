@@ -25,10 +25,20 @@ function createWindow() {
     startBackend()
 
     // Load frontend from static files (Next.js 14 static export)
-    const frontendUrl = `file://${path.join(__dirname, 'renderer', 'index.html')}`
+    // Load frontend
+    const isDev = process.env.NODE_ENV === 'development' || process.argv.includes('--dev');
+    const frontendUrl = isDev
+        ? 'http://127.0.0.1:3000'
+        : `file://${path.join(__dirname, 'renderer', 'index.html')}`;
 
-    console.log(`[Frontend] Loading from: ${frontendUrl}`)
-    mainWindow.loadURL(frontendUrl)
+    console.log(`[Frontend] Loading from: ${frontendUrl} (Mode: ${isDev ? 'Dev' : 'Prod'})`)
+
+    if (isDev) {
+        // Wait for dev server
+        setTimeout(() => mainWindow.loadURL(frontendUrl), 1000)
+    } else {
+        mainWindow.loadURL(frontendUrl)
+    }
 
     // Ensure window shows and focuses when ready
     mainWindow.once('ready-to-show', () => {
@@ -45,7 +55,7 @@ function startBackend() {
     // Allow skipping backend startup if running externally (for development)
     if (process.env.SKIP_BACKEND === 'true') {
         console.log('[Backend] Skipping backend startup (SKIP_BACKEND=true)')
-        console.log('[Backend] Assuming backend is running externally on port 8000')
+        console.log('[Backend] Assuming backend is running externally on port 8001')
         return
     }
 
@@ -104,7 +114,7 @@ app.on('before-quit', () => {
 // IPC handlers for frontend-backend bridge
 ipcMain.handle('backend:health', async () => {
     try {
-        const response = await fetch('http://localhost:8000/health')
+        const response = await fetch('http://127.0.0.1:8001/health')
         return await response.json()
     } catch (error) {
         return { status: 'offline', error: error.message }
