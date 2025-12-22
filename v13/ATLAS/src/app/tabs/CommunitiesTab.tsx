@@ -1,9 +1,7 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-
-const DiscoveryInterface = dynamic(() => import('@/components/DiscoveryInterface'), { ssr: false })
+import DiscoveryInterface from '@/components/DiscoveryInterface'
 
 export function CommunitiesTab() {
     return (

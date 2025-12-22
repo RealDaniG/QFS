@@ -1,12 +1,7 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-
-const MessagingInterface = dynamic(() => import('@/components/MessagingInterface'), {
-    ssr: false,
-    loading: () => <div className="h-[600px] flex items-center justify-center bg-muted/20 animate-pulse rounded-lg">Loading Secure Messaging...</div>
-})
+import MessagingInterface from '@/components/MessagingInterface'
 
 export function MessagesTab() {
     return (

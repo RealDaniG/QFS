@@ -1,8 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
-const GovernanceInterface = dynamic(() => import('@/components/GovernanceInterface'), { ssr: false })
+import GovernanceInterface from '@/components/GovernanceInterface'
 
 export function GovernanceTab() {
     return (

@@ -1,9 +1,7 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
-const ProfileEditor = dynamic(() => import('@/components/ProfileEditor'), { ssr: false })
-const GuardsList = dynamic(() => import('@/components/GuardsList'), { ssr: false })
+import ProfileEditor from '@/components/ProfileEditor'
+import GuardsList from '@/components/GuardsList'
 
 export function SettingsTab() {
     return (
