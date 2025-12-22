@@ -1,13 +1,9 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Activity, BookOpen, Shield, Eye } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { BookOpen, Shield } from 'lucide-react'
 import { EvidenceLog } from '@/components/EvidenceLog'
-
-const ExplainRewardFlow = dynamic(() => import('@/components/ExplainRewardFlow').then(m => m.ExplainRewardFlow), { ssr: false })
+import { ExplainRewardFlow } from '@/components/ExplainRewardFlow'
 
 export function LedgerTab() {
     return (

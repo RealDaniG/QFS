@@ -29,7 +29,7 @@
         - button "Ledger & Explain" [ref=e25]:
           - img
           - generic [ref=e26]: Ledger & Explain
-        - button "Wallet & Reputation" [active] [ref=e27]:
+        - button "Wallet & Reputation" [ref=e27]:
           - img
           - generic [ref=e28]: Wallet & Reputation
         - button "Settings & Safety" [ref=e29]:

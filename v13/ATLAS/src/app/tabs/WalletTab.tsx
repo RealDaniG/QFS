@@ -1,8 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
-const WalletInterface = dynamic(() => import('@/components/WalletInterface'), { ssr: false })
+import WalletInterface from '@/components/WalletInterface'
 
 export function WalletTab() {
     return (

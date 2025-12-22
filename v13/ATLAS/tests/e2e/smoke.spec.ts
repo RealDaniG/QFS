@@ -6,10 +6,12 @@ test.describe('ATLAS v18 Smoke Tests', () => {
         // Set viewport large enough to show all elements
         await page.setViewportSize({ width: 1400, height: 900 });
         await page.goto('/');
-        // Wait for page to be ready and hydrated
+        // Wait for page to be ready
         await page.waitForLoadState('networkidle');
-        // Wait for sidebar navigation to be visible (ensures hydration complete)
+        // Wait for sidebar navigation to be visible (ensures shell is rendered)
         await expect(page.getByTestId('nav-home')).toBeVisible({ timeout: 10000 });
+        // Wait for initial Home tab loading state to disappear
+        await page.waitForSelector('[data-testid="home-loading"]', { state: 'hidden', timeout: 15000 }).catch(() => { });
     });
 
     test('Homepage maintains layout and identity', async ({ page }) => {
@@ -21,15 +23,17 @@ test.describe('ATLAS v18 Smoke Tests', () => {
         await expect(page.getByTestId('v18-badge')).toContainText(/v14-v2-baseline/i);
 
         // Check for System Status card (on large screens)
-        await expect(page.getByText(/System Status/i)).toBeVisible();
+        await expect(page.getByText(/System Status/i)).toBeVisible({ timeout: 10000 });
     });
 
     test('Governance view loads proposals or auth gate', async ({ page }) => {
         // Click Governance in sidebar using test ID
         await page.getByTestId('nav-governance').click();
-        await page.waitForLoadState('networkidle');
 
-        // Check for Governance content - either "Protocol Governance" or governance-related text
+        // Wait for loading state to disappear
+        await page.waitForSelector('[data-testid="governance-loading"]', { state: 'hidden', timeout: 15000 }).catch(() => { });
+
+        // Check for Governance content
         await expect(
             page.getByText(/Protocol Governance/i)
                 .or(page.getByText(/Governance/i).first())
@@ -37,15 +41,17 @@ test.describe('ATLAS v18 Smoke Tests', () => {
     });
 
     test('Feed view loads content from v18 clusters', async ({ page }) => {
-        // Click Home in sidebar using test ID to ensure we are there
+        // Click Home in sidebar using test ID
         await page.getByTestId('nav-home').click();
-        await page.waitForTimeout(500);
 
-        // Check for composer area - placeholder text or Create Post button
+        // Wait for loading state to disappear
+        await page.waitForSelector('[data-testid="home-loading"]', { state: 'hidden', timeout: 15000 }).catch(() => { });
+
+        // Check for composer area
         await expect(
             page.getByPlaceholder(/Share your thoughts/i)
                 .or(page.getByTestId('composer-trigger'))
-        ).toBeVisible();
+        ).toBeVisible({ timeout: 10000 });
 
         // Wait for the feed items to render OR "No posts" message
         await expect(
@@ -57,12 +63,11 @@ test.describe('ATLAS v18 Smoke Tests', () => {
     test('Wallet view loads internal treasury data or auth gate', async ({ page }) => {
         // Click Wallet in sidebar using test ID
         await page.getByTestId('nav-wallet').click();
-        await page.waitForTimeout(1000);
-        await page.waitForLoadState('networkidle');
 
-        // Check for wallet-related content - either gate or wallet balance
-        // The auth gate shows "Wallet Connection Required" when not connected
-        // Or we see wallet balance when connected
+        // Wait for loading state to disappear
+        await page.waitForSelector('[data-testid="wallet-loading"]', { state: 'hidden', timeout: 15000 }).catch(() => { });
+
+        // Check for wallet-related content
         await expect(
             page.getByText(/Wallet Connection Required/i)
                 .or(page.getByText(/Wallet Balance/i))
@@ -72,11 +77,13 @@ test.describe('ATLAS v18 Smoke Tests', () => {
     });
 
     test('Content Composer sanity check', async ({ page }) => {
-        // Ensure we're on Home tab and wait for content
+        // Ensure we're on Home tab
         await page.getByTestId('nav-home').click();
-        await page.waitForTimeout(1000);
 
-        // Check for the composer trigger or Create Post button
+        // Wait for loading state to disappear
+        await page.waitForSelector('[data-testid="home-loading"]', { state: 'hidden', timeout: 15000 }).catch(() => { });
+
+        // Check for the composer trigger
         const trigger = page.getByTestId('composer-trigger').or(page.getByText(/Create Post/i));
         await expect(trigger).toBeVisible({ timeout: 10000 });
 
