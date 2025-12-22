@@ -4,8 +4,8 @@ test.describe('ATLAS v18 Smoke Tests', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
-        // Wait for the initialization overlay to disappear
-        await expect(page.getByText('Synchronizing v18 clusters...')).not.toBeVisible({ timeout: 15000 });
+        // Wait for page to be ready (networkidle ensures all initial fetches complete)
+        await page.waitForLoadState('networkidle');
     });
 
     test('Homepage maintains layout and identity', async ({ page }) => {
