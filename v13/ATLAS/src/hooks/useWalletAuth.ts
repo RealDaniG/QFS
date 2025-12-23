@@ -36,6 +36,19 @@ export function useWalletAuth() {
         }
     }, [])
 
+    // Electron Provider Detection
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const provider = window.ethereum ||
+                (window as any).electronProvider ||
+                (window as any).web3?.currentProvider;
+
+            if (!provider) {
+                console.warn('No Web3 provider detected in Electron/Browser');
+            }
+        }
+    }, []);
+
     const authenticate = async () => {
         if (!address || !isConnected) return
 

@@ -59,12 +59,12 @@ export function HomeTab() {
                 </Card>
 
                 {loading ? (
-                    <div className="flex justify-center p-12">
+                    <div className="flex justify-center p-12" data-testid="feed-loading">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     </div>
                 ) : feed.length === 0 ? (
                     <Card>
-                        <CardContent className="p-12 text-center text-muted-foreground">
+                        <CardContent className="p-12 text-center text-muted-foreground" data-testid="feed-empty">
                             No posts yet. Be the first to share!
                         </CardContent>
                     </Card>
@@ -164,7 +164,7 @@ export function HomeTab() {
                 </Card>
             </div>
 
-            <ContentComposer isOpen={isComposerOpen} onClose={() => setIsComposerOpen(false)} />
+            <ContentComposer isOpen={isComposerOpen} onClose={() => setIsComposerOpen(false)} data-testid="composer-dialog" />
         </div>
     )
 }
