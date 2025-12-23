@@ -16,6 +16,35 @@ _V13_UTILS = os.path.join(_V13_ROOT, "utils")
 for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
     if p not in sys.path:
         sys.path.insert(0, p)
+
+# =============================================================================
+# PQC Mock Stubs - Enable HSMF math tests without liboqs dependency
+# These mocks intercept PQC imports so that HSMF tests (which are crypto-agnostic)
+# can run without native PQC libraries installed.
+# =============================================================================
+
+# Create dummy PQC module
+_dummy_pqc = types.ModuleType("PQC")
+_dummy_pqc.PQCKeyPair = object
+_dummy_pqc.PQCSigner = object
+_dummy_pqc.PQCVerifier = object
+_dummy_pqc.sign = lambda *args, **kwargs: b"mock_signature"
+_dummy_pqc.verify = lambda *args, **kwargs: True
+
+# Create dummy DRV_Packet module
+_dummy_drv = types.ModuleType("DRV_Packet")
+_dummy_drv.DRV_Packet = object
+
+# Register mocks before any real imports
+sys.modules.setdefault("libs.PQC", _dummy_pqc)
+sys.modules.setdefault("v13.libs.PQC", _dummy_pqc)
+sys.modules.setdefault("core.DRV_Packet", _dummy_drv)
+sys.modules.setdefault("v13.core.DRV_Packet", _dummy_drv)
+
+# =============================================================================
+# End PQC Mock Stubs
+# =============================================================================
+
 try:
     import v13.core.TokenStateBundle as _tsb_mod
 

@@ -68,6 +68,20 @@
 
 ---
 
+## HSMF Documentation (v13.5)
+
+| Document | Purpose | Status |
+|----------|---------|--------|
+| `v13/docs/HSMF_API.md` | API surface, classes, methods | ✅ Updated v13.5 |
+| `v13/docs/HSMF_MathContracts.md` | Invariants, formulas, test specifications | ✅ Current |
+| `v13/docs/hsmf_harmonic_design.md` | Theoretical grounding, flow diagrams | ✅ Current |
+| `v13/tests/HSMF/test_hsmf_math_contracts.py` | 13 invariant tests | ✅ Current |
+| `v13/tests/HSMF/test_hsmf_replay.py` | 9 replay/PoE tests | ✅ Current |
+| `v13/tests/atlas/test_hsmf_wall_integration.py` | 8 wall integration tests | ✅ Current |
+| `v13/tools/explain_hsmf_action.py` | CLI explainer for action costs | ✅ Current |
+| `v13/services/hsmf_integration.py` | AEGIS→HSMF→RewardAllocator service | ✅ Current |
+| `v13/atlas/wall/hsmf_wall_service.py` | HSMF-scored wall posts | ✅ Current |
+
 ## Zero-Sim & Compliance
 
 | Document | Purpose | Status |

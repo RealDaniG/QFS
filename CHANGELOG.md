@@ -220,6 +220,39 @@ The system continues to evolve with the following enhancement areas:
 - Zero-Sim violations in HSMF (0 violations achieved)
 - Root directory cleanup (32 → 18 files, 44% reduction)
 
+## [v13.5] - 2025-12-23
+
+### Added
+
+- **HSMF Math Contracts & PoE Logging**:
+  - `HSMFProof` dataclass for Proof-of-Evaluation (PoE) records
+  - `_emit_hsmf_poe()` method for structured logging
+  - 13 invariant tests in `test_hsmf_math_contracts.py`
+  - 9 replay/PoE tests in `test_hsmf_replay.py`
+- **HSMF × ATLAS Social Pipeline**:
+  - `HSMFIntegrationService` for AEGIS→HSMF→RewardAllocator flow
+  - `HSMFWallService` for HSMF-scored wall posts/quotes/reactions
+  - 8 integration tests in `test_hsmf_wall_integration.py`
+  - Every wall action produces `ScoredPost` + `HSMFProof`
+- **CLI Explainer Tool**:
+  - `tools/explain_hsmf_action.py` for human-readable HSMF explanations
+  - Reconstructs action cost, c_holo, and rewards from raw inputs
+- **Documentation**:
+  - `HSMF_MathContracts.md` — Formulas, invariants, test specifications
+  - `hsmf_harmonic_design.md` — Theoretical grounding, flow diagrams
+  - Updated `HSMF_API.md` with HSMFProof and integration details
+  - Updated `INDEX.md` with HSMF documentation section
+
+### Changed
+
+- **PQC Mocks**: Centralized in `conftest.py` for liboqs-free HSMF testing
+- **HSMF.py**: Now 720+ lines with PoE logging and full integration support
+
+### Tests
+
+- **30 new tests** across math contracts, replay, and wall integration
+- All tests pass without `liboqs` dependency (crypto-agnostic)
+
 ## [v13.9] - 2025-12-15
 
 ### Added
