@@ -1,0 +1,213 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: AT
+          - text: ATLAS
+        - button [ref=e8]:
+          - img [ref=e9]
+      - generic [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /?tab=home
+          - img [ref=e17]
+          - text: Home
+        - link "Create" [ref=e20] [cursor=pointer]:
+          - /url: /?tab=create
+          - img [ref=e21]
+          - text: Create
+        - link "Messages" [ref=e23] [cursor=pointer]:
+          - /url: /?tab=messages
+          - img [ref=e24]
+          - text: Messages
+        - link "Communities" [ref=e26] [cursor=pointer]:
+          - /url: /?tab=communities
+          - img [ref=e27]
+          - text: Communities
+        - link "Governance" [ref=e32] [cursor=pointer]:
+          - /url: /?tab=governance
+          - img [ref=e33]
+          - text: Governance
+        - link "Ledger & Explain" [ref=e35] [cursor=pointer]:
+          - /url: /?tab=ledger
+          - img [ref=e36]
+          - text: Ledger & Explain
+        - link "Wallet & Reputation" [ref=e38] [cursor=pointer]:
+          - /url: /?tab=wallet
+          - img [ref=e39]
+          - text: Wallet & Reputation
+        - link "Settings & Safety" [ref=e42] [cursor=pointer]:
+          - /url: /?tab=settings
+          - img [ref=e43]
+          - text: Settings & Safety
+      - generic [ref=e46]:
+        - paragraph [ref=e49]: Connect wallet to start
+        - generic [ref=e51]: Network Layerv14-v2-baseline
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e55]:
+          - img [ref=e56]
+          - textbox "Search posts, users, topics..." [ref=e59]
+        - button "3" [ref=e61]:
+          - img [ref=e62]
+          - text: "3"
+      - main [ref=e66]:
+        - generic [ref=e68]:
+          - generic [ref=e70]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: JD
+              - textbox "Share your thoughts with full transparency..." [ref=e74]
+            - generic [ref=e76]:
+              - button "Preview Economics" [ref=e78]:
+                - img [ref=e79]
+                - text: Preview Economics
+              - button "Create Post" [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e86]: System Status
+            - generic [ref=e87]:
+              - generic [ref=e88]: BackendOffline
+              - generic [ref=e89]: Port8001
+              - generic [ref=e90]: Versionv18.ALPHA
+              - generic [ref=e91]:
+                - generic [ref=e92]:
+                  - text: Evidence Head
+                  - img [ref=e93]
+                - paragraph [ref=e95]: 0x00000000000000...
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Create Content
+            - generic [ref=e101]: Every action is transparent and economically accountable.
+          - generic [ref=e103]:
+            - button "Open Content Composer" [ref=e104]:
+              - img [ref=e105]
+              - text: Open Content Composer
+            - paragraph [ref=e107]: Create posts, images, videos, polls with full economic transparency.
+        - generic [ref=e110]:
+          - generic [ref=e111]:
+            - generic [ref=e112]: Messages
+            - generic [ref=e113]: Private and group messaging with full transparency and end-to-end encryption.
+          - generic [ref=e115]:
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - heading "Messages" [level=3] [ref=e119]
+                - button [ref=e120]:
+                  - img [ref=e121]
+              - generic [ref=e122]:
+                - img [ref=e123]
+                - textbox "Search conversations..." [ref=e126]
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - heading "Select a conversation" [level=3] [ref=e131]
+              - paragraph [ref=e132]: Choose a conversation from the list to start messaging with full transparency
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]: Communities
+            - generic [ref=e138]: Explore and join communities with full transparency and encryption.
+          - generic [ref=e141]:
+            - tablist [ref=e142]:
+              - tab "Spaces" [selected] [ref=e143]
+              - tab "Trending Topics" [ref=e144]
+              - tab "Network & Trust" [ref=e145]
+              - tab "Discover" [ref=e146]
+              - tab "Activity" [ref=e147]
+            - tabpanel "Spaces" [ref=e148]:
+              - generic [ref=e149]:
+                - generic [ref=e151]:
+                  - generic [ref=e152]:
+                    - generic [ref=e153]: Spaces
+                    - generic [ref=e154]: Join spaces that align with your interests and values
+                  - button "Create Space" [ref=e155]:
+                    - img [ref=e156]
+                    - text: Create Space
+                - generic [ref=e162]:
+                  - img [ref=e163]
+                  - textbox "Search spaces by name, description, or tags..." [ref=e166]
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - heading "Protocol Governance" [level=2] [ref=e172]
+              - paragraph [ref=e173]: Vote on parameter updates and policy changes.
+            - button "New Proposal" [ref=e174]:
+              - img [ref=e175]
+              - text: New Proposal
+          - generic [ref=e178]:
+            - tablist [ref=e179]:
+              - tab "Active" [selected] [ref=e180]
+              - tab "Passed" [ref=e181]
+              - tab "Rejected" [ref=e182]
+            - tabpanel "Active" [ref=e183]:
+              - generic [ref=e184]: Loading proposals...
+        - generic [ref=e186]:
+          - generic [ref=e188]:
+            - generic [ref=e189]:
+              - generic [ref=e190]:
+                - img [ref=e191]
+                - text: Reward Explanation Requires Authentication
+              - generic [ref=e193]: Connect your wallet to inspect reward explanations and verify economic calculations.
+            - paragraph [ref=e196]: The Explain Reward feature provides deterministic, auditable explanations for all reward calculations in the QFS system. Authentication is required to access this feature.
+          - generic [ref=e197]:
+            - generic [ref=e199]:
+              - generic [ref=e201]:
+                - img [ref=e202]
+                - text: "EvidenceBus: Append-Only Log"
+              - generic [ref=e206]:
+                - generic [ref=e211]:
+                  - img [ref=e212]
+                  - text: Synchronizing Ledger...
+                - generic [ref=e214]:
+                  - text: "V18 Peer Validation: ACTIVE"
+                  - generic [ref=e215]: Synchronized
+            - generic [ref=e216]:
+              - generic [ref=e217]:
+                - generic [ref=e218]: Event Ledger & Explainability
+                - generic [ref=e219]: Complete transparency of all system events and decisions.
+              - generic [ref=e221]:
+                - generic [ref=e222]:
+                  - generic [ref=e223]:
+                    - img [ref=e224]
+                    - text: Per-Object Ledger
+                  - paragraph [ref=e226]: Mini-chains of events for specific content or actions.
+                - generic [ref=e227]:
+                  - generic [ref=e228]:
+                    - img [ref=e229]
+                    - text: Simulation Log
+                  - paragraph [ref=e231]: What-if scenarios and AGI proposals.
+        - generic [ref=e233]:
+          - heading "Wallet Connection Required" [level=1] [ref=e234]
+          - paragraph [ref=e235]: "Wallet Balance: 0"
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - heading "Profile Settings" [level=2] [ref=e239]
+            - generic [ref=e240]:
+              - generic [ref=e241]:
+                - generic [ref=e242]: Edit Profile
+                - generic [ref=e243]: "Updates are recorded on the public ledger for transparency. DID: Not connected"
+              - generic [ref=e245]:
+                - generic [ref=e246]:
+                  - text: Display Name
+                  - textbox "Display Name" [ref=e247]:
+                    - /placeholder: Enter your public name
+                - generic [ref=e248]:
+                  - text: Bio
+                  - textbox "Bio" [ref=e249]:
+                    - /placeholder: Tell the network about yourself
+                - generic [ref=e250]:
+                  - text: Avatar CID / URL
+                  - textbox "Avatar CID / URL" [ref=e251]:
+                    - /placeholder: ipfs://... or https://...
+                - button "Update Profile" [ref=e252]
+          - generic [ref=e253]:
+            - heading "Network Safety" [level=2] [ref=e254]
+            - generic [ref=e255]:
+              - generic [ref=e256]:
+                - generic [ref=e257]:
+                  - img [ref=e258]
+                  - text: v18 Security Guards
+                - generic [ref=e261]: Autonomous v18 agents ensuring deterministic compliance and economic safety.
+              - generic [ref=e264]: Initializing guards...
+  - region "Notifications (F8)":
+    - list
+```
