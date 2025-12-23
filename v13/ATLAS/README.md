@@ -24,7 +24,44 @@ cd v13/atlas
 npm run electron:dev
 ```
 
-## ✨ What's New in v18
+## 📦 Installation (Windows Alpha)
+
+### 1. Prerequisite: Backend System
+
+The core processing cluster is not yet bundled in the Alpha installer. You must start it manually:
+
+```bash
+cd v13/atlas
+launcher.bat
+# Select Option 1 (Normal)
+```
+
+### 2. Launch Application
+
+1. Download/Navigate to `desktop/dist/win-unpacked/`
+2. Run `ATLAS v18 Beta.exe` (Accept security warning if prompted)
+3. Ensure the app connects to the running backend (Network Status green)
+
+---
+
+## ⚠️ Known Limitations (v18 Alpha)
+
+### Authentication
+
+- **Wallet Connection**: Requires compatible browser extension (MetaMask) or WalletConnect QR.
+- **Persistence**: Session key rotation is active; you may need to reconnect wallet after app restart.
+- **CSP**: Web3 strict mode may block some RPC providers. Check Console (Ctrl+Shift+I) if connection fails.
+
+### Features
+
+- **Feed**: Content loading may be slower than expected on first launch.
+- **Composer**: Dialog visibility is undergoing UI refinement.
+- **Multi-Node**: UI reflects Node A (Primary) status only.
+
+### Distribution
+
+- **Unsigned Executable**: Windows SmartScreen warning is expected.
+- **Manual Updates**: No auto-updater; pull latest git changes to update.
 
 ### Core Features
 

@@ -56,3 +56,10 @@
 - **Navigation Authority:** URL (`?tab=...`).
 - **State Management:** `page.tsx` is a stateless renderer of the URL params.
 - **Shell Component:** Pure navigational component emitting `Link` intents. No internal or parent-lifted state control for navigation.
+
+## 5. Release Phase (Merged to Main)
+
+- **Action:** Merged `docs/v18-backbone-alignment` into `main`.
+- **Validation:**
+  - Confirmed git state (864 file updates).
+- **Status:** Ready for Production Build.

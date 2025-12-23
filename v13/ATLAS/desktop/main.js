@@ -27,7 +27,7 @@ function createWindow() {
             responseHeaders: {
                 ...details.responseHeaders,
                 'Content-Security-Policy': [
-                    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:* ws://localhost:* https://*.infura.io https://*.walletconnect.com;"
+                    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:* https://*.infura.io https://*.walletconnect.com https://*.walletconnect.org wss://*.walletconnect.org; img-src 'self' data: https:;"
                 ]
             }
         });

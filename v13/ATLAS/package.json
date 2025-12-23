@@ -17,7 +17,8 @@
     "start": "python scripts/proxy_server.py",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "electron:build": "npm run export:desktop && cd desktop && npm install && npm run build:win"
   },
   "dependencies": {
     "@base-org/account": "^2.5.1",

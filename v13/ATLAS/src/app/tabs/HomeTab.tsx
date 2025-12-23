@@ -18,6 +18,8 @@ import { Input } from '@/components/ui/input'
 import { useInteraction } from '@/hooks/useInteraction'
 import { useSystemStatus } from '@/hooks/useSystemStatus'
 import { useQFSFeed } from '@/hooks/useQFSFeed'
+import { useP2PConnection } from '@/hooks/useP2PConnection'
+import { useP2PFeed } from '@/hooks/useP2PFeed'
 import ContentComposer from '@/components/ContentComposer'
 import { GovernanceAuditDashboard } from '@/components/GovernanceAuditDashboard'
 
@@ -25,6 +27,8 @@ export function HomeTab() {
     const { interact } = useInteraction()
     const { status } = useSystemStatus()
     const { feed, loading } = useQFSFeed()
+    const { isConnected: p2pConnected, peerId } = useP2PConnection()
+    useP2PFeed() // Activate subscriptions
     const [isComposerOpen, setIsComposerOpen] = useState(false)
 
     return (
@@ -129,6 +133,34 @@ export function HomeTab() {
 
             {/* Side Bar Info */}
             <div className="w-80 space-y-4 hidden lg:block">
+                {/* P2P Status Indicator (New for v19) */}
+                <Card>
+                    <CardHeader className="pb-3">
+                        <CardTitle className="text-sm flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${p2pConnected ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
+                            P2P Mesh v19
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs text-muted-foreground">Status</span>
+                            <Badge variant={p2pConnected ? "default" : "secondary"} className="text-xs">
+                                {p2pConnected ? 'Connected' : 'Connecting...'}
+                            </Badge>
+                        </div>
+                        {p2pConnected && (
+                            <div className="flex flex-col gap-1">
+                                <span className="text-xs text-muted-foreground">Peer ID</span>
+                                <span className="text-xs font-mono break-all bg-muted p-1 rounded">{peerId}</span>
+                            </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs text-muted-foreground">Protocol</span>
+                            <Badge variant="outline" className="text-xs">WebSockets / GossipSub</Badge>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <Card>
                     <CardHeader className="pb-3">
                         <CardTitle className="text-sm">System Status</CardTitle>
