@@ -1,0 +1,40 @@
+=============== Dec 23, 2025 (UTC) ===============
+10:22:10.047674 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:22:10.554262 db@open opening
+10:22:10.558564 version@stat F·[] S·0B[] Sc·[]
+10:22:10.785600 db@janitor F·2 G·0
+10:22:10.785801 db@open done T·231.18052ms
+10:22:12.986965 db@close closing
+10:22:12.988169 db@close done T·1.185635ms
+=============== Dec 23, 2025 (UTC) ===============
+10:22:13.047937 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:22:14.097046 version@stat F·[] S·0B[] Sc·[]
+10:22:14.097796 db@open opening
+10:22:14.099477 journal@recovery F·1
+10:22:14.100051 journal@recovery recovering @1
+10:22:14.685822 memdb@flush created L0@2 N·6 S·1KiB "/F5..NBQ,v6":"/pi..rty,v1"
+10:22:14.687616 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+10:22:16.021353 db@janitor F·3 G·0
+10:22:16.021552 db@open done T·1.923489019s
+10:22:16.423336 db@close closing
+10:22:16.424457 db@close done T·1.118485ms
+=============== Dec 23, 2025 (UTC) ===============
+10:22:16.488474 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:22:16.495202 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+10:22:16.495872 db@open opening
+10:22:16.497500 journal@recovery F·1
+10:22:16.497885 journal@recovery recovering @3
+10:22:16.501290 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+10:22:17.556359 db@janitor F·3 G·0
+10:22:17.556643 db@open done T·1.060541586s
+10:22:17.846889 db@close closing
+10:22:17.847936 db@close done T·1.042879ms
+=============== Dec 23, 2025 (UTC) ===============
+10:22:17.909067 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+10:22:17.915022 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+10:22:17.915581 db@open opening
+10:22:17.917092 journal@recovery F·1
+10:22:17.918689 journal@recovery recovering @5
+10:22:17.921924 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+10:22:18.601750 db@janitor F·3 G·0
+10:22:18.601985 db@open done T·686.215542ms
