@@ -21,6 +21,25 @@ function createWindow() {
         }
     })
 
+    // CSP Bypass for Web3/WalletConnect
+    mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+        callback({
+            responseHeaders: {
+                ...details.responseHeaders,
+                'Content-Security-Policy': [
+                    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:* ws://localhost:* https://*.infura.io https://*.walletconnect.com;"
+                ]
+            }
+        });
+    });
+
+    // Fix RainbowKit rendering in Electron
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.executeJavaScript(`
+            window.dispatchEvent(new Event('resize'));
+        `);
+    });
+
     // Start backend before loading UI
     startBackend()
 

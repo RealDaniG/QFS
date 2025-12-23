@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import {
     House,
     CirclePlus,
@@ -34,7 +35,7 @@ interface NavigationItem {
 interface ShellProps {
     children: React.ReactNode
     activeTab: string
-    setActiveTab: (tab: string) => void
+    // Phase C: Shell accepts activeTab as external fact, no state ownership
 }
 
 export const navigationItems: NavigationItem[] = [
@@ -48,7 +49,7 @@ export const navigationItems: NavigationItem[] = [
     { id: 'settings', label: 'Settings & Safety', icon: Settings },
 ]
 
-export function Shell({ children, activeTab, setActiveTab }: ShellProps) {
+export function Shell({ children, activeTab }: ShellProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
     const { isConnected, isAuthenticated, address, session, authenticate, logout } = useWalletAuth()
@@ -88,17 +89,19 @@ export function Shell({ children, activeTab, setActiveTab }: ShellProps) {
                             return (
                                 <Button
                                     key={item.id}
-                                    variant="ghost"
+                                    asChild
+                                    variant={activeTab === item.id ? "secondary" : "ghost"}
                                     className={cn(
                                         "w-full justify-start mb-1 text-sm font-medium",
-                                        activeTab === item.id ? "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80" : "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+                                        activeTab === item.id && "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
                                         !isSidebarOpen && "justify-center px-0"
                                     )}
-                                    onClick={() => setActiveTab(item.id)}
                                     data-testid={`nav-${item.id}`}
                                 >
-                                    <Icon className="h-4 w-4" />
-                                    {isSidebarOpen && <span className="ml-2">{item.label}</span>}
+                                    <Link href={`/?tab=${item.id}`}>
+                                        <Icon className="h-4 w-4" />
+                                        {isSidebarOpen && <span className="ml-2">{item.label}</span>}
+                                    </Link>
                                 </Button>
                             )
                         })}
@@ -147,7 +150,7 @@ export function Shell({ children, activeTab, setActiveTab }: ShellProps) {
                                     )}
                                 </>
                             ) : (
-                                <div className="text-center py-2">
+                                <div className="text-center py-2" data-testid="wallet-connect-wrapper">
                                     <p className="text-xs text-muted-foreground mb-2">Connect wallet to start</p>
                                     <ConnectButton label="Connect Wallet" accountStatus="avatar" chainStatus="icon" showBalance={false} />
                                 </div>
