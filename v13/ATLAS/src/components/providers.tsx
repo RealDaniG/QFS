@@ -26,15 +26,21 @@ export function Providers({ children }: { children: ReactNode }) {
         setMounted(true);
     }, []);
 
-    // Prevent hydration mismatch
-    // if (!mounted) {
-    //     return <>{children}</>;
-    // }
+    // IMPORTANT: For Electron, prevent SSR hydration issues
+    if (!mounted) {
+        return <>{children}</>;
+    }
 
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider>
+                <RainbowKitProvider
+                    modalSize="compact"
+                    showRecentTransactions={true}
+                    appInfo={{
+                        appName: 'QFS × ATLAS V20',
+                    }}
+                >
                     <WalletProvider>
                         <P2PProvider>
                             {children}
