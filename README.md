@@ -320,23 +320,19 @@ npm run dev
 ### Core Documentation
 
 - [Developer Guide](./DEV_GUIDE.md) - Cross-platform setup and deployment
-- [Contributing Guidelines](./docs/CONTRIBUTING.md) - How to contribute
+- [Contributing Guidelines](./CONTRIBUTING.md) - How to contribute
 - [Maintainers Guide](./docs/MAINTAINERS_GUIDE.md) - Triage and release procedures
 - [FAQ - MOCKQPC & Agents](./docs/FAQ_MOCKQPC_AND_AGENTS.md) - Common questions
 - [Bounties](./BOUNTIES.md) - Developer rewards and incentives
 
 ### Technical Documentation
 
-- [Audit Guide](./docs/HOW_TO_AUDIT_QFS_V15.md) - How to verify the system
-- [Repository Structure](./docs/REPO_STRUCTURE.md) - Codebase organization
 - [Cost-Efficient Architecture](./docs/COST_EFFICIENT_ARCHITECTURE.md) - Cost optimization
 - [Agent Integration Evolution](./docs/AGENT_INTEGRATION_EVOLUTION.md) - Agent strategy
 
 ### Architecture & Planning
 
-- [Master Prompt v15.5](./docs/MASTER_PROMPT_v15.5.md) - Authoritative reference
 - [Platform Evolution Plan](./docs/PLATFORM_EVOLUTION_PLAN.md) - Strategic roadmap
-- [State of the Union v15.5](./docs/STATE_OF_THE_UNION_v15.5.md) - Architectural decisions
 
 ---
 
@@ -364,13 +360,13 @@ The V18 integration is **Complete and Verified**, merging the Distributed Backbo
 
 - **Backend**: `main_minimal.py` serves real v18 routes (Governance, Content, Auth) via `v13/src/api`.
 - **Frontend**: `v13/atlas` is fully wired to live endpoints (`GovernanceInterface`, `DistributedFeed`).
-- **Verification**: Validated via [Automated Scripts](TESTING.md) and Playwright E2E tests.
+- **V18 Integration**: Validated via [Testing Guide](docs/TESTING.md) and Playwright E2E tests.
 
 **Key Documentation:**
 
 - [Integration Status detailed](docs/V18_INTEGRATION_STATUS_DETAILED.md)
-- [Deployment Checklist](docs/V18_DEPLOYMENT_CHECKLIST.md)
-- [Security Debt](docs/SECURITY_DEBT.md)
+- [Design and Deployment](docs/V18_DESIGN_AND_DEPLOYMENT.md)
+- [Zero-Sim Automation](docs/ZERO_SIM_AUTOMATION.md)
 
 ### v17.0.0-beta — Governance & Bounty F-Layer
 
