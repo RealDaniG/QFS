@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Live Social Projection**: Wiring Secure Chat and Governance to consensus-backed EvidenceBus.
 - **User Data Strategy**: Implemented three-tier data classification (Class A/B/C) for deterministic, privacy-first storage.
 
-## [v20-alpha] - 2024-12-24
+## [v20-alpha] - 2025-12-24
 
 ### Added
 

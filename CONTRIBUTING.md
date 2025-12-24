@@ -42,8 +42,8 @@ We track every contribution on-chain via EvidenceBus. Here is the lifecycle of a
 1. **Clone the repository**
 
     ```bash
-    git clone https://github.com/your-org/qfs-atlas.git
-    cd qfs-atlas
+    git clone https://github.com/RealDaniG/QFS.git
+    cd QFS
     ```
 
 2. **Create Virtual Environment**

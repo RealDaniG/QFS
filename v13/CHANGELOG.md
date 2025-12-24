@@ -2,7 +2,7 @@
 
 All notable changes to ATLAS will be documented in this file.
 
-## [19.0.0-alpha] - 2025-12-23
+## [20.0.0-alpha] - 2025-12-24
 
 ### 🎊 Major Release: Decentralized Intelligence Architecture
 
