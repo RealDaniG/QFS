@@ -53,6 +53,6 @@ def apply_log_entry(entry: LogEntry):
 
 ## 6. Phase 1 Raft Prototype Plan
 
-1. **Local Log (Mock)**: Simulate Raft log locally (done in `QFSReplaySource`).
-2. **Fake Raft**: Networked nodes sending log entries but using a central coordinator (no leader election complex logic yet).
-3. **Real Raft**: Drop in `PySyncObj` or custom Raft lib for leader election + log replication.
+1. **Local Log (Implemented in `QFSReplaySource`)**: Simulation of Raft log locally.
+2. **Fake Raft (Planned)**: Networked nodes sending log entries but using a central coordinator (no leader election complex logic yet).
+3. **Real Raft (Planned)**: Drop in `PySyncObj` or custom Raft lib for leader election + log replication.

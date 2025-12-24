@@ -40,13 +40,22 @@ class AnchorProof:
 1. **Phase 1 (Current)**:
     * Use `PQCAnchorStub`.
     * Signature = `MOCK_SIG_{Hash}`.
+1. **Phase 1 (Current)**:
+    * Use `PQCAnchorStub`.
+    * Signature = `MOCK_SIG_{Hash}`.
     * Verify integration point in `EvidenceBus`.
 
-2. **Phase 2 (Next)**:
+1. **Phase 2 (Next)**:
     * Swap `Stub` for `liboqs` wrapper (Dilithium3/5).
     * Key management via `KeyLedger`.
 
-## 4. Threat Model Mitigation
+## 4. Threat Model & Stub Status
+
+> **IMPORTANT**: In v13.5, PQC anchoring is **STUBBED**.
+>
+> * Signatures are `MOCK_DILITHIUM_SIG...`.
+> * These allow us to verify the `EvidenceBus` -> `Batch` -> `Proof` pipeline integration.
+> * They provide **NO** cryptographic security until the `RealPQCAnchor` module is swapped in (Phase 2).
 
 * **Long-Range Attacks**: Mitigated by hourly Global Anchors.
 * **Key Compromise**: Validator keys are rotated (design TBD).
@@ -56,17 +65,18 @@ class AnchorProof:
 
 ### Phase 1: Stub (Completed v13.5)
 
-- **Module**: `v13/core/pqc/PQCAnchorService.py` (Stub Mode)
 * **Signature**: `MOCK_DILITHIUM_SIG...`
 * **Output**: Valid `AnchorProof` structure emitted to log.
 
 ### Phase 2: Real PQC Integration (Next)
 
-- **Library**: `liboqs-python` (Dilithium5).
+* **Library**: `liboqs-python` (Dilithium5).
+
 * **Wrapper**: Create `v13/core/pqc/RealPQCAnchor.py` implementing the `sign_batch(root)` interface.
 * **Key Management**: Keys loaded from `KeyLedger` (encrypted at rest).
 
 ### Phase 3: Global Anchoring
 
-- **Target**: Public Timestamp Server or QFS Mainnet (when ready).
+* **Target**: Public Timestamp Server or QFS Mainnet (when ready).
+
 * **Frequency**: Every 1 Hour (Global Anchor) vs Every 100 Events (Batch Anchor).

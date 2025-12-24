@@ -26,12 +26,12 @@
 
 | Component | Status | Details |
 | :--- | :--- | :--- |
-| **HSMF Core** | ✅ Implemented | Tested contracts, BigNum128, PoE Replay. |
-| **HSMF × ATLAS** | ✅ Implemented | Wall integration, Scored Posts. |
-| **Governance Proofs** | ✅ Implemented | `ProposalProof`, `VoteTallyProof`, Replay Tests. |
-| **Zero-Sim** | ⚠️ Enforced | CI Scanner active; ~75 legacy violations in backlog. |
-| **PQC Anchoring** | 🚧 Stubbed | Designed & Stubbed; Real Dilithium pending. |
-| **Raft / Fabric** | 📝 Planned | Design notes only; single-node currently. |
+| **HSMF Core** | ✅ Implemented | [Code](v13/core/HSMF.py) • [Docs](v13/docs/HSMF_HarmonicDesign.md) • [Tests](v13/tests/HSMF) |
+| **HSMF × ATLAS** | ✅ Implemented | Wall integration confirmed. |
+| **Governance Proofs** | ✅ Implemented | [Contracts](v13/docs/Governance_MathContracts.md) • [Replay Test](v13/tests/governance/test_governance_replay.py) |
+| **Zero-Sim** | ⚠️ Enforced | [Scanner](scripts/check_zero_sim.py) • [Backlog](v13/docs/ZeroSim_Backlog_v18.md) |
+| **PQC Anchoring** | 🚧 Stubbed | [Plan](v13/docs/PQC_Anchoring_Plan.md) • [Stub](v13/core/pqc/PQCAnchorService.py) |
+| **Raft / Fabric** | 📝 Planned | [Design Notes](v13/docs/Fabric_Design_Notes.md) (Single-node baseline) |
 
 ---
 

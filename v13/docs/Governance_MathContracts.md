@@ -20,22 +20,9 @@ A proposal is a binding request to query or mutate the QFS/ATLAS state.
 - **PROP-I2 (Payload Integrity)**: The execution payload MUST match the `payload_hash` embedded in the proposal ID.
 - **PROP-I3 (Voter Eligibility)**: Only accounts with > 0 reputation (or specific governance tokens) at the proposal's snapshots block can vote.
 
-### ProposalProof Structure
-
-Emitted when a proposal is successfully created/activated.
-
-```json
-{
-  "op_name": "proposal_proof",
-  "proof": {
-    "proposal_id": "sha256_hash...",
-    "proposer_id": "user_did...",
-    "payload_hash": "sha256_hash...",
-    "start_block": 1000,
-    "end_block": 2000,
-    "version": "v1"
   }
 }
+
 ```
 
 ## 2. Vote Tallying (VOTE-Contracts)
