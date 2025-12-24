@@ -4,10 +4,16 @@ import json
 import sys
 import os
 
-# Ensure paths
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+# Ensure paths - need to run tests from v13/atlas directory or include it in sys.path
+# Adding v13/atlas to allow 'src' imports to resolve
+atlas_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../atlas"))
+sys.path.insert(0, atlas_path)
 
-from v13.atlas.src.main_minimal import app
+# Also need v13 root for v13.* imports
+v13_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+sys.path.insert(0, v13_root)
+
+from src.main_minimal import app
 from v13.atlas.backend.lib.dependencies import session_manager, evidence_bus
 
 client = TestClient(app)

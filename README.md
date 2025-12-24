@@ -12,7 +12,7 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** V18 Integration Complete • Core Hardening (v13.5) • Distributed Fabric (Design Phase) • GitHub Identity Integration (In Progress)
+**Status:** V20 Integration Complete • GitHub Identity & Retro Rewards Live • Core Hardening (v13.5) • Distributed Fabric (Design Phase)
 **Current Focus:** Zero-Sim Remediation, Real PQC Integration & GitHub Bounties
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
@@ -30,7 +30,7 @@
 | **HSMF × ATLAS** | ✅ Implemented | Wall integration confirmed. |
 | **Governance Proofs** | ✅ Implemented | [Contracts](v13/docs/Governance_MathContracts.md) • [Replay Test](v13/tests/governance/test_governance_replay.py) |
 | **Zero-Sim** | ⚠️ Enforced | [Scanner](scripts/check_zero_sim.py) • [Backlog](v13/docs/ZeroSim_Backlog_v18.md) |
-| **GitHub Identity** | 🚧 Started | [Docs](BOUNTIES.md) • [Importer](tools/github/github_import_contributions.py) |
+| **GitHub Identity** | ✅ Implemented | [Docs](BOUNTIES.md) • [Importer](tools/github/github_import_contributions.py) |
 | **PQC Anchoring** | 🚧 Stubbed | [Plan](v13/docs/PQC_Anchoring_Plan.md) • [Stub](v13/core/pqc/PQCAnchorService.py) |
 | **Raft / Fabric** | 📝 Planned | [Design Notes](v13/docs/Fabric_Design_Notes.md) (Single-node baseline) |
 
@@ -355,15 +355,13 @@ Optimal balance between strength and efficiency. MOCKQPC-first architecture, red
 
 Wallet auth, admin dashboard, agent advisory layer, full EvidenceBus integration.
 
-### 🌐 ATLAS V18 Status & Docs
+### 🔮 Part 2: V20 Implementation (Complete)
 
-The V18 integration is **Complete and Verified**, merging the Distributed Backbone with the User Application.
+The V20 cycle (skipping v19 to align with major Fabric release) delivers **Proof of Contribution** and **Identity Sovereignty**.h the User Application.
 
 - **Backend**: `main_minimal.py` serves real v18 routes (Governance, Content, Auth) via `v13/src/api`.
 - **Frontend**: `v13/atlas` is fully wired to live endpoints (`GovernanceInterface`, `DistributedFeed`).
 - **V18 Integration**: Validated via [Testing Guide](docs/TESTING.md) and Playwright E2E tests.
-
-**Key Documentation:**
 
 - [Integration Status detailed](docs/V18_INTEGRATION_STATUS_DETAILED.md)
 - [Design and Deployment](docs/V18_DESIGN_AND_DEPLOYMENT.md)

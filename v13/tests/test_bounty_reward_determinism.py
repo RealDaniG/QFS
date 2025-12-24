@@ -30,8 +30,16 @@ def test_reward_determinism():
     }
 
     events = [
-        {"event_type": IDENTITY_LINK_GITHUB, "payload": json.dumps(identity_payload)},
-        {"event_type": CONTRIB_RECORDED, "payload": json.dumps(contrib_payload)},
+        {
+            "event_type": IDENTITY_LINK_GITHUB,
+            "payload": json.dumps(identity_payload),
+            "timestamp": 100,
+        },
+        {
+            "event_type": CONTRIB_RECORDED,
+            "payload": json.dumps(contrib_payload),
+            "timestamp": 200,
+        },
     ]
 
     bus = MockEvidenceBus(events)

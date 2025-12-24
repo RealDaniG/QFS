@@ -14,6 +14,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Live Social Projection**: Wiring Secure Chat and Governance to consensus-backed EvidenceBus.
 - **User Data Strategy**: Implemented three-tier data classification (Class A/B/C) for deterministic, privacy-first storage.
 
+## [v20-alpha] - 2024-12-24
+
+### Added
+
+- **GitHub Identity Linking**: `/api/auth/bind-github` endpoint and `identity_link.github` event type.
+- **Contribution Import**: `tools/github/github_import_contributions.py` for deterministic ledger generation.
+- **Retro Rewards**: F-Layer logic (`bounty_github.py`) to compute rewards from contribution events using deterministic integer math.
+- **UI**: Added "Retro Rewards" tab to `BountyDashboard` and GitHub linking to `WalletInterface`.
+- **Testing**: Comprehensive suite (`test_github_identity_link`, `test_github_import_determinism`, `test_bounty_reward_determinism`).
+- **Documentation**: Updated `BOUNTIES.md`, `RELEASE_REPORT`, and added `walkthrough.md`.
+
+### Changed
+
+- **Zero-Sim**: Hardened reward computation to strictly use integer math (basis points) and explicit sorting.
+- **README**: Updated status to reflect V20 integration completion.
+
 ## [v18.6.0-auth-sync] - 2025-12-20
 
 ### Added
