@@ -39,7 +39,7 @@ from v15.atlas.governance.GovernanceTrigger import GovernanceTrigger
 
 
 class TestGovernanceReplay(unittest.TestCase):
-    def run_cycle(self, cycle_seed: int):
+    def run_cycle(self, cycle_seed: int) -> tuple[dict, str]:
         """Runs a deterministic governance cycle and returns state hashes + binder cap."""
         engine = ProposalEngine()
         registry = GovernanceParameterRegistry()
@@ -50,7 +50,7 @@ class TestGovernanceReplay(unittest.TestCase):
         allocator = RewardAllocator(cm)
         binder = ViralRewardBinder(cm, allocator, trigger=trigger)
 
-        metrics = {"proofs": []}
+        metrics: dict = {"proofs": []}
 
         # 1. Create Proposal (Change Cap to 500,000)
         # Deterministic ID relies on content + cycle

@@ -367,6 +367,25 @@ class ViolationAnalyzer(ast.NodeVisitor):
         if violation_type not in VIOLATION_REGISTRY:
             return
 
+        if self.source_lines and hasattr(node, "lineno") and node.lineno > 0:
+            try:
+                start_line = node.lineno
+                end_line = getattr(node, "end_lineno", start_line)
+
+                # Check all lines in the node range for suppression
+                suppressed = False
+                for lineno in range(start_line, end_line + 1):
+                    if lineno <= len(self.source_lines):
+                        line_content = self.source_lines[lineno - 1]
+                        if "noqa: ZERO-SIM" in line_content:
+                            suppressed = True
+                            break
+
+                if suppressed:
+                    return
+            except Exception:
+                pass
+
         rule = VIOLATION_REGISTRY[violation_type]
         context = ast.unparse(node)[:80] if hasattr(ast, "unparse") else str(node)[:80]
 
