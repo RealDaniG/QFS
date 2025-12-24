@@ -4,7 +4,7 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 
-// v19 Configuration: Centralized config for 4-Layer Architecture
+// V20 Configuration: Centralized config for 4-Layer Architecture + WalletConnect
 const CONFIG = {
     backendUrl: process.env.BACKEND_URL || 'http://127.0.0.1:8001',
     p2pUrl: process.env.P2P_URL || 'ws://127.0.0.1:9000/ws',
@@ -16,7 +16,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1400,
         height: 900,
-        title: 'ATLAS v19 – Decentralized Intelligence',
+        title: 'QFS × ATLAS V20 – GitHub Identity & Retro Rewards',
         icon: path.join(__dirname, 'build/icon.png'),
         webPreferences: {
             nodeIntegration: false,
@@ -35,7 +35,7 @@ function createWindow() {
                     "default-src 'self' http://localhost:3000;",
                     "script-src 'self' 'unsafe-eval' 'unsafe-inline';", // Needed for Next.js // TODO: Tighten for prod
                     "style-src 'self' 'unsafe-inline';",
-                    `connect-src 'self' http://localhost:3000 ${CONFIG.backendUrl} ${CONFIG.p2pUrl} ${CONFIG.ipfsApi} ${CONFIG.ipfsGateway} ws://localhost:3000 ws://127.0.0.1:9000;`, // Allow P2P & IPFS
+                    `connect-src 'self' http://localhost:3000 ${CONFIG.backendUrl} ${CONFIG.p2pUrl} ${CONFIG.ipfsApi} ${CONFIG.ipfsGateway} ws://localhost:3000 ws://127.0.0.1:9000 https://*.walletconnect.com https://*.walletconnect.org wss://*.walletconnect.com wss://*.walletconnect.org;`, // Allow P2P, IPFS & WalletConnect
                     "img-src 'self' data: blob: http://localhost:3000 https://ipfs.io http://127.0.0.1:8080;", // Allow IPFS images
                     "font-src 'self' data:;",
                     "object-src 'none';",
