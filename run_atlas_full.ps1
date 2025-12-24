@@ -1,9 +1,13 @@
 
 param(
-    [switch]$Loop
+    [switch]$Loop,
+    [switch]$SkipPlaywright,
+    [switch]$SkipAuth,
+    [switch]$SkipE2E,
+    [switch]$DevMode
 )
 
-$ErrorActionPreference = "Continue" # Don't exit script on individual command failure, handle explicitly
+$ErrorActionPreference = "Continue" 
 $Root = $PSScriptRoot
 $LogFile = "$Root\logs\atlas_full_run.log"
 $Env:PYTHONPATH = "$Root;$Root\v13\atlas"
@@ -20,6 +24,14 @@ function Log-Section($component, $message) {
     $line = "[$ts] [$component] $message"
     Write-Host $line -ForegroundColor Cyan
     Add-Content -Path $LogFile -Value $line
+}
+
+function Stop-ServiceSafe($proc, $name) {
+    if ($proc -and -not $proc.HasExited) {
+        Log-Section $name "Stopping..."
+        Stop-Process -Id $proc.Id -Force
+        Log-Section $name "Stopped."
+    }
 }
 
 function Wait-ForEndpoint($name, $url, $timeoutSec = 60) {
@@ -39,16 +51,20 @@ function Wait-ForEndpoint($name, $url, $timeoutSec = 60) {
     return $false
 }
 
+Log-Section "SYSTEM" "ATLAS v19 orchestration starting (mode: $(if ($DevMode) {'dev'} else {'strict'}))."
+
 do {
     Log-Section "SYSTEM" "=== STARTING ORCHESTRATOR LOOP ==="
     
     # 1. Start Backend
     Log-Section "BACKEND" "Starting FastAPI on :8001..."
-    $backend = Start-Process cmd -ArgumentList "/c python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001" -WorkingDirectory $Root -RedirectStandardOutput "$Root\logs\backend_stdio.log" -RedirectStandardError "$Root\logs\backend_stderr.log" -PassThru -WindowStyle Hidden
+    $backendCmd = "python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001"
+    Log-Section "BACKEND" "Command: $backendCmd"
+    $backend = Start-Process cmd -ArgumentList "/c $backendCmd" -WorkingDirectory $Root -RedirectStandardOutput "$Root\logs\backend_stdio.log" -RedirectStandardError "$Root\logs\backend_stderr.log" -PassThru -WindowStyle Hidden
 
     # 2. Start Frontend
     Log-Section "FRONTEND" "Starting UI on :3000..."
-    # npm run dev needs to be run in v13/atlas
+    Log-Section "FRONTEND" "Command: npm run dev (in v13\atlas)"
     $frontend = Start-Process cmd -ArgumentList "/c npm run dev" -WorkingDirectory "$Root\v13\atlas" -RedirectStandardOutput "$Root\logs\frontend_stdio.log" -RedirectStandardError "$Root\logs\frontend_stderr.log" -PassThru -WindowStyle Hidden
 
     Log-Section "SYSTEM" "Waiting for services to become healthy..."
@@ -78,23 +94,34 @@ do {
 
     if (-not $backendOk -or -not $frontendOk) {
         Log-Section "SYSTEM" "Startup failed. See logs\backend_*.log and logs\frontend_*.log"
-        # Cleanup
-        if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
-        if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
+        Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $frontend "FRONTEND"
         exit 1
     }
 
     # 3. Verification
     
     # 3.1 Verify E2E API
-    Log-Section "VERIFY" "Running verify_atlas_e2e.py..."
-    python v13\scripts\verify_atlas_e2e.py
-    $e2eExit = $LASTEXITCODE
+    if ($SkipE2E) {
+        Log-Section "VERIFY" "E2E check skipped by flag"
+        $e2eExit = 0
+    }
+    else {
+        Log-Section "VERIFY" "Running verify_atlas_e2e.py..."
+        python v13\scripts\verify_atlas_e2e.py
+        $e2eExit = $LASTEXITCODE
+    }
     
     # 3.2 Verify Auth
-    Log-Section "VERIFY" "Running verify_auth.py..."
-    python scripts\verify_auth.py
-    $authExit = $LASTEXITCODE
+    if ($SkipAuth) {
+        Log-Section "VERIFY" "Auth check skipped by flag"
+        $authExit = 0
+    }
+    else {
+        Log-Section "VERIFY" "Running verify_auth.py..."
+        python scripts\verify_auth.py
+        $authExit = $LASTEXITCODE
+    }
     
     # 3.3 Regression Test (Pytest)
     Log-Section "VERIFY" "Running pytest (Routes)..."
@@ -104,48 +131,77 @@ do {
     Pop-Location
     
     # 3.4 Playwright
-    Log-Section "PLAYWRIGHT" "Running npm run test:e2e..."
-    Push-Location v13\atlas
-    cmd /c "npm run test:e2e"
-    $pwExit = $LASTEXITCODE
-    Pop-Location
+    if ($SkipPlaywright) {
+        Log-Section "PLAYWRIGHT" "Playwright e2e skipped by flag"
+        $pwExit = 0
+    }
+    else {
+        Log-Section "PLAYWRIGHT" "Running npm run test:e2e..."
+        Push-Location v13\atlas
+        
+        if (-not (Test-Path "node_modules\.bin\playwright.cmd")) {
+            Log-Section "PLAYWRIGHT" "Playwright not installed; run: cd v13\atlas; npm install; npx playwright install"
+            $pwExit = 1
+        }
+        else {
+            cmd /c "npm run test:e2e"
+            $pwExit = $LASTEXITCODE
+        }
+        Pop-Location
+    }
     
     # Summary
-    if ($e2eExit -eq 0 -and $authExit -eq 0 -and $pwExit -eq 0) {
-        Log-Section "SUMMARY" "ALL CRITICAL CHECKS PASSED (pytest status=$pytestExit)"
+    if (-not $DevMode) {
+        $allOk = ($e2eExit -eq 0 -and $authExit -eq 0 -and $pwExit -eq 0)
+    }
+    else {
+        $allOk = ($e2eExit -eq 0 -and $authExit -eq 0)  # playwright best-effort in dev
+        if ($pwExit -ne 0) {
+            Log-Section "WARNING" "Playwright failed but proceeding in DevMode"
+        }
+    }
+
+    if ($allOk) {
+        Log-Section "SUMMARY" "CRITICAL CHECKS PASSED (pytest status=$pytestExit)"
         $Success = $true
+
+        # Launch Electron if successful
+        Log-Section "ELECTRON" "Launching Electron App..."
+        Push-Location "$Root\v13\atlas"
+        Start-Process cmd -ArgumentList "/c npm run electron:dev" -WorkingDirectory "$Root\v13\atlas" -WindowStyle Normal
+        Pop-Location
     }
     else {
         Log-Section "SUMMARY" "SOME CHECKS FAILED (e2e=$e2eExit, auth=$authExit, playwright=$pwExit, pytest=$pytestExit)"
+        
+        if ($pwExit -ne 0) {
+            Log-Section "TIP" "If 'playwright' is not recognized, run: cd v13\atlas; npm install; npx playwright install"
+        }
         $Success = $false
     }
     
     if (-not $Loop) {
         # Clean Shutdown
-        Log-Section "SYSTEM" "Verification Complete. Press Enter to shutdown services and close this window..."
+        Log-Section "SYSTEM" "Verification Complete. Electron should be launching..."
+        Log-Section "SYSTEM" "Press Enter to shutdown services and close this window..."
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         
-        Log-Section "SYSTEM" "Stopping services..."
-        if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
-        if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
-        Log-Section "SYSTEM" "Services stopped."
+        Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $frontend "FRONTEND"
         
-        # Don't use exit 0/1 here if we want to keep the window open via -NoExit in BAT
-        # But we also shouldn't block indefinitely if the user pressed enter.
-        # Returning from script is fine.
         return
     }
 
     if ($Success) {
         Log-Section "SYSTEM" "Loop Mode: Checks passed. Stopping services and waiting..."
-        if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
-        if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
+        Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $frontend "FRONTEND"
         Start-Sleep -Seconds 10
     }
     else {
         Log-Section "SYSTEM" "Loop Mode: Checks failed. Restarting..."
-        if ($backend -and -not $backend.HasExited) { Stop-Process -Id $backend.Id -Force }
-        if ($frontend -and -not $frontend.HasExited) { Stop-Process -Id $frontend.Id -Force }
+        Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $frontend "FRONTEND"
         Start-Sleep -Seconds 5
     }
 

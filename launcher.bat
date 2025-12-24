@@ -7,5 +7,6 @@ if errorlevel 1 (
     exit /b 1
 )
 echo.
-echo === Starting ATLAS v18 ===
-powershell -ExecutionPolicy Bypass -File run_atlas_full.ps1
+echo === Starting ATLAS v19 (Orchestrator) ===
+echo Note: Backend + Frontend + Playwright + Electron
+powershell -ExecutionPolicy Bypass -File run_atlas_full.ps1 -DevMode

@@ -1,145 +1,87 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const { spawn } = require('child_process')
-const fs = require('fs')
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const path = require('path');
+const isDev = require('electron-is-dev');
 
-let mainWindow
-let pythonProcess
+let mainWindow;
 
-// Backend path - always use relative path in dev
-const backendPath = path.join(__dirname, '..', 'backend', 'main.py')
+// v19 Configuration: Centralized config for 4-Layer Architecture
+const CONFIG = {
+    backendUrl: process.env.BACKEND_URL || 'http://127.0.0.1:8001',
+    p2pUrl: process.env.P2P_URL || 'ws://127.0.0.1:9000/ws',
+    ipfsApi: process.env.IPFS_API || 'http://127.0.0.1:5001',
+    ipfsGateway: process.env.IPFS_GATEWAY || 'http://127.0.0.1:8080'
+};
 
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1400,
         height: 900,
-        show: true, // Show immediately
+        title: 'ATLAS v19 – Decentralized Intelligence',
+        icon: path.join(__dirname, 'build/icon.png'),
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+            webSecurity: true, // IMPORTANT: Keep enabled for security
+            preload: path.join(__dirname, 'preload.js'),
         }
-    })
+    });
 
-    // CSP Bypass for Web3/WalletConnect
+    // v19 CSP for Web3 + IPFS + P2P
     mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
         callback({
             responseHeaders: {
                 ...details.responseHeaders,
                 'Content-Security-Policy': [
-                    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:* https://*.infura.io https://*.walletconnect.com https://*.walletconnect.org wss://*.walletconnect.org; img-src 'self' data: https:;"
-                ]
+                    "default-src 'self' http://localhost:3000;",
+                    "script-src 'self' 'unsafe-eval' 'unsafe-inline';", // Needed for Next.js // TODO: Tighten for prod
+                    "style-src 'self' 'unsafe-inline';",
+                    `connect-src 'self' http://localhost:3000 ${CONFIG.backendUrl} ${CONFIG.p2pUrl} ${CONFIG.ipfsApi} ${CONFIG.ipfsGateway} ws://localhost:3000 ws://127.0.0.1:9000;`, // Allow P2P & IPFS
+                    "img-src 'self' data: blob: http://localhost:3000 https://ipfs.io http://127.0.0.1:8080;", // Allow IPFS images
+                    "font-src 'self' data:;",
+                    "object-src 'none';",
+                    "base-uri 'self';",
+                    "form-action 'self';",
+                    "frame-ancestors 'none';"
+                ].join(' ')
             }
         });
     });
 
-    // Fix RainbowKit rendering in Electron
-    mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.webContents.executeJavaScript(`
-            window.dispatchEvent(new Event('resize'));
-        `);
+    const startUrl = isDev
+        ? 'http://localhost:3000'
+        : `file://${path.join(__dirname, '../out/index.html')}`;
+
+    mainWindow.loadURL(startUrl);
+
+    // Open external links in default browser
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        if (url.startsWith('http:') || url.startsWith('https:')) {
+            shell.openExternal(url);
+            return { action: 'deny' };
+        }
+        return { action: 'allow' };
     });
 
-    // Start backend before loading UI
-    startBackend()
-
-    // Load frontend from static files (Next.js 14 static export)
-    // Load frontend
-    const isDev = process.env.NODE_ENV === 'development' || process.argv.includes('--dev');
-    const frontendUrl = isDev
-        ? 'http://127.0.0.1:3000'
-        : `file://${path.join(__dirname, 'renderer', 'index.html')}`;
-
-    console.log(`[Frontend] Loading from: ${frontendUrl} (Mode: ${isDev ? 'Dev' : 'Prod'})`)
-
     if (isDev) {
-        // Wait for dev server
-        setTimeout(() => mainWindow.loadURL(frontendUrl), 1000)
-    } else {
-        mainWindow.loadURL(frontendUrl)
+        mainWindow.webContents.openDevTools();
     }
 
-    // Ensure window shows and focuses when ready
-    mainWindow.once('ready-to-show', () => {
-        mainWindow.show()
-        mainWindow.focus()
-        console.log('[Window] Window shown and focused')
-    })
-
-    // Open DevTools for debugging
-    mainWindow.webContents.openDevTools()
+    mainWindow.on('closed', () => (mainWindow = null));
 }
 
-function startBackend() {
-    // Allow skipping backend startup if running externally (for development)
-    if (process.env.SKIP_BACKEND === 'true') {
-        console.log('[Backend] Skipping backend startup (SKIP_BACKEND=true)')
-        console.log('[Backend] Assuming backend is running externally on port 8001')
-        return
-    }
-
-    console.log('[Backend] Starting QFS API...')
-
-    // Basic check for python availability, in prod this would use the bundled python
-    const pythonCmd = process.platform === 'win32' ? 'python' : 'python3'
-
-    pythonProcess = spawn(pythonCmd, [backendPath], {
-        cwd: path.join(__dirname, '..'),
-        env: {
-            ...process.env,
-            PYTHONUNBUFFERED: '1',
-            QFS_MODE: 'beta',
-            QFS_BETA_CAP: '200'
-        }
-    })
-
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(`[Backend] ${data.toString()}`)
-    })
-
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`[Backend Error] ${data.toString()}`)
-    })
-
-    pythonProcess.on('close', (code) => {
-        console.log(`[Backend] Process exited with code ${code}`)
-    })
-}
-
-// App lifecycle
-app.whenReady().then(createWindow)
+app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-    if (pythonProcess) {
-        pythonProcess.kill()
-    }
     if (process.platform !== 'darwin') {
-        app.quit()
+        app.quit();
     }
-})
+});
 
 app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow()
+    if (mainWindow === null) {
+        createWindow();
     }
-})
+});
 
-app.on('before-quit', () => {
-    if (pythonProcess) {
-        pythonProcess.kill()
-    }
-})
-
-// IPC handlers for frontend-backend bridge
-ipcMain.handle('backend:health', async () => {
-    try {
-        const response = await fetch('http://127.0.0.1:8001/health')
-        return await response.json()
-    } catch (error) {
-        return { status: 'offline', error: error.message }
-    }
-})
-
-ipcMain.handle('get-user-data-path', () => {
-    return app.getPath('userData')
-})
+// IPC Handler for v19 Desktop Features (Future)
+ipcMain.handle('get-app-version', () => app.getVersion());
