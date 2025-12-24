@@ -21,7 +21,7 @@ class GovernanceIndexManager:
         self.max_entries_per_file = 1000  # For future pagination support
         self._ensure_index_exists()
 
-    def _ensure_index_exists(self):
+    def _ensure_index_exists(self) -> None:
         """Create initial index file if it doesn't exist."""
         if not self.index_path.exists():
             self.index_path.parent.mkdir(parents=True, exist_ok=True)
@@ -50,7 +50,7 @@ class GovernanceIndexManager:
         with open(self.index_path, "r") as f:
             return json.load(f)
 
-    def _save_index(self, index_data: Dict[str, Any]):
+    def _save_index(self, index_data: Dict[str, Any]) -> None:
         """Save the index data atomically."""
         # Write to temp file then rename to ensure atomicity
         temp_path = self.index_path.with_suffix(".tmp")
