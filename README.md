@@ -12,13 +12,26 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** V18 Integration Complete (Frontend/Backend Wired) • Distributed Backbone (Alpha)  
-**Current Focus:** Production Deployment & UX Polish  
+**Status:** V18 Integration Complete • Core Hardening (v13.5) • Distributed Fabric (Design Phase)  
+**Current Focus:** Zero-Sim Remediation & Real PQC Integration  
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
 [**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
 
 </div>
+
+---
+
+## 🛡️ Implementation vs Design (Reality Map)
+
+| Component | Status | Details |
+| :--- | :--- | :--- |
+| **HSMF Core** | ✅ Implemented | Tested contracts, BigNum128, PoE Replay. |
+| **HSMF × ATLAS** | ✅ Implemented | Wall integration, Scored Posts. |
+| **Governance Proofs** | ✅ Implemented | `ProposalProof`, `VoteTallyProof`, Replay Tests. |
+| **Zero-Sim** | ⚠️ Enforced | CI Scanner active; ~75 legacy violations in backlog. |
+| **PQC Anchoring** | 🚧 Stubbed | Designed & Stubbed; Real Dilithium pending. |
+| **Raft / Fabric** | 📝 Planned | Design notes only; single-node currently. |
 
 ---
 
@@ -73,9 +86,9 @@ This script:
 
 With the arrival of **v18**, the platform expands from a single-node core to a tiered, distributed fabric:
 
-- **Tier A (Cluster Backbone)**: High-availability validators running Raft consensus and PQC anchoring.
-- **Tier B (Edge Advisory)**: Read-only nodes hosting UI and local SLM agents (planned).
-- **Tier C (Telemetry/Sensors)**: Write-only edge devices submitting telemetry via consensus (planned).
+- **Tier A (Cluster Backbone)**: High-availability validators running Raft consensus and PQC anchoring (Planned).
+- **Tier B (Edge Advisory)**: Read-only nodes hosting UI and local SLM agents (Planned).
+- **Tier C (Telemetry/Sensors)**: Write-only edge devices submitting telemetry via consensus (Planned).
 
 ---
 
@@ -121,6 +134,7 @@ Most digital platforms suffer from structural issues:
 - ✅ **Internal credit economy** (non-transferable FLX)
 - ✅ **Distributed Interface**: DistributedFeed and WalletInterface live
 - ✅ **Secure Infrastructure**: AuthGate-protected views and route guards
+- ✅ **Hardened Core**: Post-HSMF Proofs and Zero-Sim Scanner (v13.5).
 
 ### For Users
 
@@ -165,7 +179,8 @@ Most digital platforms suffer from structural issues:
 ### Zero-Sim Compliance
 
 - **Enforced Determinism**: No `random()`, no wall-clock time, no floats in economics
-- **CI Gating**: Every commit checked for Zero-Sim violations
+- **CI Gating**: Every commit checked for Zero-Sim violations (Tier 1).
+- **Deep Audit**: AST Checker available for comprehensive scans (Tier 2).
 - **Replayability**: Same inputs → same outputs, always
 
 ---
@@ -214,7 +229,6 @@ In QFS × ATLAS, **governance and PoE form a single, fused system**:
 ### v16 Baseline
 
 - ✅ Non-custodial wallet auth (EIP-191, session management, scopes)
-
 - ✅ Protected API routes (bounty, contribution endpoints)
 - ✅ Admin dashboard with Evidence Chain Viewer
 - ✅ Agent advisory layer (read-only, non-authoritative)
@@ -223,7 +237,6 @@ In QFS × ATLAS, **governance and PoE form a single, fused system**:
 ### v17 Governance F-Layer
 
 - ✅ Deterministic proposal creation and state reconstruction
-
 - ✅ Vote casting with validation and eligibility checks
 - ✅ Outcome computation (quorum, approval thresholds, tie-breaking)
 - ✅ Full PoE logging and replayability
@@ -231,7 +244,6 @@ In QFS × ATLAS, **governance and PoE form a single, fused system**:
 ### v17 Bounty F-Layer
 
 - ✅ Deterministic bounty and contribution lifecycle
-
 - ✅ Reward computation with advisory integration
 - ✅ Normalized score-based distribution
 - ✅ Full PoE logging and replayability
@@ -262,7 +274,7 @@ python v15/tools/replay_gov_cycle.py --start 1 --end 50
 
 ```bash
 # Run Zero-Sim checker
-python scripts/check_zero_sim.py --fail-on-critical
+python scripts/check_zero_sim.py
 
 # Verify MOCKQPC determinism
 python scripts/verify_mockqpc_determinism.py
@@ -372,15 +384,15 @@ Consensus-driven Tier A backbone complete. Deterministic replication (Raft), PQC
 
 ## 🗺️ Roadmap: v18 Distributed Fabric
 
-The distributed Tier A backbone is now consensus-driven, PQC-anchored, and cleanly wired into the existing F-layer.
+The distributed Tier A backbone is now in **Design Phase**, leveraging the hardened v13.5 core.
 
-- **✅ Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core.
-- **✅ PQC Anchors**: Real post-quantum signatures (Dilithium) to anchor EvidenceBus batches.
+- **📝 Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core (Design Completed).
+- **🚧 PQC Anchors**: Stub implementation ready for Dilithium injection.
 - **✅ Ascon Edge Crypto**: Session protection and message AEAD.
 - **🔄 v18.9 ATLAS App Alpha**: Unifying UI with distributed backbone and real data projections (In Progress).
 - **🔮 Phase 5: Edge Expansion**: UI and Advisory agents deployed to Tier B/C nodes.
 
-See [V18_BACKBONE_COMPLETE.md](docs/RELEASES/v18_BACKBONE_COMPLETE.md) and [ATLAS_V18_GAP_REPORT.md](docs/ATLAS_V18_GAP_REPORT.md) for details.
+See [Fabric_Design_Notes.md](v13/docs/Fabric_Design_Notes.md) for details.
 
 ---
 
