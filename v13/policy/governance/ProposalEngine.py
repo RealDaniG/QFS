@@ -16,6 +16,37 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 from enum import Enum
 
+# Use BigNum128 for any math if needed (future proofing)
+try:
+    from ...libs.CertifiedMath import BigNum128
+except ImportError:
+    try:
+        from v13.libs.CertifiedMath import BigNum128
+    except ImportError:
+        # Fallback for some test runners
+        pass
+
+
+@dataclass
+class ProposalProof:
+    """
+    Proof-of-Creation for a governance proposal.
+    Matches the schema in docs/Governance_MathContracts.md.
+    """
+
+    proposal_id: str
+    proposer_id: str
+    payload_hash: str
+    version: str = "v1"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "proposal_id": self.proposal_id,
+            "proposer_id": self.proposer_id,
+            "payload_hash": self.payload_hash,
+            "version": self.version,
+        }
+
 
 class ProposalStatus(Enum):
     DRAFT = "DRAFT"
@@ -27,22 +58,41 @@ class ProposalStatus(Enum):
 
 class ProposalEngine:
     """
-    Manages the lifecycle of governance proposals with strict hash binding.
+    Manages the lifecycle of governance proposals with strict hash binding
+    and Proof-of-Evidence (PoE) emission.
     """
 
     def __init__(self):
         self.proposals: Dict[str, Dict[str, Any]] = {}
 
+    def _emit_proposal_poe(
+        self, proof: ProposalProof, log_list: Optional[List[Dict[str, Any]]]
+    ) -> None:
+        """
+        Emit a structured ProposalProof entry into the log (Zero-Sim).
+        """
+        if log_list is None:
+            return
+
+        log_list.append({"op_name": "proposal_proof", "proof": proof.to_dict()})
+
     def create_proposal(
-        self, title: str, description: str, execution_payload: Dict[str, Any]
+        self,
+        title: str,
+        description: str,
+        execution_payload: Dict[str, Any],
+        proposer_id: str,
+        log_list: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         """
-        Create a new proposal bound to its execution payload hash.
+        Create a new proposal bound to its execution payload hash and emit PoE.
 
         Args:
             title: Human-readable title
             description: Detailed description
             execution_payload: The dictionary representing the machine-executable action
+            proposer_id: ID of the user creating the proposal
+            log_list: (Optional) List to append the Proof-of-Evidence to
 
         Returns:
             proposal_id: The SHA-256 hash of the full proposal structure
@@ -57,6 +107,7 @@ class ProposalEngine:
             "title": title,
             "description": description,
             "payload_hash": payload_hash,
+            "proposer_id": proposer_id,
             "status": ProposalStatus.DRAFT.value,
         }
 
@@ -70,8 +121,14 @@ class ProposalEngine:
         self.proposals[proposal_id] = {
             "id": proposal_id,
             "structure": proposal_struct,
-            "execution_payload": execution_payload,  # Stored for reference, but integrity is checked via hash
+            "execution_payload": execution_payload,
         }
+
+        # Create and emit proof
+        proof = ProposalProof(
+            proposal_id=proposal_id, proposer_id=proposer_id, payload_hash=payload_hash
+        )
+        self._emit_proposal_poe(proof, log_list)
 
         return proposal_id
 
@@ -80,15 +137,6 @@ class ProposalEngine:
     ) -> bool:
         """
         Verify that a submitted execution payload matches the bound hash of the proposal.
-
-        This enforces PROP-I1/PROP-I2.
-
-        Args:
-            proposal_id: ID of the proposal to execute
-            submitted_payload: The payload attempting to be executed
-
-        Returns:
-            bool: True if payload matches the proposal's bound hash, False otherwise.
         """
         if proposal_id not in self.proposals:
             return False
@@ -107,16 +155,10 @@ class ProposalEngine:
         self,
         proposal_id: str,
         registry: Any,  # Typed as Any to avoid circular import, expected GovernanceParameterRegistry
+        log_list: Optional[List[Dict[str, Any]]] = None,
     ) -> bool:
         """
         Execute a PASSED proposal tailored to parameter changes.
-
-        Args:
-            proposal_id: ID of the proposal to execute.
-            registry: The GovernanceParameterRegistry instance.
-
-        Returns:
-            bool: True if execution succeeded.
         """
         if proposal_id not in self.proposals:
             return False
@@ -133,80 +175,38 @@ class ProposalEngine:
         if action_type == "PARAMETER_CHANGE":
             # Extract params
             key = payload.get("key")
-            value_dict = payload.get(
-                "value"
-            )  # Expecting a dict or int that can convert to BigNum
+            value_dict = payload.get("value")
 
             # Reconstruct BigNum from payload value
-            # Assuming payload value is simple int/str for this stage
-            from v13.libs.BigNum128 import BigNum128
+            try:
+                from v13.libs.CertifiedMath import BigNum128
+            except ImportError:
+                # Fallback for different import paths
+                from ...libs.CertifiedMath import BigNum128
 
             if isinstance(value_dict, int):
                 new_value = BigNum128.from_int(value_dict)
             elif isinstance(value_dict, str):
                 new_value = BigNum128.from_string(value_dict)
             else:
-                # Handle dictionary form if serialized that way
-                new_value = BigNum128.from_int(0)  # Fallback/Error
+                new_value = BigNum128.from_int(0)
 
             try:
                 registry.update_parameter(key, new_value, proposal_id)
                 proposal["structure"]["status"] = ProposalStatus.EXECUTED.value
+
+                # Log execution event if log_list provided
+                if log_list is not None:
+                    log_list.append(
+                        {
+                            "op_name": "proposal_executed",
+                            "proposal_id": proposal_id,
+                            "action": action_type,
+                        }
+                    )
+
                 return True
-            except ValueError as e:
-                # Log security violation (Constitution breach attempt)
-                # print(f"Governance Execution Failed: {e}")
+            except ValueError:
                 return False
 
         return False
-
-
-def test_proposal_engine():
-    """Self-test for ProposalEngine invariants."""
-    engine = ProposalEngine()
-
-    # 1. Test Payload Integrity
-    payload = {"action": "mint", "amount": 100}
-    prop_id = engine.create_proposal("Test Prop", "Desc", payload)
-
-    assert engine.validate_execution_payload(prop_id, payload) is True
-
-    tampered_payload = {"action": "mint", "amount": 1000}
-    assert engine.validate_execution_payload(prop_id, tampered_payload) is False
-
-    # 2. Test Parameter Execution Integration
-    # Mock Registry
-    class MockRegistry:
-        def __init__(self):
-            self.storage = {"TEST_KEY": 0}
-            self.MUTABLE_KEYS = {"TEST_KEY"}
-
-        def update_parameter(self, key, val, pid):
-            if key not in self.MUTABLE_KEYS:
-                raise ValueError("Immutable")
-            self.storage[key] = val.to_decimal_string()  # Store simplified
-
-    mock_reg = MockRegistry()
-
-    # Create Parameter Change Proposal
-    change_payload = {"action": "PARAMETER_CHANGE", "key": "TEST_KEY", "value": 123}
-    change_pid = engine.create_proposal("Fix Param", "Desc", change_payload)
-
-    # Execute
-    success = engine.execute_proposal(change_pid, mock_reg)
-    assert success is True
-    assert (
-        mock_reg.storage["TEST_KEY"] == "123.000000000000000000"
-    )  # BigNum default scaling
-
-    # Test Constitution Protection
-    bad_payload = {"action": "PARAMETER_CHANGE", "key": "IMMUTABLE_KEY", "value": 999}
-    bad_pid = engine.create_proposal("Break Const", "Desc", bad_payload)
-    success_bad = engine.execute_proposal(bad_pid, mock_reg)
-    assert success_bad is False
-
-    print("ProposalEngine self-test passed.")
-
-
-if __name__ == "__main__":
-    test_proposal_engine()

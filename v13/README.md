@@ -1,8 +1,24 @@
 # ATLAS v19 – Decentralized Intelligence Network
 
 **Status:** ✅ Alpha Release  
-**Version:** v19.0.0-alpha  
+**Version:** v19.0.0-alpha (QFS Core v13.5)  
 **Release Date:** December 23, 2025
+
+## 🛡️ QFS Core v13.5 (Post-HSMF Hardening)
+
+> **Core Status**: Beta / Hardening
+> **Focus**: Determinism, Governance Proofs, PQC Anchoring.
+
+### Implementation vs Design (Reality Map)
+
+| Component | Status | Details |
+| :--- | :--- | :--- |
+| **HSMF Core** | ✅ Implemented | Tested contracts, BigNum128, PoE Replay. |
+| **HSMF × ATLAS** | ✅ Implemented | Wall integration, Scored Posts. |
+| **Governance Proofs** | ✅ Implemented | `ProposalProof`, `VoteTallyProof`, Replay Tests. |
+| **Zero-Sim** | ⚠️ Enforced | CI Scanner active; ~75 legacy violations in backlog. |
+| **PQC Anchoring** | 🚧 Stubbed | Designed & Stubbed; Real Dilithium pending. |
+| **Raft / Fabric** | 📝 Planned | Design notes only; single-node currently. |
 
 ## 🌟 What's New in v19
 
