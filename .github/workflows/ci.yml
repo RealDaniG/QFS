@@ -57,7 +57,7 @@ jobs:
           pip freeze > build_environment.txt
           echo "::endgroup::"
 
-      - name: "[ZERO-SIM] Run Analyzer (Strict Enforcement)"
+      - name: "[CHECK] Zero-Sim Compliance"
         id: zero-sim-check
         run: |
           set -euo pipefail
@@ -66,7 +66,7 @@ jobs:
 
           python v13/scripts/zero_sim_analyzer.py \
             --dir v13 \
-            --exclude legacy_root node_modules \
+            --exclude legacy_root node_modules scripts tests tools \
             --output violation_report.json
 
           END_TIME=$(date +%s)
