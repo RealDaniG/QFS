@@ -28,12 +28,12 @@ These affect determinism in production and must be fixed:
 |------|------|---------|--------|
 | `v13/atlas/backend/lib/trust/identity.py` | 21 | Comment references time.time() | ✅ Already fixed (uses 0 default) |
 | `v13/atlas/backend/lib/trust/envelope.py` | 26 | Comment references time.time() | ✅ Already fixed (uses 0 default) |
-| `v13/atlas/backend/scripts/verify_intelligence_standard.py` | 39 | `int(time.time())` | ⏳ TODO |
-| `v13/atlas/backend/scripts/verify_intelligence_layer.py` | 48 | `int(time.time() + 3600)` | ⏳ TODO |
-| `v13/atlas/backend/tests/p2p/test_mesh.py` | 191 | `int(time.time()) + 7200` | ⏳ TODO (in test, lower priority) |
+| `v13/atlas/backend/scripts/verify_intelligence_standard.py` | 39 | `int(time.time())` | ✅ FIXED (5bea483) |
+| `v13/atlas/backend/scripts/verify_intelligence_layer.py` | 48 | `int(time.time() + 3600)` | ✅ FIXED (5bea483) |
+| `v13/atlas/backend/tests/p2p/test_mesh.py` | 191 | `int(time.time()) + 7200` | ✅ FIXED (cd3dd84) |
 | `v13/tests/mocks/mock_atlas.py` | N/A | `time.time()` | ✅ FIXED (cb02004) |
 | `v13/tests/mocks/mock_openagi.py` | N/A | `time.time()` | ✅ FIXED (cb02004) |
-| `v13/atlas/tests/test_auth.py` | 62,64 | `int(time.time())` | ⏳ TODO (in test) |
+| `v13/atlas/tests/test_auth.py` | 62,64 | `int(time.time())` | ✅ FIXED (8dc7a6a) |
 
 ### 🟡 MEDIUM PRIORITY (Scripts/Tools)
 
@@ -75,6 +75,11 @@ These are in compiled/bundled output and should be regenerated after source fixe
 | Commit | Files Fixed | Violations | Pattern |
 |--------|-------------|------------|---------|
 | `cb02004` | mock_atlas.py, mock_openagi.py | 2 | `time.time()` → `det_time_now()` |
+| `8dc7a6a` | test_auth.py | 1 | `time.time()` → `TEST_TIMESTAMP` |
+| `5bea483` | verify_intelligence_*.py | 2 | `time.time()` → `TEST_TIMESTAMP` |
+| `cd3dd84` | test_mesh.py | 1 | `time.time()` → `FUTURE_TIMESTAMP` |
+
+**Total Fixed**: 6 files, 8 violations
 
 ---
 
@@ -83,17 +88,18 @@ These are in compiled/bundled output and should be regenerated after source fixe
 ### Immediate (This PR)
 
 1. ✅ Fix mock files (DONE)
-2. Review `v13/atlas/tests/test_auth.py` - uses time for test data, consider injecting
+2. ✅ Fix test_auth.py (DONE)
+3. ✅ Fix verify_intelligence_*.py (DONE)
+4. ✅ Fix test_mesh.py (DONE)
 
 ### Short Term (Next Sprint)
 
-1. Update `verify_intelligence_standard.py` and `verify_intelligence_layer.py`
-2. Regenerate `desktop/dist/` after source fixes
+1. Regenerate `desktop/dist/` after source fixes
+2. Audit scripts for evidence timestamp consistency
 
 ### Long Term
 
-1. Audit all scripts for evidence timestamp consistency
-2. Consider adding Zero-Sim linter to CI gate
+1. Consider adding Zero-Sim linter to CI gate
 
 ---
 
