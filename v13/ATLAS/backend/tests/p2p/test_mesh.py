@@ -6,7 +6,6 @@ Spins up multiple nodes in a single process for fast testing.
 import asyncio
 import sys
 import os
-import json
 from typing import List
 
 # Adjust path to backend root
@@ -180,7 +179,10 @@ async def test_fraud_detection_integration():
         # Use 9020
         node_a = await harness.spawn_node(9020)
 
-        import time
+        # Deterministic timestamp for Zero-Sim compliance
+        # Base represents "now", future is 2 hours ahead for fraud detection
+        BASE_TIMESTAMP = 1735689600  # 2025-01-01 00:00:00 UTC
+        FUTURE_TIMESTAMP = BASE_TIMESTAMP + 7200  # 2 hours in future
 
         # Create malicious envelope (time-travel)
         fraud_envelope = TrustedEnvelope(
@@ -188,7 +190,7 @@ async def test_fraud_detection_integration():
             author_address="0x1234567890123456789012345678901234567890",
             signature="0xfraud_sig",
             content_type="atlas.test.fraud",
-            timestamp=int(time.time()) + 7200,  # 2 hours in future
+            timestamp=FUTURE_TIMESTAMP,  # Future timestamp triggers fraud detection
             tags=["malicious"],
         )
 
@@ -261,7 +263,7 @@ async def test_deduplication():
 async def run_all_tests():
     """Run complete P2P test suite"""
     print("=" * 60)
-    print("ATLAS v19 P2P Network Test Suite (Lightweight)")
+    print("ATLAS v20 P2P Network Test Suite (Lightweight)")
     print("=" * 60)
 
     tests = [
