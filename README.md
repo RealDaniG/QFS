@@ -105,9 +105,9 @@ Most digital platforms suffer from structural issues:
 
 ---
 
-## 📈 Current Status: v17.0.0-beta (Full Feature Complete)
+## 📈 Current Status: v20.0.0-alpha (Distributed Fabric Design)
 
-### v17 — Governance, Bounties, Social & Advisory
+### v20 — Identity, Retro Rewards & Distributed Core
 
 **Engine Layers (F-Layer):**
 
