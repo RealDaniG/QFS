@@ -2,7 +2,6 @@ import pytest
 from fastapi.testclient import TestClient
 from src.main_minimal import app
 from src.lib.storage import db
-import time
 
 client = TestClient(app)
 
@@ -54,14 +53,18 @@ def test_verify_with_challenge():
 
 def test_verify_expired_challenge():
     """Test that expired challenges are rejected."""
+    # Use deterministic test timestamps instead of time.time()
+    # Fixed timestamp for reproducible tests: 2025-01-01 00:00:00 UTC
+    TEST_TIMESTAMP = 1735689600
+
     # Manually inject expired challenge
     challenge_id = "expired_123"
     expired_challenge = {
         "challenge_id": challenge_id,
         "wallet": "0xtest",
-        "expires_at": int(time.time()) - 1000,
+        "expires_at": TEST_TIMESTAMP - 1000,  # Expired 1000 seconds before test time
         "purpose": "daily_presence",
-        "issued_at": int(time.time()) - 4600,
+        "issued_at": TEST_TIMESTAMP - 4600,  # Issued 4600 seconds before test time
     }
     db.save_challenge(challenge_id, expired_challenge)
 
