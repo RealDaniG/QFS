@@ -20,7 +20,7 @@ class GuildManager:
         description: str,
         creator_id: str,
         coherence_threshold: int = 400,
-        staking_amt: float = 100.0,
+        MIN_COMMUNITY_SIZE = 100
         timestamp: int = 0,  # Zero-Sim
     ) -> Dict[str, Any]:
         """

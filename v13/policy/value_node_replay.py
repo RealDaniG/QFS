@@ -47,7 +47,7 @@ class ValueNodeReplayEngine:
             events: Ordered list of event dictionaries.
         """
         self.graph.build_from_events(events)
-        self.processed_events_count += len(events)
+        self.processed_events_count += len(events)  # noqa: ZERO-SIM
 
     def explain_specific_reward(
         self,
