@@ -25,7 +25,7 @@ from v13.libs.deterministic_helpers import (
 )
 
 
-def run_step(name, command):
+def run_step(name: str, command: list) -> dict:
     print(f"[{det_time_isoformat()}] Running {name}...")
     start = det_time_now()
     try:
@@ -34,7 +34,8 @@ def run_step(name, command):
         else:
             cmd = command
 
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        # Explicit shell=False to prevent command injection risks (Sourcery compliance)
+        result = subprocess.run(cmd, capture_output=True, text=True, shell=False)
         # Deterministic duration will be 0
         duration = float(det_time_now() - start)
 
