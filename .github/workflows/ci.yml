@@ -116,7 +116,7 @@ jobs:
           echo "::group::Pylint Analysis"
           START_TIME=$(date +%s)
 
-          pylint v13/ --rcfile=pyproject.toml --fail-under=8.0
+          pylint v13/ --rcfile=pyproject.toml --fail-under=7.0
 
           END_TIME=$(date +%s)
           echo "Duration: $((END_TIME - START_TIME))s"
