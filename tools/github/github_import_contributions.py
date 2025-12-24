@@ -64,13 +64,17 @@ def main():
     # Deterministic Sort
     contributions.sort(key=lambda x: x["contribution_id"])
 
+    # Create Ledger
     ledger = {
         "repo": args.repo,
         "username": args.username,
         "generated_at_sequence": 0,  # Placeholder for logical time
+        "importer_version": "0.1.0",
         "contributions": contributions,
-        "ledger_hash": deterministic_hash(contributions),
     }
+
+    # Calculate hash of the content
+    ledger["ledger_hash"] = deterministic_hash(ledger)
 
     output_json = json.dumps(ledger, indent=2, sort_keys=True)
 

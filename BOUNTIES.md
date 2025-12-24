@@ -21,11 +21,11 @@ We are integrating GitHub identity to enable **provable, retroactive rewards** f
 
 | ID | Title | Reward | Difficulty | Status |
 |----|-------|--------|------------|--------|
-| **BNT-GITHUB-01** | **Wallet ↔ GitHub Identity Link**<br>Implement `/auth/bind-github` to emit `identity_link.github` events. | **600 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
-| **BNT-GITHUB-IMPORT-01** | **Deterministic GitHub Importer**<br>Build `tools/github_import_contributions.py` to produce replayable contribution ledgers. | **500 CHR** | Medium 🌶️🌶️ | **OPEN** |
-| **BNT-GITHUB-IMPORT-02** | **Contribution Ingestion**<br>Implement `/api/bounties/import-contrib` to ingest ledgers as `contrib_recorded` PoE events. | **600 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
-| **BNT-RETRO-REWARDS-01** | **Retroactive Reward Simulation**<br>Implement F-Layer logic to compute reward allocations from PoE events deterministically. | **800 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
-| **BNT-BOUNTY-EXPLORER-UI** | **ATLAS Bounty Explorer**<br>Build UI to view rounds, allocations, and link to PoE proofs. | **700 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
+| **BNT-GITHUB-01** | **Wallet ↔ GitHub Identity Link**<br>Implement `/auth/bind-github` to emit `identity_link.github` events. | **600 CHR** | Hard 🌶️🌶️🌶️ | **COMPLETED** |
+| **BNT-GITHUB-IMPORT-01** | **Deterministic GitHub Importer**<br>Build `tools/github_import_contributions.py` to produce replayable contribution ledgers. | **500 CHR** | Medium 🌶️🌶️ | **COMPLETED** |
+| **BNT-GITHUB-IMPORT-02** | **Contribution Ingestion**<br>Implement `/api/bounties/import-contrib` to ingest ledgers as `contrib_recorded` PoE events. | **600 CHR** | Hard 🌶️🌶️🌶️ | **COMPLETED** |
+| **BNT-RETRO-REWARDS-01** | **Retroactive Reward Simulation**<br>Implement F-Layer logic to compute reward allocations from PoE events deterministically. | **800 CHR** | Hard 🌶️🌶️🌶️ | **COMPLETED** |
+| **BNT-BOUNTY-EXPLORER-UI** | **ATLAS Bounty Explorer**<br>Build UI to view rounds, allocations, and link to PoE proofs. | **700 CHR** | Hard 🌶️🌶️🌶️ | **COMPLETED** |
 | **BNT-MOCKQPC-01** | **MOCKQPC Verification Infrastructure**<br>Implement verification tools for batched PoE signatures. | **800 CHR** | Hard 🌶️🌶️🌶️ | **OPEN** |
 | **BNT-COST-01** | **Cost-Efficiency Audit Tool**<br>CLI tool to track PQC calls and infrastructure costs. | **400 CHR** | Medium 🌶️🌶️ | **OPEN** |
 

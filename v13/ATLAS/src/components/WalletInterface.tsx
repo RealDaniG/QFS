@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import {
     Wallet,
     TrendingUp,
@@ -23,7 +25,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 export default function WalletInterface() {
     const { balance, history, isLoading } = useTreasury();
     const { did } = useAuth();
-    const { isConnected, address: walletAddress } = useWalletAuth();
+    const { isConnected, address: walletAddress, sessionToken } = useWalletAuth();
     const { explanation, fetchRewardExplanation, isLoading: isExplaining, clearExplanation } = useExplain();
 
     // Auth Gate: Show connect wallet message if not authenticated
@@ -212,18 +214,15 @@ export default function WalletInterface() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Action Simulator</CardTitle>
-                            <CardDescription>Simulate potential rewards</CardDescription>
+                            <CardTitle>Identity Integrations</CardTitle>
+                            <CardDescription>Link external accounts for rewards</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
+                                <GitHubLinkDialog sessionToken={sessionToken} />
                                 <Button variant="outline" className="w-full justify-start" disabled>
                                     <MessageSquare className="h-4 w-4 mr-2" />
                                     Post Content (Use 'Create' Tab)
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start">
-                                    <Users className="h-4 w-4 mr-2" />
-                                    Join Space
                                 </Button>
                             </div>
                         </CardContent>
@@ -231,5 +230,85 @@ export default function WalletInterface() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function GitHubLinkDialog({ sessionToken }: { sessionToken: string | null }) {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [username, setUsername] = React.useState('');
+    const [status, setStatus] = React.useState<'idle' | 'linking' | 'success' | 'error'>('idle');
+    const [linkedUser, setLinkedUser] = React.useState<string | null>(null);
+
+    const handleLink = async () => {
+        if (!sessionToken || !username) return;
+        setStatus('linking');
+        try {
+            const res = await fetch('/api/auth/bind-github', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionToken}`
+                },
+                body: JSON.stringify({
+                    github_username: username,
+                    link_proof: "signed_intent_demo" // Phase 1 Mock. TODO: Replace with real SIWE/link proof.
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setLinkedUser(data.github_username);
+                setStatus('success');
+                setTimeout(() => setIsOpen(false), 1500);
+            } else {
+                setStatus('error');
+            }
+        } catch (e) {
+            setStatus('error');
+        }
+    };
+
+    if (linkedUser) {
+        return (
+            <Button variant="outline" className="w-full justify-start border-green-200 bg-green-50 text-green-700">
+                <Shield className="h-4 w-4 mr-2" />
+                Linked: @{linkedUser}
+            </Button>
+        );
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                    <Users className="h-4 w-4 mr-2" />
+                    Link GitHub Account
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <CardHeader>
+                    <CardTitle>Link GitHub Identity</CardTitle>
+                    <CardDescription>
+                        Prove ownership of your GitHub account to receive retroactive rewards.
+                    </CardDescription>
+                </CardHeader>
+                <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium">GitHub Username</label>
+                        <input
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                            placeholder="e.g. octocat"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <Button onClick={handleLink} disabled={status === 'linking' || !username} className="w-full">
+                        {status === 'linking' ? 'Linking...' : 'Link Identity'}
+                    </Button>
+                    {status === 'success' && <p className="text-green-600 text-sm text-center">Successfully Linked!</p>}
+                    {status === 'error' && <p className="text-red-600 text-sm text-center">Link Failed</p>}
+                </div>
+            </DialogContent>
+        </Dialog>
     );
 }

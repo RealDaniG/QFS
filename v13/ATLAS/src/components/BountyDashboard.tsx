@@ -14,10 +14,44 @@ import { WalletConnectButton } from './WalletConnectButton';
 type Tab = 'all' | 'mine';
 
 export function BountyDashboard() {
-    const { isConnected, address } = useWalletAuth();
-    const [activeTab, setActiveTab] = useState<Tab>('all');
+    const [rewards, setRewards] = useState<any[]>([]);
+    const [isLoadingRewards, setIsLoadingRewards] = useState(false);
+
+    const fetchRewards = async () => {
+        setIsLoadingRewards(true);
+        // Get session token? useWalletAuth exposes sessionToken now?
+        // Wait, I need to check if useWalletAuth exposes sessionToken in this file too
+        // Yes, I edited the hook, so it exposes it. But I need to destructure it.
+        // But here I only destructured { isConnected, address }.
+        // I need to update destructuring.
+        // Actually, let's fix that in a separate edit or assume I fix it here.
+    };
+
+    // ... I'll do a MultiReplace or careful replace.
+
+    // Let's replace the component body to include sessionToken and new tab logic.
+    // This is safer with MultiReplace or just replace the whole component content or logic block.
+    // The previous view_file showed lines 16-180.
+
+    // I will use replace_file_content to replace the component function start and return.
+
+    const { isConnected, address, sessionToken } = useWalletAuth();
+    const [activeTab, setActiveTab] = useState<'all' | 'mine' | 'rewards'>('all'); // Added rewards tab
+
+    // Fetch rewards effect
+    React.useEffect(() => {
+        if (activeTab === 'rewards' && sessionToken) {
+            fetch('/api/bounties/my-rewards', {
+                headers: { 'Authorization': `Bearer ${sessionToken}` }
+            })
+                .then(res => res.json())
+                .then(data => setRewards(data.history || []))
+                .catch(err => console.error(err));
+        }
+    }, [activeTab, sessionToken]);
 
     if (!isConnected) {
+        // ... (keep auth required view)
         return (
             <div className="bounty-dashboard-container">
                 <div className="auth-required-full">
@@ -27,7 +61,6 @@ export function BountyDashboard() {
                         <WalletConnectButton />
                     </div>
                 </div>
-
                 <style jsx>{`
                     .bounty-dashboard-container {
                         min-height: 600px;
@@ -88,10 +121,53 @@ export function BountyDashboard() {
                     <span className="tab-icon">✅</span>
                     My Bounties
                 </button>
+                <button
+                    className={`tab-button ${activeTab === 'rewards' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('rewards')}
+                >
+                    <span className="tab-icon">🏆</span>
+                    Retro Rewards
+                </button>
             </div>
 
             <div className="tab-content">
-                {activeTab === 'all' ? <BountyList /> : <MyBounties />}
+                {activeTab === 'all' && <BountyList />}
+                {activeTab === 'mine' && <MyBounties />}
+                {activeTab === 'rewards' && (
+                    <div className="rewards-list">
+                        <h3>Your Retroactive Rewards</h3>
+                        {rewards.length === 0 ? (
+                            <p className="no-rewards">No rewards found yet. Link your GitHub!</p>
+                        ) : (
+                            <table className="rewards-table">
+                                <thead>
+                                    <tr>
+                                        <th>Round</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rewards.map((r, i) => (
+                                        <tr key={i}>
+                                            <td>{r.round_id}</td>
+                                            <td className="amount">+{r.amount} FLX</td>
+                                            <td>{new Date(r.timestamp * 1000).toLocaleDateString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                        <style jsx>{`
+                            .rewards-list h3 { margin-bottom: 1rem; }
+                            .no-rewards { color: #6b7280; font-style: italic; }
+                            .rewards-table { width: 100%; border-collapse: collapse; }
+                            .rewards-table th, .rewards-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+                            .rewards-table th { font-weight: 600; color: #4b5563; }
+                            .amount { color: #059669; font-weight: 700; }
+                        `}</style>
+                    </div>
+                )}
             </div>
 
             <style jsx>{`

@@ -46,17 +46,17 @@ The V20 cycle (skipping v19 to align with major Fabric release) brings **Proof o
 
 We are building a bridge between Open Source contribution and QFS value.
 
-- **Phase 1: Identity Link** (In Progress)
+- **Phase 1: Identity Link** (Completed)
   - **Feature**: `identity_link.github` event.
   - **Goal**: Cryptographically bind a QFS Wallet to a GitHub user.
   - **Bounty**: [BNT-GITHUB-01](BOUNTIES.md) (600 CHR).
 
-- **Phase 2: Deterministic Import** (Started)
+- **Phase 2: Deterministic Import** (Completed)
   - **Feature**: `tools/github_import_contributions.py`.
   - **Goal**: Ingest GitHub PRs/Commits as deterministic ledgers.
   - **Bounty**: [BNT-GITHUB-IMPORT-01](BOUNTIES.md) (500 CHR).
 
-- **Phase 3: F-Layer Rewards** (Planned)
+- **Phase 3: F-Layer Rewards** (Completed)
   - **Feature**: `bounty_github.py`.
   - **Goal**: Compute CHR/FLX rewards from contribution events without manual payouts.
   - **Bounty**: [BNT-RETRO-REWARDS-01](BOUNTIES.md) (800 CHR).
