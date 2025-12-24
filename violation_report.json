@@ -1,0 +1,998 @@
+{
+  "total_violations": 55,
+  "by_type": {
+    "MUTATION_GLOBAL": 2,
+    "FORBIDDEN_PRINT": 29,
+    "MUTATION_STATE": 14,
+    "FORBIDDEN_FLOAT_LITERAL": 7,
+    "FORBIDDEN_UUID": 1,
+    "NONDETERMINISTIC_ITERATION": 1,
+    "FORBIDDEN_HASH": 1
+  },
+  "by_severity": {
+    "High": 33,
+    "Medium": 22
+  },
+  "auto_fixable": 38,
+  "manual_review": 17,
+  "files_affected": 28,
+  "top_offenders": [
+    {
+      "file": "v13\\atlas\\test_import.py",
+      "count": 15
+    },
+    {
+      "file": "v13\\atlas\\src\\lib\\cycles.py",
+      "count": 4
+    },
+    {
+      "file": "v13\\tests\\test_real_storage_wiring.py",
+      "count": 4
+    },
+    {
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py",
+      "count": 4
+    },
+    {
+      "file": "v13\\atlas\\backend\\scripts\\verify_ipfs_layer.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\atlas\\backend\\scripts\\verify_p2p_layer.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\atlas\\backend\\scripts\\verify_trust_layer.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\tests\\phase3_audit_suite.py",
+      "count": 2
+    },
+    {
+      "file": "v13\\AEGIS\\governance\\model_registry.py",
+      "count": 1
+    },
+    {
+      "file": "v13\\atlas\\atlas_platform\\src\\secure_chat\\storage\\ipfs_storage.py",
+      "count": 1
+    }
+  ],
+  "violations": [
+    {
+      "type": "MUTATION_GLOBAL",
+      "line": 49,
+      "col": 4,
+      "rule": {
+        "code": "MUTATION_GLOBAL",
+        "name": "Global State Mutation",
+        "pattern": "global x; x = ...",
+        "severity": "High",
+        "auto_fixable": false,
+        "fix_strategy": "remove_global_state",
+        "risk_level": "High",
+        "reason": "Global state kills parallelism and determinism"
+      },
+      "context": "global _REGISTRY_CACHE",
+      "file": "v13\\AEGIS\\governance\\model_registry.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 4,
+      "col": 0,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Testing imports...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 6,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing config...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 9,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Config imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 11,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing models...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 14,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Models imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 16,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing dependencies...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 19,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Dependencies imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 21,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing cycles...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 24,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Cycles imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 26,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing storage...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 29,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Storage imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 31,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Importing auth...')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 34,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Auth imported.')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 37,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print(f'ImportError: {e}')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 39,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print(f'Error: {e}')",
+      "file": "v13\\atlas\\test_import.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 41,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.t",
+      "file": "v13\\atlas\\atlas_platform\\src\\secure_chat\\storage\\ipfs_storage.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 18,
+      "col": 48,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "0.0",
+      "file": "v13\\atlas\\backend\\lib\\intelligence\\schema.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 19,
+      "col": 27,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "1.0",
+      "file": "v13\\atlas\\backend\\lib\\intelligence\\agents\\bounty.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 18,
+      "col": 27,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "1.0",
+      "file": "v13\\atlas\\backend\\lib\\intelligence\\agents\\governance.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 13,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Locked & Loaded: Verifying ATLAS v19 Phase 4 (Intelligence)...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_intelligence_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 14,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Locked & Loaded: Verifying ATLAS v20 Phase 2 (IPFS)...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_ipfs_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 17,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('\\n[1] Connecting to IPFS Daemon...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_ipfs_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 12,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Locked & Loaded: Verifying ATLAS v20 Phase 3 (P2P)...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_p2p_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 15,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('\\n[1] Starting Local Nodes...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_p2p_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 15,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Locked & Loaded: Verifying ATLAS v20 Trust Layer...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_trust_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 18,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('\\n[1] Testing TrustedEnvelope...')",
+      "file": "v13\\atlas\\backend\\scripts\\verify_trust_layer.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 11,
+      "col": 8,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Error: ascon module not found')",
+      "file": "v13\\atlas\\scripts\\test_crypto_empty_ad_py.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 14,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('--- Python Envelope Generator ---')",
+      "file": "v13\\atlas\\scripts\\verify_envelope_parity.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 10,
+      "col": 51,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "10.0",
+      "file": "v13\\atlas\\src\\lib\\cycles.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 12,
+      "col": 23,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "0.05",
+      "file": "v13\\atlas\\src\\lib\\cycles.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 17,
+      "col": 11,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "450.0",
+      "file": "v13\\atlas\\src\\lib\\cycles.py"
+    },
+    {
+      "type": "FORBIDDEN_UUID",
+      "line": 27,
+      "col": 28,
+      "rule": {
+        "code": "FORBIDDEN_UUID",
+        "name": "Random UUID",
+        "pattern": "uuid.uuid4()",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "replace_with_deterministic_id",
+        "risk_level": "Medium",
+        "reason": "Non-deterministic; use sequential or derived IDs"
+      },
+      "context": "uuid.uuid4()",
+      "file": "v13\\atlas\\src\\lib\\cycles.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 41,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self._session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.t",
+      "file": "v13\\atlas\\src\\secure_chat\\storage\\ipfs_storage.py"
+    },
+    {
+      "type": "MUTATION_GLOBAL",
+      "line": 31,
+      "col": 4,
+      "rule": {
+        "code": "MUTATION_GLOBAL",
+        "name": "Global State Mutation",
+        "pattern": "global x; x = ...",
+        "severity": "High",
+        "auto_fixable": false,
+        "fix_strategy": "remove_global_state",
+        "risk_level": "High",
+        "reason": "Global state kills parallelism and determinism"
+      },
+      "context": "global _LN2_CACHE",
+      "file": "v13\\libs\\CertifiedMath.py"
+    },
+    {
+      "type": "NONDETERMINISTIC_ITERATION",
+      "line": 37,
+      "col": 12,
+      "rule": {
+        "code": "NONDETERMINISTIC_ITERATION",
+        "name": "Non-deterministic Iteration",
+        "pattern": "for x in dict/set (unordered)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "wrap_with_sorted",
+        "risk_level": "Low",
+        "reason": "Dict/set iteration order non-deterministic; use sorted()"
+      },
+      "context": "for k in data.keys():\n    if not isinstance(k, (str, int)):\n        raise TypeEr",
+      "file": "v13\\libs\\pqc\\CanonicalSerializer.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 50,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.processed_events_count += len(events)",
+      "file": "v13\\policy\\value_node_replay.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 16,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Generating AES GUT Evidence...')",
+      "file": "v13\\scripts\\generate_aes_gut_evidence.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 18,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Running Full Stack Determinism Test...')",
+      "file": "v13\\scripts\\generate_full_stack_evidence.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 29,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print(f'[{det_time_isoformat()}] Running {name}...')",
+      "file": "v13\\scripts\\nightly_e2e.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 15,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('>> Running Zero-Sim Test Suite...')",
+      "file": "v13\\scripts\\run_zero_sim_suite.py"
+    },
+    {
+      "type": "FORBIDDEN_PRINT",
+      "line": 19,
+      "col": 4,
+      "rule": {
+        "code": "FORBIDDEN_PRINT",
+        "name": "Print Statement",
+        "pattern": "print(...)",
+        "severity": "High",
+        "auto_fixable": true,
+        "fix_strategy": "remove_or_convert_to_logging",
+        "risk_level": "Low",
+        "reason": "Output non-determinism; replace with logging or remove"
+      },
+      "context": "print('Warning: Running in standalone mode, some checks will be mocked')",
+      "file": "v13\\scripts\\verify_aegis_boundaries.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 23,
+      "col": 29,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "100.0",
+      "file": "v13\\services\\community\\manager.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 23,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.passed += 1",
+      "file": "v13\\tests\\phase3_audit_suite.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 25,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.failed += 1",
+      "file": "v13\\tests\\phase3_audit_suite.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 18,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.query_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 23,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.get_metadata_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "FORBIDDEN_HASH",
+      "line": 24,
+      "col": 261,
+      "rule": {
+        "code": "FORBIDDEN_HASH",
+        "name": "Hash Function",
+        "pattern": "hash(...)",
+        "severity": "High",
+        "auto_fixable": false,
+        "fix_strategy": "manual_review_context_dependent",
+        "risk_level": "High",
+        "reason": "Non-deterministic across runs; requires manual refactoring"
+      },
+      "context": "hash(content_id)",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 34,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.get_content_count += 1",
+      "file": "v13\\tests\\test_real_storage_wiring.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 19,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.call_count += 1",
+      "file": "v13\\tests\\test_token_state_extension.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 55,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.inside_function = True",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 56,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.function_depth += 1",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 58,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.function_depth -= 1",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 60,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.inside_function = False",
+      "file": "v13\\tools\\phase3_batch5_phase2_singleton_analysis.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 29,
+      "col": 8,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.exit_code = 302",
+      "file": "v13\\tools\\test_cir302_handler.py"
+    }
+  ]
+}

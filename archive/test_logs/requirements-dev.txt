@@ -1,9 +1,0 @@
--r requirements.txt
-pytest-asyncio>=0.21.0
-pytest-cov>=4.1.0
-pytest-mock>=3.11.0
-bandit>=1.7.5
-detect-secrets>=1.4.0
-semgrep>=1.40.0
-# Install the package in editable mode if setup.cfg/py exists
--e .

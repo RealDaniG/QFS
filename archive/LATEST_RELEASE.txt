@@ -1,6 +1,0 @@
-CORE=v17.0.0-beta-governance-bounties
-BACKBONE=v18.0.0-alpha-distributed-fabric
-DATE=2025-12-20
-STATUS=ALPHA_BACKBONE
-LAYERS=0,A,B,C,D
-NOTE=v17 F-Layer + v18 Distributed Core (Phase 1-3)

@@ -38,18 +38,15 @@ class AEGISModelConfig(BaseModel):
     )
 
 
-_REGISTRY_CACHE: Dict[str, AEGISModelConfig] = {}
+from functools import lru_cache
 
 
+@lru_cache(maxsize=1)
 def _load_registry() -> Dict[str, AEGISModelConfig]:
     """
     Load the model registry from the JSON file.
-    Memoized in _REGISTRY_CACHE.
+    Cached via lru_cache (memoization).
     """
-    global _REGISTRY_CACHE
-    if _REGISTRY_CACHE:
-        return _REGISTRY_CACHE
-
     registry_path = Path(__file__).with_name("aegis_model_registry.json")
     if not registry_path.exists():
         # Fallback/Bootstrap if file doesn't exist yet
@@ -58,16 +55,15 @@ def _load_registry() -> Dict[str, AEGISModelConfig]:
     try:
         data = json.loads(registry_path.read_text(encoding="utf-8"))
         # Store keys as "model_id@version"
-        # Sort data for deterministic processing order if needed, though dicts are insertion ordered in modern python
+        # Sort data for deterministic processing order
         sorted_data = sorted(data, key=lambda x: (x["model_id"], x["version"]))
 
         configs = {
             f"{c['model_id']}@{c['version']}": AEGISModelConfig(**c)
             for c in sorted_data
         }
-        _REGISTRY_CACHE = configs
-        return _REGISTRY_CACHE
-    except Exception as e:
+        return configs
+    except Exception:
         # Error loading registry - return empty dict (bootstrap mode)
         return {}
 
