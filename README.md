@@ -105,37 +105,29 @@ Most digital platforms suffer from structural issues:
 
 ---
 
-## 📈 Current Status: v17.0.0-beta (Full Feature Complete)
+## 📈 Current Status: v20.0.0-alpha (Integration Complete)
 
-### v17 — Governance, Bounties, Social & Advisory
+### v20 — Proof of Contribution & Identity Sovereignty (Current)
 
-**Engine Layers (F-Layer):**
+The V20 cycle delivers the specialized **Retro Rewards** engine and **GitHub Identity** binding, completing the transition to a fully verifiable contribution economy.
 
-- ✅ **Governance**: Deterministic proposals, voting, execution, and quorum logic.
-- ✅ **Bounties**: Lifecycle management, contribution tracking, and reward allocation.
-- ✅ **Social**: Thread-binding, dispute lifecycle, and profile history.
+- ✅ **Unified Auth**: Ascon-protected v18.5 session tokens.
+- ✅ **GitHub Identity**: Two-way binding (`/api/auth/bind-github`) with `identity_link.github` events.
+- ✅ **Retro Rewards**: Deterministic reward computation for past contributions.
+- ✅ **Zero-Sim**: Full integer-math compliance for all reward logic.
 
-**User Visibility Layers (Projection):**
-
-- ✅ **Timelines**: Human-readable governance and bounty flows.
-- ✅ **Explanations**: Plain-text summaries linked to cryptographic PoE.
-- ✅ **Advisory**: Agent signals (Layer D) overlaid as "Suggestions" or "Flags".
-
-**Verification:**
-
-- ✅ **Zero-Sim**: Enforced determinism in CI.
-- ✅ **PoE**: Full EvidenceBus logging for replay.
-
-**Status:** Beta (Ready for Testing)
-
-### v18 — Real Wallet & Cryptographic Auth
+### v18 — Distributed Fabric (Backbone)
 
 - ✅ **Real Web3 wallet connection** (RainbowKit + wagmi)
 - ✅ **Cryptographic auth** (nonce → sign → verify → session token)
 - ✅ **Internal credit economy** (non-transferable FLX)
-- ✅ **Distributed Interface**: DistributedFeed and WalletInterface live
-- ✅ **Secure Infrastructure**: AuthGate-protected views and route guards
-- ✅ **Hardened Core**: Post-HSMF Proofs and Zero-Sim Scanner (v13.5).
+- ✅ **secure Infrastructure**: AuthGate-protected views and route guards
+
+### v17 — Governance & Bounties (F-Layer)
+
+- ✅ Deterministic proposal creation and state reconstruction
+- ✅ Vote casting with validation and eligibility checks
+- ✅ Bounty lifecycle and reward allocation
 
 ### For Users
 
@@ -367,11 +359,11 @@ The V20 cycle (skipping v19 to align with major Fabric release) delivers **Proof
 - [Design and Deployment](docs/V18_DESIGN_AND_DEPLOYMENT.md)
 - [Zero-Sim Automation](docs/ZERO_SIM_AUTOMATION.md)
 
-### v17.0.0-beta — Governance & Bounty F-Layer
+### v17.0.0 — Governance & Bounty F-Layer (Completed)
 
 Determinism-locked governance and bounty management with full PoE logging. Platform feature complete for single-node operation.
 
-### v18.0.0-alpha — Distributed Fabric Backbone (Current)
+### v18.0.0 — Distributed Fabric Backbone (Completed)
 
 Consensus-driven Tier A backbone complete. Deterministic replication (Raft), PQC batch anchoring, and integrated EvidenceBus wiring achieved.
 
