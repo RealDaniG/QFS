@@ -251,9 +251,11 @@ class ProposalEngine:
         # Capture before state
         raw_before_state = {
             "proposal_status": prop.status.value,
-            "registry_state": registry.get_all_parameters()
-            if hasattr(registry, "get_all_parameters")
-            else {},
+            "registry_state": (
+                registry.get_all_parameters()
+                if hasattr(registry, "get_all_parameters")
+                else {}
+            ),
         }
         before_state = self._to_poe_serializable(raw_before_state)
 
@@ -278,9 +280,11 @@ class ProposalEngine:
                 # Capture after state
                 raw_after_state = {
                     "proposal_status": prop.status.value,
-                    "registry_state": registry.get_all_parameters()
-                    if hasattr(registry, "get_all_parameters")
-                    else {},
+                    "registry_state": (
+                        registry.get_all_parameters()
+                        if hasattr(registry, "get_all_parameters")
+                        else {}
+                    ),
                 }
                 print(
                     f"DEBUG: Before State Registry Type: {type(raw_before_state['registry_state'])}",
