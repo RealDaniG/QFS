@@ -6,7 +6,7 @@ Zero-Sim compliant: no direct DB writes, deterministic filtering.
 """
 
 from typing import Dict, List, Optional
-from datetime import datetime
+from v13.libs.BigNum128 import BigNum128
 
 from v15.evidence.bus import EvidenceBus
 
@@ -50,12 +50,20 @@ class AdminDashboard:
     def get_bounty_dashboard(self, limit: int = 50) -> Dict:
         """Get high-level bounty dashboard view."""
         bounties = self.bounty_proj.list_bounties(limit)
+
+        total_bn = BigNum128.zero()
+        for b in bounties:
+            if b["status"] == "open":
+                try:
+                    val_str = b["reward"].split()[0]
+                    total_bn += BigNum128.from_string(val_str)
+                except:
+                    pass
+
         return {
             "bounties": bounties,
             "count": len(bounties),
-            "total_active_rewards": sum(
-                float(b["reward"].split()[0]) for b in bounties if b["status"] == "open"
-            ),
+            "total_active_rewards": str(total_bn),
         }
 
     def get_bounty_detail(self, bounty_id: str) -> Optional[Dict]:

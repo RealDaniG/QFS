@@ -8,8 +8,8 @@ Supports JSON and Prometheus export formats.
 from dataclasses import dataclass, asdict
 from typing import Dict, List, Optional
 import json
-import time
 from pathlib import Path
+from v13.libs.BigNum128 import BigNum128
 
 
 @dataclass
@@ -58,10 +58,12 @@ class MetricsCollector:
             latency_ms: Processing latency in milliseconds
             token_amount: Token amount emitted (as string)
             token_type: CHR or FLX
-            timestamp: Event timestamp (defaults to now)
+            timestamp: Event timestamp (defaults to 0 for Zero-Sim)
         """
         if timestamp is None:
-            timestamp = int(time.time())
+            # Zero-Sim requires deterministic timestamp entry.
+            # Default to 0 if not provided. Use logical clocks in production.
+            timestamp = 0
 
         # Create metric point
         metric = MetricPoint(
@@ -94,8 +96,8 @@ class MetricsCollector:
 
         # Add token amounts (simplified - would use BigNum128 in production)
         try:
-            current = float(agg["token_emitted"])
-            new = float(token_amount)
+            current = BigNum128.from_string(agg["token_emitted"])
+            new = BigNum128.from_string(token_amount)
             agg["token_emitted"] = str(current + new)
         except ValueError:
             pass

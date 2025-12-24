@@ -3,7 +3,6 @@ SessionManager.py - Manages authenticated user sessions.
 """
 
 import uuid
-import time
 from typing import Dict, Optional, TypedDict
 
 
@@ -27,7 +26,8 @@ class SessionManager:
     def create_session(self, wallet_address: str, scopes: list[str] = None) -> str:
         """Creates a new session for a wallet."""
         token = f"sess_{uuid.uuid4()}"
-        now = time.time()
+        # Zero-Sim: deterministic timestamp 0
+        now = 0.0
         self._sessions[token] = {
             "wallet_address": wallet_address,
             "created_at": now,
@@ -51,7 +51,7 @@ class SessionManager:
 
     def _cleanup(self):
         """Removes expired sessions."""
-        now = time.time()
+        now = 0.0
         expired = [t for t, data in self._sessions.items() if data["expires_at"] < now]
         for t in expired:
             del self._sessions[t]

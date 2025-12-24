@@ -7,17 +7,17 @@ All state transitions are pure functions consuming EvidenceBus history.
 
 from typing import Dict, List, Optional, Literal, Any
 from pydantic import BaseModel, Field
-from datetime import datetime
+from v13.libs.BigNum128 import BigNum128
 
 
 class GovernanceConfig(BaseModel):
     """Configuration for governance parameters."""
 
-    quorum_threshold: float = Field(
-        ..., ge=0.0, le=1.0, description="Minimum participation rate (0-1)"
+    quorum_threshold: str = Field(
+        ..., description="Minimum participation rate (0-1) as BigNum128 decimal string"
     )
-    approval_threshold: float = Field(
-        ..., ge=0.0, le=1.0, description="Minimum approval rate (0-1)"
+    approval_threshold: str = Field(
+        ..., description="Minimum approval rate (0-1) as BigNum128 decimal string"
     )
     voting_period_seconds: int = Field(
         ..., gt=0, description="Duration of voting period"
@@ -74,8 +74,8 @@ class Vote(BaseModel):
     voter_wallet: str = Field(..., description="Wallet address of voter")
 
     choice: str = Field(..., description="Vote choice (approve/reject/abstain)")
-    weight: float = Field(
-        default=1.0, ge=0.0, description="Vote weight (e.g., token-weighted)"
+    weight: str = Field(
+        default="1.000000000000000000", description="Vote weight (BigNum128 string)"
     )
 
     timestamp: int = Field(..., description="Deterministic timestamp")
@@ -89,7 +89,7 @@ class Vote(BaseModel):
                 "proposal_id": "prop_space123_1703001234",
                 "voter_wallet": "0xdef...",
                 "choice": "approve",
-                "weight": 1.0,
+                "weight": "1.000000000000000000",
                 "timestamp": 1703002000,
             }
         }
@@ -103,11 +103,19 @@ class ProposalState(BaseModel):
 
     # Computed fields
     total_votes: int = Field(default=0, description="Total number of votes cast")
-    total_weight: float = Field(default=0.0, description="Total vote weight")
+    total_weight: str = Field(
+        default="0.000000000000000000", description="Total vote weight"
+    )
 
-    approve_weight: float = Field(default=0.0, description="Weight of approve votes")
-    reject_weight: float = Field(default=0.0, description="Weight of reject votes")
-    abstain_weight: float = Field(default=0.0, description="Weight of abstain votes")
+    approve_weight: str = Field(
+        default="0.000000000000000000", description="Weight of approve votes"
+    )
+    reject_weight: str = Field(
+        default="0.000000000000000000", description="Weight of reject votes"
+    )
+    abstain_weight: str = Field(
+        default="0.000000000000000000", description="Weight of abstain votes"
+    )
 
     # Advisory signals (from agent layer)
     advisory_signals: List[Dict[str, Any]] = Field(
@@ -117,11 +125,41 @@ class ProposalState(BaseModel):
     def compute_tallies(self):
         """Compute vote tallies deterministically."""
         self.total_votes = len(self.votes)
-        self.total_weight = sum(v.weight for v in self.votes)
 
-        self.approve_weight = sum(v.weight for v in self.votes if v.choice == "approve")
-        self.reject_weight = sum(v.weight for v in self.votes if v.choice == "reject")
-        self.abstain_weight = sum(v.weight for v in self.votes if v.choice == "abstain")
+        # Use BigNum128 for summation
+        total_bn = sum(
+            (BigNum128.from_string(v.weight) for v in self.votes), BigNum128.zero()
+        )
+        self.total_weight = str(total_bn)
+
+        approve_bn = sum(
+            (
+                BigNum128.from_string(v.weight)
+                for v in self.votes
+                if v.choice == "approve"
+            ),
+            BigNum128.zero(),
+        )
+        reject_bn = sum(
+            (
+                BigNum128.from_string(v.weight)
+                for v in self.votes
+                if v.choice == "reject"
+            ),
+            BigNum128.zero(),
+        )
+        abstain_bn = sum(
+            (
+                BigNum128.from_string(v.weight)
+                for v in self.votes
+                if v.choice == "abstain"
+            ),
+            BigNum128.zero(),
+        )
+
+        self.approve_weight = str(approve_bn)
+        self.reject_weight = str(reject_bn)
+        self.abstain_weight = str(abstain_bn)
 
 
 class ExecutionRecord(BaseModel):
@@ -137,9 +175,9 @@ class ExecutionRecord(BaseModel):
 
     # Vote statistics
     total_votes: int = Field(..., description="Total votes cast")
-    total_weight: float = Field(..., description="Total vote weight")
-    approve_weight: float = Field(..., description="Approve vote weight")
-    reject_weight: float = Field(..., description="Reject vote weight")
+    total_weight: str = Field(..., description="Total vote weight")
+    approve_weight: str = Field(..., description="Approve vote weight")
+    reject_weight: str = Field(..., description="Reject vote weight")
 
     # Execution details
     effects: Optional[Dict[str, Any]] = Field(

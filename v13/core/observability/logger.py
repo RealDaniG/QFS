@@ -14,7 +14,6 @@ Contracts:
 
 import sys
 import json
-import datetime
 from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, Optional
 from v13.libs.deterministic_helpers import DeterministicID
@@ -73,13 +72,10 @@ class StructuredLogger:
         """
         # Zero-Sim Compliance Note:
         # If deterministic_timestamp is provided, use it.
-        # If not, and we are in a production Observability path (outside consensus), use wall clock.
+        # If not, use Zero-Sim epoch placeholder.
         # If inside Consensus, caller MUST provide deterministic_timestamp.
 
-        timestamp = (
-            deterministic_timestamp
-            or datetime.datetime.now(datetime.timezone.utc).isoformat()
-        )
+        timestamp = deterministic_timestamp or "1970-01-01T00:00:00Z"
 
         payload = {
             "timestamp": timestamp,

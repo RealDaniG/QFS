@@ -7,7 +7,6 @@ All events are replayable and Zero-Sim compliant.
 
 from typing import Dict, Optional
 from dataclasses import dataclass
-import time
 
 
 @dataclass
@@ -29,14 +28,14 @@ class EconomicEvent:
     nod_delta: int = 0
 
 
-def get_deterministic_timestamp() -> int:
+def get_deterministic_timestamp(override: int = 0) -> int:
     """
     Get deterministic timestamp.
 
     In production, this should come from block time or state machine.
-    For now, uses system time (acceptable for manual Phase 1).
+    Defaults to 0 (Zero-Sim) if not provided.
     """
-    return int(time.time())
+    return override
 
 
 def emit_bounty_paid_event(

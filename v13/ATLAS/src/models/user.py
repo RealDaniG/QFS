@@ -2,7 +2,6 @@
 User model for ATLAS authentication and authorization.
 """
 
-from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
 
@@ -15,12 +14,9 @@ class User(BaseModel):
     email: EmailStr
     is_active: bool = True
     is_verified: bool = False
-    created_at: Optional[datetime] = None
-    last_login: Optional[datetime] = None
+    created_at: Optional[str] = None
+    last_login: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
-
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat() if v else None}
 
 
 class UserCreate(BaseModel):
@@ -48,6 +44,6 @@ class UserResponse(BaseModel):
     email: EmailStr
     is_active: bool
     is_verified: bool
-    created_at: Optional[datetime] = None
-    last_login: Optional[datetime] = None
+    created_at: Optional[str] = None
+    last_login: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None

@@ -46,7 +46,7 @@ class InteractionEdge:
     user_id: str
     content_id: str
     interaction_type: str
-    weight: float = 1
+    weight: int = 1
 
 
 @dataclass(frozen=True)
@@ -73,7 +73,7 @@ class GovernanceEdge:
 class ValueGraphRef:
     """Reference value graph for V13.8 value-node and content-NFT semantics.
 
-    This graph is built purely from an ordered list of event dictionaries.
+    This graph is built purely from an ordered list of events.
     It is deterministic and side-effect-free, suitable for tests and
     replay-based analytics.
     """
@@ -139,7 +139,12 @@ class ValueGraphRef:
             user_id = event["user_id"]
             content_id = event["content_id"]
             interaction_type = event.get("interaction_type", "generic")
-            weight = float(event.get("weight", 1))
+            # Zero-Sim: Forbidden float(), assume integer weight or 1
+            weight_raw = event.get("weight", 1)
+            try:
+                weight = int(weight_raw)
+            except:
+                weight = 1
 
             user_node = self._ensure_user(user_id)
             self._ensure_content(content_id, creator_id=event.get("creator_id", ""))
@@ -169,17 +174,13 @@ class ValueGraphRef:
                     # Try to extract amount
                     amount_atr = 0
                     if isinstance(reward_data, dict):
-                        val = reward_data.get("final_reward", "0")
-                        # safe int conversion from likely string float
+                        val = str(reward_data.get("final_reward", "0"))
+                        # safe int conversion from likely string float "100.0" -> 100
                         try:
-                            amount_atr = int(float(val))
+                            # Split on '.' to handle "100.0" without float()
+                            amount_atr = int(val.split(".")[0])
                         except:
                             amount_atr = 0
-
-                    try:
-                        amount_atr = int(float(val))
-                    except:
-                        amount_atr = 0
 
                     user_node = self._ensure_user(user_id)
                     user_node.total_rewards_atr += amount_atr
@@ -193,8 +194,6 @@ class ValueGraphRef:
             content_id = event.get("content_id")
 
             # Prefer explicit amount_atr if present; otherwise derive it
-            # from token/amount when token == "ATR". Other tokens are
-            # ignored for this ATR-focused reference.
             if "amount_atr" in event:
                 amount_atr = int(event["amount_atr"])
             else:

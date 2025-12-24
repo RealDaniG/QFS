@@ -5,7 +5,6 @@ Generates schema-compliant Proof-of-Execution artifacts
 
 import json
 import hashlib
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional
 import subprocess
@@ -89,6 +88,9 @@ class PoEArtifactGenerator:
             self._canonical_serialize(execution_trace).encode()
         )
 
+        # Zero-Sim: deterministic timestamp
+        timestamp_str = "2024-01-01T00:00:00Z"
+
         # Build artifact (without signatures first)
         artifact = {
             "poe_version": self.poe_version,
@@ -108,13 +110,13 @@ class PoEArtifactGenerator:
             "signatures": {
                 "nod_address": nod_address,
                 "dilithium_signature": "base64:PLACEHOLDER",  # TODO: Real PQC signature
-                "signature_timestamp": datetime.utcnow().isoformat() + "Z",
+                "signature_timestamp": timestamp_str,
             },
             "runtime_info": {
                 "code_commit_hash": self._get_commit_hash(),
                 "build_hash": "sha3_512:PLACEHOLDER",  # TODO: Real build hash
                 "deterministic_session_timestamp_hash": self._sha3_512_hash(
-                    datetime.utcnow().isoformat().encode()
+                    timestamp_str.encode()
                 ),
                 "python_version": "3.11.7",
                 "certifiedmath_version": "1.0.0",

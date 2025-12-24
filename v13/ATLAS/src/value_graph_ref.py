@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
+from v13.libs.BigNum128 import BigNum128
 
 
 @dataclass
@@ -46,7 +47,7 @@ class InteractionEdge:
     user_id: str
     content_id: str
     interaction_type: str
-    weight: float = 1
+    weight: str = "1"  # Decimal string of BigNum128
 
 
 @dataclass(frozen=True)
@@ -139,7 +140,10 @@ class ValueGraphRef:
             user_id = event["user_id"]
             content_id = event["content_id"]
             interaction_type = event.get("interaction_type", "generic")
-            weight = float(event.get("weight", 1))
+
+            # Use BigNum128 for deterministic weight
+            weight_bn = BigNum128.from_string(str(event.get("weight", 1)))
+            weight = str(weight_bn)
 
             user_node = self._ensure_user(user_id)
             self._ensure_content(content_id, creator_id=event.get("creator_id", ""))
@@ -162,24 +166,16 @@ class ValueGraphRef:
             if "rewards" in event:
                 for wallet_id, reward_data in sorted(event["rewards"].items()):
                     user_id = wallet_id
-                    # Process each reward entry
-                    # Note: ValueGraphRef is a simplified reference, so we'll just extract the total
-                    # In a full impl, we'd parse the breakdown
 
-                    # Try to extract amount
                     amount_atr = 0
                     if isinstance(reward_data, dict):
                         val = reward_data.get("final_reward", "0")
-                        # safe int conversion from likely string float
                         try:
-                            amount_atr = int(float(val))
+                            # Use BigNum128 to parse, then convert to int for reference tracking
+                            bn = BigNum128.from_string(str(val))
+                            amount_atr = bn.to_int()
                         except:
                             amount_atr = 0
-
-                    try:
-                        amount_atr = int(float(val))
-                    except:
-                        amount_atr = 0
 
                     user_node = self._ensure_user(user_id)
                     user_node.total_rewards_atr += amount_atr
@@ -249,4 +245,3 @@ class ValueGraphRef:
         for ev in sorted(events, key=lambda x: json.dumps(x, sort_keys=True)):
             self.apply_event(ev)
         return self
-

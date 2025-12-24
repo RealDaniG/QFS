@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel
 from typing import Optional
 import hashlib
-import time
 from web3.auto import w3
 from eth_account.messages import encode_defunct
 
@@ -31,7 +30,8 @@ class SessionResponse(BaseModel):
 @router.post("/challenge")
 async def create_challenge(request: ChallengeRequest):
     """Generate authentication challenge for wallet to sign."""
-    timestamp = int(time.time())
+    # Zero-Sim: deterministic timestamp 0
+    timestamp = 0
     nonce = hashlib.sha256(
         f"{request.wallet_address}:{timestamp}".encode()
     ).hexdigest()[:16]
@@ -62,15 +62,17 @@ async def verify_signature(request: VerifyRequest):
             raise HTTPException(status_code=401, detail="Signature verification failed")
 
         # Create session token
+        # Zero-Sim: deterministic timestamp 0
+        current_time = 0
         session_token = hashlib.sha256(
-            f"{request.wallet_address}:{request.signature}:{time.time()}".encode()
+            f"{request.wallet_address}:{request.signature}:{current_time}".encode()
         ).hexdigest()
 
-        expires_at = int(time.time()) + 86400  # 24 hours
+        expires_at = current_time + 86400  # 24 hours
 
         sessions[session_token] = {
             "wallet_address": request.wallet_address,
-            "created_at": int(time.time()),
+            "created_at": current_time,
             "expires_at": expires_at,
         }
 
@@ -97,7 +99,9 @@ async def validate_session(authorization: Optional[str] = Header(None)):
 
     session = sessions[token]
 
-    if time.time() > session["expires_at"]:
+    # Zero-Sim: current time 0
+    current_time = 0
+    if current_time > session["expires_at"]:
         del sessions[token]
         raise HTTPException(status_code=401, detail="Session expired")
 

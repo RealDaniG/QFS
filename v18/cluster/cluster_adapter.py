@@ -5,7 +5,7 @@ Bridges ATLAS application writes to the distributed Raft-backed cluster.
 Handles leader discovery, request forwarding, retries, and error handling.
 """
 
-import time
+import threading
 import requests
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
@@ -42,8 +42,8 @@ class TxResult:
     commit_index: int
     """Raft log index of the committed entry."""
 
-    timestamp: float
-    """Commit timestamp."""
+    timestamp: int
+    """Commit timestamp (Logical)."""
 
     error_code: Optional[str] = None
     """Error code if commit failed."""
@@ -70,7 +70,7 @@ class BountyCommand:
     action_type: str  # 'create', 'claim', 'pay'
     wallet_address: str
     bounty_id: Optional[str] = None
-    amount: Optional[float] = None
+    amount: Optional[str] = None  # BigNum128 decimal string
     bounty_data: Optional[Dict[str, Any]] = None
 
 
@@ -360,7 +360,7 @@ class V18ClusterAdapter:
                         self._leader_cache = None
                         attempt += 1
                         if attempt < self._max_retries:
-                            time.sleep(
+                            threading.Event().wait(
                                 self._retry_delays[
                                     min(attempt - 1, len(self._retry_delays) - 1)
                                 ]
@@ -381,7 +381,7 @@ class V18ClusterAdapter:
                             leader_term=0,
                             leader_node_id="",
                             commit_index=0,
-                            timestamp=time.time(),
+                            timestamp=0,
                             error_code=error_code,
                             error_message=error_message,
                         )
@@ -390,7 +390,7 @@ class V18ClusterAdapter:
                     last_error = error_message
                     attempt += 1
                     if attempt < self._max_retries:
-                        time.sleep(
+                        threading.Event().wait(
                             self._retry_delays[
                                 min(attempt - 1, len(self._retry_delays) - 1)
                             ]
@@ -402,7 +402,7 @@ class V18ClusterAdapter:
                 last_error = "Request timeout"
                 attempt += 1
                 if attempt < self._max_retries:
-                    time.sleep(
+                    threading.Event().wait(
                         self._retry_delays[
                             min(attempt - 1, len(self._retry_delays) - 1)
                         ]
@@ -414,7 +414,7 @@ class V18ClusterAdapter:
                 last_error = str(e)
                 attempt += 1
                 if attempt < self._max_retries:
-                    time.sleep(
+                    threading.Event().wait(
                         self._retry_delays[
                             min(attempt - 1, len(self._retry_delays) - 1)
                         ]

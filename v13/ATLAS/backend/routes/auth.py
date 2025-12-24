@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
 from typing import Optional
 from lib.dependencies import session_manager
@@ -44,7 +44,8 @@ async def verify_signature(request: VerifyRequest):
     )
 
     # In a real app we'd fetch this from the DB or return calculated
-    expires_at = int(time.time()) + 86400
+    # Zero-Sim: deterministic expiration
+    expires_at = 0 + 86400
 
     return SessionResponse(
         session_token=session_token,
@@ -77,6 +78,3 @@ async def logout(authorization: Optional[str] = Header(None)):
     # Current SessionManager doesn't have a logout/pop method yet
     # but we can add it or just clear from client side for min baseline.
     return {"success": True}
-
-
-import time

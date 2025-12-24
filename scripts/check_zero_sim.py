@@ -131,6 +131,8 @@ def main():
     violation_count = 0
     scanned_count = 0
 
+    errors_by_file = {}
+
     for root, dirs, files in os.walk(root_dir):
         # Prune excluded dirs in-place to avoid walking them
         dirs[:] = [d for d in dirs if d not in EXCLUDED_DIRS]
@@ -146,12 +148,32 @@ def main():
             scanned_count += 1
             errors = scan_file(full_path)
             if errors:
-                print(f"\n[FAIL] {os.path.relpath(full_path, root_dir)}")
+                rel_path = os.path.relpath(full_path, root_dir)
+                print(f"\n[FAIL] {rel_path}")
+                file_errors = []
                 for line, msg in errors:
                     print(f"  Line {line}: {msg}")
+                    file_errors.append({"line": line, "message": msg})
+
+                errors_by_file[rel_path] = file_errors
                 violation_count += len(errors)
 
     print(f"\nScanned {scanned_count} files.")
+
+    import json
+
+    with open("zero_sim_report.json", "w") as f:
+        json.dump(
+            {
+                "violation_count": violation_count,
+                "scanned_count": scanned_count,
+                "violations": errors_by_file,
+            },
+            f,
+            indent=2,
+        )
+    print("Report saved to zero_sim_report.json")
+
     if violation_count > 0:
         print(f"FAILED: Found {violation_count} Zero-Sim violations.")
         sys.exit(1)

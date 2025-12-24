@@ -1,13 +1,7 @@
-"""
-V18 Content API Routes
-Integrated with ClusterAdapter for chat/content publishing.
-"""
-
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Optional
 import hashlib
-import time
 from ..dependencies import get_current_wallet
 from v18.cluster import V18ClusterAdapter, ChatCommand, TxResult
 
@@ -41,7 +35,7 @@ class PublishMessageResponse(BaseModel):
     content_hash: str
     committed: bool
     evidence_event_ids: List[str]
-    timestamp: float
+    timestamp: int  # Zero-Sim: int
 
 
 class MessageSummary(BaseModel):
@@ -50,7 +44,7 @@ class MessageSummary(BaseModel):
     sender: str
     content: str
     content_hash: str
-    timestamp: float
+    timestamp: int  # Zero-Sim: int
     reply_to: Optional[str] = None
 
 
@@ -97,7 +91,7 @@ async def publish_message(
         message_id = (
             result.evidence_event_ids[0]
             if result.evidence_event_ids
-            else f"msg_{int(time.time())}"
+            else f"msg_{int(0)}"
         )
 
         return PublishMessageResponse(
@@ -127,7 +121,7 @@ async def get_feed(channel_id: Optional[str] = None, limit: int = 20, offset: in
             sender="0xABC123",
             content="Hello from ATLAS v18!",
             content_hash="abc123...",
-            timestamp=time.time(),
+            timestamp=0,
             reply_to=None,
         )
     ]
@@ -145,7 +139,7 @@ async def get_message(message_id: str):
         sender="0xABC123",
         content="Sample message content",
         content_hash="hash123...",
-        timestamp=time.time(),
+        timestamp=0,
         reply_to=None,
     )
 
@@ -179,4 +173,3 @@ async def add_reaction(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-

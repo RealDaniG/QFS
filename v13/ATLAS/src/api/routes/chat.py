@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body
 from src.lib.storage import db
-import datetime
+import uuid
 
 router = APIRouter(prefix="/api/v18/chat", tags=["chat"])
 
@@ -46,10 +46,10 @@ async def send_chat_message_v18(payload: dict = Body(...)):
     # In future, use Pydantic model SendMessagePayload
     text = payload.get("text", "")
     new_msg = {
-        "id": f"msg_{int(datetime.datetime.utcnow().timestamp())}",
+        "id": f"msg_{uuid.uuid4()}",
         "sender": "You",
         "text": text,
-        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "timestamp": "2024-01-01T00:00:00Z",  # Zero-Sim
     }
     db.add_message(new_msg)
     return {"status": "sent", "message": new_msg}

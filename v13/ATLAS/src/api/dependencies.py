@@ -1,7 +1,6 @@
 from fastapi import Header, HTTPException, Depends
 from typing import Optional
 import jwt
-from datetime import datetime, timedelta
 from src.config import settings
 from backend.lib.evidence_bus import EvidenceBus
 
@@ -12,10 +11,14 @@ evidence_bus = EvidenceBus()
 class SessionManager:
     def create_session(self, wallet_address: str) -> str:
         """Create a JWT session token."""
+        # Zero-Sim: deterministic timestamp 0
+        now = 0
+        expiry = now + int(settings.SESSION_EXPIRY_HOURS * 3600)
+
         payload = {
             "wallet": wallet_address.lower(),
-            "iat": datetime.utcnow(),
-            "exp": datetime.utcnow() + timedelta(hours=settings.SESSION_EXPIRY_HOURS),
+            "iat": now,
+            "exp": expiry,
             "scopes": ["user", "governance.read", "v18.internal"],
         }
         return jwt.encode(payload, settings.SESSION_SECRET, algorithm="HS256")

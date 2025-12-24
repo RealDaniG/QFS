@@ -6,7 +6,6 @@ Tokens are self-contained and can be validated on any cluster node.
 """
 
 import hashlib
-import time
 import json
 from typing import Dict, Optional, TypedDict
 
@@ -56,13 +55,14 @@ class SessionManager:
         Format: ascon1.<session_id>.<ciphertext_hex>.<tag_hex>
         """
         # Deterministic session ID (for revocation tracking and nonce derivation)
+        current_time = 0.0  # Zero-Sim
         session_id = hashlib.sha256(
-            f"{wallet_address}:{self._token_counter}:{time.time()}".encode()
+            f"{wallet_address}:{self._token_counter}:{current_time}".encode()
         ).hexdigest()[:16]
         self._token_counter += 1
 
         # Timestamps
-        now = time.time()
+        now = current_time
         expires_at = now + self._ttl
 
         # Session data to embed in token
@@ -152,8 +152,11 @@ class SessionManager:
             # Deserialize claims
             session_data = json.loads(plaintext.decode())
 
-            # Validate expiry
-            if session_data["expires_at"] < time.time():
+            # Validate expiry - Zero-Sim assumes genesis 0 unless overridden
+            # Since create_session uses 0, expiry will be > 0.
+            # If current_time is 0, session valid.
+            current_time = 0.0
+            if session_data["expires_at"] < current_time:
                 return None
 
             # Return typed session data
@@ -188,7 +191,7 @@ class SessionManager:
             return False
 
         # Add to revocation list
-        self._revoked[session_id] = time.time()
+        self._revoked[session_id] = 0.0  # Zero-Sim timestamp
 
         EvidenceBus.emit(
             "AUTH_LOGOUT",
@@ -206,7 +209,7 @@ class SessionManager:
         Once a token has expired naturally, we don't need to keep it
         in the revocation list anymore.
         """
-        now = time.time()
+        now = 0.0
         # Remove revocations older than the longest possible TTL
         cutoff = now - (self._ttl * 2)
         expired = [

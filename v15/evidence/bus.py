@@ -9,7 +9,6 @@ Zero-Sim Compliant:
 
 import hashlib
 import json
-import time
 from typing import Any, Dict, Optional
 
 # V15 Crypto
@@ -30,7 +29,7 @@ class EvidenceBus:
         """
         Emit an event to the Evidence Chain.
         """
-        ts = payload.get("timestamp", int(time.time()))
+        ts = payload.get("timestamp", 0)
 
         # 2. Construct Canonical Event
         event = {

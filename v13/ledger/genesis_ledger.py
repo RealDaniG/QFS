@@ -2,8 +2,6 @@ import json
 import hashlib
 import os
 import asyncio
-import time
-from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel
 
@@ -11,7 +9,7 @@ from pydantic import BaseModel
 class GenesisEntry(BaseModel):
     wallet: str
     event_type: str
-    value: float = 0
+    value: str = "0"  # BigNum128 string
     metadata: Dict[str, Any] = {}
     timestamp: str = ""
     hash: str = ""
@@ -20,12 +18,8 @@ class GenesisEntry(BaseModel):
     def __init__(self, **data):
         super().__init__(**data)
         if not self.timestamp:
-            # Use integer timestamp for mitigation of microsecond non-determinism
-            self.timestamp = (
-                datetime.fromtimestamp(int(time.time()), tz=timezone.utc)
-                .isoformat()
-                .replace("+00:00", "Z")
-            )
+            # Zero-Sim: Use fixed epoch if not provided
+            self.timestamp = "1970-01-01T00:00:00Z"
 
 
 class GenesisLedger:

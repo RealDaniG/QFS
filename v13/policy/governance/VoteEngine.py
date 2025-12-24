@@ -19,6 +19,8 @@ except ImportError:
         from v13.libs.CertifiedMath import BigNum128
     except ImportError:
         # Mock for standalone testing if needed, or fail hard in prod
+        from decimal import Decimal
+
         class BigNum128:
             @staticmethod
             def from_int(x):
@@ -26,7 +28,7 @@ except ImportError:
 
             @staticmethod
             def from_string(x):
-                return float(x)  # Dangerous but fallback
+                return Decimal(x)  # Fallback to Decimal instead of float
 
 
 class VoteChoice(Enum):

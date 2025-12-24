@@ -1,4 +1,3 @@
-from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field, field_validator
@@ -133,11 +132,9 @@ class AdvisorySignal(BaseModel):
         ..., description="Content ID or User ID being analyzed"
     )
     recommendation: str = Field(..., description="Human-readable insight")
-    confidence_score: float = Field(
-        ..., ge=0.0, le=1.0, description="AI confidence 0-1"
-    )
-    impact_metrics: Dict[str, float] = Field(
-        default_factory=dict, description="Projected impact"
+    confidence_score: str = Field(..., description="AI confidence 0-1 (Decimal string)")
+    impact_metrics: Dict[str, str] = Field(
+        default_factory=dict, description="Projected impact (Decimal strings)"
     )
     pqc_signature: str = Field(
         ..., description="Dilithium signature of the signal payload"

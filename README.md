@@ -12,8 +12,8 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** V18 Integration Complete • Core Hardening (v13.5) • Distributed Fabric (Design Phase)  
-**Current Focus:** Zero-Sim Remediation & Real PQC Integration  
+**Status:** V18 Integration Complete • Core Hardening (v13.5) • Distributed Fabric (Design Phase) • GitHub Identity Integration (In Progress)
+**Current Focus:** Zero-Sim Remediation, Real PQC Integration & GitHub Bounties
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
 [**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
@@ -30,6 +30,7 @@
 | **HSMF × ATLAS** | ✅ Implemented | Wall integration confirmed. |
 | **Governance Proofs** | ✅ Implemented | [Contracts](v13/docs/Governance_MathContracts.md) • [Replay Test](v13/tests/governance/test_governance_replay.py) |
 | **Zero-Sim** | ⚠️ Enforced | [Scanner](scripts/check_zero_sim.py) • [Backlog](v13/docs/ZeroSim_Backlog_v18.md) |
+| **GitHub Identity** | 🚧 Started | [Docs](BOUNTIES.md) • [Importer](tools/github/github_import_contributions.py) |
 | **PQC Anchoring** | 🚧 Stubbed | [Plan](v13/docs/PQC_Anchoring_Plan.md) • [Stub](v13/core/pqc/PQCAnchorService.py) |
 | **Raft / Fabric** | 📝 Planned | [Design Notes](v13/docs/Fabric_Design_Notes.md) (Single-node baseline) |
 

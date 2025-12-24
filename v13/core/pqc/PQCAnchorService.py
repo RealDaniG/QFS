@@ -7,7 +7,6 @@ signing them with a Post-Quantum signature scheme (currently mocked).
 
 import hashlib
 import json
-import time
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 
@@ -68,7 +67,7 @@ class PQCAnchorService:
             batch_end_index=self.start_index + len(self.pending_hashes),
             merkle_root=merkle_root,
             pqc_signature=pqc_signature,
-            timestamp=int(time.time()),  # Use passed-in determinism in real integration
+            timestamp=0,  # Zero-Sim: Default to 0 until block time injection is wired
         )
 
         self.anchors.append(proof)

@@ -7,10 +7,9 @@ Core engine for managing secure chat threads and messages with deterministic beh
 import hashlib
 import hmac
 import json
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, asdict, field
 import logging
-from datetime import datetime, timezone
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -55,7 +54,8 @@ class SecureChatEngine:
         self.atr_engine = atr_engine
         self.threads: Dict[str, Thread] = {}
         self.messages: Dict[str, List[Message]] = {}
-        self._clock = clock or (lambda tz: datetime.now(tz))
+        # Zero-Sim: Default clock returns genesis string
+        self._clock = clock or (lambda: "2024-01-01T00:00:00+00:00")
 
     def _generate_id(self, *parts: str) -> str:
         """Generate a deterministic ID from input parts"""
@@ -85,7 +85,7 @@ class SecureChatEngine:
         creator_id: str,
         participants: List[str],
         metadata: Optional[Dict] = None,
-        timestamp: Optional[datetime] = None,
+        timestamp: Optional[str] = None,
     ) -> Tuple[Thread, List[Dict]]:
         """Create a new secure chat thread"""
         if not creator_id:
@@ -93,8 +93,9 @@ class SecureChatEngine:
         if creator_id not in participants:
             participants = [creator_id] + [p for p in participants if p != creator_id]
         self._validate_participants(participants)
-        timestamp = timestamp or self._clock(timezone.utc)
-        timestamp_str = timestamp.isoformat()
+
+        timestamp_str = timestamp or self._clock()
+
         thread_id = self._generate_id(
             "thread", creator_id, timestamp_str, ",".join(sorted(participants))
         )
@@ -126,7 +127,7 @@ class SecureChatEngine:
         content_type: str = "text/plain",
         message_type: str = "text",
         metadata: Optional[Dict] = None,
-        timestamp: Optional[datetime] = None,
+        timestamp: Optional[str] = None,
     ) -> Tuple[Message, List[Dict]]:
         """Post a message to a thread"""
         if not thread_id:
@@ -142,8 +143,9 @@ class SecureChatEngine:
             raise PermissionError("Sender is not a participant in this thread")
         self._validate_message_content(content)
         content_hash = await self.storage.store(content)
-        timestamp = timestamp or self._clock(timezone.utc)
-        timestamp_str = timestamp.isoformat()
+
+        timestamp_str = timestamp or self._clock()
+
         message_id = self._generate_id(
             "message", thread_id, sender_id, content_hash, timestamp_str
         )
@@ -244,7 +246,7 @@ class SecureChatEngine:
             "user_id": user_id,
             "old_status": old_status.value,
             "new_status": status.value,
-            "timestamp": self._clock(timezone.utc).isoformat(),
+            "timestamp": self._clock(),
             "metadata": metadata or {},
         }
         return (thread, [event])

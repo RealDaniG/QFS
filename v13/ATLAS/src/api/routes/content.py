@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from src.lib.storage import db
-import datetime
 
 # Router for /api/v18/content/...
 router = APIRouter(prefix="/api/v18/content", tags=["content"])
@@ -103,9 +102,7 @@ async def get_content_feed_v18(limit: int = 20):
             "content_hash": f"QmHash{m['id']}",
             "sender": m["sender"],
             "content": m["text"],
-            "timestamp": datetime.datetime.fromisoformat(
-                m["timestamp"].replace("Z", "")
-            ).timestamp(),
+            "timestamp": m["timestamp"],
         }
         for m in messages[-limit:]
     ]

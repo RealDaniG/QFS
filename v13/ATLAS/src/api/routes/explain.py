@@ -13,7 +13,7 @@ import logging
 from v13.policy.value_node_explainability import ValueNodeExplainabilityHelper
 from v13.policy.humor_policy import HumorSignalPolicy, HumorPolicy
 from v13.core.QFSReplaySource import QFSReplaySource
-from v13.core.QFSReplaySource import QFSReplaySource
+from v13.libs.BigNum128 import BigNum128
 from ..dependencies import get_replay_source, get_current_user
 
 logger = logging.getLogger(__name__)
@@ -32,16 +32,16 @@ humor_policy = HumorSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "chronos": float(Fraction(3, 20)),
-            "lexicon": float(Fraction(1, 10)),
-            "surreal": float(Fraction(1, 10)),
-            "empathy": float(Fraction(1, 5)),
-            "critique": float(Fraction(3, 20)),
-            "slapstick": float(Fraction(1, 10)),
-            "meta": float(Fraction(1, 5)),
+            "chronos": BigNum128.from_string("0.15"),
+            "lexicon": BigNum128.from_string("0.10"),
+            "surreal": BigNum128.from_string("0.10"),
+            "empathy": BigNum128.from_string("0.20"),
+            "critique": BigNum128.from_string("0.15"),
+            "slapstick": BigNum128.from_string("0.10"),
+            "meta": BigNum128.from_string("0.20"),
         },
-        max_bonus_ratio=float(Fraction(1, 4)),
-        per_user_daily_cap_atr=1,
+        max_bonus_ratio=BigNum128.from_string("0.25"),
+        per_user_daily_cap_atr=BigNum128.from_int(1),
     )
 )
 artistic_policy = ArtisticSignalPolicy(
@@ -49,14 +49,14 @@ artistic_policy = ArtisticSignalPolicy(
         enabled=True,
         mode="rewarding",
         dimension_weights={
-            "composition": float(Fraction(1, 5)),
-            "originality": float(Fraction(1, 4)),
-            "emotional_resonance": float(Fraction(1, 4)),
-            "technical_execution": float(Fraction(3, 20)),
-            "cultural_context": float(Fraction(3, 20)),
+            "composition": BigNum128.from_string("0.2"),
+            "originality": BigNum128.from_string("0.25"),
+            "emotional_resonance": BigNum128.from_string("0.25"),
+            "technical_execution": BigNum128.from_string("0.15"),
+            "cultural_context": BigNum128.from_string("0.15"),
         },
-        max_bonus_ratio=float(Fraction(3, 10)),
-        per_user_daily_cap_atr=2,
+        max_bonus_ratio=BigNum128.from_string("0.3"),
+        per_user_daily_cap_atr=BigNum128.from_int(2),
     )
 )
 explain_helper = ValueNodeExplainabilityHelper(humor_policy, artistic_policy)

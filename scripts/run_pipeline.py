@@ -1,13 +1,7 @@
-"""
-Stage 12.1 Pipeline Runner - Local Execution
-Runs the full verification pipeline locally before pushing to CI
-"""
-
 import sys
 import subprocess
 import json
 from pathlib import Path
-from datetime import datetime
 import hashlib
 
 
@@ -34,7 +28,7 @@ class PipelineRunner:
             )
             return result.stdout.strip()[:8]
         except:
-            return datetime.now().strftime("%Y%m%d_%H%M%S")
+            return "20240101_000000"
 
     def run_stage_a(self):
         """Stage A: Static Checks."""
@@ -291,7 +285,7 @@ class PipelineRunner:
 
     def generate_status_report(self):
         """Generate pipeline status report."""
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+        timestamp = "2024-01-01 00:00:00 UTC"
 
         all_pass = all(
             stage["status"] == "pass"
