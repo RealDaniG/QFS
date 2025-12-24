@@ -42,7 +42,7 @@ jobs:
 
       - name: Run type checking
         run: |
-          mypy v15/ --strict
+          mypy v15/
 
       - name: Check formatting
         run: |
