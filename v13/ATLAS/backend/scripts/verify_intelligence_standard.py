@@ -1,23 +1,21 @@
 import asyncio
 import sys
 import os
-import time
 
-# Adjust path to backend root
-import sys
-import os
-
+# Add backend to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from lib.trust.envelope import TrustedEnvelope
 from lib.intelligence.agents.governance import GovernanceAnalyzer
 from lib.intelligence.adapters.mock_adapter import MockModelAdapter
-from lib.intelligence.schema import IntelligenceResponse
+
+# Deterministic test timestamp for Zero-Sim compliance
+TEST_TIMESTAMP = 1735689600  # 2025-01-01 00:00:00 UTC
 
 
 async def verify_standardization():
     print("=" * 60)
-    print("ATLAS v19 Intelligence API Standardization Check")
+    print("ATLAS v20 Intelligence API Standardization Check")
     print("=" * 60)
 
     # 1. Setup Mock Adapter with specific response
@@ -29,14 +27,14 @@ async def verify_standardization():
     agent = GovernanceAnalyzer(model_adapter=adapter)
     print(f"✅ Agent initialized: {agent.agent_id} v{agent.version}")
 
-    # 3. Create Test Envelope
+    # 3. Create Test Envelope with deterministic timestamp
     envelope = TrustedEnvelope(
         payload_cid="bafyTest",
         author_address="0x1234567890123456789012345678901234567890",  # Valid length
         signature="0xsig",
         content_type="governance.proposal",
         tags=["economics"],  # Should trigger heuristic OR AI
-        timestamp=int(time.time()),
+        timestamp=TEST_TIMESTAMP,
     )
 
     # 4. Run Analysis

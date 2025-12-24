@@ -1,7 +1,6 @@
 import asyncio
 import sys
 import os
-import json
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -37,15 +36,19 @@ async def verify_intelligence_layer():
         )
 
     # Test Case 2: Fraud Detection (Future Timestamp)
+    # Using deterministic timestamps for Zero-Sim compliance
+    # BASE_TIMESTAMP represents "now" for test purposes
+    # FUTURE_TIMESTAMP is 1 hour ahead, simulating time travel fraud
     print("\n[3] Testing FraudDetector (Time Travel)...")
-    import time
+    BASE_TIMESTAMP = 1735689600  # 2025-01-01 00:00:00 UTC
+    FUTURE_TIMESTAMP = BASE_TIMESTAMP + 3600  # 1 hour in future
 
     future_envelope = TrustedEnvelope(
         payload_cid="QmFraud",
         author_address="0x1234567890123456789012345678901234567890",  # Valid format, malicious intent
         signature="0xSig",
         content_type="atlas.feed.post",
-        timestamp=int(time.time() + 3600),  # 1 hour in future
+        timestamp=FUTURE_TIMESTAMP,  # Future timestamp to trigger fraud detection
         tags=[],
     )
 
