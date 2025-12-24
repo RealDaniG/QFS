@@ -1,8 +1,6 @@
 import asyncio
 import os
 import sys
-import shutil
-import json
 
 # Add backend to path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -13,7 +11,7 @@ from lib.ipfs.store import IPFSContentStore
 
 
 async def verify_ipfs_layer():
-    print("Locked & Loaded: Verifying ATLAS v19 Phase 2 (IPFS)...")
+    print("Locked & Loaded: Verifying ATLAS v20 Phase 2 (IPFS)...")
 
     # 1. Connect to IPFS
     print("\n[1] Connecting to IPFS Daemon...")
@@ -40,7 +38,7 @@ async def verify_ipfs_layer():
         payload_cid="bafy...mockpayload",
         author_address="0x1234567890123456789012345678901234567890",
         signature="0xsignature123",
-        content_type="atlas.test.v19",
+        content_type="atlas.test.v20",
     )
 
     try:

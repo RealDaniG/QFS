@@ -1,7 +1,6 @@
 import asyncio
 import sys
 import os
-import time
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -10,7 +9,7 @@ from lib.trust.envelope import TrustedEnvelope
 
 
 async def verify_p2p_layer():
-    print("Locked & Loaded: Verifying ATLAS v19 Phase 3 (P2P)...")
+    print("Locked & Loaded: Verifying ATLAS v20 Phase 3 (P2P)...")
 
     # 1. Start Two Nodes
     print("\n[1] Starting Local Nodes...")

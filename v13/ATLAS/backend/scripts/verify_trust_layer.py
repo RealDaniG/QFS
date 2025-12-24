@@ -12,7 +12,7 @@ from lib.trust.identity import PeerIdentity, IdentityVerifier
 
 
 async def verify_system():
-    print("Locked & Loaded: Verifying ATLAS v19 Trust Layer...")
+    print("Locked & Loaded: Verifying ATLAS v20 Trust Layer...")
 
     # 1. Envelope Creation
     print("\n[1] Testing TrustedEnvelope...")
@@ -21,7 +21,7 @@ async def verify_system():
         author_address="0x1234567890123456789012345678901234567890",
         signature="0xsignature123",
         content_type="atlas.post.v1",
-        tags=["test", "v19"],
+        tags=["test", "v20"],
     )
     print(f"Envelope Created: {envelope.generate_hash()}")
 
@@ -33,7 +33,7 @@ async def verify_system():
 
     # 3. Storage
     print("\n[3] Testing LocalContentStore...")
-    storage_dir = "./data/v19_test_store"
+    storage_dir = "./data/v20_test_store"
     if os.path.exists(storage_dir):
         shutil.rmtree(storage_dir)
 
