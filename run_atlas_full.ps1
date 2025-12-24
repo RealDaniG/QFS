@@ -51,7 +51,7 @@ function Wait-ForEndpoint($name, $url, $timeoutSec = 60) {
     return $false
 }
 
-Log-Section "SYSTEM" "ATLAS v19 orchestration starting (mode: $(if ($DevMode) {'dev'} else {'strict'}))."
+Log-Section "SYSTEM" "ATLAS V20 orchestration starting (mode: $(if ($DevMode) {'dev'} else {'strict'}))."
 
 do {
     Log-Section "SYSTEM" "=== STARTING ORCHESTRATOR LOOP ==="
