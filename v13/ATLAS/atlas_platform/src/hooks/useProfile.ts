@@ -10,6 +10,7 @@ import { useAuth } from './useAuth';
 import { ProfileService } from '@/lib/profile/service';
 import type { Profile } from '@/types/storage';
 import { Buffer } from 'buffer';
+import { deterministicNow } from '../lib/deterministic';
 
 export function useProfile() {
     const { privateKey, did, isAuthenticated } = useAuth();
@@ -49,8 +50,8 @@ export function useProfile() {
             const newProfile: Profile = {
                 did,
                 displayName: updates.displayName || 'Anonymous',
-                createdAtMs: profile?.createdAtMs || Date.now(),
-                updatedAtMs: Date.now(),
+                createdAtMs: profile?.createdAtMs || deterministicNow(),
+                updatedAtMs: deterministicNow(),
                 version: (profile?.version || 0) + 1,
                 ...updates,
             };

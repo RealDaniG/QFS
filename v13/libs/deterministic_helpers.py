@@ -135,6 +135,28 @@ class DeterministicID:
         """
         return hashlib.sha256(data.encode()).hexdigest()[:32]
 
+    @classmethod
+    def next(cls) -> str:
+        """
+        Generate next deterministic ID.
+        """
+        cls._counter += 1
+        return cls.from_string(f"{cls._seed}-{cls._counter}")
+
+
+def det_random_bytes(n: int) -> bytes:
+    """
+    Deterministic random bytes generator.
+    Replaces os.urandom() usage.
+    """
+    global _prng_state
+    result = bytearray()
+    while len(result) < n:
+        _prng_state = (_prng_state * 1103515245 + 12345) & 0x7FFFFFFF
+        chunk = hashlib.sha256(str(_prng_state).encode()).digest()
+        result.extend(chunk)
+    return bytes(result[:n])
+
 
 def deterministic_hash(value: Any) -> int:
     """

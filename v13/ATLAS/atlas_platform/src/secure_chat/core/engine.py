@@ -3,20 +3,31 @@ ATLAS Secure Chat Engine
 
 Core engine for managing secure chat threads and messages with deterministic behavior.
 """
+
 import hashlib
 import hmac
 import json
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict, field
 import logging
 from enum import Enum
+
 logger = logging.getLogger(__name__)
 
+
+# Zero-Sim: Deterministic clock for default argument
+def deterministic_clock(tz):
+    # Fixed timestamp: 2023-11-14T12:53:20+00:00
+    return datetime(2023, 11, 14, 12, 53, 20, tzinfo=tz)
+
+
 class ThreadStatus(str, Enum):
-    DRAFT = 'DRAFT'
-    ACTIVE = 'ACTIVE'
-    ARCHIVED = 'ARCHIVED'
-    DELETED = 'DELETED'
+    DRAFT = "DRAFT"
+    ACTIVE = "ACTIVE"
+    ARCHIVED = "ARCHIVED"
+    DELETED = "DELETED"
+
 
 @dataclass
 class Thread:
@@ -26,7 +37,8 @@ class Thread:
     created_at: str
     status: ThreadStatus = ThreadStatus.DRAFT
     metadata: Dict = field(default_factory=dict)
-    version: str = '1.0'
+    version: str = "1.0"
+
 
 @dataclass
 class Message:
@@ -36,8 +48,9 @@ class Message:
     content_hash: str
     content_size: int
     timestamp: str
-    message_type: str = 'text'
+    message_type: str = "text"
     metadata: Dict = field(default_factory=dict)
+
 
 class SecureChatEngine:
     MAX_MESSAGE_SIZE = 1 * 1024 * 1024
@@ -48,68 +61,125 @@ class SecureChatEngine:
         self.atr_engine = atr_engine
         self.threads: Dict[str, Thread] = {}
         self.messages: Dict[str, List[Message]] = {}
-        self._clock = clock or (lambda tz: datetime.now(tz))
+        self._clock = clock or deterministic_clock
 
     def _generate_id(self, *parts: str) -> str:
         """Generate a deterministic ID from input parts"""
-        seed = ':'.join((str(p) for p in parts)).encode()
-        return hmac.new(b'ATLAS_SECURE_CHAT', seed, 'sha256').hexdigest()
+        seed = ":".join((str(p) for p in parts)).encode()
+        return hmac.new(b"ATLAS_SECURE_CHAT", seed, "sha256").hexdigest()
 
     def _validate_participants(self, participants: List[str]) -> None:
         """Validate participant list"""
         if not participants:
-            raise ValueError('At least one participant is required')
+            raise ValueError("At least one participant is required")
         if len(participants) > self.MAX_PARTICIPANTS:
-            raise ValueError(f'Maximum {self.MAX_PARTICIPANTS} participants allowed')
+            raise ValueError(f"Maximum {self.MAX_PARTICIPANTS} participants allowed")
         if len(set(participants)) != len(participants):
-            raise ValueError('Duplicate participants not allowed')
+            raise ValueError("Duplicate participants not allowed")
 
     def _validate_message_content(self, content: bytes) -> None:
         """Validate message content"""
         if not content:
-            raise ValueError('Message content cannot be empty')
+            raise ValueError("Message content cannot be empty")
         if len(content) > self.MAX_MESSAGE_SIZE:
-            raise ValueError(f'Message exceeds maximum size of {self.MAX_MESSAGE_SIZE} bytes')
+            raise ValueError(
+                f"Message exceeds maximum size of {self.MAX_MESSAGE_SIZE} bytes"
+            )
 
-    def create_thread(self, creator_id: str, participants: List[str], metadata: Optional[Dict]=None, timestamp: Optional[datetime]=None) -> Tuple[Thread, List[Dict]]:
+    def create_thread(
+        self,
+        creator_id: str,
+        participants: List[str],
+        metadata: Optional[Dict] = None,
+        timestamp: Optional[datetime] = None,
+    ) -> Tuple[Thread, List[Dict]]:
         """Create a new secure chat thread"""
         if not creator_id:
-            raise ValueError('Creator ID is required')
+            raise ValueError("Creator ID is required")
         if creator_id not in participants:
             participants = [creator_id] + [p for p in participants if p != creator_id]
         self._validate_participants(participants)
         timestamp = timestamp or self._clock(timezone.utc)
         timestamp_str = timestamp.isoformat()
-        thread_id = self._generate_id('thread', creator_id, timestamp_str, ','.join(sorted(participants)))
-        thread = Thread(thread_id=thread_id, creator_id=creator_id, participants=participants, created_at=timestamp_str, status=ThreadStatus.ACTIVE, metadata=metadata or {})
+        thread_id = self._generate_id(
+            "thread", creator_id, timestamp_str, ",".join(sorted(participants))
+        )
+        thread = Thread(
+            thread_id=thread_id,
+            creator_id=creator_id,
+            participants=participants,
+            created_at=timestamp_str,
+            status=ThreadStatus.ACTIVE,
+            metadata=metadata or {},
+        )
         self.threads[thread_id] = thread
         self.messages[thread_id] = []
-        event = {'event_type': 'THREAD_CREATED', 'thread_id': thread_id, 'creator_id': creator_id, 'timestamp': timestamp_str, 'participants': participants, 'metadata': thread.metadata}
+        event = {
+            "event_type": "THREAD_CREATED",
+            "thread_id": thread_id,
+            "creator_id": creator_id,
+            "timestamp": timestamp_str,
+            "participants": participants,
+            "metadata": thread.metadata,
+        }
         return (thread, [event])
 
-    async def post_message(self, thread_id: str, sender_id: str, content: bytes, content_type: str='text/plain', message_type: str='text', metadata: Optional[Dict]=None, timestamp: Optional[datetime]=None) -> Tuple[Message, List[Dict]]:
+    async def post_message(
+        self,
+        thread_id: str,
+        sender_id: str,
+        content: bytes,
+        content_type: str = "text/plain",
+        message_type: str = "text",
+        metadata: Optional[Dict] = None,
+        timestamp: Optional[datetime] = None,
+    ) -> Tuple[Message, List[Dict]]:
         """Post a message to a thread"""
         if not thread_id:
-            raise ValueError('Thread ID is required')
+            raise ValueError("Thread ID is required")
         if not sender_id:
-            raise ValueError('Sender ID is required')
+            raise ValueError("Sender ID is required")
         thread = self.threads.get(thread_id)
         if not thread:
-            raise ValueError('Thread not found')
+            raise ValueError("Thread not found")
         if thread.status != ThreadStatus.ACTIVE:
-            raise ValueError(f'Cannot post to {thread.status.value} thread')
+            raise ValueError(f"Cannot post to {thread.status.value} thread")
         if sender_id not in thread.participants:
-            raise PermissionError('Sender is not a participant in this thread')
+            raise PermissionError("Sender is not a participant in this thread")
         self._validate_message_content(content)
         content_hash = await self.storage.store(content)
         timestamp = timestamp or self._clock(timezone.utc)
         timestamp_str = timestamp.isoformat()
-        message_id = self._generate_id('message', thread_id, sender_id, content_hash, timestamp_str)
-        message = Message(message_id=message_id, thread_id=thread_id, sender_id=sender_id, content_hash=content_hash, content_size=len(content), timestamp=timestamp_str, message_type=message_type, metadata={'content_type': content_type, **(metadata or {})})
+        message_id = self._generate_id(
+            "message", thread_id, sender_id, content_hash, timestamp_str
+        )
+        message = Message(
+            message_id=message_id,
+            thread_id=thread_id,
+            sender_id=sender_id,
+            content_hash=content_hash,
+            content_size=len(content),
+            timestamp=timestamp_str,
+            message_type=message_type,
+            metadata={"content_type": content_type, **(metadata or {})},
+        )
         self.messages[thread_id].append(message)
-        if hasattr(self.atr_engine, 'charge_fee'):
-            await self.atr_engine.charge_fee(account_id=sender_id, amount=1, description=f'Secure chat message in thread {thread_id[:8]}...')
-        event = {'event_type': 'MESSAGE_POSTED', 'thread_id': thread_id, 'message_id': message_id, 'sender_id': sender_id, 'content_hash': content_hash, 'content_size': len(content), 'timestamp': timestamp_str, 'message_type': message_type}
+        if hasattr(self.atr_engine, "charge_fee"):
+            await self.atr_engine.charge_fee(
+                account_id=sender_id,
+                amount=1,
+                description=f"Secure chat message in thread {thread_id[:8]}...",
+            )
+        event = {
+            "event_type": "MESSAGE_POSTED",
+            "thread_id": thread_id,
+            "message_id": message_id,
+            "sender_id": sender_id,
+            "content_hash": content_hash,
+            "content_size": len(content),
+            "timestamp": timestamp_str,
+            "message_type": message_type,
+        }
         return (message, [event])
 
     def get_thread(self, thread_id: str, user_id: str) -> Optional[Thread]:
@@ -125,9 +195,19 @@ class SecureChatEngine:
         """List all threads for a user"""
         if not user_id:
             return []
-        return [thread for thread in self.threads.values() if user_id in thread.participants and thread.status != ThreadStatus.DELETED]
+        return [
+            thread
+            for thread in self.threads.values()
+            if user_id in thread.participants and thread.status != ThreadStatus.DELETED
+        ]
 
-    def get_messages(self, thread_id: str, user_id: str, limit: int=100, before: Optional[str]=None) -> List[Message]:
+    def get_messages(
+        self,
+        thread_id: str,
+        user_id: str,
+        limit: int = 100,
+        before: Optional[str] = None,
+    ) -> List[Message]:
         """Get messages from a thread"""
         if not thread_id or not user_id:
             return []
@@ -141,22 +221,36 @@ class SecureChatEngine:
             messages = [m for m in messages if m.timestamp < before]
         return messages[-limit:]
 
-    async def update_thread_status(self, thread_id: str, user_id: str, status: ThreadStatus, metadata: Optional[Dict]=None) -> Tuple[Optional[Thread], List[Dict]]:
+    async def update_thread_status(
+        self,
+        thread_id: str,
+        user_id: str,
+        status: ThreadStatus,
+        metadata: Optional[Dict] = None,
+    ) -> Tuple[Optional[Thread], List[Dict]]:
         """Update thread status (archive, delete, etc.)"""
         if not thread_id or not user_id:
-            raise ValueError('Thread ID and user ID are required')
+            raise ValueError("Thread ID and user ID are required")
         thread = self.threads.get(thread_id)
         if not thread:
-            raise ValueError('Thread not found')
+            raise ValueError("Thread not found")
         if thread.creator_id != user_id:
-            raise PermissionError('Only thread creator can update thread status')
+            raise PermissionError("Only thread creator can update thread status")
         if thread.status == ThreadStatus.DELETED:
-            raise ValueError('Cannot modify deleted thread')
+            raise ValueError("Cannot modify deleted thread")
         if thread.status == status:
             return (thread, [])
         old_status = thread.status
         thread.status = status
         if metadata:
             thread.metadata.update(metadata)
-        event = {'event_type': 'THREAD_UPDATED', 'thread_id': thread_id, 'user_id': user_id, 'old_status': old_status.value, 'new_status': status.value, 'timestamp': self._clock(timezone.utc).isoformat(), 'metadata': metadata or {}}
+        event = {
+            "event_type": "THREAD_UPDATED",
+            "thread_id": thread_id,
+            "user_id": user_id,
+            "old_status": old_status.value,
+            "new_status": status.value,
+            "timestamp": self._clock(timezone.utc).isoformat(),
+            "metadata": metadata or {},
+        }
         return (thread, [event])

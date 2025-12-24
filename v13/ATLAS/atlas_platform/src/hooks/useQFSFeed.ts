@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { QFSExecutor } from '@/lib/qfs/executor';
+import { deterministicRandom } from '../lib/deterministic';
 
 export interface FeedItem {
     id: string;
@@ -37,7 +38,7 @@ export function useQFSFeed() {
             // In a real implementation, we would query the node's API
             // Here we simulate the node "computing" the feed
 
-            
+
             const mockRawData = [
                 { id: '1', author: 'did:key:alice', text: 'Decentralized AI is the future.' },
                 { id: '2', author: 'did:key:bob', text: 'Just setup my QFS node! #Atlas' },
@@ -60,7 +61,7 @@ export function useQFSFeed() {
                     cid: `cid_${item.id}`,
                     authorDID: item.author,
                     content: { text: item.text },
-                    coherenceScore: 0.85 + (Math.random() * 0.1), 
+                    coherenceScore: 0.85 + (deterministicRandom() * 0.1),
                     proof: result.proof.root,
                     timestamp: result.timestamp
                 };

@@ -1,8 +1,8 @@
 import logging
 import base64
-import uuid
 from typing import Dict
 from libs.PQC import PQC
+from libs.deterministic_helpers import DeterministicID, det_random_bytes
 
 logger = logging.getLogger(__name__)
 
@@ -13,9 +13,7 @@ class PQCServerSession:
     def __init__(self):
         # Generate static server KEM key on startup
         with PQC.LogContext() as log:
-            import os
-
-            self.seed = os.urandom(32)
+            self.seed = det_random_bytes(32)
             self.public_key, self.secret_key = PQC.kem_generate_keypair(
                 PQC.KYBER1024, self.seed
             )

@@ -1,125 +1,2213 @@
 {
-  "timestamp": "2025-12-17T17:47:14.880882",
-  "total_violations": 80,
+  "timestamp": "2023-11-14T12:53:20+00:00",
+  "total_violations": 306,
   "violations": [
     {
-      "file": "v13/libs_root/checks_tests/verify_drv_compliance.py",
-      "line": 36,
+      "file": "v13/atlas/atlas_platform/examples/websocket/frontend.tsx",
+      "line": 165,
       "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "(\"Zero-Simulation Compliance\", \"\u2705 No native floats, random, or time.time() in critical path\"),",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(msg.timestamp).toLocaleTimeString()}",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/scripts/build_phase3_evidence.py",
-      "line": 29,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"date\": datetime.now().isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/generate_aes_gut_evidence.py",
-      "line": 37,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "timestamp = datetime.datetime.now().isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/generate_aes_gut_evidence.py",
-      "line": 49,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "filename = f\"v13/evidence/aes/aes_gut_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 17,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = datetime.datetime.now().isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 19,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = datetime.datetime.now().isoformat()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/generate_full_stack_evidence.py",
-      "line": 35,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "filename = f\"v13/evidence/nightly/full_stack_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.jso",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/nightly_e2e.py",
-      "line": 21,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "print(f\"[{datetime.datetime.now()}] Running {name}...\")",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/nightly_e2e.py",
-      "line": 22,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start = datetime.datetime.now()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/nightly_e2e.py",
-      "line": 32,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "duration = (datetime.datetime.now() - start).total_seconds()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/nightly_e2e.py",
-      "line": 81,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.datetime.now().isoformat(),",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/nightly_e2e.py",
-      "line": 89,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "filename = f\"evidence/nightly/run_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json\"",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/scripts/run_autonomous_audit.py",
-      "line": 302,
+      "file": "v13/atlas/atlas_platform/examples/websocket/server.ts",
+      "line": 31,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "lines.append(\"No obvious non-deterministic patterns (float/math/random/time/uuid/os.urandom) detecte",
+      "code_snippet": "const generateMessageId = () => Math.random().toString(36).substr(2, 9)",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
-      "file": "v13/scripts/verify_value_node_zero_sim.py",
+      "file": "v13/atlas/atlas_platform/examples/websocket/server.ts",
       "line": 37,
       "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/examples/websocket/server.ts",
+      "line": 45,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/examples/websocket/server.ts",
+      "line": 58,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date().toISOString()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/scripts/test-economics.ts",
+      "line": 17,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/scripts/test-economics.ts",
+      "line": 42,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/scripts/verify-e2e.ts",
+      "line": 88,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/components/DistributedFeed.tsx",
+      "line": 69,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(item.timestamp).toLocaleTimeString()}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/components/WalletInterface.tsx",
+      "line": 94,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(tx.timestamp).toLocaleTimeString()} \u2022 {tx.id.split('_')[2]}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/components/ui/sidebar.tsx",
+      "line": 611,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "return `${Math.floor(Math.random() * 40) + 50}%`",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/core/economic_views.py",
+      "line": 30,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "- It does not call time/random.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/deterministic.ts",
+      "line": 4,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "* Provides deterministic replacements for Date.now(), Math.random(), and crypto.randomUUID()",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/deterministic.ts",
+      "line": 4,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "* Provides deterministic replacements for Date.now(), Math.random(), and crypto.randomUUID()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/deterministic.ts",
+      "line": 24,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "* Deterministic Date.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/ledger/__tests__/test-ledger.ts",
+      "line": 94,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/profile/service.ts",
+      "line": 56,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "pendingId: crypto.randomUUID(),",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/profile/service.ts",
+      "line": 66,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/lib/__tests__/setup.ts",
+      "line": 9,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "global.crypto.randomUUID = vi.fn(() => '00000000-0000-0000-0000-000000000000') as any;",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/tests/test_qfs_client.py",
+      "line": 38,
+      "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "forbidden = [\"TreasuryEngine\", \"random\", \"time.time\", \"datetime.now\"]",
+      "code_snippet": "tx = Transaction(transaction_id=None, operation_type='secure_chat_thread_created', creator_id='user_",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/tests/test_qfs_client.py",
+      "line": 48,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "tx = Transaction(transaction_id=None, operation_type='secure_chat_thread_created', creator_id='user_",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/tests/test_qfs_client.py",
+      "line": 59,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "tx = Transaction(transaction_id='test_tx_123', operation_type='secure_chat_thread_created', creator_",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/atlas_platform/src/tests/test_qfs_client.py",
+      "line": 78,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "tx = Transaction(transaction_id=None, operation_type='secure_chat_thread_created', creator_id='user_",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1862],{41717:function(e,t,n){l",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1862],{41717:function(e,t,n){l",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 2,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "[SocketService handleMessage()] context=${e.state.context}::on 'message' error=${C}`),Error(C);let k",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "[SocketService handleMessage()] context=${e.state.context}::on 'message' error=${C}`),Error(C);let k",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 5,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${ab(e)}`,{request:e})},ic(av,as),ic(av,ac),ic(av,au),ic(av,af),ic(av,ag);var aE=Object.freeze([\"eth",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 6,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${t.stack}`),this._log.warn(n),this.listenerCount(\"error\")>0&&this.emit(\"error\",n),this._handleDisco",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2040.9834c73698803a87.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2040],{42040:function(e,s,t){t",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2117-77c4b7fe778a8619.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2117],{65157:function(e,t){\"use strict\";fun",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2117-77c4b7fe778a8619.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${t}`))}function v(){if(!i)throw Error(\"Invariant: React.unstable_postpone is not defined. This sugg",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.7097c62db02fc359.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.7097c62db02fc359.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.c1e9a45d22b2e81b.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.c1e9a45d22b2e81b.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.dd932fa72cf85eb2.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.dd932fa72cf85eb2.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.e0f47dbde12b9c64.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2264.e0f47dbde12b9c64.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2264],{42488:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2466.25032c6990861c53.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2466],{42466:function(e,a,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2466.2e6ecee2ba741958.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2466],{42466:function(e,a,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2774.07115f327ea7f65a.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2774],{12774:function(e,s,t){t",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/2774.899cf92109d93e38.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2774],{12774:function(e,s,t){t",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3688.b6c3943f4b4de0bb.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3688],{13688:function(e,t,r){r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3688.b6c3943f4b4de0bb.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3688],{13688:function(e,t,r){r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3688.ec4ab2078a1c590e.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3688],{13688:function(e,t,r){r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3688.ec4ab2078a1c590e.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3688],{13688:function(e,t,r){r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3796.24116163d2f89c23.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3796],{30401:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3796.8a8bce6cf1014d8f.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3796],{30401:function(e,t,s){s",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3796.8a8bce6cf1014d8f.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3796],{30401:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/3796.ccfaacb01ef67648.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3796],{30401:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4022.3857667d98645518.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4022],{41439:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4022.8e43950b47d86f3f.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4022],{41439:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4022.b6014fe3c74654b5.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4022],{41439:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4618-b0d7b42f5377697b.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4618],{1289:function(e,t,n){\"use strict\";n.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4618-b0d7b42f5377697b.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4618],{1289:function(e,t,n){\"use strict\";n.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4618-b0d7b42f5377697b.js",
+      "line": 3,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Given length (values): ${t}`),Object.defineProperty(this,\"name\",{enumerable:!0,configurable:!0,writa",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4618-b0d7b42f5377697b.js",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "${(0,o.d)(t)}`);return(0,i.zo)([n,t])}(e),t)}},86044:function(e,t,n){\"use strict\";n.d(t,{Jv:function",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4946.7b7e3f774d2c41d7.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4946],{74946:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4e88bc13-b53adedd07ff8d28.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9472],{67872:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/4e88bc13-b53adedd07ff8d28.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9472],{67872:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/5645.5e9cd2992eb47bd7.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5645],{42488:function(e,t,r){r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/5645.5e9cd2992eb47bd7.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5645],{42488:function(e,t,r){r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6132.101a1f3b16a680a0.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6132],{92934:function(e,t,a){a",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6132.6972a2097d732387.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6132],{92934:function(e,t,a){a",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6132.c84321fa7b9e9913.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6132],{92934:function(e,t,a){a",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6148-17654f6592348ddd.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6148],{49265:function(t,e,r){!function(t,r)",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6148.7fe8faf52794b7ba.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6148],{49265:function(t,e,r){!function(t,r)",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6600],{15499:function(e){var t",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6600],{15499:function(e){var t",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 12,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`,eo=\"BaseSans-Regular\";var ec,eu,el,ed,ep,em,ef,eh,ey,eb,eg,ev,ew,ex,ek,eA,eC={},eP=[],eS=/acit|ex(",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 12,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`,eo=\"BaseSans-Regular\";var ec,eu,el,ed,ep,em,ef,eh,ey,eb,eg,ev,ew,ex,ek,eA,eC={},eP=[],eS=/acit|ex(",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7090-49d3f4763e5f4d4b.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7090],{64299:function(){},15278:function(e,",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7241.443ee5c0adb12e2d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7241],{90348:function(e,t,r){\"use strict\";l",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7241.443ee5c0adb12e2d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7241],{90348:function(e,t,r){\"use strict\";l",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.4de65a472d05c0d5.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.4de65a472d05c0d5.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.4de65a472d05c0d5.js",
+      "line": 3,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Given length (values): ${t}`),Object.defineProperty(this,\"name\",{enumerable:!0,configurable:!0,writa",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.4de65a472d05c0d5.js",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.4de65a472d05c0d5.js",
+      "line": 31,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.f6ca8c72ad9203af.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.f6ca8c72ad9203af.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.f6ca8c72ad9203af.js",
+      "line": 3,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Given length (values): ${t}`),Object.defineProperty(this,\"name\",{enumerable:!0,configurable:!0,writa",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.f6ca8c72ad9203af.js",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7353.f6ca8c72ad9203af.js",
+      "line": 31,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7523.d31c53b026ed6894.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7523],{42488:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7937.280c61b800ceb8e9.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7937],{49322:function(e,t,r){r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/7937.280c61b800ceb8e9.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7937],{49322:function(e,t,r){r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.0c6ab05debf3379d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.0c6ab05debf3379d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.70973df79880c400.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.70973df79880c400.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.ed2e2c2a755febec.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8352.ed2e2c2a755febec.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8352],{58352:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/8399.489a5fc7a295c62d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8399],{42488:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9006],{71096:function(e){var t;t=function()",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9006],{71096:function(e){var t;t=function()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 885,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`},hexToRgb(e){let t=parseInt(e,16);return[t>>16&255,t>>8&255,255&t]},tintColor(e,t){let[r,i,s]=e;re",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 885,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`},hexToRgb(e){let t=parseInt(e,16);return[t>>16&255,t>>8&255,255&t]},tintColor(e,t){let[r,i,s]=e;re",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 886,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eV.from(tQ(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 886,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eV.from(tQ(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 894,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Approved: ${s.toString()}`))}),a.forEach(e=>{i||(tr(s[e].methods,n[e].methods)?tr(s[e].events,n[e].e",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 894,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Approved: ${s.toString()}`))}),a.forEach(e=>{i||(tr(s[e].methods,n[e].methods)?tr(s[e].events,n[e].e",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9628],{19628:function(e,t,r){\"use strict\";r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9628],{19628:function(e,t,r){\"use strict\";r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 2,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eg.from(t_(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eg.from(t_(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 10,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Approved: ${s.toString()}`))}),o.forEach(e=>{i||(eU(s[e].methods,n[e].methods)?eU(s[e].events,n[e].e",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/9628.efa554175c4db7f9.js",
+      "line": 10,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Approved: ${s.toString()}`))}),o.forEach(e=>{i||(eU(s[e].methods,n[e].methods)?eU(s[e].events,n[e].e",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/aaea2bcf-9bd396e196d8e2f6.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8218],{68989:function(t,e,r){var i=r(82957)",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/aaea2bcf.74ebb030399e8487.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8218],{68989:function(t,e,r){var i=r(82957)",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/fd9d1056-66c85bd2f6831761.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2971],{84417:function(e,t,n){v",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/fd9d1056-66c85bd2f6831761.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2971],{84417:function(e,t,n){v",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/framework-12ade7e40cf2902a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9774],{96787:function(e,t,n){v",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/framework-12ade7e40cf2902a.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9774],{96787:function(e,t,n){v",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/main-4a8eb7717644eb2a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[179],{84878:function(e,t){\"use strict\";func",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/main-4a8eb7717644eb2a.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[179],{84878:function(e,t){\"use strict\";func",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "!function(){var t=\"undefined\"!=typeof globalThis?globalThis:\"undefined\"!=typeof window?window:\"undef",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/layout-2db04f29b933ddb0.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3185],{48796:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/layout-48b137c5593c4531.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3185],{48796:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/layout-ebe84cdfde3e01b5.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3185],{48796:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/page-170833b4be89151e.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/page-28eb467fafdaa5d1.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/page-2a6c18064f400383.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/page-465061399aa9899c.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/desktop/renderer/_next/static/chunks/app/page-d57e989a9316ed48.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,t,a){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/examples/websocket/frontend.tsx",
+      "line": 165,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(msg.timestamp).toLocaleTimeString()}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/examples/websocket/server.ts",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const generateMessageId = () => Math.random().toString(36).substr(2, 9)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/examples/websocket/server.ts",
+      "line": 37,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/examples/websocket/server.ts",
+      "line": 45,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/examples/websocket/server.ts",
+      "line": 58,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: new Date().toISOString()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1862],{41717:function(e,t,n){l",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1862],{41717:function(e,t,n){l",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 2,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "[SocketService handleMessage()] context=${e.state.context}::on 'message' error=${C}`),Error(C);let k",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "[SocketService handleMessage()] context=${e.state.context}::on 'message' error=${C}`),Error(C);let k",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 5,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${ab(e)}`,{request:e})},ic(av,as),ic(av,ac),ic(av,au),ic(av,af),ic(av,ag);var aE=Object.freeze([\"eth",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/043d67f1.7c540e4f6c4d362d.js",
+      "line": 6,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${t.stack}`),this._log.warn(n),this.listenerCount(\"error\")>0&&this.emit(\"error\",n),this._handleDisco",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2117-f819438dddc55b2e.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2117],{65157:function(e,t){\"use strict\";fun",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2117-f819438dddc55b2e.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${t}`))}function v(){if(!i)throw Error(\"Invariant: React.unstable_postpone is not defined. This sugg",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2304-b9574bd372210b88.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2304],{1289:function(e,t,n){\"use strict\";n.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2304-b9574bd372210b88.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2304],{1289:function(e,t,n){\"use strict\";n.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2304-b9574bd372210b88.js",
+      "line": 3,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Given length (values): ${t}`),Object.defineProperty(this,\"name\",{enumerable:!0,configurable:!0,writa",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/2304-b9574bd372210b88.js",
+      "line": 30,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`),n.state&&(r+=\"      state:\\n\"+a(n.state)),n.stateDiff&&(r+=\"      stateDiff:\\n\"+a(n.stateDiff)),r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/4571-dbb009f28fa380e4.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4571],{5478:function(e,t,n){n.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/4571-dbb009f28fa380e4.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4571],{5478:function(e,t,n){n.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/4946.7b7e3f774d2c41d7.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4946],{74946:function(e,t,s){s",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/4e88bc13-b3e278de07686ca7.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9472],{67872:function(e,t,n){n",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/4e88bc13-b3e278de07686ca7.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9472],{67872:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/5251-5610a90c26ba70aa.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5251],{23340:function(e,t,n){n",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6600],{15499:function(e){var t",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6600],{15499:function(e){var t",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 12,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`,eo=\"BaseSans-Regular\";var ec,eu,el,ed,ep,em,ef,eh,ey,eb,eg,ev,ew,ex,ek,eA,eC={},eP=[],eS=/acit|ex(",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/6600.81dd6a76ce1b75d5.js",
+      "line": 12,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`,eo=\"BaseSans-Regular\";var ec,eu,el,ed,ep,em,ef,eh,ey,eb,eg,ev,ew,ex,ek,eA,eC={},eP=[],eS=/acit|ex(",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7090-812c172c2ade7e9e.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7090],{64299:function(){},41915:function(e,",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7241.443ee5c0adb12e2d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7241],{90348:function(e,t,r){\"use strict\";l",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7241.443ee5c0adb12e2d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7241],{90348:function(e,t,r){\"use strict\";l",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7353.e3df63f18876e6f4.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7353.e3df63f18876e6f4.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[7353],{97353:function(e,t,r){O",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7353.e3df63f18876e6f4.js",
+      "line": 3,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Given length (values): ${t}`),Object.defineProperty(this,\"name\",{enumerable:!0,configurable:!0,writa",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7353.e3df63f18876e6f4.js",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/7353.e3df63f18876e6f4.js",
+      "line": 31,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`,\"\")}t.StateAssignmentConflictError=o},29896:function(e,t,r){Object.defineProperty(t,\"__esModule\",{",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9006],{71096:function(e){var t;t=function()",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9006],{71096:function(e){var t;t=function()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 885,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "`},hexToRgb(e){let t=parseInt(e,16);return[t>>16&255,t>>8&255,255&t]},tintColor(e,t){let[r,i,s]=e;re",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 885,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "`},hexToRgb(e){let t=parseInt(e,16);return[t>>16&255,t>>8&255,255&t]},tintColor(e,t){let[r,i,s]=e;re",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 886,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eV.from(tQ(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 886,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eV.from(tQ(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 894,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Approved: ${s.toString()}`))}),a.forEach(e=>{i||(tr(s[e].methods,n[e].methods)?tr(s[e].events,n[e].e",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9006.9eb7906ae4e11e4d.js",
+      "line": 894,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Approved: ${s.toString()}`))}),a.forEach(e=>{i||(tr(s[e].methods,n[e].methods)?tr(s[e].events,n[e].e",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9628],{19628:function(e,t,r){\"use strict\";r",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9628],{19628:function(e,t,r){\"use strict\";r",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 2,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eg.from(t_(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 2,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "${e.length}`,r=new TextEncoder().encode(t+e);return\"0x\"+eg.from(t_(r)).toString(\"hex\")}async functio",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 10,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Approved: ${s.toString()}`))}),o.forEach(e=>{i||(ek(s[e].methods,n[e].methods)?ek(s[e].events,n[e].e",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/9628.df2239beab8f3309.js",
+      "line": 10,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "Approved: ${s.toString()}`))}),o.forEach(e=>{i||(ek(s[e].methods,n[e].methods)?ek(s[e].events,n[e].e",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/aaea2bcf-9bd396e196d8e2f6.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8218],{68989:function(t,e,r){var i=r(82957)",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/fd9d1056-e00346793c1b975b.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2971],{84417:function(e,t,n){v",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/fd9d1056-e00346793c1b975b.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2971],{84417:function(e,t,n){v",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/framework-12ade7e40cf2902a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9774],{96787:function(e,t,n){v",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/framework-12ade7e40cf2902a.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "\"use strict\";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9774],{96787:function(e,t,n){v",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/main-4a8eb7717644eb2a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[179],{84878:function(e,t){\"use strict\";func",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/main-4a8eb7717644eb2a.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[179],{84878:function(e,t){\"use strict\";func",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "!function(){var t=\"undefined\"!=typeof globalThis?globalThis:\"undefined\"!=typeof window?window:\"undef",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/app/page-da31e3b48697abdf.js",
+      "line": 1,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,s,t){Promise.resolv",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/out/_next/static/chunks/app/page-da31e3b48697abdf.js",
+      "line": 1,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1931],{86362:function(e,s,t){Promise.resolv",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/scripts/test-economics.ts",
+      "line": 17,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/scripts/test-economics.ts",
+      "line": 42,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/scripts/verify-e2e.ts",
+      "line": 88,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/api/routes/auth.py",
+      "line": 27,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "challenge_id = str(uuid.uuid4())",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/api/routes/auth.py",
+      "line": 3,
+      "violation_type": "FORBIDDEN_IMPORT_SECRETS",
+      "severity": "CRITICAL",
+      "code_snippet": "import secrets",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/atlas/src/api/routes/auth.py",
+      "line": 4,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/atlas/src/api/routes/chat.py",
+      "line": 49,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"id\": f\"msg_{uuid.uuid4()}\",",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/api/routes/chat.py",
+      "line": 3,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/atlas/src/app/tabs/HomeTab.tsx",
+      "line": 87,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "<p className=\"text-sm text-muted-foreground\">{new Date(post.timestamp).toLocaleString()}</p>",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/BountyDashboard.tsx",
+      "line": 155,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "<td>{new Date(r.timestamp * 1000).toLocaleDateString()}</td>",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/DistributedFeed.tsx",
+      "line": 104,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(item.timestamp).toLocaleTimeString()}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/EvidenceLog.tsx",
+      "line": 88,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(entry.timestamp * 1000).toLocaleTimeString()}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/ExplainRewardFlow.tsx",
+      "line": 118,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/NotificationPanel.tsx",
+      "line": 109,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/WalletInterface.tsx",
+      "line": 161,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "{new Date(tx.timestamp).toLocaleTimeString()} \u2022 {tx.id.split('_')[2]}",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/components/ui/sidebar.tsx",
+      "line": 611,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "return `${Math.floor(Math.random() * 40) + 50}%`",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/core/economic_views.py",
+      "line": 30,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "- It does not call time/random.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/core/pqc_session.py",
+      "line": 18,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "self.seed = os.urandom(32)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/core/pqc_session.py",
+      "line": 3,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useInteraction.ts",
+      "line": 33,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const pendingId = crypto.randomUUID();",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useInteraction.ts",
+      "line": 41,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useProfile.ts",
+      "line": 52,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: profile?.createdAtMs || Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useProfile.ts",
+      "line": 53,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "updatedAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useProfileUpdate.ts",
+      "line": 28,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const pendingId = crypto.randomUUID();",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useProfileUpdate.ts",
+      "line": 36,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAtMs: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useSecureChat.ts",
+      "line": 35,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: msg.timestamp ? new Date(msg.timestamp).toISOString() : new Date().toISOString(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useSecureChat.ts",
+      "line": 50,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/hooks/useWalletAuth.ts",
+      "line": 26,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "if (parsed.expiresAt > Date.now() / 1000) {",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/cycles.py",
+      "line": 27,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"cycle_id\": str(uuid.uuid4()),",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/cycles.py",
+      "line": 58,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "\"cycle_id\": str(uuid.uuid4()),",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/cycles.py",
+      "line": 2,
+      "violation_type": "FORBIDDEN_IMPORT_UUID",
+      "severity": "CRITICAL",
+      "code_snippet": "import uuid",
+      "suggested_fix": "Check Zero-Sim contract."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 45,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "draftId: `draft_${Date.now()}`,",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 46,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 70,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const contentId = `content_${Date.now()}_${Math.random().toString(36).slice(2)}`;",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 70,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "const contentId = `content_${Date.now()}_${Math.random().toString(36).slice(2)}`;",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 71,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const payloadCID = `Qm${Math.random().toString(36).slice(2)}...mock`; // Mock CID",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 72,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "const signature = `0x${Math.random().toString(36).slice(2)}...sig`; // Mock Sig",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 79,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 85,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 103,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 109,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 124,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/content/publisher.ts",
+      "line": 130,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/economics/treasury-engine.ts",
+      "line": 55,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "last_update: Date.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/economics/treasury-engine.ts",
+      "line": 69,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "last_update: Date.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/economics/treasury-engine.ts",
+      "line": 86,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: tx.timestamp ? new Date(tx.timestamp).getTime() : Date.now()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/economics/treasury-engine.ts",
+      "line": 99,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Date.now() - 86400000",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/governance/service.ts",
+      "line": 40,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "createdAt: p.created_at ? p.created_at * 1000 : Date.now(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/ledger/sync-service.ts",
+      "line": 47,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "this.lastSync = Date.now();",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/p2p/client.ts",
+      "line": 30,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "this.peerId = browserPeerId || `browser_${Math.random().toString(36).slice(2, 11)}`;",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/atlas/src/lib/p2p/client.ts",
+      "line": 160,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "id: `${envelope.signature.slice(-10)}_${Date.now()}`,",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/store/useAuthStore.ts",
+      "line": 33,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "expires_at: new Date(Date.now() + 86400 * 1000).toISOString()",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/store/useAuthStore.ts",
+      "line": 89,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "const expiresAt = new Date(session.expires_at).getTime() / 1000;",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/store/useAuthStore.ts",
+      "line": 90,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "const now = Date.now() / 1000;",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/lib/trust/envelope.ts",
+      "line": 61,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "timestamp: Math.floor(Date.now() / 1000),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/tests/test_qfs_client.py",
+      "line": 52,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/tests/test_qfs_client.py",
+      "line": 73,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/tests/test_qfs_client.py",
+      "line": 95,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/src/tests/test_qfs_client.py",
+      "line": 138,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat(),",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/tests/final-verification.spec.ts",
+      "line": 43,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "expiresAt: Date.now() + 86400000",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/tests/final-verification.spec.ts",
+      "line": 65,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "expiresAt: Date.now() + 86400000",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/tests/final-verification.spec.ts",
+      "line": 129,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "expiresAt: Date.now() + 86400000",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/atlas/tests/final-verification.spec.ts",
+      "line": 158,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "MEDIUM",
+      "code_snippet": "expiresAt: Date.now() + 86400000",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic_helpers.py",
+      "line": 39,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "This replaces random.random() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic_helpers.py",
+      "line": 54,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "This replaces time.time() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic_helpers.py",
+      "line": 67,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "This replaces datetime.now().isoformat() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic_helpers.py",
+      "line": 118,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic ID generator replacing uuid.uuid4().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic_helpers.py",
+      "line": 150,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Replaces os.urandom() usage.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 2,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "deterministic/random.py - Deterministic Random Functions for QFS V13",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 4,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Provides deterministic alternatives to random.random(), random.randint(), etc.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 17,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.random().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 20,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "This replaces random.random() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 31,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.randint().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 50,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.choice().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 67,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.choices().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 84,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.uniform().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 133,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.shuffle().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/random.py",
+      "line": 146,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "Deterministic alternative to random.sample().",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/deterministic/time.py",
+      "line": 4,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "Provides deterministic alternatives to time.time(), time.perf_counter(), etc.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic/time.py",
+      "line": 17,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "Deterministic alternative to time.time().",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic/time.py",
+      "line": 20,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "This replaces time.time() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/deterministic/time.py",
+      "line": 46,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "This replaces datetime.now().isoformat() calls to maintain Zero-Simulation compliance.",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/libs/pqc/oqs_adapter.py",
+      "line": 154,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "seed = os.urandom(32)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/pqc/oqs_adapter.py",
+      "line": 191,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "seed = os.urandom(32)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/libs/pqc/oqs_adapter.py",
+      "line": 210,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "msg_nonce = os.urandom(16)",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/policy/treasury/dev_rewards_treasury.py",
+      "line": 294,
+      "violation_type": "EXTERNAL_IO",
+      "severity": "CRITICAL",
+      "code_snippet": "with open(filepath, \"w\") as f:",
+      "suggested_fix": "Remove I/O. Pass data as arguments."
+    },
+    {
+      "file": "v13/policy/treasury/dev_rewards_treasury.py",
+      "line": 300,
+      "violation_type": "EXTERNAL_IO",
+      "severity": "CRITICAL",
+      "code_snippet": "with open(filepath, \"r\") as f:",
+      "suggested_fix": "Remove I/O. Pass data as arguments."
+    },
+    {
+      "file": "v13/scripts/run_autonomous_audit.py",
+      "line": 214,
+      "violation_type": "RANDOM_USAGE",
+      "severity": "CRITICAL",
+      "code_snippet": "lines.append('No obvious non-deterministic patterns (float/math/random/time/uuid/os.urandom) detecte",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/scripts/verify_aegis_boundaries.py",
+      "line": 216,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "- No direct 'datetime.now' in ATLAS/src (must use deterministic helpers)",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/scripts/verify_value_node_zero_sim.py",
-      "line": 63,
+      "line": 33,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"verification_date\": datetime.now().isoformat(),",
+      "code_snippet": "forbidden = [\"TreasuryEngine\", \"random\", \"time.time\", \"datetime.now\"]",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
@@ -180,58 +2268,50 @@
     },
     {
       "file": "v13/scripts/zero-sim-ast.py",
-      "line": 40,
+      "line": 23,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "'random.random': 'Use of random.random is forbidden - violates Zero-Simulation mandate',",
+      "code_snippet": "FORBIDDEN_FUNCTIONS = {'random.random': 'Use of random.random is forbidden - violates Zero-Simulatio",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
       "file": "v13/scripts/zero-sim-ast.py",
-      "line": 41,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.randint': 'Use of random.randint is forbidden - violates Zero-Simulation mandate',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/scripts/zero-sim-ast.py",
-      "line": 42,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.choice': 'Use of random.choice is forbidden - violates Zero-Simulation mandate',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/scripts/zero-sim-ast.py",
-      "line": 43,
+      "line": 23,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "'time.time': 'Use of time.time is forbidden - use DRV_ClockService instead',",
+      "code_snippet": "FORBIDDEN_FUNCTIONS = {'random.random': 'Use of random.random is forbidden - violates Zero-Simulatio",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/scripts/zero-sim-ast.py",
-      "line": 45,
+      "file": "v13/scripts/zero_sim_analyzer.py",
+      "line": 67,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "'datetime.now': 'Use of datetime.now is forbidden - use DRV_ClockService instead',",
+      "code_snippet": "pattern=\"time.time(), datetime.now(), etc.\",",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/scripts/zero-sim-ast.py",
-      "line": 46,
+      "file": "v13/scripts/zero_sim_analyzer.py",
+      "line": 77,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "'os.urandom': 'Use of os.urandom is forbidden - violates Zero-Simulation mandate',",
+      "code_snippet": "pattern=\"uuid.uuid4()\",",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
-      "file": "v13/tests/performance_test_suite.py",
-      "line": 7,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
+      "file": "v13/scripts/zero_sim_analyzer.py",
+      "line": 97,
+      "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "import time",
+      "code_snippet": "pattern=\"random.randint(), np.random.*, etc.\",",
+      "suggested_fix": "Use deterministic PRNG or hash-based ID."
+    },
+    {
+      "file": "v13/scripts/zero_sim_dashboard.py",
+      "line": 98,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "f\"Projected completion: {weeks_to_zero:.1f} weeks ({datetime.now() + timedelta(weeks=weeks_to_zero):",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
@@ -244,95 +2324,55 @@
     },
     {
       "file": "v13/tests/test_ast_zerosimchecker_modules.py",
-      "line": 33,
+      "line": 11,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "value = random.random()",
+      "code_snippet": "test_content = '\\nimport random\\nimport time\\nimport datetime\\nimport os\\nimport sys\\nimport math\\ni",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
       "file": "v13/tests/test_ast_zerosimchecker_modules.py",
-      "line": 34,
+      "line": 11,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "current_time = time.time()",
+      "code_snippet": "test_content = '\\nimport random\\nimport time\\nimport datetime\\nimport os\\nimport sys\\nimport math\\ni",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/test_ast_zerosimchecker_modules.py",
-      "line": 113,
+      "line": 44,
       "violation_type": "RANDOM_USAGE",
       "severity": "CRITICAL",
-      "code_snippet": "value = random.random()",
+      "code_snippet": "test_content = '\\nimport json\\nimport hashlib\\nimport random  # This should be flagged even in econo",
       "suggested_fix": "Use deterministic PRNG or hash-based ID."
     },
     {
-      "file": "v13/tests/test_explain_this_performance.py",
-      "line": 10,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/test_zero_sim_violations.py",
-      "line": 26,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "random_value = random.random()",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tests/test_zero_sim_violations.py",
-      "line": 27,
+      "file": "v13/tests/libs_checks/verify_drv_compliance.py",
+      "line": 22,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "current_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/test_zero_sim_violations.py",
-      "line": 6,
-      "violation_type": "FORBIDDEN_IMPORT_RANDOM",
-      "severity": "CRITICAL",
-      "code_snippet": "import random",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tests/test_zero_sim_violations.py",
-      "line": 7,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/cir302/test_cir302_handler.py",
-      "line": 582,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat() + \"Z\",",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/old/demo_transaction.py",
-      "line": 9,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
+      "code_snippet": "compliance_points = [('Structure & Fields', '\u2705 Core fields correctly implemented (version, ttsTimest",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/pqc/TestPQCStandardization.py",
-      "line": 213,
+      "line": 290,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"timestamp\": int(datetime.now(timezone.utc).timestamp())",
+      "code_snippet": "audit_log_entry = {'operation': 'verify_signature', 'original_hash': hashlib.sha256(original_bytes).",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/pqc/TestPQCStandardization.py",
-      "line": 402,
+      "line": 577,
+      "violation_type": "WALL_CLOCK_TIME",
+      "severity": "HIGH",
+      "code_snippet": "evidence = {'artifact_type': 'pqc_standardization_verification', 'version': 'V13.6', 'test_suite': '",
+      "suggested_fix": "Use passed-in timestamp or ledger block time."
+    },
+    {
+      "file": "v13/tests/pqc/TestPQCStandardization.py",
+      "line": 697,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat() + \"Z\",",
@@ -340,178 +2380,26 @@
     },
     {
       "file": "v13/tests/pqc/TestPQCStandardization.py",
-      "line": 529,
+      "line": 768,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat() + \"Z\",",
+      "code_snippet": "evidence = {'artifact_type': 'open_agi_reference_scenario', 'version': 'V13.6', 'scenario': 'Minimal",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/pqc/test_pqc_adapter_mock.py",
-      "line": 430,
+      "line": 639,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat() + \"Z\",",
+      "code_snippet": "evidence = {'artifact_type': 'pqc_mock_verification', 'version': 'V13.6', 'test_suite': 'test_pqc_ad",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/pqc/test_pqc_real_backend.py",
-      "line": 354,
+      "line": 186,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "\"timestamp\": datetime.now(timezone.utc).isoformat() + \"Z\",",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 31,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 35,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 42,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 45,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 52,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 55,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 77,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 81,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 88,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 91,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 98,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 101,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 122,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 126,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 147,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 151,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 173,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 181,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/test_certified_math_performance.py",
-      "line": 7,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
+      "code_snippet": "evidence = {'artifact_type': 'pqc_real_backend_verification', 'version': 'V13.6', 'test_suite': 'tes",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
@@ -524,123 +2412,43 @@
     },
     {
       "file": "v13/tests/unit/verify_certifiedmath_compliance.py",
-      "line": 31,
+      "line": 22,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "(\"Zero-Simulation Compliance\", \"\u2705 No native floats, random, or time.time() in critical path\"),",
+      "code_snippet": "compliance_points = [('Core Arithmetic Functions', '\u2705 _safe_add, _safe_sub, _safe_mul, _safe_div imp",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tests/unit/verify_certifiedmath_compliance_final.py",
-      "line": 45,
+      "line": 25,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "(\"Zero-Simulation Compliance\", \"\u2705 No native floats, random, or time.time() in critical path\")",
+      "code_snippet": "compliance_points = [('BigNum128 Implementation', '\u2705 Correctly implements unsigned fixed-point arith",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/tests/unit/determinism/test_certified_math_extended_determinism.py",
-      "line": 6,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/determinism/test_certified_math_stress_concurrency.py",
-      "line": 170,
+      "file": "v13/tools/generate_violation_taxonomy.py",
+      "line": 112,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "start_time = time.time()",
+      "code_snippet": "structured_data = {'scan_metadata': {'timestamp': datetime.now(timezone.utc).isoformat(), 'total_vio",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
-      "file": "v13/tests/unit/determinism/test_certified_math_stress_concurrency.py",
-      "line": 185,
+      "file": "v13/tools/phase3_batch1_test_cleanup.py",
+      "line": 38,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
-      "code_snippet": "end_time = time.time()",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/unit/determinism/test_certified_math_stress_concurrency.py",
-      "line": 10,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tests/v13_6/PerformanceBenchmark.py",
-      "line": 17,
-      "violation_type": "FORBIDDEN_IMPORT_TIME",
-      "severity": "CRITICAL",
-      "code_snippet": "import time",
+      "code_snippet": "timestamp = datetime.now().strftime(\"%Y%m%d_%H%M%S\")",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
     },
     {
       "file": "v13/tools/run_phase2_tests.py",
-      "line": 30,
+      "line": 40,
       "violation_type": "WALL_CLOCK_TIME",
       "severity": "HIGH",
       "code_snippet": "\"timestamp\": datetime.now().isoformat(),",
       "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 28,
-      "violation_type": "WALL_CLOCK_TIME",
-      "severity": "HIGH",
-      "code_snippet": "'time.time',",
-      "suggested_fix": "Use passed-in timestamp or ledger block time."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 32,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.random',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 33,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.randint',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 34,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.uniform',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 35,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.choice',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 36,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'random.choices',",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
-    },
-    {
-      "file": "v13/tools_root/ast_checker.py",
-      "line": 37,
-      "violation_type": "RANDOM_USAGE",
-      "severity": "CRITICAL",
-      "code_snippet": "'os.urandom'",
-      "suggested_fix": "Use deterministic PRNG or hash-based ID."
     }
   ]
 }

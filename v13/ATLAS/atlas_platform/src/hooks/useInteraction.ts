@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from './useAuth';
 import { getPendingEventStore } from '@/lib/ledger/pending-store';
 import { PendingInteractionEvent, hashMetadata } from '@/types/storage';
+import { deterministicNow, deterministicUUID } from '../lib/deterministic';
 
 export function useInteraction() {
     const { did } = useAuth();
@@ -30,7 +31,7 @@ export function useInteraction() {
             };
 
             const eventInputHash = await hashMetadata(inputs);
-            const pendingId = crypto.randomUUID();
+            const pendingId = deterministicUUID();
 
             const event: PendingInteractionEvent = {
                 eventType: 'InteractionCreated',
@@ -38,7 +39,7 @@ export function useInteraction() {
                 actorDID: did,
                 inputs,
                 eventInputHash,
-                createdAtMs: Date.now(),
+                createdAtMs: deterministicNow(),
                 status: 'pending' // Will be picked up by SyncService
             };
 

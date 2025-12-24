@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from './useAuth';
 import { getPendingEventStore } from '@/lib/ledger/pending-store';
 import { PendingLedgerEvent, hashMetadata } from '@/types/storage';
+import { deterministicNow, deterministicUUID } from '@/lib/deterministic';
 
 export function useProfileUpdate() {
     const { did } = useAuth();
@@ -25,7 +26,7 @@ export function useProfileUpdate() {
         try {
             // Hash the profile data as "inputs"
             const eventInputHash = await hashMetadata(profileData);
-            const pendingId = crypto.randomUUID();
+            const pendingId = deterministicUUID();
 
             const event: PendingLedgerEvent = {
                 eventType: 'ProfileUpdated',
@@ -33,7 +34,7 @@ export function useProfileUpdate() {
                 actorDID: did,
                 inputs: profileData,
                 eventInputHash,
-                createdAtMs: Date.now(),
+                createdAtMs: deterministicNow(),
                 status: 'pending'
             };
 
