@@ -5,7 +5,7 @@ FastAPI microservice for authentication operations.
 
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict, Any
 import uvicorn
 
 from v15.auth.session import Session
@@ -43,7 +43,7 @@ class SessionResponse(BaseModel):
 
 
 @app.get("/health")
-async def health():
+async def health() -> Dict[str, str]:
     """Health check endpoint."""
     return {"status": "healthy", "service": "auth", "version": "20.0.0-alpha"}
 
@@ -51,7 +51,7 @@ async def health():
 @app.post("/auth/session", response_model=SessionResponse)
 async def create_session(
     req: LoginRequest, logical_time: int = Depends(get_logical_time)
-):
+) -> SessionResponse:
     """
     Create new auth session (wallet login).
 
@@ -109,7 +109,7 @@ async def create_session(
 
 
 @app.get("/auth/session/{session_id}")
-async def get_session(session_id: str):
+async def get_session(session_id: str) -> Dict[str, Any]:
     """Get session by ID."""
     session = session_store.get(session_id)
     if not session:
@@ -120,7 +120,7 @@ async def get_session(session_id: str):
 @app.get("/bounty/rewards")
 async def get_my_rewards(
     session_id: str, logical_time: int = Depends(get_logical_time)
-):
+) -> Dict[str, Any]:
     """
     Get retro rewards for a session.
     In a real implementation, this would query the F-Layer state or EvidenceBus index.

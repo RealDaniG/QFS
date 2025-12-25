@@ -6,6 +6,7 @@ Connects Auth Service to QFS EvidenceBus for immutable audit logging.
 from typing import Dict, Any
 import json
 import logging
+import time
 
 # Configure logger
 logger = logging.getLogger("EvidenceBus")
@@ -27,7 +28,8 @@ class EvidenceEvent:
             "event_type": self.event_type,
             "version": self.version,
             **self.payload,
-            "timestamp": self.timestamp or int(logging.time.time()),
+            **self.payload,
+            "timestamp": self.timestamp or int(time.time()),
         }
 
 
