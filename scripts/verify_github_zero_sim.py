@@ -45,7 +45,15 @@ def verify_zero_sim():
             directory = os.path.dirname(module)
             filename = os.path.basename(module)
 
-            cmd = ["python", analyzer_path, "--dir", directory, "--filter", filename]
+            cmd = [
+                "python",
+                analyzer_path,
+                "--dir",
+                directory,
+                "--exclude",
+                "time_provider.py",
+                "__pycache__",
+            ]
 
             result = subprocess.run(cmd, capture_output=True, text=True)
 

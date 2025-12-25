@@ -14,7 +14,7 @@ from v15.auth.device import compute_device_hash, get_device_info
 from v15.auth.events import create_session_created_event
 from v15.services.session_store import SessionStore
 from v15.services.evidence_adapter import EvidenceBusAdapter
-from v15.services.time_provider import get_logical_time
+from v15.api.time_provider import get_logical_time
 
 app = FastAPI(title="QFS Auth Service", version="20.0.0-alpha")
 

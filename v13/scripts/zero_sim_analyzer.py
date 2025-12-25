@@ -483,8 +483,8 @@ def main():
     all_violations = []
     files_analyzed = 0
 
-    print(f"🔍 Analyzing directory: {args.dir}")
-    print(f"📁 Excluding: {', '.join(args.exclude)}")
+    print(f"[SEARCH] Analyzing directory: {args.dir}")
+    print(f"[EXCLUDE] Excluding: {', '.join(args.exclude)}")
 
     for root, dirs, files in os.walk(args.dir):
         # Filter out excluded directories
@@ -515,10 +515,10 @@ def main():
                             ]
                         )
                         if count > 0:
-                            print(f"  ⚠️  {path}: {count} violations")
+                            print(f"  [WARN]  {path}: {count} violations")
 
     if args.filter:
-        print(f"🔍 Filtering for violation type: {args.filter}")
+        print(f"[FILTER] Filtering for violation type: {args.filter}")
         all_violations = [v for v in all_violations if v["type"] == args.filter]
 
     report = generate_report(all_violations, args.output)

@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from v15.services.evidence_adapter import EvidenceBusAdapter
 from v15.auth.events import create_identity_link_event
-from v15.services.time_provider import get_logical_time
+from v15.api.time_provider import get_logical_time
 
 logger = logging.getLogger(__name__)
 
