@@ -1,4 +1,3 @@
-
 """
 Crypto adapter for PQC and MOCKQPC.
 Provides environment-aware routing between mock and real PQC.
@@ -32,7 +31,7 @@ def _get_env() -> str:
         env = os.environ["ENV"].lower()
 
     if env not in ["dev", "beta", "mainnet", "ci"]:
-        raise CryptoConfigError(f"Invalid environment: {env}")
+        raise CryptoConfigError(f"Invalid ENV: {env}")
     return env
 
 
@@ -82,7 +81,7 @@ def _should_use_mockqpc(env_override: Optional[str] = None) -> bool:
         # That seems safer than defaulting to Real PQC implicitly?
         # Re-reading the test logic.
         if "MOCKQPC_ENABLED" not in os.environ:
-             raise CryptoConfigError("Mainnet requires explicit MOCKQPC_ENABLED setting")
+            raise CryptoConfigError("Mainnet requires explicit MOCKQPC_ENABLED setting")
 
         return is_enabled
 
@@ -122,7 +121,7 @@ def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None):
         pass
 
     if _is_ci_environment() and use_real_pqc and not env_override:
-         raise CryptoConfigError("Cannot use real PQC in CI")
+        raise CryptoConfigError("Cannot use real PQC in CI")
 
 
 # ============================================================================
@@ -133,6 +132,7 @@ def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None):
 def _mockqpc_sign(data: bytes, env: str) -> bytes:
     """Mock PQC signing (deterministic)."""
     from v15.crypto.mockqpc import mock_sign_poe
+
     # mock_sign_poe(data_hash, env)
     return mock_sign_poe(data, env)
 
@@ -140,6 +140,7 @@ def _mockqpc_sign(data: bytes, env: str) -> bytes:
 def _mockqpc_verify(data: bytes, signature: bytes, env: str) -> bool:
     """Mock PQC verification (deterministic)."""
     from v15.crypto.mockqpc import mock_verify_poe
+
     return mock_verify_poe(data, signature, env)
 
 
@@ -192,7 +193,7 @@ def sign_poe(
     should_use_mock = _should_use_mockqpc(env_override=env)
     current_env = env if env else _get_env()
 
-    if use_real_pqc and not should_use_mock:
+    if use_real_pqc or not should_use_mock:
         return _real_pqc_sign(data)
     else:
         return _mockqpc_sign(data, current_env)
@@ -222,7 +223,7 @@ def verify_poe(
     should_use_mock = _should_use_mockqpc(env_override=env)
     current_env = env if env else _get_env()
 
-    if use_real_pqc and not should_use_mock:
+    if use_real_pqc or not should_use_mock:
         return _real_pqc_verify(data, signature)
     else:
         return _mockqpc_verify(data, signature, current_env)
@@ -251,6 +252,5 @@ def get_crypto_info() -> dict:
         "use_mockqpc": _should_use_mockqpc(),
         "mockqpc_enabled": _is_mockqpc_enabled(),
         "ci_mode": _is_ci_environment(),
-        "crypto_backend": "MOCKQPC" if _should_use_mockqpc() else "REAL_PQC"
+        "crypto_backend": "MOCKQPC" if _should_use_mockqpc() else "REAL_PQC",
     }
-```
