@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures that need attention.
+V13, V15, and V18 pipelines are now integration-stable. V17 has minor failures that need attention.
 
 ## Test Suite Status (All Versions)
 
@@ -28,7 +28,7 @@ V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures th
 | **XFailed** | 0 |
 | **Total** | 145 |
 
-*Status: ✅ Fully Green*
+*Status: ✅ Fully Green (production-ready)*
 
 ### V17 (Governance Layer)
 
@@ -46,13 +46,13 @@ V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures th
 
 | Metric | Count |
 |--------|-------|
-| **Passed** | 48 |
-| **Failed** | 2 |
+| **Passed** | 50 |
+| **Failed** | 0 |
 | **Skipped** | 0 |
 | **XFailed** | 0 |
 | **Total** | 50 |
 
-*Status: ⚠️ Needs Stabilization (session expiry logic)*
+*Status: ✅ Fully Green (Zero-Sim compatible)*
 
 ## Version Pass Rate Summary
 
@@ -61,9 +61,17 @@ V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures th
 | V13 | 719 | 113 | 5 | 95.7%* | ✅ Stable |
 | V15 | 145 | 141 | 0 | 100% | ✅ Green |
 | V17 | 22 | 15 | 7 | 68.2% | ⚠️ Unstable |
-| V18 | 50 | 48 | 2 | 96.0% | ⚠️ Minor Issues |
+| V18 | 50 | 50 | 0 | 100% | ✅ Green |
 
 *V13 pass rate calculated on non-xfail/skip tests
+
+## Recent Fixes
+
+### V18 Ascon Sessions (2 failures → 0)
+
+- **Root Cause**: SessionManager used hardcoded `current_time = 0.0` for Zero-Sim compliance, but expiry tests used `time.sleep()` expecting real time.
+- **Fix**: Added injectable `time_provider` parameter to `SessionManager` for deterministic testing. Tests now use logical time advancement instead of `time.sleep()`.
+- **Result**: Session expiry and cleanup are now tested deterministically without breaking Zero-Sim guarantees.
 
 ## CI/CD Pipelines
 
@@ -91,10 +99,6 @@ V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures th
 - `test_ui_governance.py` - Projection structure
 - `test_ui_integration.py` - Admin dashboard
 
-### V18 (2 failures - Sessions)
-
-- `test_ascon_sessions.py` - Expired session handling, cleanup
-
 ## Constraints (Active)
 
 1. V13 failures must stay ≤5 failed, 6 xfailed
@@ -105,6 +109,6 @@ V13 and V15 pipelines are integration-stable. V17 and V18 have minor failures th
 ## Recommended Priority
 
 1. ✅ V15 - Already green, ready for production
-2. ⚠️ V18 - Only 2 failures, quick wins possible
+2. ✅ V18 - Now green, Zero-Sim compatible
 3. ⚠️ V17 - 7 failures, governance logic needs review
 4. ✅ V13 - Stable, remaining failures are phase-documented

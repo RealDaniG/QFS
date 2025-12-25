@@ -67,13 +67,19 @@ class TestAsconSessionLifecycle:
 
     def test_expired_session_rejected(self):
         """Expired sessions should be cleaned up and rejected."""
-        manager = SessionManager(session_ttl_seconds=1)  # 1 second TTL
+        # Use injectable time provider for deterministic testing
+        current_test_time = [0.0]  # Mutable container for test time
+
+        def time_provider():
+            return current_test_time[0]
+
+        manager = SessionManager(session_ttl_seconds=1, time_provider=time_provider)
         token = manager.create_session(
             wallet_address="0xEXPIRED", scopes=["test:scope"]
         )
 
-        # Wait for expiry
-        time.sleep(1.5)
+        # Advance time past expiry (TTL is 1 second)
+        current_test_time[0] = 2.0
 
         session_data = manager.validate_session(token)
         assert session_data is None, "Expired session should be rejected"
@@ -97,7 +103,13 @@ class TestAsconSessionLifecycle:
 
     def test_session_cleanup_removes_expired(self):
         """Cleanup should remove expired revocations from revocation list."""
-        manager = SessionManager(session_ttl_seconds=1)
+        # Use injectable time provider for deterministic testing
+        current_test_time = [0.0]  # Mutable container for test time
+
+        def time_provider():
+            return current_test_time[0]
+
+        manager = SessionManager(session_ttl_seconds=1, time_provider=time_provider)
 
         # Create and immediately revoke multiple sessions
         tokens = [manager.create_session(f"0xWALLET{i}", ["test"]) for i in range(3)]
@@ -109,13 +121,13 @@ class TestAsconSessionLifecycle:
         # Verify they're in the revocation list
         assert len(manager._revoked) == 3
 
-        # Wait long enough for cleanup (2x TTL + buffer)
-        time.sleep(2.5)
+        # Advance time past cleanup threshold (2x TTL + buffer)
+        current_test_time[0] = 3.0
 
         # Trigger cleanup by validating any token
         manager.validate_session(tokens[0])
 
-        # Old revocations should be cleaned up
+        # Old revocations should be cleaned up (now > revoked_at + 2*TTL)
         assert len(manager._revoked) == 0, "Expired revocations should be cleaned up"
 
 

@@ -35,12 +35,20 @@ class SessionManager:
     - Optional revocation list for early termination
     """
 
-    def __init__(self, session_ttl_seconds: int = 3600 * 24):
+    def __init__(self, session_ttl_seconds: int = 3600 * 24, time_provider=None):
         self._ttl = session_ttl_seconds
         # Optional revocation list (session_id -> revocation timestamp)
         # This allows early termination without breaking stateless validation
         self._revoked: Dict[str, float] = {}
         self._token_counter = 0  # For deterministic session IDs
+        # Injectable time provider for testing; defaults to Zero-Sim (0.0)
+        self._time_provider = time_provider
+
+    def _get_current_time(self) -> float:
+        """Get current time. Uses injectable provider or Zero-Sim default."""
+        if self._time_provider is not None:
+            return self._time_provider()
+        return 0.0  # Zero-Sim deterministic time
 
     def create_session(self, wallet_address: str, scopes: list[str]) -> str:
         """
@@ -55,7 +63,7 @@ class SessionManager:
         Format: ascon1.<session_id>.<ciphertext_hex>.<tag_hex>
         """
         # Deterministic session ID (for revocation tracking and nonce derivation)
-        current_time = 0.0  # Zero-Sim
+        current_time = self._get_current_time()
         session_id = hashlib.sha256(
             f"{wallet_address}:{self._token_counter}:{current_time}".encode()
         ).hexdigest()[:16]
@@ -152,10 +160,8 @@ class SessionManager:
             # Deserialize claims
             session_data = json.loads(plaintext.decode())
 
-            # Validate expiry - Zero-Sim assumes genesis 0 unless overridden
-            # Since create_session uses 0, expiry will be > 0.
-            # If current_time is 0, session valid.
-            current_time = 0.0
+            # Validate expiry - uses injectable time provider
+            current_time = self._get_current_time()
             if session_data["expires_at"] < current_time:
                 return None
 
@@ -190,8 +196,8 @@ class SessionManager:
         except IndexError:
             return False
 
-        # Add to revocation list
-        self._revoked[session_id] = 0.0  # Zero-Sim timestamp
+        # Add to revocation list with current timestamp
+        self._revoked[session_id] = self._get_current_time()
 
         EvidenceBus.emit(
             "AUTH_LOGOUT",
@@ -209,7 +215,7 @@ class SessionManager:
         Once a token has expired naturally, we don't need to keep it
         in the revocation list anymore.
         """
-        now = 0.0
+        now = self._get_current_time()
         # Remove revocations older than the longest possible TTL
         cutoff = now - (self._ttl * 2)
         expired = [
