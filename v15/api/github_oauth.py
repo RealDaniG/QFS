@@ -44,7 +44,7 @@ def decode_oauth_state(state: str, current_time: int, max_age: int = 300) -> str
     if age > max_age:
         raise ValueError("State expired")
 
-    return data["session_id"]
+    return str(data["session_id"])
 
 
 router = APIRouter(prefix="/auth/github", tags=["github-auth"])
