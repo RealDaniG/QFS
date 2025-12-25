@@ -172,22 +172,27 @@ class GovernanceProjection:
             state.total_votes / 100.0
         )  # Placeholder logic matching f_execution
 
-        voting_weight = state.approve_weight + state.reject_weight
-        approval_rate = (
-            (state.approve_weight / voting_weight) if voting_weight > 0 else 0.0
-        )
+        # Parse string weights to float for calculations
+        approve_weight = float(state.approve_weight)
+        reject_weight = float(state.reject_weight)
+        voting_weight = approve_weight + reject_weight
+        approval_rate = (approve_weight / voting_weight) if voting_weight > 0 else 0.0
 
-        quorum_met = participation >= config.quorum_threshold
-        approval_met = approval_rate >= config.approval_threshold
+        # Parse string thresholds to float for comparisons
+        quorum_threshold = float(config.quorum_threshold)
+        approval_threshold = float(config.approval_threshold)
+
+        quorum_met = participation >= quorum_threshold
+        approval_met = approval_rate >= approval_threshold
 
         status = "Passing" if (quorum_met and approval_met) else "Failing"
 
         summary = f"Proposal is currently {status}."
         detail = (
-            f"Quorum: {participation:.1%} (Target: {config.quorum_threshold:.0%}). "
-            f"Approval: {approval_rate:.1%} (Target: {config.approval_threshold:.0%}). "
+            f"Quorum: {participation:.1%} (Target: {quorum_threshold:.0%}). "
+            f"Approval: {approval_rate:.1%} (Target: {approval_threshold:.0%}). "
             f"Total votes: {state.total_votes}."
         )
-        rule = f"Requires >{config.quorum_threshold:.0%} participation and >{config.approval_threshold:.0%} approval."
+        rule = f"Requires >{quorum_threshold:.0%} participation and >{approval_threshold:.0%} approval."
 
         return {"summary": summary, "detail": detail, "rule": rule}

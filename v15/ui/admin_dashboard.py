@@ -31,7 +31,9 @@ class AdminDashboard:
         self.social_proj = SocialProjection(self.bus)
         # Default config for viewing - in production this comes from chain state
         self.gov_config = GovernanceConfig(
-            quorum_threshold=0.3, approval_threshold=0.5, voting_period_seconds=86400
+            quorum_threshold="0.300000000000000000",
+            approval_threshold="0.500000000000000000",
+            voting_period_seconds=86400,
         )
 
     def get_governance_dashboard(self, limit: int = 50) -> Dict:

@@ -73,7 +73,7 @@ def test_advisory_never_changes_outcome():
                     "vote": {
                         "proposal_id": "p_safe",
                         "choice": "approve",
-                        "weight": 100,
+                        "weight": "100.000000000000000000",
                         "voter_wallet": "0xB",
                         "timestamp": 150,
                     },
@@ -109,7 +109,7 @@ def test_advisory_never_changes_outcome():
         )
 
         # Verify votes counted
-        assert state.approve_weight == 100.0
+        assert float(state.approve_weight) == 100.0
 
         # Compute outcome at timestamp 250 (after voting_ends_at 200)
         outcome = compute_outcome(state, config, current_timestamp=250)
