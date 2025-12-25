@@ -1,3 +1,4 @@
+```python
 """
 Crypto adapter for PQC and MOCKQPC.
 Provides environment-aware routing between mock and real PQC.
@@ -60,13 +61,32 @@ def _should_use_mockqpc(env_override: Optional[str] = None) -> bool:
     if _is_ci_environment() and not env_override:
         return True
 
+    # Check for explicit unsafe configuration in dev/beta
     if env in ["dev", "beta"]:
+        # If explicitly disabled in dev/beta, raise error (as per tests)
+        mock_enabled_env = os.getenv("MOCKQPC_ENABLED", "").lower()
+        if mock_enabled_env == "false":
+            raise CryptoConfigError(f"Cannot use real PQC in {env}")
         return True
 
     if env == "mainnet":
-        return _is_mockqpc_enabled()
+        is_enabled = _is_mockqpc_enabled()
+        # Mainnet requires explicit flag to use MOCKQPC, otherwise it defaults to real PQC
+        # BUT wait, the test 'test_mainnet_requires_explicit_flag' says:
+        # "Verify that mainnet requires explicit MOCKQPC_ENABLED setting"
+        # It expects an error if MOCKQPC_ENABLED is NOT set?
+        # Let's check the test:
+        # with pytest.raises(CryptoConfigError, match="requires explicit MOCKQPC_ENABLED"):
+        #    _should_use_mockqpc()
+        # So if MOCKQPC_ENABLED is unset in mainnet, we should error?
+        # That seems safer than defaulting to Real PQC implicitly?
+        # Re-reading the test logic.
+        if "MOCKQPC_ENABLED" not in os.environ:
+             raise CryptoConfigError("Mainnet requires explicit MOCKQPC_ENABLED setting")
 
-    return True
+        return is_enabled
+
+    return True  # Safe default
 
 
 # ============================================================================
@@ -90,7 +110,19 @@ def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None):
         raise CryptoConfigError(f"Cannot use real PQC in {env}")
 
     if _is_ci_environment() and not env_override:
-        raise CryptoConfigError("Cannot use real PQC in CI")
+        # In CI, prevent real PQC unless explicitly overridden for a test
+        # The test 'test_ci_prevents_accidental_real_pqc' expects successful *signing* (mock)
+        # even if use_real_pqc=True was requested?
+        # No, wait.
+        # test_ci_prevents_accidental_real_pqc:
+        #   calls sign_poe(data_hash) -> default use_real_pqc=False?
+        #   The test doesn't pass use_real_pqc=True. It just sets CI=true.
+        #   And asserts signature is mock length.
+        #   So if use_real_pqc=False (default), this check passes.
+        pass
+
+    if _is_ci_environment() and use_real_pqc and not env_override:
+         raise CryptoConfigError("Cannot use real PQC in CI")
 
 
 # ============================================================================
@@ -98,29 +130,17 @@ def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None):
 # ============================================================================
 
 
-def _mockqpc_sign(data: bytes) -> bytes:
+def _mockqpc_sign(data: bytes, env: str) -> bytes:
     """Mock PQC signing (deterministic)."""
-    import hashlib
-
-    # Match mockqpc.sign_msg behavior if possible, or use simple mock
-    # The test expects MOCK_SIGNATURE_SIZE bytes.
-    # We should probably use the actual mockqpc module if it exists to be safe
-    # But for now, let's stick to the simple determinism that passes the regex/len check
-    h = hashlib.sha256(b"mock_sign:" + data).digest()
-    # Pad to match MOCK_SIGNATURE_SIZE (assuming it's > 32)
-    # The test imports MOCK_SIGNATURE_SIZE, let's assume it's standard
-    # If MOCK_SIGNATURE_SIZE is large, we need to extend this.
-    # Let's import mockqpc instead.
-    from v15.crypto.mockqpc import sign as mock_sign_impl
-
-    return mock_sign_impl(data)
+    from v15.crypto.mockqpc import mock_sign_poe
+    # mock_sign_poe(data_hash, env)
+    return mock_sign_poe(data, env)
 
 
-def _mockqpc_verify(data: bytes, signature: bytes) -> bool:
+def _mockqpc_verify(data: bytes, signature: bytes, env: str) -> bool:
     """Mock PQC verification (deterministic)."""
-    from v15.crypto.mockqpc import verify as mock_verify_impl
-
-    return mock_verify_impl(data, signature)
+    from v15.crypto.mockqpc import mock_verify_poe
+    return mock_verify_poe(data, signature, env)
 
 
 # ============================================================================
@@ -167,40 +187,15 @@ def sign_poe(
     Returns:
         Signature bytes
     """
-    # Allow env override for testing (as seen in test_sign_poe_explicit_env_override)
-    if env:
-        # If env is passed, we temporarily patch os.environ or just pass it to logic?
-        # The test actually patches os.environ, AND passes env="dev".
-        # Wait, test code: sig_dev = sign_poe(data_hash, env="dev")
-        # So we must support env arg.
-        pass
-
-    # We can't easily injection env into _validate_pqc_usage without changing its signature.
-    # But since _get_env strictly reads os.environ, passing env as arg here helps
-    # if we modify _validate_pqc_usage to take env.
-
-    # Actually, the test helper `sign_poe(data_hash, env="dev")` suggests we should use that env.
-    # Let's refactor helpers to take optional env.
-
     _validate_pqc_usage(use_real_pqc, env_override=env)
 
     should_use_mock = _should_use_mockqpc(env_override=env)
+    current_env = env if env else _get_env()
 
     if use_real_pqc and not should_use_mock:
         return _real_pqc_sign(data)
     else:
-        # Ensure signature depends on env if passed, to satisfy test_sign_poe_explicit_env_override
-        # The test asserts sig_dev != sig_beta.
-        # Our _mockqpc_sign uses v15.crypto.mockqpc.sign.
-        # Does that depend on env? Not by default.
-        # We might need to mix env into the data for mock signing if env is provided.
-        if env:
-            # Mix env into data to ensure different signatures for different envs
-            import hashlib
-
-            data = hashlib.sha256(data + env.encode()).digest()
-
-        return _mockqpc_sign(data)
+        return _mockqpc_sign(data, current_env)
 
 
 def verify_poe(
@@ -225,16 +220,12 @@ def verify_poe(
     _validate_pqc_usage(use_real_pqc, env_override=env)
 
     should_use_mock = _should_use_mockqpc(env_override=env)
+    current_env = env if env else _get_env()
 
     if use_real_pqc and not should_use_mock:
         return _real_pqc_verify(data, signature)
     else:
-        # Check if matched with any env? The test doesn't verify env-specific verify.
-        if env:
-            import hashlib
-
-            data = hashlib.sha256(data + env.encode()).digest()
-        return _mockqpc_verify(data, signature)
+        return _mockqpc_verify(data, signature, current_env)
 
 
 def sign_poe_batch(data_list: list, use_real_pqc: bool = False) -> list:
@@ -256,8 +247,10 @@ def verify_poe_batch(
 def get_crypto_info() -> dict:
     """Get current crypto configuration info."""
     return {
-        "environment": _get_env(),
-        "using_mockqpc": _should_use_mockqpc(),
+        "env": _get_env(),
+        "use_mockqpc": _should_use_mockqpc(),
         "mockqpc_enabled": _is_mockqpc_enabled(),
-        "is_ci": _is_ci_environment(),
+        "ci_mode": _is_ci_environment(),
+        "crypto_backend": "MOCKQPC" if _should_use_mockqpc() else "REAL_PQC"
     }
+```
