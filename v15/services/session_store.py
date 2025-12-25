@@ -8,7 +8,7 @@ from v15.auth.session import Session
 
 
 class SessionStore:
-    def __init__(self):
+    def __init__(self) -> None:
         self._sessions: Dict[str, Session] = {}
 
     def save(self, session: Session) -> None:

@@ -34,7 +34,7 @@ class EvidenceEvent:
 
 
 class EvidenceBusAdapter:
-    def __init__(self):
+    def __init__(self) -> None:
         self.enabled = True
 
     def emit(self, event: Dict[str, Any]) -> None:

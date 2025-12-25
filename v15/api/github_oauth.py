@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Optional
+from typing import Optional, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 import requests
@@ -58,7 +58,7 @@ GITHUB_REDIRECT_URI = os.getenv(
 
 
 # Dependency for EvidenceBus
-def get_evidence_adapter():
+def get_evidence_adapter() -> EvidenceBusAdapter:
     return EvidenceBusAdapter()  # In real app, might be singleton
 
 
@@ -77,7 +77,9 @@ class GitHubUser(BaseModel):
 
 
 @router.get("/login")
-async def github_login(session_id: str, logical_time: int = Depends(get_logical_time)):
+async def github_login(
+    session_id: str, logical_time: int = Depends(get_logical_time)
+) -> RedirectResponse:
     """Step 1: Redirect user to GitHub OAuth with session in state."""
     if not GITHUB_CLIENT_ID:
         raise HTTPException(status_code=500, detail="GITHUB_CLIENT_ID not configured")
@@ -103,8 +105,9 @@ async def github_callback(
     state: str,  # GitHub returns our state parameter
     adapter: EvidenceBusAdapter = Depends(get_evidence_adapter),
     logical_time: int = Depends(get_logical_time),
-):
+) -> Dict[str, Any]:
     """Step 2: Extract session from state, exchange code, link identity."""
+    import hashlib
 
     # Decode session_id from state
     try:
@@ -163,7 +166,7 @@ async def github_callback(
         platform="github",
         external_id=str(github_user.id),
         external_handle=github_user.login,
-        proof=f"oauth_token_hash:{hash(access_token)}",  # In real zero-sim, use deterministic hash
+        proof=f"oauth_token_hash:{hashlib.sha256(access_token.encode()).hexdigest()}",  # Deterministic hash
         timestamp=logical_time,
     )
 
