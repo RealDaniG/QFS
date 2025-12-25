@@ -72,7 +72,9 @@ async def verify_auth_v18(payload: VerifyPayload):
         raise HTTPException(status_code=400, detail="Missing nonce or challenge_id")
 
     # Create Session
-    session_token = session_manager.create_session(wallet_address)
+    session_token = session_manager.create_session(
+        wallet_address, scopes=["user", "governance.read", "v18.internal"]
+    )
 
     return SessionResponse(
         session_token=session_token,

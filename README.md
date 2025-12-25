@@ -1,18 +1,19 @@
-# Quantum Financial System (QFS) – Deterministic Engine
+# QFS × ATLAS (V15/V17/V18)
 
-> **Core:** Deterministic, replayable coordination and settlement engine
+![Status](https://img.shields.io/badge/Status-Live_Production-green)
+![Version](https://img.shields.io/badge/Version-v18.0.0--rc1-blue)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 
-# ATLAS – Social & Governance Layer on QFS
+**Current Deployment:** Production (Port 8000)
+**Certified Baseline:** 2025-12-25 (V15/V17/V18-rc1)
 
-> **Surface:** Conversations, contributions, and disputes backed by incorruptible memory
-
----
+## Overview
 
 <div align="center">
 
-**🚧 IN ACTIVE DEVELOPMENT 🚧**
+**🟢 PRODUCTION LIVE**
 
-**Status:** V20 Integration Active • GitHub Identity & Retro Rewards Live • Core Hardening (v13.5) • CI/CD Refactored
+**Status:** V18.0.0-rc1 Live • V20 Integration Active • GitHub Identity & Retro Rewards Live
 **Current Focus:** Auth Integration (v20), Zero-Sim Remediation, PQC Anchoring
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 

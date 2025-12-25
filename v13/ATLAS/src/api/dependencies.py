@@ -8,6 +8,8 @@ from v13.core.CoherenceLedger import CoherenceLedger
 from v13.core.StorageEngine import StorageEngine
 from v13.libs.CertifiedMath import CertifiedMath
 
+from v15.auth.session_manager import SessionManager
+
 # Initialize Global Services
 _cm = CertifiedMath()
 _ledger = CoherenceLedger(_cm)
@@ -16,33 +18,8 @@ _replay_source = QFSReplaySource(_ledger, _storage)
 evidence_bus = EvidenceBus()
 
 
-class SessionManager:
-    def create_session(self, wallet_address: str) -> str:
-        """Create a JWT session token."""
-        # Zero-Sim: deterministic timestamp 0
-        now = 0
-        expiry = now + int(settings.SESSION_EXPIRY_HOURS * 3600)
-
-        payload = {
-            "wallet": wallet_address.lower(),
-            "iat": now,
-            "exp": expiry,
-            "scopes": ["user", "governance.read", "v18.internal"],
-        }
-        return jwt.encode(payload, settings.SESSION_SECRET, algorithm="HS256")
-
-    def verify_session(self, token: str) -> dict:
-        """Verify and decode a session token."""
-        try:
-            payload = jwt.decode(token, settings.SESSION_SECRET, algorithms=["HS256"])
-            return payload
-        except jwt.ExpiredSignatureError:
-            raise HTTPException(401, "Session expired")
-        except jwt.InvalidTokenError:
-            raise HTTPException(401, "Invalid session token")
-
-
-session_manager = SessionManager()
+# Instantiate Certified SessionManager (V15/V18)
+session_manager = SessionManager(session_ttl_seconds=3600 * 24)
 
 
 async def require_auth(authorization: Optional[str] = Header(None)) -> dict:

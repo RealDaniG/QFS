@@ -1,5 +1,30 @@
 # Changelog
 
+## [V18.0.0-rc1] - 2025-12-25
+
+### Added
+
+- **Ascon-128 Sessions**: Integrated NIST LWC finalist Ascon-128 for session encryption and authentication in `v18/auth/ascon_session.py`.
+- **Logical Clock**: Implemented `LogicalTime` for deterministic event ordering in V18 sessions.
+- **Production Support**: Added `start_production_backend.bat` and `QFS_HOST/QFS_PORT` configuration for safe deployment.
+- **Evidence Bus Adapter**: Bridge between V13 Event Bus and V17 Governance Projection.
+
+## [V17.0.0-rc1] - 2025-12-25
+
+### Added
+
+- **Governance Projection**: `GovernanceProjection` service for aggregation of proposal state from evidence events.
+- **Proposal API**: REST endpoints for `/api/v18/governance/proposals` and voting (mock weights for staging).
+- **Voter Weighting**: Foundation for token-weighted voting (simulated in staging).
+
+## [V15.0.0-rc1] - 2025-12-25
+
+### Added
+
+- **Core Services**: Hardened V15 service layer including Validation and Policy enforcement.
+- **Bandit Compliance**: Mitigated `B104` (Hardcoded Bind) via environment variables.
+- **Zero-Sim**: Addressed 32 non-critical float literal violations.
+
 All notable changes to QFS × ATLAS will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
