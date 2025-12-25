@@ -5,7 +5,7 @@ Deterministic "signatures" using hashes (no real crypto).
 
 from dataclasses import dataclass
 import hashlib
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 @dataclass
@@ -20,7 +20,7 @@ class MockPQCKey:
     derivation_seed_ref: str  # Reference to EvidenceBus seed event
     created_at: int
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict[str, Any]:
         """Serialize for storage."""
         return {
             "key_id": self.key_id,

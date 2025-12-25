@@ -11,13 +11,13 @@ from typing import Optional
 _test_time: Optional[int] = None
 
 
-def set_test_time(timestamp: int):
+def set_test_time(timestamp: int) -> None:
     """Inject deterministic time for testing/replay."""
     global _test_time
     _test_time = timestamp
 
 
-def clear_test_time():
+def clear_test_time() -> None:
     """Clear test time injection."""
     global _test_time
     _test_time = None

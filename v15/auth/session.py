@@ -4,7 +4,7 @@ Deterministic session identity and lifecycle management.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Session:
         """Check if session is expired."""
         return current_time >= self.expires_at
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> Dict[str, Any]:
         """Serialize for EvidenceBus."""
         return {
             "session_schema_version": self.session_schema_version,
