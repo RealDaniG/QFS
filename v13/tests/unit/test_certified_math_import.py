@@ -4,7 +4,7 @@ import unittest
 # Ensure v13 root is in path
 sys.path.append(".")
 
-from v13.libs.CertifiedMath import CertifiedMath
+from v13.libs.CertifiedMath import CertifiedMath, get_PI
 from v13.libs.BigNum128 import BigNum128
 
 
@@ -34,8 +34,8 @@ class TestCertifiedMathSmoke(unittest.TestCase):
         print(f"[Smoke] _safe_mul verified: {res_mul.value}")
 
         # 3. Verify System Constants usage
-        # This checks that get_PI/get_LN10 etc are accessible
-        pi = CertifiedMath.get_PI()
+        # get_PI is a module-level function, not a class method
+        pi = get_PI()
         self.assertIsNotNone(pi)
         print("[Smoke] System constants accessible.")
 

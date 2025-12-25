@@ -1,8 +1,9 @@
 """
 progress.py - User Tour Progress Tracking
 """
+
 from typing import Dict, List, Any
-from ...libs.CertifiedMath import CertifiedMath
+
 
 class ProgressTracker:
     """
@@ -26,10 +27,27 @@ class ProgressTracker:
         if step_id not in self._progress[user_id][tour_id]:
             self._progress[user_id][tour_id].append(step_id)
 
-    def get_progress(self, user_id: str, tour_id: str, total_steps: int) -> Dict[str, Any]:
+    def get_progress(
+        self, user_id: str, tour_id: str, total_steps: int
+    ) -> Dict[str, Any]:
         """Get progress summary."""
         if user_id not in self._progress or tour_id not in self._progress[user_id]:
-            return {'tour_id': tour_id, 'completed_steps': [], 'current_step': None, 'total_steps': total_steps, 'completion_percentage': 0}
+            return {
+                "tour_id": tour_id,
+                "completed_steps": [],
+                "current_step": None,
+                "total_steps": total_steps,
+                "completion_percentage": 0,
+            }
         completed = self._progress[user_id][tour_id]
-        completion_pct = CertifiedMath.idiv(len(completed) * 100, total_steps) if total_steps > 0 else 0
-        return {'tour_id': tour_id, 'completed_steps': completed, 'current_step': f'step_{len(completed) + 1}' if len(completed) < total_steps else None, 'total_steps': total_steps, 'completion_percentage': completion_pct}
+        # Use standard integer division for simple percentage calculation
+        completion_pct = (len(completed) * 100) // total_steps if total_steps > 0 else 0
+        return {
+            "tour_id": tour_id,
+            "completed_steps": completed,
+            "current_step": f"step_{len(completed) + 1}"
+            if len(completed) < total_steps
+            else None,
+            "total_steps": total_steps,
+            "completion_percentage": completion_pct,
+        }
