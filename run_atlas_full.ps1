@@ -56,6 +56,12 @@ Log-Section "SYSTEM" "ATLAS V20 orchestration starting (mode: $(if ($DevMode) {'
 do {
     Log-Section "SYSTEM" "=== STARTING ORCHESTRATOR LOOP ==="
     
+    # 0. Start Auth Service (v20)
+    Log-Section "AUTH" "Starting Auth Service on :8002..."
+    $authCmd = "python -m v15.services.auth_service --port 8002"
+    Log-Section "AUTH" "Command: $authCmd"
+    $authProc = Start-Process cmd -ArgumentList "/c $authCmd" -WorkingDirectory $Root -RedirectStandardOutput "$Root\logs\auth_stdio.log" -RedirectStandardError "$Root\logs\auth_stderr.log" -PassThru -WindowStyle Hidden
+
     # 1. Start Backend
     Log-Section "BACKEND" "Starting FastAPI on :8001..."
     $backendCmd = "python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001"
@@ -68,6 +74,15 @@ do {
     $frontend = Start-Process cmd -ArgumentList "/c npm run dev" -WorkingDirectory "$Root\v13\atlas" -RedirectStandardOutput "$Root\logs\frontend_stdio.log" -RedirectStandardError "$Root\logs\frontend_stderr.log" -PassThru -WindowStyle Hidden
 
     Log-Section "SYSTEM" "Waiting for services to become healthy..."
+
+    $authOk = Wait-ForEndpoint "AUTH" "http://localhost:8002/health"
+    if (-not $authOk) {
+        Log-Section "AUTH" "Startup failed. See logs\auth_*.log"
+        Stop-ServiceSafe $authProc "AUTH"
+        # Continue to verify backend/frontend (or fail fast?)
+        # For now, we want full stack so we should probably fail but let's see.
+        # Actually logic below checks specific flags.
+    }
     
     $backendOk = Wait-ForEndpoint "BACKEND" "http://localhost:8001/health"
     $frontendOk = $false
@@ -92,9 +107,10 @@ do {
         }
     }
 
-    if (-not $backendOk -or -not $frontendOk) {
-        Log-Section "SYSTEM" "Startup failed. See logs\backend_*.log and logs\frontend_*.log"
+    if (-not $backendOk -or -not $frontendOk -or -not $authOk) {
+        Log-Section "SYSTEM" "Startup failed. See logs\*.log"
         Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $authProc "AUTH"
         Stop-ServiceSafe $frontend "FRONTEND"
         exit 1
     }
@@ -195,12 +211,14 @@ do {
     if ($Success) {
         Log-Section "SYSTEM" "Loop Mode: Checks passed. Stopping services and waiting..."
         Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $authProc "AUTH"
         Stop-ServiceSafe $frontend "FRONTEND"
         Start-Sleep -Seconds 10
     }
     else {
         Log-Section "SYSTEM" "Loop Mode: Checks failed. Restarting..."
         Stop-ServiceSafe $backend "BACKEND"
+        Stop-ServiceSafe $authProc "AUTH"
         Stop-ServiceSafe $frontend "FRONTEND"
         Start-Sleep -Seconds 5
     }

@@ -1,19 +1,17 @@
 import unittest
+from v15.auth.device import compute_device_hash
 
 
 class TestDeviceBinding(unittest.TestCase):
     def test_device_hash_deterministic(self):
-        # TODO: Implement in Phase 4
-        pass
+        """Invariant AUTH-D1: Device hash is deterministic."""
+        h1 = compute_device_hash("Windows", "x86_64", "uuid-123")
+        h2 = compute_device_hash("windows ", " X86_64", "uuid-123\n")
 
-    def test_device_hash_stability(self):
-        # TODO: Implement in Phase 4
-        pass
+        self.assertEqual(h1, h2, "Device hash should normalize inputs")
+        self.assertEqual(len(h1), 64)  # SHA3-256 hex
 
-    def test_device_mismatch_event(self):
-        # TODO: Implement in Phase 4
-        pass
-
-    def test_device_mismatch_scope_downgrade(self):
-        # TODO: Implement in Phase 4
-        pass
+    def test_device_hash_sensitivity(self):
+        h1 = compute_device_hash("Windows", "x86_64", "uuid-1")
+        h2 = compute_device_hash("Windows", "x86_64", "uuid-2")
+        self.assertNotEqual(h1, h2)
