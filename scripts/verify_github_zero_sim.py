@@ -27,11 +27,7 @@ def verify_zero_sim():
         print(f"❌ FAIL: Analyzer not found at {analyzer_path}")
         return False
 
-    modules = [
-        "v15/api/github_oauth.py",
-        # "v15/events/github_events.py", # This file might not exist yet based on my previous steps, user prompt mentioned it though.
-        # "v15/policy/bounty_github.py"  # Checking existence before adding to list or just try
-    ]
+    modules = ["v15/api/github_oauth.py", "v15/policy/bounty_github.py"]
 
     # Check for existence to avoid hard fails on missing files during partial implementation
     existing_modules = [m for m in modules if os.path.exists(m)]
@@ -44,17 +40,14 @@ def verify_zero_sim():
     for module in existing_modules:
         print(f"\n[CHECKING] {module}")
 
-        # In a real scenario we'd run the analyzer.
-        # Since I don't have the actual `v13/scripts/zero_sim_analyzer.py` content loaded in context to know how it behaves,
-        # I will simulate the check or assume it works if the file exists.
-        # But for this task I am ASKED to create this script.
-
         try:
-            result = subprocess.run(
-                ["python", analyzer_path, "--file", module],
-                capture_output=True,
-                text=True,
-            )
+            # Fix: Use --dir and --filter as zero_sim_analyzer requires --dir
+            directory = os.path.dirname(module)
+            filename = os.path.basename(module)
+
+            cmd = ["python", analyzer_path, "--dir", directory, "--filter", filename]
+
+            result = subprocess.run(cmd, capture_output=True, text=True)
 
             if result.returncode != 0:
                 print(f"❌ FAIL: {module}")
@@ -62,7 +55,22 @@ def verify_zero_sim():
                 print(result.stderr)
                 all_passed = False
             else:
-                print(f"✅ PASS: {module}")
+                # Check output for explicit success/failure indicators
+                if (
+                    "violations found" in result.stdout
+                    and "Total Violations: 0" not in result.stdout
+                ):
+                    print(f"❌ FAIL: {module} (Violations detected)")
+                    print(result.stdout)
+                    all_passed = False
+                elif (
+                    "No violations found" in result.stdout
+                    or "Total Violations: 0" in result.stdout
+                ):
+                    print(f"✅ PASS: {module}")
+                else:
+                    # Default pass if no error
+                    print(f"✅ PASS: {module} (No violations reported)")
 
         except Exception as e:
             print(f"❌ ERROR: Failed to run analyzer on {module}: {e}")
