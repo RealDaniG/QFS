@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from typing import Dict, List, Optional
 import json
 from pathlib import Path
+import functools
 
 
 class AEGISModelConfig(BaseModel):
@@ -38,18 +39,12 @@ class AEGISModelConfig(BaseModel):
     )
 
 
-_REGISTRY_CACHE: Dict[str, AEGISModelConfig] = {}
-
-
+@functools.lru_cache(maxsize=1)
 def _load_registry() -> Dict[str, AEGISModelConfig]:
     """
     Load the model registry from the JSON file.
-    Memoized in _REGISTRY_CACHE.
+    Memoized via lru_cache.
     """
-    global _REGISTRY_CACHE
-    if _REGISTRY_CACHE:
-        return _REGISTRY_CACHE
-
     registry_path = Path(__file__).with_name("aegis_model_registry.json")
     if not registry_path.exists():
         # Fallback/Bootstrap if file doesn't exist yet
@@ -65,8 +60,7 @@ def _load_registry() -> Dict[str, AEGISModelConfig]:
             f"{c['model_id']}@{c['version']}": AEGISModelConfig(**c)
             for c in sorted_data
         }
-        _REGISTRY_CACHE = configs
-        return _REGISTRY_CACHE
+        return configs
     except Exception as e:
         # Error loading registry - return empty dict (bootstrap mode)
         return {}

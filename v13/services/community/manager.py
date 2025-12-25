@@ -4,6 +4,7 @@ manager.py - Guild Management Service
 
 import hashlib
 from typing import Dict, Any, Optional, List, Union
+# Fixed point only
 
 
 class GuildManager:
@@ -20,7 +21,7 @@ class GuildManager:
         description: str,
         creator_id: str,
         coherence_threshold: int = 400,
-        staking_amt: float = 100.0,
+        staking_amt: int = 100,
         timestamp: int = 0,  # Zero-Sim
     ) -> Dict[str, Any]:
         """

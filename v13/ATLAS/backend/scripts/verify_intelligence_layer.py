@@ -1,7 +1,12 @@
+import logging
 import asyncio
 import sys
 import os
 import json
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -11,13 +16,13 @@ from lib.intelligence.report import AdvisoryVerdict
 
 
 async def verify_intelligence_layer():
-    print("Locked & Loaded: Verifying ATLAS v19 Phase 4 (Intelligence)...")
+    logger.info("Locked & Loaded: Verifying ATLAS v19 Phase 4 (Intelligence)...")
 
     registry = get_agent_registry()
-    print(f"\n[1] Agents Online: {len(registry._agents)}")
+    logger.info(f"\n[1] Agents Online: {len(registry._agents)}")
 
     # Test Case 1: valid Bounty Claim
-    print("\n[2] Testing BountyValidator (Valid Case)...")
+    logger.info("\n[2] Testing BountyValidator (Valid Case)...")
     bounty_envelope = TrustedEnvelope(
         payload_cid="QmValidBountyProof123",
         author_address="0x1234567890123456789012345678901234567890",
@@ -30,14 +35,14 @@ async def verify_intelligence_layer():
 
     bounty_report = next((r for r in reports if r.agent_id == "BountyValidator"), None)
     if bounty_report and bounty_report.verdict == AdvisoryVerdict.PASS:
-        print("✅ BountyValidator: PASSED valid claim")
+        logger.info("✅ BountyValidator: PASSED valid claim")
     else:
-        print(
+        logger.warning(
             f"❌ BountyValidator: Unexpected result {bounty_report.verdict if bounty_report else 'None'}"
         )
 
     # Test Case 2: Fraud Detection (Future Timestamp)
-    print("\n[3] Testing FraudDetector (Time Travel)...")
+    logger.info("\n[3] Testing FraudDetector (Time Travel)...")
     import time
 
     future_envelope = TrustedEnvelope(
@@ -55,14 +60,14 @@ async def verify_intelligence_layer():
     )
 
     if fraud_report and fraud_report.verdict == AdvisoryVerdict.REJECT:
-        print(f"✅ FraudDetector: CAUGHT time travel ({fraud_report.factors})")
+        logger.info(f"✅ FraudDetector: CAUGHT time travel ({fraud_report.factors})")
     else:
-        print(
+        logger.warning(
             f"❌ FraudDetector: Failed to catch fraud. Verdict: {fraud_report.verdict if fraud_report else 'None'}"
         )
 
     # Test Case 3: Governance Analysis
-    print("\n[4] Testing GovernanceAnalyzer (Emergency)...")
+    logger.info("\n[4] Testing GovernanceAnalyzer (Emergency)...")
     gov_envelope = TrustedEnvelope(
         payload_cid="QmProposal",
         author_address="0x1234567890123456789012345678901234567890",
@@ -77,11 +82,11 @@ async def verify_intelligence_layer():
     )
 
     if gov_report and "Emergency tag present" in gov_report.factors:
-        print(f"✅ GovernanceAnalyzer: Flagged EMERGENCY proposal")
+        logger.info(f"✅ GovernanceAnalyzer: Flagged EMERGENCY proposal")
     else:
-        print(f"❌ GovernanceAnalyzer: Missed flags.")
+        logger.warning(f"❌ GovernanceAnalyzer: Missed flags.")
 
-    print("\n✅ PHASE 4 VERIFIED. Intelligence Layer is Active (Advisory Mode).")
+    logger.info("\n✅ PHASE 4 VERIFIED. Intelligence Layer is Active (Advisory Mode).")
 
 
 if __name__ == "__main__":

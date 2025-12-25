@@ -8,17 +8,23 @@ except ImportError:
     try:
         import ascon
     except ImportError:
-        print("Error: ascon module not found")
+        sys.stderr.write("Error: ascon module not found\n")
         sys.exit(1)
+
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
 
 key = bytes.fromhex("000102030405060708090a0b0c0d0e0f")
 nonce = bytes.fromhex("000102030405060708090a0b0c0d0e0f")
 ad = b""  # Empty AD
 plaintext = b"Hello P2P"
 
-print("Python Generating Ciphertext for Empty AD...")
+logger.info("Python Generating Ciphertext for Empty AD...")
 try:
     ciphertext = ascon.encrypt(key, nonce, ad, plaintext, variant="Ascon-128")
-    print(f"Ciphertext (Hex): {ciphertext.hex()}")
+    logger.info(f"Ciphertext (Hex): {ciphertext.hex()}")
 except Exception as e:
-    print(f"Error: {e}")
+    logger.error(f"Error: {e}")

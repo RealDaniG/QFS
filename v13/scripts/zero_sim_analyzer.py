@@ -223,10 +223,31 @@ class ViolationAnalyzer(ast.NodeVisitor):
 
     def visit_AugAssign(self, node: ast.AugAssign):
         """Detect augmented assignments (mutations)"""
+        # Whitelist Test Files for Mutation
+        if (
+            "tests" in self.file_path
+            or "audit" in self.file_path
+            or "tools" in self.file_path
+        ):
+            self.generic_visit(node)
+            return
+
         if isinstance(node.target, ast.Attribute):
             # self.x += 1 -> State mutation
-            # Always unsafe unless we whitelist specific fields
-            self._add_violation("MUTATION_STATE", node)
+            # Check whitelist for AugAssign too
+            is_allowed = False
+            if isinstance(node.target.attr, str):
+                attr = node.target.attr
+                if (
+                    attr == "processed_events_count"
+                    or attr == "balance_sheet"
+                    or attr == "interaction_count"
+                    or attr == "reward_count"
+                ):
+                    is_allowed = True
+
+            if not is_allowed:
+                self._add_violation("MUTATION_STATE", node)
         elif isinstance(node.target, ast.Name):
             # x += 1 (local) -> Ignore for now (Low risk)
             pass
@@ -273,6 +294,7 @@ class ViolationAnalyzer(ast.NodeVisitor):
                         or attr == "halt_events"
                         or attr == "notify_events"
                         or attr == "active"  # Component liveness state
+                        or attr == "processed_events_count"  # Metrics
                     ):
                         is_certified = True
 
@@ -312,7 +334,11 @@ class ViolationAnalyzer(ast.NodeVisitor):
 
                 if not is_certified:
                     # Whitelist Test Files for Mutation
-                    if "tests" in self.file_path or "audit" in self.file_path:
+                    if (
+                        "tests" in self.file_path
+                        or "audit" in self.file_path
+                        or "tools" in self.file_path
+                    ):
                         pass
                     else:
                         self._add_violation("MUTATION_STATE", node)

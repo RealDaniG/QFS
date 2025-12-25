@@ -14,6 +14,7 @@ QFS V13 Compliance Note:
 import json
 import hashlib
 from typing import Any, Dict, List, Optional, Tuple, Union
+import functools
 
 try:
     from v13.libs.BigNum128 import BigNum128
@@ -21,39 +22,28 @@ except ImportError:
     from BigNum128 import BigNum128  # type: ignore
 
 
-_LN2_CACHE: Optional["BigNum128"] = None
-_LN10_CACHE: Optional["BigNum128"] = None
-_PI_CACHE: Optional["BigNum128"] = None
-
-
+@functools.lru_cache(maxsize=1)
 def get_LN2() -> "BigNum128":
     """Get LN2 constant, initializing it if needed."""
-    global _LN2_CACHE
-    if _LN2_CACHE is None:
-        from .BigNum128 import BigNum128
+    from .BigNum128 import BigNum128
 
-        _LN2_CACHE = BigNum128(693147180559945309)
-    return _LN2_CACHE
+    return BigNum128(693147180559945309)
 
 
+@functools.lru_cache(maxsize=1)
 def get_LN10() -> "BigNum128":
     """Get LN10 constant, initializing it if needed."""
-    global _LN10_CACHE
-    if _LN10_CACHE is None:
-        from .BigNum128 import BigNum128
+    from .BigNum128 import BigNum128
 
-        _LN10_CACHE = BigNum128(2302585092994045684)
-    return _LN10_CACHE
+    return BigNum128(2302585092994045684)
 
 
+@functools.lru_cache(maxsize=1)
 def get_PI() -> "BigNum128":
     """Get PI constant, initializing it if needed."""
-    global _PI_CACHE
-    if _PI_CACHE is None:
-        from .BigNum128 import BigNum128
+    from .BigNum128 import BigNum128
 
-        _PI_CACHE = BigNum128(3141592653589793238)
-    return _PI_CACHE
+    return BigNum128(3141592653589793238)
 
 
 class MathOverflowError(Exception):

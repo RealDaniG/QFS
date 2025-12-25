@@ -1,39 +1,39 @@
 {
-  "after_state_hash": "sha3_512:0d075a3b11d154cbde18f7b81637dc9ed73b386c33a7ee4a54e021ea58591bdc1cf484192c0a0abec523cadd31a7c12e577d120bec74654744dedb521ef9c384",
+  "after_state_hash": "sha3_512:1d2ff2f6896cf49abaa70c61ad9a01c4a5efc6c9ce342829567b3a6fa086b1f5a7beafd46fbc3f0eb10fc0efe66eb5569af4182734d5e2f49c73beb2a30204dd",
   "artifact_id": "GOV-001-EXEC-00",
   "before_state_hash": "sha3_512:bd331450285f191c802a4730247b026885871c85ffba425bcccbe2901b743103beb3d361048451537929f62361d28a0feb1cbef8345bbcf90993ce1a3e11fc70",
   "execution_phase": "EXECUTION",
-  "execution_trace_hash": "sha3_512:f7f3d7ba1124fa8225870027a6a77a0f9c60fcda60fe9513d2574b1dc2ceeb4736bdf27d542afe4f45aadb7485ae99ae80b2f5c878e85af0e761e6455b89cd0f",
+  "execution_trace_hash": "sha3_512:1ccc69fb1bbbd2e72fcb0f6d77a9a20c05b88484dc6af05749ef56320c4e2160ede1ff5fb55973ed81ce25454726244d738e2415dd034e59e06e306f0c49cace",
   "governance_scope": {
     "cycle": 0,
     "epoch": 1,
     "parameter_key": "VIRAL_POOL_CAP"
   },
   "poe_version": "1.0",
-  "proof_hash": "sha3_512:dd31e961fc1e0e38dd77b5636c240b28d6f2622fe63e7f29c72a3d6caca66d54073f71343a18f33f47262213df39cacf7252c33bfa4690f8c33407ad98be0012",
-  "proposal_hash": "336c4380d5ee2ac3cd94054dd262e3ec800a459760060b84fa011ef8af526878ced9abd8725c260e236c0622988c11578ae37276ca1c3ce616c729d2052b9f80",
+  "proof_hash": "sha3_512:02dc42a3abea4884189c1ec85e9778929299850388853dce441c14ec1fe0e46f5033d4e87ca91cae633e782ec2a8efd85490e70b7e775a538abb4bb07f8d54cc",
+  "proposal_hash": "eeeb9d8001bb86f3f9f981985aec8ad9a427cc8fd45d6b5b7a38c1adfaf984e144b94d818c1a487573d5dfc410a27b9bb07f5c8639dc6833fff9de14909eb45c",
   "replay_instructions": {
     "command": "python replay_gov_cycle.py --artifact_id GOV-001-EXEC-00",
-    "expected_output_hash": "sha3_512:dd31e961fc1e0e38dd77b5636c240b28d6f2622fe63e7f29c72a3d6caca66d54073f71343a18f33f47262213df39cacf7252c33bfa4690f8c33407ad98be0012",
+    "expected_output_hash": "sha3_512:02dc42a3abea4884189c1ec85e9778929299850388853dce441c14ec1fe0e46f5033d4e87ca91cae633e782ec2a8efd85490e70b7e775a538abb4bb07f8d54cc",
     "inputs_file": "evidence/GOV-001-EXEC-00-inputs.json"
   },
   "runtime_info": {
     "build_hash": "sha3_512:PLACEHOLDER",
     "certifiedmath_version": "1.0.0",
-    "code_commit_hash": "a060fb9e",
-    "deterministic_session_timestamp_hash": "sha3_512:c47c6af5ae1d618a2c786c4c459c786e024b82ade4558209ed86efd753b22a2612879edd8cdd0874a823a1c53f2dc2f6f12c5d27d119e0e2ada0002cc6cf817c",
+    "code_commit_hash": "0bc1a0fa",
+    "deterministic_session_timestamp_hash": "sha3_512:87f3be7aef81a3fa47bba5414cf235b0e907b602142aa152af686e24d01a581cfa27badeb7d99f7d2f353458f9a2bbc4c695cad63f189c4afcbb838dd07aa004",
     "python_version": "3.11.7"
   },
   "signatures": {
     "dilithium_signature": "base64:PLACEHOLDER",
     "nod_address": "NOD_0x0000000000000000",
-    "signature_timestamp": "2025-12-19T14:38:34.927122Z"
+    "signature_timestamp": "2024-01-01T00:00:00Z"
   },
   "vote_breakdown": {
     "no_stake": 0,
     "quorum_met": true,
     "supermajority_met": true,
-    "total_stake": 4000,
-    "yes_stake": 4000
+    "total_stake": 8000,
+    "yes_stake": 8000
   }
 }

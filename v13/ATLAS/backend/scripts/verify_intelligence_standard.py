@@ -2,6 +2,7 @@ import asyncio
 import sys
 import os
 import time
+import logging
 
 # Adjust path to backend root
 import sys
@@ -14,20 +15,23 @@ from lib.intelligence.agents.governance import GovernanceAnalyzer
 from lib.intelligence.adapters.mock_adapter import MockModelAdapter
 from lib.intelligence.schema import IntelligenceResponse
 
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
+
 
 async def verify_standardization():
-    print("=" * 60)
-    print("ATLAS v19 Intelligence API Standardization Check")
-    print("=" * 60)
+    logger.info("=" * 60)
+    logger.info("ATLAS v19 Intelligence API Standardization Check")
+    logger.info("=" * 60)
 
     # 1. Setup Mock Adapter with specific response
     mock_response = "RISK_LEVEL: HIGH. Reason: Detected keyword 'emergency'."
     adapter = MockModelAdapter(fixed_response=mock_response)
-    print(f"✅ Adapter initialized: {adapter.__class__.__name__}")
+    logger.info(f"✅ Adapter initialized: {adapter.__class__.__name__}")
 
     # 2. Instantiate Agent with Adapter
     agent = GovernanceAnalyzer(model_adapter=adapter)
-    print(f"✅ Agent initialized: {agent.agent_id} v{agent.version}")
+    logger.info(f"✅ Agent initialized: {agent.agent_id} v{agent.version}")
 
     # 3. Create Test Envelope
     envelope = TrustedEnvelope(
@@ -40,11 +44,11 @@ async def verify_standardization():
     )
 
     # 4. Run Analysis
-    print("\n[Analysis] Running agent analysis...")
+    logger.info("\n[Analysis] Running agent analysis...")
     report = await agent.analyze(envelope)
 
-    print(f"\n[Result] Verdict: {report.verdict}")
-    print(f"[Result] Factors: {report.factors}")
+    logger.info(f"\n[Result] Verdict: {report.verdict}")
+    logger.info(f"[Result] Factors: {report.factors}")
 
     # 5. Verify AI path was used
     # Mock adapter returns "RISK_LEVEL: HIGH..."
@@ -54,10 +58,10 @@ async def verify_standardization():
     ai_factor_present = any("AI Analysis (mock-v1)" in f for f in report.factors)
 
     if ai_factor_present:
-        print("✅ SUCCESS: Agent used ModelAdapter for analysis.")
+        logger.info("✅ SUCCESS: Agent used ModelAdapter for analysis.")
     else:
-        print("❌ FAILURE: Agent fell back to heuristic or ignored adapter.")
-        print(f"Factors found: {report.factors}")
+        logger.info("❌ FAILURE: Agent fell back to heuristic or ignored adapter.")
+        logger.info(f"Factors found: {report.factors}")
         return False
 
     return True

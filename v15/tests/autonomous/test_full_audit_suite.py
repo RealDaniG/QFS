@@ -19,7 +19,7 @@ from dataclasses import dataclass, asdict
 from typing import List, Dict
 
 # Robust Path Setup
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../"))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -30,6 +30,15 @@ from v15.tests.autonomous.test_stage_6_simulation import TestStage6Simulation
 from v15.tests.autonomous.test_stress_campaign import TestStressCampaign
 from v15.tests.test_protocol_health_check import TestProtocolHealthCheck
 from v15.tests.test_governance_dashboard import TestGovernanceDashboard
+
+# Auth test suites (v20)
+from v15.tests.auth.test_session_model import TestSessionModel
+from v15.tests.auth.test_device_binding import TestDeviceBinding
+from v15.tests.auth.test_mockpqc_auth import TestMOCKPQCAuth
+from v15.tests.auth.test_auth_events import TestAuthEvents
+from v15.tests.auth.test_session_replay import TestSessionReplay
+from v15.tests.auth.test_deterministic_session import TestDeterministicSession
+from v15.tests.auth.test_auth_schema import TestAuthSchema
 
 
 @dataclass
@@ -71,6 +80,15 @@ class FullAuditSuite:
         suite.addTests(loader.loadTestsFromTestCase(TestStressCampaign))
         suite.addTests(loader.loadTestsFromTestCase(TestProtocolHealthCheck))
         suite.addTests(loader.loadTestsFromTestCase(TestGovernanceDashboard))
+
+        # Auth test suites (v20)
+        suite.addTests(loader.loadTestsFromTestCase(TestSessionModel))
+        suite.addTests(loader.loadTestsFromTestCase(TestDeviceBinding))
+        suite.addTests(loader.loadTestsFromTestCase(TestMOCKPQCAuth))
+        suite.addTests(loader.loadTestsFromTestCase(TestAuthEvents))
+        suite.addTests(loader.loadTestsFromTestCase(TestSessionReplay))
+        suite.addTests(loader.loadTestsFromTestCase(TestDeterministicSession))
+        suite.addTests(loader.loadTestsFromTestCase(TestAuthSchema))
 
         # Run with detailed output
         runner = unittest.TextTestRunner(verbosity=2)
@@ -236,14 +254,153 @@ class FullAuditSuite:
             )
         )
 
+        # =======================================================================
+        # AUTH INVARIANTS (v20)
+        # =======================================================================
+
+        # AUTH-S1: Session Schema Freeze
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-S1",
+                description="Session schema v1 frozen with all required fields",
+                component="SessionModel",
+                test_coverage=[
+                    "test_session_schema_version",
+                    "test_session_required_fields",
+                ],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_auth_schema.py::test_session_schema_version, test_session_model.py::test_session_required_fields",
+            )
+        )
+
+        # AUTH-S2: Deterministic Session ID
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-S2",
+                description="Session IDs are deterministic (counter + node seed + wallet hash)",
+                component="SessionService",
+                test_coverage=[
+                    "test_deterministic_session_id",
+                    "test_session_id_collision_resistance",
+                ],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_deterministic_session.py::test_deterministic_session_id",
+            )
+        )
+
+        # AUTH-D1: Device Binding Determinism
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-D1",
+                description="Device hash is deterministic, coarse, and low-entropy",
+                component="DeviceBinding",
+                test_coverage=[
+                    "test_device_hash_deterministic",
+                    "test_device_hash_stability",
+                ],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_device_binding.py::test_device_hash_deterministic",
+            )
+        )
+
+        # AUTH-D2: Device Mismatch Policy
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-D2",
+                description="Device mismatch emits DEVICE_MISMATCH and downgrades scopes",
+                component="DeviceBinding",
+                test_coverage=[
+                    "test_device_mismatch_event",
+                    "test_device_mismatch_scope_downgrade",
+                ],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_device_binding.py::test_device_mismatch_event",
+            )
+        )
+
+        # AUTH-P1: MOCKPQC Slot Exists
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-P1",
+                description="Every account can have a MOCKPQC key; sessions include PQC subject",
+                component="MOCKPQC Auth",
+                test_coverage=["test_mockpqc_key_storage", "test_session_pqc_subject"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_mockpqc_auth.py::test_mockpqc_key_storage",
+            )
+        )
+
+        # AUTH-P2: MOCKPQC Deterministic Signatures
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-P2",
+                description="MOCKPQC 'signatures' are deterministic hashes (no real crypto)",
+                component="MOCKPQC Auth",
+                test_coverage=["test_mockpqc_deterministic_sign"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_mockpqc_auth.py::test_mockpqc_deterministic_sign",
+            )
+        )
+
+        # AUTH-E1: Auth Event Versioning
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-E1",
+                description="All auth events have auth_event_version = 1",
+                component="EvidenceBus Auth Events",
+                test_coverage=["test_auth_event_versioning"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_auth_events.py::test_auth_event_versioning",
+            )
+        )
+
+        # AUTH-E2: Auth Event Emissions
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-E2",
+                description="SESSION_CREATED, SESSION_REFRESHED, SESSION_REVOKED, DEVICE_BOUND, DEVICE_MISMATCH events emitted",
+                component="EvidenceBus Auth Events",
+                test_coverage=["test_session_created_event", "test_device_bound_event"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_auth_events.py::test_session_created_event, test_auth_events.py::test_device_bound_event",
+            )
+        )
+
+        # AUTH-R1: Session Replay Determinism
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-R1",
+                description="Auth sessions are bit-for-bit reproducible from EvidenceBus events",
+                component="SessionReplay",
+                test_coverage=[
+                    "test_session_replay_deterministic",
+                    "test_auth_event_chain_integrity",
+                ],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_session_replay.py::test_session_replay_deterministic",
+            )
+        )
+
+        # AUTH-A1: Authority Hierarchy
+        self.invariants.append(
+            InvariantResult(
+                invariant_id="AUTH-A1",
+                description="resolveSubjectIdentity (wallet+PQC) separate from resolveTrustContext (device+MFA+OIDC)",
+                component="AuthService",
+                test_coverage=["test_authority_hierarchy_separation"],
+                status="PASS" if test_result.wasSuccessful() else "FAIL",
+                evidence="test_session_model.py::test_authority_hierarchy_separation",
+            )
+        )
+
     def generate_report(self, test_result) -> AuditReport:
         """Generate comprehensive audit report."""
         self.map_invariants(test_result)
 
         return AuditReport(
             timestamp=datetime.now().isoformat(),
-            qfs_version="19.0.0",
-            atlas_version="1.3.0",
+            qfs_version="20.0.0-alpha",
+            atlas_version="1.5.5",
             total_tests=test_result.testsRun,
             passed_tests=test_result.testsRun
             - len(test_result.failures)

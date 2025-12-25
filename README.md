@@ -12,8 +12,8 @@
 
 **🚧 IN ACTIVE DEVELOPMENT 🚧**
 
-**Status:** V20 Integration Complete • GitHub Identity & Retro Rewards Live • Core Hardening (v13.5) • Distributed Fabric (Design Phase)
-**Current Focus:** Zero-Sim Remediation, Real PQC Integration & GitHub Bounties
+**Status:** V20 Integration Active • GitHub Identity & Retro Rewards Live • Core Hardening (v13.5) • CI/CD Refactored
+**Current Focus:** Auth Integration (v20), Zero-Sim Remediation, PQC Anchoring
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
 
 [**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
@@ -279,6 +279,14 @@ python scripts/check_zero_sim.py
 
 # Verify MOCKQPC determinism
 python scripts/verify_mockqpc_determinism.py
+
+### 4. Verify v20 Auth Integration
+```bash
+# Run the dedicated Auth Pipeline
+# (In CI, this runs as .github/workflows/v20_auth_pipeline.yml)
+python v15/tests/autonomous/test_full_audit_suite.py
+```
+
 ```
 
 All tools guarantee deterministic outputs. Same inputs → same results, every time.

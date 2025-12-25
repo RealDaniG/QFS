@@ -10,13 +10,25 @@ Constitutional Requirement: Violation detection must trigger immediate quarantin
 import sys
 import json
 from typing import List, Dict, Any
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
+
 from datetime import datetime
+
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
 
 # Note: Adjust imports based on final QFS structure
 try:
     from v13.core.audit_integrity import get_audit_trail
 except ImportError:
-    print("Warning: Running in standalone mode, some checks will be mocked")
+    logger.warning("Warning: Running in standalone mode, some checks will be mocked")
     get_audit_trail = None
 
 
@@ -252,11 +264,11 @@ class AEGISBoundaryVerifier:
             "action_required": "Halt AEGIS services, revert to last known-good config",
         }
 
-        print("\n" + "=" * 80)
-        print("CRITICAL: AEGIS BOUNDARY VIOLATION DETECTED")
-        print("=" * 80)
-        print(json.dumps(quarantine_report, indent=2))
-        print("=" * 80)
+        logger.critical("\n" + "=" * 80)
+        logger.critical("CRITICAL: AEGIS BOUNDARY VIOLATION DETECTED")
+        logger.critical("=" * 80)
+        logger.critical(json.dumps(quarantine_report, indent=2))
+        logger.critical("=" * 80)
 
         # In production, this would:
         # 1. Call CIR302_Handler.trigger_quarantine()
@@ -273,7 +285,12 @@ class AEGISBoundaryVerifier:
             "message": message,
         }
         self.log_list.append(log_entry)
-        print(f"[{level}] {message}")
+        if level == "CRITICAL":
+            logger.critical(message)
+        elif level == "WARNING":
+            logger.warning(message)
+        else:
+            logger.info(message)
 
     def generate_report(self) -> Dict[str, Any]:
         """
@@ -308,26 +325,26 @@ def main():
         report = verifier.generate_report()
 
         # Print report
-        print("\n" + "=" * 80)
-        print("AEGIS BOUNDARY VERIFICATION REPORT")
-        print("=" * 80)
-        print(json.dumps(report, indent=2))
-        print("=" * 80)
+        logger.info("\n" + "=" * 80)
+        logger.info("AEGIS BOUNDARY VERIFICATION REPORT")
+        logger.info("=" * 80)
+        logger.info(json.dumps(report, indent=2))
+        logger.info("=" * 80)
 
         # Write report to file for monitoring
         report_path = "v13/evidence/aegis_ux/boundary_verification_latest.json"
         try:
             with open(report_path, "w") as f:
                 json.dump(report, f, indent=2)
-            print(f"\nReport saved to: {report_path}")
+            logger.info(f"\nReport saved to: {report_path}")
         except Exception as e:
-            print(f"Warning: Could not save report: {e}")
+            logger.warning(f"Warning: Could not save report: {e}")
 
         # Exit with appropriate status code
         sys.exit(0 if all_passed else 1)
 
     except Exception as e:
-        print(f"\nERROR: Verification script failed: {e}")
+        logger.error(f"\nERROR: Verification script failed: {e}")
         sys.exit(2)
 
 

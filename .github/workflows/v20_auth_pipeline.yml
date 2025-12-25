@@ -1,0 +1,219 @@
+name: QFS v20 Auth Integration Pipeline
+
+on:
+    push:
+        branches: [main, develop, "fix/*", "auth/*"]
+    pull_request:
+        branches: [main, develop]
+
+env:
+    PYTHON_VERSION: "3.11"
+    ENV: "dev"
+    MOCKQPC_ENABLED: "true"
+    CI: "true"
+
+jobs:
+    # Stage 1: Auth Static Analysis
+    auth-static-analysis:
+        name: "[STAGE 1] Auth Static Analysis"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install pylint black isort mypy
+
+            - name: "[AUTH] Lint Auth Modules"
+              run: |
+                  # Lint only auth-related code for focused feedback
+                  pylint v15/auth/ v15/services/auth_service.py \
+                    --fail-under=8.0 \
+                    --rcfile=pyproject.toml
+
+            - name: "[AUTH] Type Check Auth Modules"
+              run: |
+                  mypy v15/auth/ v15/services/auth_service.py --strict
+
+            - name: "[AUTH] Check Formatting"
+              run: |
+                  black --check v15/auth/ v15/services/
+                  isort --check v15/auth/ v15/services/
+
+    # Stage 2: Auth Session & Schema Tests
+    auth-session-tests:
+        name: "[STAGE 2] Auth Session Tests"
+        needs: auth-static-analysis
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install pytest pytest-cov
+
+            - name: "[AUTH] Session Model Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_session_model.py -v
+
+            - name: "[AUTH] Device Binding Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_device_binding.py -v
+
+            - name: "[AUTH] MOCKPQC Slot Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_mockpqc_auth.py -v
+
+    # Stage 3: Auth EvidenceBus Integration
+    auth-evidencebus-tests:
+        name: "[STAGE 3] Auth EvidenceBus Integration"
+        needs: auth-session-tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+                  pip install pytest
+
+            - name: "[AUTH] EvidenceBus Event Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_auth_events.py -v
+
+            - name: "[AUTH] Session Replay Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_session_replay.py -v
+
+            - name: "[AUTH] Deterministic Session ID Tests"
+              run: |
+                  python -m pytest v15/tests/auth/test_deterministic_session.py -v
+
+    # Stage 4: Auth Schema Freeze Verification
+    auth-schema-verification:
+        name: "[STAGE 4] Auth Schema Freeze Verification"
+        needs: auth-evidencebus-tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: "[AUTH] Verify Session Schema Version"
+              run: |
+                  python -c "
+                  from v15.auth.session import Session
+                  assert hasattr(Session, 'session_schema_version'), 'Missing session_schema_version'
+                  # Verify v20 schema freeze
+                  expected_fields = [
+                      'session_id', 'subject_ids', 'device_id', 
+                      'roles', 'scopes', 'issued_at', 'expires_at',
+                      'refresh_index', 'mfa_level', 'device_trust_level'
+                  ]
+                  for field in expected_fields:
+                      assert hasattr(Session, field), f'Missing required field: {field}'
+                  print('✅ Session schema v1 verified')
+                  "
+
+            - name: "[AUTH] Verify Auth Event Versions"
+              run: |
+                  python scripts/verify_auth_event_versions.py
+
+    # Stage 5: Zero-Sim Compliance for Auth
+    auth-zero-sim:
+        name: "[STAGE 5] Auth Zero-Sim Compliance"
+        needs: auth-schema-verification
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Install dependencies
+              run: |
+                  pip install --upgrade pip
+                  pip install -r requirements.txt
+
+            - name: "[ZERO-SIM] Auth Module Scan"
+              run: |
+                  # Scan only auth modules for Zero-Sim violations
+                  python v13/scripts/zero_sim_analyzer.py \
+                    --dir v15/auth \
+                    --dir v15/services/auth_service.py \
+                    --exclude legacy_root node_modules \
+                    --output auth_zero_sim_report.json
+
+            - name: "[ZERO-SIM] Check Auth Violations"
+              run: |
+                  python -c "
+                  import json
+                  data = json.load(open('auth_zero_sim_report.json'))
+                  total = data.get('total_violations', 0)
+                  if total > 0:
+                      print(f'❌ {total} Zero-Sim violations in auth modules')
+                      print('See auth_zero_sim_report.json for details')
+                      exit(1)
+                  print('✅ No Zero-Sim violations in auth modules')
+                  "
+
+            - name: Upload auth Zero-Sim report
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: auth-zero-sim-report
+                  path: auth_zero_sim_report.json
+
+    # Summary Report
+    auth-pipeline-summary:
+        name: "Auth Pipeline Summary"
+        needs:
+            [
+                auth-static-analysis,
+                auth-session-tests,
+                auth-evidencebus-tests,
+                auth-schema-verification,
+                auth-zero-sim,
+            ]
+        runs-on: ubuntu-latest
+        if: always()
+        steps:
+            - name: Generate summary
+              run: |
+                  echo "# v20 Auth Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "- Static Analysis: ${{ needs.auth-static-analysis.result }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- Session Tests: ${{ needs.auth-session-tests.result }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- EvidenceBus Tests: ${{ needs.auth-evidencebus-tests.result }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- Schema Verification: ${{ needs.auth-schema-verification.result }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- Zero-Sim Compliance: ${{ needs.auth-zero-sim.result }}" >> $GITHUB_STEP_SUMMARY

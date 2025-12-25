@@ -1,5 +1,5 @@
-from typing import Dict, Any
-import time
+import asyncio
+from typing import Dict, Any, Optional
 from v13.libs.canonical.models import ContentMetadata, ContentType
 
 
@@ -17,7 +17,7 @@ class MockAtlasFrontend:
         return ContentMetadata(
             content_id=content_id,
             author_id=author_id,
-            timestamp=int(time.time()),
+            timestamp=1234567890,  # Deterministic Mock Time
             type=ContentType.POST,
             attributes=data,
         )
