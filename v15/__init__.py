@@ -1,0 +1,1 @@
+"""QFS v15 - Auth & GitHub Integration"""
