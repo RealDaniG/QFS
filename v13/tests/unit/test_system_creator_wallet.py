@@ -11,13 +11,9 @@ from v13.ledger.writer import LedgerWriter
 from v13.policy.authorization import AuthorizationEngine
 
 # Expected values for "DEV" scope based on our HKDF-SHA256 logic
-EXPECTED_ADDRESS_DEV = (
-    "0x7f63e288dd4775ca540298e7e6de6169b2eec1f281c6949a1c2ee812b00e3d7f"
-)
+EXPECTED_ADDRESS_DEV = "qfs1cf7061585d17928b593f0112eccbd9f99e723fe6"
 
-EXPECTED_ADDRESS_TESTNET = (
-    "0xc5c70800f3bede34e79e3240932326b5048114ee1a9cb93c88e26284a9ea9617"
-)
+EXPECTED_ADDRESS_TESTNET = "qfs1e8a0e3a529e475c6f9ffaa09572f0146b62fb70f"
 # Private key is sensitive, but in this specific fixed-salt/fixed-info implementation, it's deterministic.
 # We test against the address mainly.
 
