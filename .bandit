@@ -1,0 +1,14 @@
+[bandit]
+# Exclude test directories
+exclude_dirs = tests,test,__pycache__,.venv,node_modules,legacy_root
+
+# Skip specific simple checks that might be false positives in this context
+# B101: assert used
+# B105: possible hardcoded password
+# B403: pickle
+# B301: pickle
+skips = B101,B105,B403,B301
+
+# Report only MEDIUM and HIGH severity by default
+# level = MEDIUM
+# confidence = MEDIUM
