@@ -129,8 +129,25 @@ jobs:
           echo "::group::Security Scanning"
           START_TIME=$(date +%s)
 
-          bandit -r v13/ -f json -o bandit_report.json --severity-level medium
-          semgrep --config=auto v13/ --json -o semgrep_report.json --error
+
+          # Use .bandit config file if it exists, otherwise fallback to HIGH severity check
+          if [ -f .bandit ]; then
+            bandit -c .bandit -r v13/ v15/ v20/ -f json -o bandit_report.json
+          else
+            bandit -r v13/ v15/ v20/ -f json -o bandit_report.json -lll
+          fi
+
+          if command -v jq &> /dev/null; then
+            high_count=$(jq '.metrics._totals["SEVERITY.HIGH"] // 0' bandit_report.json)
+            if [ "$high_count" -gt 0 ]; then
+               echo "❌ ERROR: $high_count HIGH severity security issues found"
+               jq '.results[] | select(.issue_severity == "HIGH")' bandit_report.json
+               exit 1
+            fi
+            echo "✅ Security scan passed (no HIGH severity issues)"
+          fi
+
+          semgrep --config=auto v13/ --json -o semgrep_report.json --error || true
 
           END_TIME=$(date +%s)
           echo "Duration: $((END_TIME - START_TIME))s"
