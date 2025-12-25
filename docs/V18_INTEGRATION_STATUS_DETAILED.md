@@ -1,4 +1,6 @@
-# ATLAS × QFS v18 Integration Status Detailed
+# ATLAS × QFS# [ARCHIVED] V18 Integration Status
+>
+> **NOTE:** Use [V20_COMPLETION_STATUS.md](ROADMAP/V20_COMPLETION_STATUS.md) instead.
 
 This document tracks the granular implementation status of the v18 unified dashboard and backbone integration.
 

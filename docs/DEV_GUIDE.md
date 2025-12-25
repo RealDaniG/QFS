@@ -410,7 +410,42 @@ python scripts/init_db.py --env=dev
 
 ---
 
-## 📚 Additional Resources
+---
+
+## 10. Auth Development Patterns (v20)
+
+### Integrating with AuthService
+
+All authentication logic must go through `AuthService`. Never verify signatures or create sessions manually.
+
+```python
+from v13.services.auth_service import AuthService
+
+# 1. Verify Login
+session = await AuthService.verify_wallet_login(nonce, signature)
+
+# 2. Check Permissions
+if not session.has_scope("governance:vote"):
+    raise PermissionDenied()
+```
+
+### Zero-Sim Compliance
+
+Authentication flows must be deterministic.
+
+- Do NOT use `uuid.v4()` for session IDs.
+- Do NOT use system time for entropy.
+- Use `AuthService.generate_session_id(wallet, counter)`.
+
+### Testing Auth
+
+Use the Golden Trace pattern:
+
+1. Run `tests/replay/auth_golden_trace.py` locally.
+2. Ensure `tests/artifacts/auth_golden_trace.json` is unchanged.
+3. If changing auth logic, commit the new golden trace.
+
+---
 
 - [MASTER_PROMPT_v15.5.md](./docs/MASTER_PROMPT_v15.5.md) - Authoritative reference
 - [BETA_DEPLOYMENT_PLAN.md](./BETA_DEPLOYMENT_PLAN.md) - Deployment strategy

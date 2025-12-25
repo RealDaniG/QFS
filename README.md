@@ -377,17 +377,18 @@ Consensus-driven Tier A backbone complete. Deterministic replication (Raft), PQC
 
 ---
 
-## 🗺️ Roadmap: v18 Distributed Fabric
+## 🗺️ Roadmap: v18 → v21 (Distributed Fabric & Auth Hardening)
 
 The distributed Tier A backbone is now in **Design Phase**, leveraging the hardened v13.5 core.
 
-- **📝 Multi-Node Consensus**: Deterministic replication (Raft) for Tier A core (Design Completed).
-- **🚧 PQC Anchors**: Stub implementation ready for Dilithium injection.
-- **✅ Ascon Edge Crypto**: Session protection and message AEAD.
-- **🔄 v18.9 ATLAS App Alpha**: Unifying UI with distributed backbone and real data projections (In Progress).
-- **🔮 Phase 5: Edge Expansion**: UI and Advisory agents deployed to Tier B/C nodes.
+- **v18 (Current):** Distributed Tier A Backbone, MOCKPQC, Device Binding.
+- **v19 (Planned):** OIDC Identity Linking (GitHub), Unified Subject Model.
+- **v20 (Planned):** MFA Abstraction, Biometric Unlock, Electron Hardening.
+- **v21 (Planned):** Offline Session Semantics, SessionStore Replication.
 
-See [Fabric_Design_Notes.md](v13/docs/Fabric_Design_Notes.md) for details.
+**Key Documents:**
+- [**Auth Integration Plan (v18-v21)**](v13/docs/roadmaps/QFS_ATLAS_AUTH_INTEGRATION_PLAN.md)
+- [Fabric Design Notes](v13/docs/Fabric_Design_Notes.md)
 
 ---
 

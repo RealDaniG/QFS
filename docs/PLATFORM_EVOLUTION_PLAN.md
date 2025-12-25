@@ -432,19 +432,21 @@ This plan outlines the complete platform evolution built on the evergreen v16 ca
 
 ---
 
-## 9. v18 Outlook: Distributed Fabric
+## 9. v20-v21 Outlook: Auth Hardening & Offline Resilience
 
-**Goal**: Transform v17's single-node deterministic core into a distributed, PQC-anchored mesh.
+**Goal**: Transform v18's fabric into a hardened, offline-capable, consensus-ready system.
 
-**Current Status**: Backbone Core Complete (Phase 1-3).
+**Current Status**: v20 Alpha (AuthService Centralization).
 
-- **✅ Phase 1: Multi-Node Core**: Introduced deterministic consensus (Raft) between Tier A nodes sharing the EvidenceBus.
-- **✅ Phase 2: PQC Anchors**: Real PQC signatures for batch sealing at Tier A (current baseline Crypto Adapter powered).
-- **✅ Phase 3: Consensus & Bus Wiring**: `EvidenceBusConsensusAdapter` wiring complete with integration tests.
-- **🔮 Phase 5: Edge Expansion**: UI and Advisory logic deployment to Tier B and Tier C nodes. (implemented)
-- **🚀 v18.9: ATLAS App Alpha**:
-  - Unification of the App UI with the Distributed Backbone.
-  - End-to-end "v18-ready" user flows for Secure Chat, Governance, and Explain-This.
-  - Verification of cluster-wide coherence with multiple ATLAS instances.
+- **✅ v18: Distributed Fabric**: Multi-node core and PQC anchors complete.
+- **🔄 v20: Auth Hardening**:
+  - `AuthService` facade.
+  - Device Binding v1.
+  - MOCKPQC slots.
+  - Electron IPC Security.
+- **⏳ v21: Offline & Consensus**:
+  - Offline session counters (Lamport).
+  - Replicated `SessionStore` (Raft-ready).
+  - Client-side offline action queue.
 
-**Reference**: [V18_BACKBONE_COMPLETE.md](RELEASES/v18_BACKBONE_COMPLETE.md)
+**Roadmap**: [QFS_ATLAS_AUTH_ROADMAP_v18_to_v21.md](ROADMAP/QFS_ATLAS_AUTH_ROADMAP_v18_to_v21.md)

@@ -51,10 +51,10 @@ Status: Architecture designed, Phase 0 active
 ### Development Status
 
 ```
-Released: V18.9 "Deterministic Session Management"
+Released: V20.0 (Alpha) - Auth Hardening & Zero-Sim Core
 Phase 3 (Planning): ✅ COMPLETE
-Phase 4 (Infrastructure): 🔄 STARTING (Week 1-2)
-Phase I-V (Integration): ⏳ QUEUED (after Phase 0)
+Phase 4 (Infrastructure): 🔄 ACTIVE (AuthService, EvidenceBus v1)
+Phase 5 (Offline/Consensus): ⏳ QUEUED (v21 targets)
 ```
 
 ---

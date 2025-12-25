@@ -1,4 +1,7 @@
-# QFS × ATLAS — v18 Design & Deployment Blueprint
+# QFS × ATLAS —# [ARCHIVED] V18 Design & Deployment
+>
+> **NOTE:** Use [AUTH_ARCHITECTURE_v20.md](architecture/AUTH_ARCHITECTURE_v20.md) and [QFS_ATLAS_AUTH_ROADMAP_v18_to_v21.md](ROADMAP/QFS_ATLAS_AUTH_ROADMAP_v18_to_v21.md) instead.
+Blueprint
 
 > **Status:** Implementation Baseline Complete (Phase 1-3)
 > **Goal:** Extend v17 single-node deterministic system to a distributed, heterogeneous, verifiable fabric with PQC readiness and minimal risk to the deterministic core.

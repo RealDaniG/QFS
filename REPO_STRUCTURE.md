@@ -54,6 +54,7 @@ Contains the distributed systems logic separate from the web application.
 The repository is currently in the **V18 Integration Phase**. Key Integration documents are located in `docs/`:
 
 - **[Integration Status](docs/V18_INTEGRATION_STATUS_DETAILED.md)**: Current state of Backend/Frontend wiring.
+- **[Auth Integration Plan](v13/docs/roadmaps/QFS_ATLAS_AUTH_INTEGRATION_PLAN.md)**: V18-V21 Auth, Device Binding, MFA & Offline strategy.
 - **[Deployment Checklist](docs/V18_DEPLOYMENT_CHECKLIST.md)**: Infra diagram and go-live steps.
 - **[Security Debt](docs/SECURITY_DEBT.md)**: Known gaps (CORS, Token Storage).
 - **[Observability Spec](docs/OBSERVABILITY_SPEC.md)**: Logging standards (`logs/`).

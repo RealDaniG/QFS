@@ -39,5 +39,29 @@ npm run test:e2e
 1. Navigate to **Home** (connected but potentially unverified).
 2. Click **"Wallet"** or **"Messages"** in the sidebar.
 3. If not signed in (cryptographically), an **"AuthGate"** modal/view should block access.
-4. Complete the sign-in request prompted by the app.
-5. Verify access is granted to the protected view.
+4. Verify access is granted to the protected view.
+
+---
+
+## 🧪 Auth & Zero-Sim Verification
+
+### 1. Golden Trace Replay
+
+Verify that the entire authentication lifecycle is deterministic and replayable:
+
+```powershell
+python tests/replay/auth_golden_trace.py
+```
+
+**Success Criteria:**
+
+- Output MUST be identical to `tests/artifacts/auth_golden_trace.json`.
+- No drift in `session_id` generation or Event IDs.
+
+### 2. Device Binding Check
+
+Verify device hash stability:
+
+```powershell
+python scripts/verify_device_identity.py
+```

@@ -191,6 +191,33 @@
 
 ---
 
+---
+
+## Category 11: Auth & Zero-Sim Verification (NEW)
+
+### 16. `tests/replay/auth_golden_trace.py`
+
+- **Status:** ⚠ TO BE CREATED
+- **Invariants:** AUTH-R1 (Replay), ZS-A1 (Determinism)
+- **Category:** Auth Replay
+- **Notes:** Golden trace for login -> refresh -> revoke cycle
+
+### 17. `v13/services/tests/test_auth_service.py`
+
+- **Status:** ⚠ TO BE CREATED
+- **Invariants:** AUTH-I1 (Identity), AUTH-P1 (Policy)
+- **Category:** Unit
+- **Notes:** Core AuthService logic (signatures, sessions)
+
+### 18. `v13/tests/test_device_binding.py`
+
+- **Status:** ⚠ TO BE CREATED
+- **Invariants:** AUTH-D1 (Device Binding)
+- **Category:** Integration
+- **Notes:** Device hash verification and downgrade logic
+
+---
+
 ## Execution Plan Summary
 
 ### Completed Actions
