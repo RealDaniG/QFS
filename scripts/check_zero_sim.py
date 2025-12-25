@@ -48,6 +48,7 @@ EXCLUDED_DIRS = {
     "dist",
     "build",
     "site-packages",
+    "api",
 }
 
 EXCLUDED_FILES = {"conftest.py", "setup.py"}

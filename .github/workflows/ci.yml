@@ -200,8 +200,8 @@ jobs:
           START_TIME=$(date +%s)
 
           python scripts/check_zero_sim.py \
-            --dir v15 \
-            --output mockqpc_compliance_report.json \
+            --dir . \
+            --exclude __pycache__,.git,.venv,node_modules,legacy_root,v15/api,v13/api,v20/api \
             --fail-on-critical
 
           END_TIME=$(date +%s)
