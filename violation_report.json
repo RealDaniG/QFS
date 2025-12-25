@@ -1,10 +1,144 @@
 {
-  "total_violations": 0,
-  "by_type": {},
-  "by_severity": {},
-  "auto_fixable": 0,
-  "manual_review": 0,
-  "files_affected": 0,
-  "top_offenders": [],
-  "violations": []
+  "total_violations": 7,
+  "by_type": {
+    "FORBIDDEN_FLOAT_LITERAL": 3,
+    "MUTATION_STATE": 4
+  },
+  "by_severity": {
+    "Medium": 7
+  },
+  "auto_fixable": 3,
+  "manual_review": 4,
+  "files_affected": 2,
+  "top_offenders": [
+    {
+      "file": "v18\\consensus\\state_machine.py",
+      "count": 4
+    },
+    {
+      "file": "v18\\cluster\\cluster_adapter.py",
+      "count": 3
+    }
+  ],
+  "violations": [
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 144,
+      "col": 30,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "0.1",
+      "file": "v18\\cluster\\cluster_adapter.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 144,
+      "col": 35,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "0.2",
+      "file": "v18\\cluster\\cluster_adapter.py"
+    },
+    {
+      "type": "FORBIDDEN_FLOAT_LITERAL",
+      "line": 144,
+      "col": 40,
+      "rule": {
+        "code": "FORBIDDEN_FLOAT_LITERAL",
+        "name": "Float Literal",
+        "pattern": "3.14, 0.1, etc.",
+        "severity": "Medium",
+        "auto_fixable": true,
+        "fix_strategy": "convert_to_fraction_or_integer",
+        "risk_level": "Low",
+        "reason": "Floating-point representation varies; use Fraction or integers"
+      },
+      "context": "0.4",
+      "file": "v18\\cluster\\cluster_adapter.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 55,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.current_term = rpc.term",
+      "file": "v18\\consensus\\state_machine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 56,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.voted_for = None",
+      "file": "v18\\consensus\\state_machine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 57,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.state = 'follower'",
+      "file": "v18\\consensus\\state_machine.py"
+    },
+    {
+      "type": "MUTATION_STATE",
+      "line": 58,
+      "col": 12,
+      "rule": {
+        "code": "MUTATION_STATE",
+        "name": "Persistent State Mutation",
+        "pattern": "self.x += 1, self.x = val (outside init)",
+        "severity": "Medium",
+        "auto_fixable": false,
+        "fix_strategy": "use_functional_updates",
+        "risk_level": "Medium",
+        "reason": "In-place mutation complicates state tracking; prefer functional updates"
+      },
+      "context": "self.time_since_last_event = 0",
+      "file": "v18\\consensus\\state_machine.py"
+    }
+  ]
 }
