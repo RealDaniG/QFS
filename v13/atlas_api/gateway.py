@@ -4,6 +4,9 @@ ATLAS API Gateway - Entry point for all ATLAS API endpoints
 
 import os
 import sys
+import logging
+
+logger = logging.getLogger(__name__)
 from fractions import Fraction
 import hashlib
 import json
@@ -53,8 +56,8 @@ except ImportError as e:
             OPENAGIRole,
             OPENAGIActionType,
         )
-    except ImportError:
-        print(f"DEBUG: v13 Core Import Failed: {e}")
+    except ImportError as e:
+        logger.warning(f"DEBUG: v13 Core Import Failed: {e}")
         raise e
 
 qnum = BigNum128
