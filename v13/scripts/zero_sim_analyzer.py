@@ -535,7 +535,7 @@ def main():
         report["by_type"].items(), key=lambda x: x[1], reverse=True
     ):
         print(f"  {vtype}: {count}")
-    print(f"\n📄 Report saved to: {args.output}")
+    print(f"\n[REPORT] Report saved to: {args.output}")
     print("=" * 60)
 
 
