@@ -11,7 +11,7 @@ env:
   ENV: "dev"
   MOCKQPC_ENABLED: "true"
   CI: "true"
-      PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/v13"
+  PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/v13"
 
 jobs:
   # Stage 1: Auth Static Analysis
