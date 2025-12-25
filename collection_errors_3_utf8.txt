@@ -1,0 +1,1137 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13
+configfile: pytest.ini
+testpaths: v13/tests
+plugins: anyio-4.11.0, hypothesis-6.148.2, asyncio-1.2.0, benchmark-5.2.2, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 684 items / 11 errors
+
+<Dir V13>
+  <Package v13>
+    <Package tests>
+      <Dir HSMF>
+        <Module test_hsmf_certifiedmath_integration.py>
+          <Function test_hsmf_with_certified_math>
+          <Function test_public_api>
+        <Module test_hsmf_compliance.py>
+          <Function test_hsmf_compliance>
+        <Module test_hsmf_implementation.py>
+          <Function test_hsmf>
+        <Module test_hsmf_math_contracts.py>
+          <Class TestActionCostMonotonicity>
+            <Function test_action_cost_increases_with_s_res>
+            <Function test_action_cost_increases_with_s_flx>
+            <Function test_action_cost_increases_with_lambda1>
+          <Class TestCoherenceInvariants>
+            <Function test_c_holo_bounded_zero_to_one>
+            <Function test_c_holo_decreases_with_dissonance>
+          <Class TestRewardWeightInvariants>
+            <Function test_higher_c_holo_increases_chr_reward>
+            <Function test_total_reward_is_sum_of_parts>
+          <Class TestDeterminism>
+            <Function test_action_cost_deterministic>
+            <Function test_c_holo_deterministic>
+          <Class TestEdgeCases>
+            <Function test_action_cost_with_minimal_inputs>
+            <Function test_action_cost_with_high_inputs>
+            <Function test_c_holo_at_minimal_dissonance>
+            <Function test_c_holo_at_high_dissonance>
+        <Module test_hsmf_replay.py>
+          <Class TestHSMFReplay>
+            <Function test_replay_produces_identical_outputs_twice>
+            <Function test_fixture_hash_is_stable>
+            <Function test_each_action_produces_positive_outputs>
+            <Function test_total_reward_equals_sum_of_parts>
+            <Function test_zero_dissonance_yields_max_c_holo>
+          <Class TestHSMFReplayEdgeCases>
+            <Function test_single_action_replay>
+            <Function test_empty_fixture_returns_empty>
+          <Class TestHSMFPoELogging>
+            <Function test_emit_hsmf_poe_creates_log_entry>
+            <Function test_hsm_proof_to_dict_schema>
+        <Module test_hsmf_simple.py>
+          <Function test_hsmf_structure>
+        <Module test_hsmf_v13.py>
+          <Function test_hsmf_v13_compliance>
+      <Dir api>
+        <Module test_atlas_p0_surfaces.py>
+          <Class TestAtlasP0Surfaces>
+            <Function test_feed_endpoint_exists>
+            <Function test_interaction_endpoint_exists>
+            <Function test_feed_response_schema>
+            <Function test_interaction_response_schema>
+            <Function test_deterministic_responses>
+            <Function test_request_models_exist>
+            <Function test_feed_deterministic_for_same_state>
+            <Function test_feed_mode_switch>
+            <Function test_interaction_success_path>
+            <Function test_interaction_guard_failure>
+            <Function test_interaction_deterministic_event_id>
+            <Function test_invalid_input_handling>
+            <Function test_internal_error_handling>
+        <Module test_explain_api.py>
+          <Function test_explain_helper>
+      <Package atlas>
+        <Module test_chat.py>
+          <Function test_create_conversation_deterministic_id>
+          <Function test_create_one_on_one_conversation>
+          <Function test_create_group_conversation>
+          <Function test_max_participants_limit>
+          <Function test_creator_must_be_participant>
+          <Function test_send_message_deterministic_id>
+          <Function test_send_message_updates_conversation>
+          <Function test_reply_to_message>
+          <Function test_sender_must_be_participant>
+          <Function test_get_messages_deterministic_order>
+          <Function test_get_messages_pagination>
+          <Function test_mark_message_as_read>
+          <Function test_reader_must_be_participant>
+          <Function test_conversation_created_event>
+          <Function test_message_sent_event>
+          <Function test_message_read_event>
+          <Function test_multiple_conversations_per_user>
+          <Function test_conversation_isolation>
+        <Module test_hsmf_wall_integration.py>
+          <Class TestHSMFWallIntegration>
+            <Function test_scored_post_includes_hsmf_result>
+            <Function test_scored_post_emits_hsmf_proof>
+            <Function test_scored_post_deterministic>
+            <Function test_quote_has_higher_f_atr_default>
+            <Function test_reaction_has_minimal_cost>
+            <Function test_user_metrics_affect_scoring>
+          <Class TestHSMFWallEdgeCases>
+            <Function test_zero_dissonance_user>
+            <Function test_empty_metrics_uses_defaults>
+        <Module test_spaces.py>
+          <Class TestSpacesManager>
+            <Function test_create_space_deterministic_id>
+            <Function test_create_space_initializes_host>
+            <Function test_join_space>
+            <Function test_join_space_max_participants>
+            <Function test_leave_space>
+            <Function test_host_cannot_leave_with_participants>
+            <Function test_end_space>
+            <Function test_only_host_can_end_space>
+            <Function test_record_speak_time>
+            <Function test_list_active_spaces_deterministic_order>
+          <Class TestSpacesEvents>
+            <Function test_emit_space_created>
+            <Function test_emit_space_joined>
+            <Function test_emit_space_spoke_reward_calculation>
+            <Function test_emit_space_ended_duration_bonus>
+          <Class TestSpacesIntegration>
+            <Function test_full_space_lifecycle_with_events>
+        <Module test_wall.py>
+          <Class TestWallService>
+            <Function test_create_post_deterministic_id>
+            <Function test_create_post_with_space_link>
+            <Function test_create_post_invalid_space>
+            <Function test_quote_post>
+            <Function test_quote_invalid_post>
+            <Function test_pin_post>
+            <Function test_pin_post_non_host>
+            <Function test_add_reaction>
+          <Class TestFeedResolver>
+            <Function test_resolve_feed_deterministic_order>
+            <Function test_resolve_feed_pinned_first>
+            <Function test_resolve_space_feed>
+            <Function test_resolve_user_posts>
+          <Class TestWallEvents>
+            <Function test_emit_post_created>
+            <Function test_emit_post_quoted_reward>
+            <Function test_emit_post_pinned>
+            <Function test_emit_post_reacted>
+          <Class TestWallIntegration>
+            <Function test_full_post_lifecycle_with_events>
+      <Dir auth>
+        <Module test_open_agi_role.py>
+          <Class TestOPENAGIRoleEnforcer>
+            <Function test_role_enforcer_initialization>
+            <Function test_authorize_action_system_role>
+            <Function test_authorize_action_simulator_role>
+            <Function test_authorize_action_proposer_role>
+            <Function test_submit_proposal>
+            <Function test_activity_log>
+            <Function test_deterministic_behavior>
+      <Dir cir302>
+        <Module test_cir302_handler.py>
+          <Class TestCIR302HandlerComprehensive>
+            <Function test_econ_bound_violations>
+            <Function test_nod_invariant_violations>
+            <Function test_aegis_node_verification_errors>
+            <Function test_aegis_system_status_errors>
+            <Function test_combined_violations>
+            <Function test_edge_cases>
+      <Dir contract>
+        <Module test_api_contracts.py>
+          <UnitTestCase TestAPIContracts>
+            <TestCaseFunction test_advisory_signal_signature>
+            <TestCaseFunction test_content_metadata_enum>
+            <TestCaseFunction test_economic_event_amount_string>
+            <TestCaseFunction test_golden_path_economic_event>
+            <TestCaseFunction test_golden_path_user_identity>
+            <TestCaseFunction test_user_identity_invalid_missing_fields>
+            <TestCaseFunction test_user_identity_valid>
+      <Package deterministic>
+        <Module test_deterministic_replay.py>
+          <Function test_deterministic_replay>
+        <Module test_deterministic_time_regression_cir302.py>
+          <Class TestDeterministicTimeMonotonicity>
+            <Function test_monotonicity_first_packet_always_accepted>
+            <Function test_monotonicity_increasing_timestamps_accepted>
+            <Function test_monotonicity_equal_timestamps_accepted>
+            <Function test_monotonicity_regression_single_step>
+            <Function test_monotonicity_regression_large_jump>
+            <Function test_monotonicity_regression_by_one_tick>
+            <Function test_monotonicity_sequence_valid_then_invalid>
+            <Function test_require_timestamp_valid>
+            <Function test_require_timestamp_rejects_negative>
+            <Function test_require_timestamp_rejects_non_integer>
+            <Function test_verify_drv_packet_matching_timestamps>
+            <Function test_verify_drv_packet_mismatched_timestamps>
+            <Function test_verify_drv_packet_dict_format>
+            <Function test_verify_and_use_always_raises>
+          <Class TestCIR302Scenarios>
+            <Function test_cir302_scenario_replay_attack>
+            <Function test_cir302_scenario_clock_desync>
+            <Function test_cir302_scenario_corrupted_packet>
+        <Module test_deterministic_time_replay.py>
+          <Class TestDeterministicTimeReplay>
+            <Function test_canonical_time_extraction_basic>
+            <Function test_canonical_time_extraction_sequence>
+            <Function test_replay_consistency_run1_vs_run2>
+            <Function test_replay_consistency_five_runs>
+            <Function test_ordering_metric_determinism>
+            <Function test_ordering_metric_different_packets>
+            <Function test_missing_timestamp_raises_error>
+            <Function test_negative_timestamp_raises_error>
+            <Function test_non_integer_timestamp_raises_error>
+        <Module test_value_node_replay_determinism.py>
+          <Function test_replay_state_determinism>
+          <Function test_explanation_determinism>
+          <Function test_missing_event_explanation>
+      <Dir drv_packet>
+        <Module test_drv_packet_version.py>
+          <Function test_valid_version>
+          <Function test_invalid_version>
+          <Function test_missing_version>
+          <Function test_future_version>
+      <Dir e2e>
+        <Module test_storage_economics_flow.py>
+          <Function test_storage_economics_flow>
+        <Module test_storage_user_flow.py>
+          <Function test_user_transaction_to_storage_write>
+          <Function test_atr_fee_collection>
+          <Function test_nod_reward_distribution>
+          <Function test_dual_write_consistency>
+          <Function test_deterministic_replay>
+      <Module final_integration_test.py>
+        <Function test_full_system_determinism>
+      <Dir governance>
+        <Module test_aegis_zerosim.py>
+          <Function test_policy_can_appeal_determinism>
+          <Function test_policy_can_vote_determinism>
+        <Module test_appeals_deterministic.py>
+          <Function test_scoring_determinism>
+          <Function test_scoring_threshold_failure>
+          <Function test_rounding_safety>
+        <Module test_bounty_integration.py>
+          <Class TestBountyIntegration>
+            <Function test_bounty_over_allocation_triggers_guard>
+            <Function test_bounty_state_deterministic_replay>
+            <Function test_res_stake_slash_on_spam>
+            <Function test_res_stake_returned_on_valid_rejection>
+        <Module test_evidence_determinism.py>
+          <Function test_key_ordering>
+          <Function test_nested_ordering>
+          <Function test_hashing_stability>
+          <Function test_list_order_matters>
+        <Module test_governance_replay.py>
+          <Function test_governance_lifecycle_determinism>
+        <Module test_governance_zero_sim_replay.py>
+          <Function test_governance_replay_determinism>
+        <Module test_infrastructure_governance_complete.py>
+          <Function test_all_scenarios>
+        <Module test_tier1_guarantees.py>
+          <Class TestTier1Guarantees>
+            <Function test_resonance_draw_limit_violation>
+            <Function test_state_transition_deterministic_replay>
+        <Module test_user_context_replay.py>
+          <Function test_user_context_reconstruction>
+          <Function test_user_context_determinism>
+          <Function test_user_not_found>
+      <Dir guards>
+        <Module test_aegis_guard.py>
+          <Class TestAEGISGuard>
+            <Function test_aegis_guard_initialization>
+            <Function test_observe_event_creates_observation>
+            <Function test_multiple_observations>
+            <Function test_deterministic_observations>
+      <Dir handlers>
+        <Module test_cir302_handler_phase1.py>
+          <Class TestCIR302Handler>
+            <Function test_cir302_handler_initialization>
+            <Function test_cir302_finality_seal_generation>
+            <Function test_cir302_finality_seal_determinism>
+            <Function test_cir302_violation_logging>
+            <Function test_cir302_deterministic_exit_code>
+            <Function test_cir302_no_recovery>
+            <Function test_cir302_audit_trail_linkage>
+          <Function test_generate_cir302_evidence>
+      <Dir infrastructure>
+        <Module test_pqc_backend.py>
+          <Function test_ci_pqc_backend_is_development>
+          <Function test_production_pqc_requirements_documented>
+          <Function test_invalid_dependency_rejected>
+      <Package integration>
+        <Module test_full_stack_determinism.py>
+          <Function test_system_stability>
+          <Function test_system_sensitivity>
+        <Module test_lifecycle.py>
+          <UnitTestCase TestQFSLifecycle>
+            <TestCaseFunction test_full_flow>
+        <Module test_live_replay.py>
+          <Function test_live_replay_hydration>
+          <Function test_get_reward_events>
+          <Function test_missing_artifact>
+        <Module test_pqc_phase3_compliance.py>
+          <Class TestCanonicalSerializer>
+            <Function test_deterministic_dict_ordering>
+            <Function test_bignum128_support>
+            <Function test_list_canonicalization>
+            <Function test_bytes_to_hex>
+            <Function test_no_ascii_escaping>
+            <Function test_float_rejection>
+            <Function test_unsupported_type_rejection>
+          <Class TestPQCLogger>
+            <Function test_entry_hash_stable_reproduction>
+            <Function test_prev_hash_assignment_after_context_exit>
+            <Function test_error_logging>
+            <Function test_logcontext_isolation>
+            <Function test_context_reuse_prevention>
+            <Function test_log_list_type_guard>
+            <Function test_details_json_serializability>
+          <Class TestPQCAudit>
+            <Function test_stable_audit_hash_reproduction>
+            <Function test_audit_hash_diff_sensitivity>
+            <Function test_export_log_file_format>
+          <Class TestEndToEndDeterministicReplay>
+            <Function test_full_deterministic_replay>
+          <Class TestZeroSimulationEnforcement>
+            <Function test_no_nondeterministic_fields>
+            <Function test_no_mutation_in_serializer>
+            <Function test_integer_only_timestamp>
+        <Module test_verify_reward_proof_script.py>
+          <Function test_verify_reward_proof_cli>
+          <Function test_verify_reward_proof_cli_failure>
+      <Dir phase3>
+        <Dir treasury>
+          <Module test_treasury_proportional_distribution.py>
+            <UnitTestCase TestTreasuryProportionalDistribution>
+              <TestCaseFunction test_idempotency>
+              <TestCaseFunction test_proportional_distribution>
+      <Package property>
+        <Module test_bignum128_fuzz.py>
+          <Function test_construction_parsing_fuzz>
+          <Function test_addition_properties_fuzz>
+          <Function test_subtraction_properties_fuzz>
+          <Function test_multiplication_properties_fuzz>
+          <Function test_division_properties_fuzz>
+          <Function test_comparison_consistency_fuzz>
+          <Function test_serialization_determinism_fuzz>
+      <Dir scripts>
+        <Module test_cir302_simulation.py>
+          <Class TestCIR302Simulation>
+            <Function test_initialize_simulator>
+            <Function test_simulate_economic_violation>
+            <Function test_simulate_proof_chain_corruption>
+            <Function test_simulate_aegis_cascade_failure>
+            <Function test_create_evidence_artifact>
+          <Function test_cir302_simulation>
+      <Dir security>
+        <Module test_pqc_integration_mock.py>
+          <Class TestPQCIntegrationMock>
+            <Function test_backend_detection>
+            <Function test_deterministic_keygen>
+            <Function test_sign_and_verify_workflow>
+            <Function test_signature_tamper_detection>
+            <Function test_audit_log_integrity>
+            <Function test_memory_zeroization>
+          <Function test_generate_mock_evidence>
+      <Dir services>
+        <Module test_notification_service.py>
+          <Class TestNotificationService>
+            <Function test_notification_service_initialization>
+            <Function test_process_ledger_entry_creates_notification>
+            <Function test_get_notifications_by_category>
+            <Function test_get_unread_counts>
+            <Function test_mark_as_read>
+            <Function test_deterministic_notification_generation>
+      <Dir sessions>
+        <Module test_session_challenge_reuse.py>
+          <Function test_session_challenge_computation>
+          <Function test_session_challenge_api>
+          <Function test_session_establish_success>
+          <Function test_session_establish_failure>
+        <Module test_session_cutover_boundary.py>
+          <Function test_session_replay_with_multiple_operations>
+          <Function test_active_sessions_at_block>
+        <Module test_session_explainability_mixed_eras.py>
+          <Function test_session_explainability_pre_device_binding_era>
+          <Function test_session_explainability_device_bound_era>
+          <Function test_session_explainability_with_rotation>
+          <Function test_session_explainability_no_session>
+          <Function test_session_explainability_canonical_json>
+        <Module test_session_lifecycle_replay.py>
+          <Function test_session_lifecycle_replay>
+          <Function test_session_active_check>
+        <Module test_session_rotation_ordering.py>
+          <Function test_session_rotation_creates_new_token>
+          <Function test_session_rotation_preserves_metadata>
+          <Function test_session_rotation_emits_correct_event>
+          <Function test_multiple_rotations_generate_unique_tokens>
+      <Package signals>
+        <Module test_humor.py>
+          <UnitTestCase TestHumorSignalAddon>
+            <TestCaseFunction test_confidence_calculation>
+            <TestCaseFunction test_dimensions_structure>
+            <TestCaseFunction test_evaluate_deterministic>
+            <TestCaseFunction test_initialization>
+            <TestCaseFunction test_ledger_context>
+            <TestCaseFunction test_zero_engagement>
+      <Dir storage>
+        <Module test_storageengine_replay.py>
+          <Function test_storageengine_replay_snapshot_matches_live>
+          <Function test_storageengine_replay_state_hash_matches_live>
+          <Function test_storageengine_replay_proof_accounting_matches_live>
+      <Module test_aegis_advisory_exposure.py>
+        <Class TestAEGISAdvisoryExposure>
+          <Function test_safe_interaction_includes_advisory_summary>
+          <Function test_unsafe_interaction_includes_advisory_summary>
+          <Function test_spam_interaction_includes_advisory_summary>
+          <Function test_like_interaction_includes_advisory_summary>
+      <Module test_aegis_advisory_gate.py>
+        <Class TestAEGISAdvisoryGate>
+          <Function test_safe_interaction_no_blocking_suggested>
+          <Function test_unsafe_content_suggests_blocking>
+          <Function test_spam_content_suggests_blocking>
+          <Function test_economic_violation_suggests_blocking>
+          <Function test_feed_ranking_safe_content_no_blocking>
+          <Function test_feed_ranking_unsafe_content_suggests_blocking>
+      <Module test_aegis_guard.py>
+        <Function test_aegis_guard>
+      <Module test_aes_vectors.py>
+        <Function test_composition_extractor>
+        <Function test_vector_determinism>
+        <Function test_originality_and_resonance_decay>
+        <Function test_color_harmony_golden_angle>
+      <Module test_agi_observation_endpoint.py>
+        <Class TestAGIObservationEndpoint>
+          <Function test_valid_agi_observation_submission>
+          <Function test_invalid_role_rejected>
+          <Function test_invalid_action_type_rejected>
+          <Function test_unauthorized_role_action_combination>
+          <Function test_missing_required_fields>
+      <Module test_artistic_compliance.py>
+        <Function test_zero_sim_imports>
+        <Function test_no_float_comparisons_without_tolerance>
+      <Module test_artistic_explainability.py>
+        <Function test_metadata_inclusion>
+        <Function test_explanation_hash_determinism>
+      <Module test_artistic_observatory.py>
+        <Function test_recording_and_capping>
+        <Function test_report_generation>
+      <Module test_artistic_policy.py>
+        <Function test_deterministic_hash>
+        <Function test_basic_bonus_calculation>
+        <Function test_aegis_reputation_boost>
+        <Function test_stats_rolling_window>
+      <Module test_ast_zerosimchecker_modules.py>
+        <Function test_forbidden_module_imports>
+        <Function test_safe_module_imports>
+        <Function test_deterministic_module_forbidden_imports>
+        <Function test_golden_files>
+      <Module test_audit_integrity.py>
+        <Function test_integrity_verification_success>
+        <Function test_integrity_verification_failure>
+        <Function test_tamper_detection_chain>
+      <Module test_bignum128_comprehensive.py>
+        <Function test_integer_only_parsing>
+        <Function test_fractional_parsing_exact_scale>
+        <Function test_fractional_underflow>
+        <Function test_fractional_rounding_truncation>
+        <Function test_edge_cases>
+        <Function test_scientific_notation>
+        <Function test_negative_values>
+        <Function test_copy_method>
+      <Module test_bignum128_copy.py>
+        <Function test_copy_method_basic>
+        <Function test_copy_method_edge_values>
+        <Function test_copy_method_modification_independence>
+        <Function test_copy_method_chained_operations>
+      <Module test_bignum128_edge_cases.py>
+        <Function test_addition_overflow>
+        <Function test_subtraction_underflow>
+        <Function test_division_by_zero>
+        <Function test_multiplication_overflow>
+        <Function test_valid_boundary_operations>
+      <Module test_bignum128_fixes.py>
+        <Function test_underflow_detection_fix>
+        <Function test_round_half_up>
+        <Function test_pqc_serialization>
+        <Function test_modulo_operator>
+        <Function test_integer_fraction_overflow>
+      <Module test_bignum128_operators.py>
+        <Function test_comparison_operators>
+        <Function test_arithmetic_operators>
+        <Function test_operator_type_safety>
+        <Function test_hash_function>
+      <Module test_bignum128_phase3_audit.py>
+        <Class TestBigNum128Phase3Audit>
+          <Function test_maximum_value_representation>
+          <Function test_maximum_value_from_string>
+          <Function test_maximum_value_plus_rounding_overflow>
+          <Function test_precise_integer_overflow_after_rounding>
+          <Function test_minimum_nonzero_value_rounding>
+          <Function test_underflow_beyond_scale_digits>
+          <Function test_safe_underflow_with_zero_extra_digits>
+          <Function test_integer_fractional_overflow>
+          <Function test_arithmetic_overflow_add>
+          <Function test_arithmetic_overflow_sub>
+          <Function test_arithmetic_overflow_mul>
+          <Function test_arithmetic_overflow_div>
+          <Function test_division_by_zero>
+          <Function test_modulo_operator>
+          <Function test_serialization_correctness>
+          <Function test_canonical_decimal_string_serialization>
+          <Function test_copy_equality_comparison_operators>
+          <Function test_strict_type_safety_in_comparisons>
+          <Function test_hash_consistency>
+          <Function test_arithmetic_operator_overloads>
+          <Function test_constants>
+          <Function test_from_int_method>
+          <Function test_negative_input_rejection>
+          <Function test_invalid_string_rejection>
+          <Function test_repr_and_str_methods>
+      <Module test_bignum128_underflow.py>
+        <Function test_fractional_underflow_exact_case>
+        <Function test_fractional_underflow_long_fraction>
+        <Function test_no_underflow_at_boundary>
+        <Function test_valid_rounding_within_scale>
+      <Module test_bounty_contrib_import.py>
+        <Function test_import_contributions>
+      <Module test_bounty_reward_determinism.py>
+        <Function test_reward_determinism>
+      <Module test_certified_math_integration.py>
+        <Function test_verify_genesis_state>
+        <Function test_basic_operations>
+      <Module test_certifiedmath_edge_cases.py>
+        <Function test_very_small_fractions>
+        <Function test_very_large_integers>
+        <Function test_boundary_values>
+        <Function test_special_functions_edge_cases>
+      <Module test_deterministic_components.py>
+        <UnitTestCase TestQAmount>
+          <TestCaseFunction test_arithmetic_operations>
+          <TestCaseFunction test_comparison_operations>
+          <TestCaseFunction test_initialization>
+          <TestCaseFunction test_serialization>
+        <UnitTestCase TestDeterministicTime>
+          <TestCaseFunction test_det_perf_counter>
+          <TestCaseFunction test_det_time_isoformat>
+          <TestCaseFunction test_det_time_now>
+        <UnitTestCase TestDeterministicRandom>
+          <TestCaseFunction test_det_choice>
+          <TestCaseFunction test_det_randint>
+          <TestCaseFunction test_det_random>
+        <UnitTestCase TestFatalErrors>
+          <TestCaseFunction test_economic_invariant_breach>
+          <TestCaseFunction test_governance_guard_failure>
+          <TestCaseFunction test_zero_sim_abort>
+        <UnitTestCase TestAtlasAdapters>
+          <TestCaseFunction test_atlas_numeric>
+          <TestCaseFunction test_atlas_time>
+      <Module test_deterministic_replay.py>
+        <Class TestDeterministicReplay>
+          <Function test_feed_and_interactions_deterministic_replay>
+          <Function test_response_structure_consistency>
+      <Module test_economics_guard.py>
+        <Function test_economics_guard>
+      <Module test_explain_live_equivalence.py>
+        <Function test_reward_explanation_hash_equivalence>
+        <Function test_qfs_source_structure>
+      <Module test_feed_aegis_advisory_exposure.py>
+        <Class TestFeedAEGISAdvisoryExposure>
+          <Function test_feed_items_include_advisory_summary>
+          <Function test_feed_with_mixed_content_advisory_summaries>
+      <Module test_feed_integration.py>
+        <Function test_feed_generation_with_policy_hints>
+      <Module test_feed_safety.py>
+        <Function test_feed_safety>
+      <Module test_gateway_aegis_integration.py>
+        <Class TestGatewayAEGISIntegration>
+          <Function test_safe_interaction_passes_through>
+          <Function test_unsafe_interaction_is_blocked>
+          <Function test_spam_interaction_is_blocked>
+          <Function test_ledger_entry_created_for_blocked_interaction>
+          <Function test_normal_interaction_creates_ledger_entry_with_advisory_info>
+      <Module test_github_identity_link.py>
+        <Function test_bind_github_identity>
+        <Function test_bind_github_unauthorized>
+      <Module test_github_import_determinism.py>
+        <Function test_importer_determinism>
+      <Module test_governance_dashboard.py>
+        <Class TestGovernanceDashboard>
+          <Function test_governance_dashboard_with_valid_role>
+          <Function test_governance_dashboard_unauthorized_role>
+          <Function test_governance_dashboard_missing_role>
+          <Function test_governance_dashboard_invalid_role>
+          <Function test_governance_dashboard_with_timestamp_filtering>
+          <Function test_governance_dashboard_with_invalid_timestamps>
+          <Function test_governance_dashboard_deterministic_behavior>
+          <Function test_governance_dashboard_large_dataset_performance>
+          <Function test_governance_dashboard_degraded_mode_safety_guard_failure>
+          <Function test_governance_dashboard_degraded_mode_economics_guard_failure>
+          <Function test_correlation_endpoint_large_dataset_performance>
+          <Function test_correlation_endpoint_degraded_mode_partial_failures>
+      <Module test_humor_compliance.py>
+        <Class TestHumorCompliance>
+          <Function test_humor_signal_addon_no_treasury_imports>
+          <Function test_humor_signal_addon_no_direct_economic_effects>
+          <Function test_humor_policy_no_direct_treasury_access>
+          <Function test_humor_observatory_no_direct_economic_effects>
+          <Function test_humor_explainability_no_direct_economic_actions>
+          <Function test_humor_signal_pure_functionality>
+          <Function test_no_network_io_in_humor_modules>
+          <Function test_no_filesystem_io_in_humor_modules>
+          <Function test_no_ledger_adapters_in_humor_modules>
+      <Module test_humor_deterministic_replay.py>
+        <Class TestHumorDeterministicReplay>
+          <Function test_humor_signal_deterministic_replay>
+          <Function test_humor_policy_deterministic_replay>
+          <Function test_humor_observatory_deterministic_replay>
+          <Function test_humor_explainability_deterministic_replay>
+          <Function test_cross_module_deterministic_consistency>
+      <Module test_humor_explainability.py>
+        <Class TestHumorExplainability>
+          <Function test_explain_humor_reward>
+          <Function test_explanation_deterministic_hash>
+          <Function test_explanation_consistency_verification>
+          <Function test_simplified_explanation>
+          <Function test_explanation_reason_codes_humor_disabled>
+          <Function test_explanation_reason_codes_recognition_only>
+          <Function test_explanation_reason_codes_humor_cap_applied>
+          <Function test_batch_explain_rewards>
+          <Function test_reason_code_combinations>
+          <Function test_explanation_hash_stability>
+          <Function test_api_response_shapes>
+      <Module test_humor_observatory.py>
+        <Class TestHumorObservatory>
+          <Function test_record_signal_and_get_report>
+          <Function test_empty_observatory_report>
+          <Function test_histogram_calculation>
+          <Function test_histogram_realistic_distributions>
+          <Function test_anomaly_detection_spike_scenarios>
+          <Function test_dimension_correlations>
+          <Function test_top_performing_content>
+          <Function test_export_observability_data>
+          <Function test_policy_version_hash_correctness>
+          <Function test_aggregate_statistics_accuracy>
+      <Module test_humor_policy.py>
+        <Class TestHumorPolicy>
+          <Function test_humor_policy_struct_creation>
+          <Function test_normal_humor_bonus_calculation>
+          <Function test_humor_disabled_returns_zero_bonus>
+          <Function test_humor_recognition_only_returns_zero_bonus>
+          <Function test_humor_bonus_respects_cap>
+          <Function test_daily_cap_field_exists>
+          <Function test_deterministic_behavior>
+          <Function test_negative_or_malformed_vectors_safely_handled>
+          <Function test_observability_stats_updated>
+          <Function test_policy_explanation_generation>
+          <Function test_humor_rewarding_mode_produces_nonzero_bonus>
+          <Function test_all_mode_combinations_with_boundary_values>
+      <Module test_humor_signal_integration.py>
+        <Class TestHumorSignalIntegration>
+          <Function test_humor_signal_addon_initialization>
+          <Function test_process_humor_signals_success>
+          <Function test_process_humor_signals_empty_content>
+          <Function test_process_humor_signals_exception_handling>
+      <Module test_interaction_safety.py>
+        <Class TestInteractionSafety>
+          <Function test_safe_content_interaction>
+          <Function test_unsafe_content_interaction>
+          <Function test_high_risk_spam_content_interaction>
+          <Function test_deterministic_timestamp_behavior>
+          <Function test_like_interaction_without_content>
+      <Module test_ledger_economics_integration.py>
+        <Class TestLedgerEconomicsIntegration>
+          <Function test_aegis_with_ledger_economics_service>
+          <Function test_aegis_ledger_economics_service_fallback>
+      <Module test_observation_correlation.py>
+        <Class TestObservationCorrelation>
+          <Function test_correlate_agi_with_aegis_observations>
+          <Function test_get_all_observations_without_filter>
+          <Function test_correlation_with_content_id>
+      <Module test_phase3_integration.py>
+        <Function test_phase3_integration>
+      <Module test_policy_engine.py>
+        <Class TestPolicyEngine>
+          <Function test_info_advisory_no_block_suggested>
+          <Function test_warning_advisory_block_suggested>
+          <Function test_critical_advisory_block_suggested>
+          <Function test_custom_configuration_less_strict_warnings>
+          <Function test_deterministic_behavior>
+          <Function test_missing_fields_defaults>
+          <Function test_edge_case_severity_values>
+      <Module test_policy_integration.py>
+        <UnitTestCase TestPolicyIntegration>
+          <TestCaseFunction test_backwards_compatibility>
+          <TestCaseFunction test_feed_generation_with_policy_hints>
+          <TestCaseFunction test_policy_hints_for_different_severities>
+      <Module test_policy_integration_fixed.py>
+        <UnitTestCase TestPolicyIntegration>
+          <TestCaseFunction test_backwards_compatibility>
+          <TestCaseFunction test_feed_generation_with_policy_hints>
+          <TestCaseFunction test_policy_hints_for_different_severities>
+      <Module test_policy_severities.py>
+        <Function test_policy_hints_for_different_severities>
+      <Module test_pqc.py>
+        <Function test_pqc_requirements>
+      <Module test_psi_dynamics.py>
+        <Function test_psi_density_bounded>
+        <Function test_psi_gradient_deterministic>
+        <Function test_psi_curl_cycle_anomalies>
+      <Module test_real_storage_wiring.py>
+        <Class TestRealStorageWiring>
+          <Function test_storage_ipfs_wiring>
+          <Function test_storage_ipfs_fallback>
+          <Function test_feed_with_real_storage>
+      <Module test_safety_guard.py>
+        <Function test_safety_guard>
+      <Module test_safety_guard_integration.py>
+        <Function test_safe_content>
+        <Function test_unsafe_content>
+      <Module test_storage_economic_views.py>
+        <Function test_storage_metrics_from_events_matches_live_bytes_stored>
+        <Function test_storage_metrics_proof_counts_deterministic>
+      <Module test_storage_engine.py>
+        <Class TestStorageEngine>
+          <Function test_register_storage_node>
+          <Function test_get_eligible_nodes>
+          <Function test_put_content>
+          <Function test_get_content>
+          <Function test_get_storage_proof>
+          <Function test_list_objects>
+          <Function test_deterministic_shard_assignment>
+          <Function test_node_metrics_update>
+        <Class TestStorageEngineDeterminism>
+          <Function test_deterministic_content_hash>
+          <Function test_deterministic_shard_id>
+          <Function test_deterministic_node_assignment>
+        <Class TestStorageEngineAEGISIntegration>
+          <Function test_node_registration_without_aegis>
+          <Function test_node_registration_with_aegis>
+          <Function test_node_eligibility_without_aegis>
+          <Function test_node_eligibility_with_aegis>
+          <Function test_epoch_advancement>
+          <Function test_node_unregistration>
+          <Function test_node_status_management>
+        <Class TestStorageEngineEconomics>
+          <Function test_atr_storage_cost_calculation>
+          <Function test_put_content_with_atr_cost>
+          <Function test_nod_reward_calculation>
+          <Function test_storage_economics_summary>
+      <Module test_token_state_bundle_storage.py>
+        <Class TestTokenStateBundleStorageExtension>
+          <Function test_create_token_state_bundle_with_storage_metrics>
+          <Function test_create_token_state_bundle_without_storage_metrics>
+        <Class TestStorageEngineTokenBundleIntegration>
+          <Function test_update_storage_metrics_in_token_bundle>
+        <Class TestOpenAGIScoring>
+          <Function test_openagi_content_scoring>
+          <Function test_openagi_content_scoring_different_content>
+          <Function test_put_content_with_scoring>
+      <Module test_token_state_extension.py>
+        <Class TestTokenStateExtension>
+          <Function test_token_state_service_extension>
+          <Function test_token_state_service_fallback>
+      <Module test_unsafe_interaction_flow.py>
+        <Class TestUnsafeInteractionFlow>
+          <Function test_unsafe_interaction_flow>
+      <Module test_value_node_explainability.py>
+        <Class TestValueNodeExplainability>
+          <Function test_explain_value_node_reward>
+          <Function test_explanation_deterministic_hash>
+          <Function test_explanation_consistency_verification>
+          <Function test_simplified_explanation>
+          <Function test_explanation_reason_codes_guard_failures>
+          <Function test_explanation_reason_codes_various_conditions>
+          <Function test_batch_explain_rewards>
+          <Function test_value_node_signal_pure_functionality>
+          <Function test_no_network_io_in_value_node_modules>
+          <Function test_no_filesystem_io_in_value_node_modules>
+          <Function test_no_ledger_adapters_in_value_node_modules>
+          <Function test_extreme_reward_values>
+          <Function test_malformed_input_data_handling>
+          <Function test_different_policy_configurations>
+          <Function test_explanation_hash_collision_resistance>
+      <Module test_value_node_replay.py>
+        <Function test_graph_reconstruction>
+        <Function test_state_accumulation>
+        <Function test_explain_ranking_from_replay>
+      <Module test_wall_posts.py>
+        <Function test_create_post>
+        <Function test_like_post>
+        <Function test_reply_to_post>
+        <Function test_post_creation_event>
+        <Function test_post_liked_event>
+        <Function test_post_reply_events>
+      <Module test_zero_sim_violations.py>
+        <Function test_function>
+      <Dir tools>
+        <Module test_evidence_indexer.py>
+          <Class TestEvidenceIndexer>
+            <Function test_initialize_indexer>
+            <Function test_scan_evidence_directories>
+            <Function test_process_artifact>
+            <Function test_calculate_file_hash>
+            <Function test_extract_tags_from_filename>
+            <Function test_generate_index>
+            <Function test_save_index>
+          <Function test_evidence_indexer>
+      <Package unit>
+        <Module test_appeals_workflow.py>
+          <Function test_appeal_submission>
+          <Function test_appeal_resolution>
+          <Function test_invalid_decision>
+          <Function test_list_pending>
+        <Module test_bignum_fixes.py>
+          <Function test_edge_cases>
+          <Function test_comparisons>
+          <Function test_constants>
+        <Module test_bounty_state_machine.py>
+          <Function test_claim_bounty_success>
+          <Function test_claim_bounty_insufficient_res>
+          <Function test_submit_bounty>
+          <Function test_verify_bounty_valid>
+          <Function test_verify_bounty_reject>
+          <Function test_process_payment>
+        <Module test_certified_math_import.py>
+          <UnitTestCase TestCertifiedMathSmoke>
+            <TestCaseFunction test_import_and_basic_op>
+        <Module test_certified_math_proofvectors.py>
+          <Class TestExponentialProofVectors>
+            <Function test_exp_proofvector_0>
+            <Function test_exp_proofvector_1>
+            <Function test_exp_proofvector_2>
+            <Function test_exp_proofvector_half>
+          <Class TestLogarithmProofVectors>
+            <Function test_ln_proofvector_1>
+            <Function test_ln_proofvector_e>
+            <Function test_ln_proofvector_2>
+            <Function test_ln_proofvector_10>
+          <Class TestSineProofVectors>
+            <Function test_sin_proofvector_0>
+            <Function test_sin_proofvector_pi_over_6>
+            <Function test_sin_proofvector_1>
+          <Class TestCosineProofVectors>
+            <Function test_cos_proofvector_0>
+            <Function test_cos_proofvector_pi_over_3>
+            <Function test_cos_proofvector_1>
+          <Class TestTanhProofVectors>
+            <Function test_tanh_proofvector_0>
+            <Function test_tanh_proofvector_1>
+            <Function test_tanh_proofvector_half>
+          <Class TestSigmoidProofVectors>
+            <Function test_sigmoid_proofvector_0>
+            <Function test_sigmoid_proofvector_1>
+            <Function test_sigmoid_proofvector_2>
+          <Class TestErfProofVectors>
+            <Function test_erf_proofvector_0>
+            <Function test_erf_proofvector_half>
+            <Function test_erf_proofvector_1>
+          <Class TestDeterminismValidation>
+            <Function test_exp_determinism>
+            <Function test_ln_determinism>
+            <Function test_sin_determinism>
+        <Module test_certified_math_v13.py>
+          <Function test_v13_compliance>
+        <Module test_coherence_referral_integration.py>
+          <Class TestCoherenceReferralIntegration>
+            <Function test_referral_reward_application>
+        <Module test_community_model.py>
+          <Function test_guild_lifecycle>
+          <Function test_membership_flow>
+        <Module test_dm_integration.py>
+          <Function test_identity_flow>
+          <Function test_crypto_wrapper>
+          <Function test_messaging_flow>
+          <Function test_send_to_unknown_recipient>
+        <Module test_explain_this_system.py>
+          <Function test_reward_explanation>
+          <Function test_coherence_explanation>
+          <Function test_flag_explanation>
+          <Function test_proof_hash_determinism>
+          <Function test_unknown_entity_type>
+          <Function test_explanation_structure>
+        <Module test_gateway_explain.py>
+          <Function test_get_reward_explanation_success>
+          <Function test_get_reward_explanation_not_found>
+          <Function test_get_reward_explanation_blocked>
+        <Module test_memory_hygiene.py>
+          <Class TestMemoryHygiene>
+            <Function test_zeroize_inplace>
+            <Function test_zeroize_rejects_immutable_bytes>
+            <Function test_zeroize_empty_bytearray>
+            <Function test_zeroize_large_key>
+            <Function test_secure_zeroize_keypair>
+            <Function test_zeroize_constant_time>
+            <Function test_zeroize_multiple_times>
+        <Module test_onboarding_tours.py>
+          <Function test_tour_registry>
+          <Function test_progress_tracking>
+          <Function test_multiple_users>
+          <Function test_tour_step_rewards>
+        <Module test_openagi_dm_integration.py>
+          <Function test_simulation_role_create_thread>
+          <Function test_simulation_role_send_message>
+          <Function test_aegis_content_flag_blocks_send>
+          <Function test_unauthorized_without_capability>
+          <Function test_list_threads_requiring_read_capability>
+          <Function test_dm_event_determinism>
+          <Function test_simulated_events_are_ledger_shaped>
+          <Function test_replay_dm_events>
+          <Function test_production_mode_no_simulation_tag>
+        <Module test_pqc_malleability.py>
+          <Function test_pqc_signature_malleability_production_backend>
+        <Module test_pqc_provider.py>
+          <Function test_mock_provider_determinism>
+          <Function test_mock_provider_distinct_seeds>
+          <Function test_mock_provider_signing_roundtrip>
+          <Function test_factory_defaults>
+          <Function test_real_provider_fallback_on_windows>
+        <Module test_pqc_provider_consistency_shim.py>
+          <UnitTestCase TestPQCProviderConsistencyShim>
+            <TestCaseFunction test_backend_info_consistency>
+            <TestCaseFunction test_deterministic_behavior_with_same_inputs>
+            <TestCaseFunction test_replayability_of_signatures>
+            <TestCaseFunction test_signature_structure_compatibility>
+            <TestCaseFunction test_signature_verification_compatibility>
+            <TestCaseFunction test_structural_compatibility_of_keypairs>
+        <Module test_referral_ledger_sync.py>
+          <Function test_referral_ledger_sync_flow>
+        <Module test_referral_system.py>
+          <Class TestReferralSystem>
+            <Function test_deterministic_link_creation>
+            <Function test_referral_cap>
+            <Function test_referral_acceptance_success>
+            <Function test_self_referral_fraud>
+            <Function test_duplicate_device_fraud>
+            <Function test_referral_activation>
+            <Function test_referral_acceptance_invalid_code>
+            <Function test_referral_tiers>
+            <Function test_referral_link_creation_below_cap>
+        <Module test_reward_system.py>
+          <Function test_imports>
+          <Function test_deterministic_iteration>
+          <Function test_c_holo_check>
+        <Module test_type_guards.py>
+          <Function test_ensure_bignum>
+          <Function test_ensure_int>
+          <Function test_safe_enum_serialize>
+        <Module test_value_node_replay_explanation.py>
+          <Function test_explain_full_fidelity_event>
+          <Function test_explain_low_fidelity_event_fallback>
+          <Function test_replay_integration_with_explanation>
+
+=================================== ERRORS ====================================
+__________ ERROR collecting v13/tests/drv_packet/test_drv_packet.py ___________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\drv_packet\test_drv_packet.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+v13\tests\drv_packet\test_drv_packet.py:3: in <module>
+    from PQC import generate_keypair, clear_pqc_audit_log, get_pqc_audit_log, get_pqc_audit_hash
+v13\libs\PQC.py:11: in <module>
+    from .pqc.registry import PQCAlgorithm, REGISTRY
+E   ImportError: attempted relative import with no known parent package
+
+During handling of the above exception, another exception occurred:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\drv_packet\test_drv_packet.py:5: in <module>
+    import PQC
+v13\libs\PQC.py:11: in <module>
+    from .pqc.registry import PQCAlgorithm, REGISTRY
+E   ImportError: attempted relative import with no known parent package
+_____ ERROR collecting v13/tests/libs_checks/qfs_v13_integration_test.py ______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\libs_checks\qfs_v13_integration_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\libs_checks\qfs_v13_integration_test.py:18: in <module>
+    from PQC import PQC, KeyPair
+v13\libs\PQC.py:11: in <module>
+    from .pqc.registry import PQCAlgorithm, REGISTRY
+E   ImportError: attempted relative import with no known parent package
+______ ERROR collecting v13/tests/libs_checks/quick_determinism_test.py _______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\libs_checks\quick_determinism_test.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\libs_checks\quick_determinism_test.py:8: in <module>
+    from PQC import PQC
+v13\libs\PQC.py:11: in <module>
+    from .pqc.registry import PQCAlgorithm, REGISTRY
+E   ImportError: attempted relative import with no known parent package
+_____ ERROR collecting v13/tests/observability/test_trace_propagation.py ______
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\observability\test_trace_propagation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\observability\test_trace_propagation.py:10: in <module>
+    from v13.atlas.src.api.routes.explain import router
+v13\atlas\src\api\routes\explain.py:17: in <module>
+    from ..dependencies import get_replay_source, get_current_user
+E   ImportError: cannot import name 'get_replay_source' from 'v13.atlas.src.api.dependencies' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\atlas\src\api\dependencies.py)
+_________________ ERROR collecting v13/tests/sdk/test_sdk.py __________________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\sdk\test_sdk.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\sdk\test_sdk.py:2: in <module>
+    from QFSV13SDK import QFSV13SDK, DRV_Packet
+E   ModuleNotFoundError: No module named 'QFSV13SDK'
+______________ ERROR collecting v13/tests/simple_policy_test.py _______________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:177: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:357: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E   SyntaxError: source code string cannot contain null bytes
+_____________ ERROR collecting v13/tests/test_pqc_integration.py ______________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_pqc_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\test_pqc_integration.py:3: in <module>
+    from v13.libs.PQC import PQC, KeyPair, ValidationResult
+E   ImportError: cannot import name 'ValidationResult' from 'PQC' (unknown location)
+_________ ERROR collecting v13/tests/test_pqc_network_integration.py __________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\test_pqc_network_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\test_pqc_network_integration.py:6: in <module>
+    from v13.libs.PQC import PQC, KeyPair, ValidationResult
+E   ImportError: cannot import name 'ValidationResult' from 'PQC' (unknown location)
+____________ ERROR collecting v13/tests/unit/test_drv_timestamp.py ____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_drv_timestamp.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_drv_timestamp.py:2: in <module>
+    from v13.core.DRV_Packet import DRV_Packet, ValidationErrorCode
+E   ImportError: cannot import name 'ValidationErrorCode' from 'DRV_Packet' (unknown location)
+____________ ERROR collecting v13/tests/unit/test_hd_derivation.py ____________
+ImportError while importing test module 'D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_hd_derivation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v13\tests\unit\test_hd_derivation.py:7: in <module>
+    from v13.libs.crypto.derivation import (
+E   ImportError: cannot import name 'derive_master_key' from 'v13.libs.crypto.derivation' (D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\libs\crypto\derivation.py)
+________ ERROR collecting v13/tests/unit/test_system_creator_wallet.py ________
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\python.py:498: in importtestmodule
+    mod = import_path(
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:177: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\_pytest\assertion\rewrite.py:357: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "D:\AI AGENT CODERV1\QUANTUM CURRENCY\QFS\V13\v13\tests\unit\test_system_creator_wallet.py", line 12
+E       <<<<<<< HEAD
+E       ^^
+E   SyntaxError: invalid syntax
+============================== warnings summary ===============================
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\starlette\formparsers.py:12
+  C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\starlette\formparsers.py:12: PendingDeprecationWarning: Please use `import python_multipart` instead.
+    import multipart
+
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\pydantic\_internal\_config.py:323
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\pydantic\_internal\_config.py:323
+  C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\pythonjsonlogger\jsonlogger.py:11
+  C:\Users\Usuario\AppData\Roaming\Python\Python313\site-packages\pythonjsonlogger\jsonlogger.py:11: DeprecationWarning: pythonjsonlogger.jsonlogger has been moved to pythonjsonlogger.json
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR v13/tests/drv_packet/test_drv_packet.py
+ERROR v13/tests/libs_checks/qfs_v13_integration_test.py
+ERROR v13/tests/libs_checks/quick_determinism_test.py
+ERROR v13/tests/observability/test_trace_propagation.py
+ERROR v13/tests/sdk/test_sdk.py
+ERROR v13/tests/simple_policy_test.py
+ERROR v13/tests/test_pqc_integration.py
+ERROR v13/tests/test_pqc_network_integration.py
+ERROR v13/tests/unit/test_drv_timestamp.py
+ERROR v13/tests/unit/test_hd_derivation.py
+ERROR v13/tests/unit/test_system_creator_wallet.py
+!!!!!!!!!!!!!!!!!! Interrupted: 11 errors during collection !!!!!!!!!!!!!!!!!!!
+=================== 684 tests collected, 11 errors in 6.15s ===================

@@ -7,6 +7,15 @@ from v13.libs.PQC import PQC
 logger = logging.getLogger(__name__)
 
 
+class DeterministicID:
+    _counter = 0
+
+    @classmethod
+    def next(cls):
+        cls._counter += 1
+        return cls._counter
+
+
 class PQCServerSession:
     """Manages Server-side KEM keys and ephemeral sessions."""
 
@@ -40,4 +49,3 @@ class PQCServerSession:
 
 # Singleton instance
 pqc_session_manager = PQCServerSession()
-

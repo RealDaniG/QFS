@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from ..ui_contracts.schemas import ProofVectorRef
 from .evidence_service import get_proof_vectors_by_ids
-from v13.ATLAS.src.api.dependencies import get_replay_source
+from v13.atlas.src.api.dependencies import get_replay_source
 from v13.core.QFSReplaySource import QFSReplaySource
 
 router = APIRouter()

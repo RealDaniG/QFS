@@ -23,17 +23,86 @@ for p in (_REPO_ROOT, _V13_ROOT, _V13_LIBS, _V13_CORE, _V13_UTILS):
 # can run without native PQC libraries installed.
 # =============================================================================
 
+
 # Create dummy PQC module
+class DummyPQC:
+    @staticmethod
+    def sign_data(*args, **kwargs):
+        return b"mock_signature"
+
+    @staticmethod
+    def verify_signature(*args, **kwargs):
+        class MockResult:
+            is_valid = True
+            quantum_metadata = {}
+
+        return MockResult()
+
+    @staticmethod
+    def generate_keypair(*args, **kwargs):
+        class MockKeyPair:
+            private_key = bytearray(b"0" * 32)
+            public_key = b"0" * 32
+            algorithm = "mock"
+            parameters = {}
+
+        return MockKeyPair()
+
+    @staticmethod
+    def get_backend_info():
+        return {"backend": "mock_conftest"}
+
+    @staticmethod
+    def kem_generate_keypair(algo, seed):
+        return b"dummy_pub", b"dummy_priv"
+
+    @staticmethod
+    def kem_decapsulate(algo, sk, ct):
+        return b"dummy_secret"
+
+    KYBER1024 = 1
+
+    class LogContext:
+        def __enter__(self):
+            return []
+
+        def __exit__(self, *args):
+            pass
+
+    DILITHIUM5 = "Dilithium5"
+
+
+class DummyValidationResult:
+    def __init__(self, is_valid=True, error_message=None, quantum_metadata=None):
+        self.is_valid = is_valid
+        self.error_message = error_message
+        self.quantum_metadata = quantum_metadata or {}
+
+
 _dummy_pqc = types.ModuleType("PQC")
-_dummy_pqc.PQCKeyPair = object
-_dummy_pqc.PQCSigner = object
-_dummy_pqc.PQCVerifier = object
+_dummy_pqc.PQC = DummyPQC
+_dummy_pqc.KeyPair = object
+_dummy_pqc.ValidationResult = DummyValidationResult
+_dummy_pqc.PQCError = Exception
+_dummy_pqc.PQCValidationError = Exception
 _dummy_pqc.sign = lambda *args, **kwargs: b"mock_signature"
 _dummy_pqc.verify = lambda *args, **kwargs: True
 
+
 # Create dummy DRV_Packet module
+class DummyValidationErrorCode:
+    OK = 0
+    INVALID_SEQUENCE = 1
+    INVALID_TTS_TIMESTAMP = 2
+    INVALID_SIGNATURE = 3
+    INVALID_CHAIN = 4
+    VERSION_MISMATCH = 5
+
+
 _dummy_drv = types.ModuleType("DRV_Packet")
 _dummy_drv.DRV_Packet = object
+_dummy_drv.ValidationResult = DummyValidationResult
+_dummy_drv.ValidationErrorCode = DummyValidationErrorCode
 
 # Register mocks before any real imports
 sys.modules.setdefault("libs.PQC", _dummy_pqc)

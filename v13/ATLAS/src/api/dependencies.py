@@ -1,10 +1,18 @@
 from fastapi import Header, HTTPException, Depends
 from typing import Optional
 import jwt
-from src.config import settings
-from backend.lib.evidence_bus import EvidenceBus
+from v13.atlas.src.config import settings
+from v13.atlas.backend.lib.evidence_bus import EvidenceBus
+from v13.core.QFSReplaySource import QFSReplaySource
+from v13.core.CoherenceLedger import CoherenceLedger
+from v13.core.StorageEngine import StorageEngine
+from v13.libs.CertifiedMath import CertifiedMath
 
 # Initialize Global Services
+_cm = CertifiedMath()
+_ledger = CoherenceLedger(_cm)
+_storage = StorageEngine(_cm)
+_replay_source = QFSReplaySource(_ledger, _storage)
 evidence_bus = EvidenceBus()
 
 
@@ -60,6 +68,10 @@ async def optional_auth(authorization: Optional[str] = Header(None)) -> Optional
 
 # Aliases for compatibility
 get_current_user = require_auth
+
+
+def get_replay_source() -> QFSReplaySource:
+    return _replay_source
 
 
 def get_evidence_bus() -> EvidenceBus:

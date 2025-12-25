@@ -7,7 +7,7 @@ import sys
 import datetime
 
 # Import components
-from v13.ATLAS.src.api.routes.explain import router
+from v13.atlas.src.api.routes.explain import router
 from v13.core.observability.logger import TraceContext
 
 
@@ -19,7 +19,7 @@ def client():
 
     # Mock dependencies
     # We need to override get_current_user and get_replay_source
-    from v13.ATLAS.src.api.dependencies import get_current_user, get_replay_source
+    from v13.atlas.src.api.dependencies import get_current_user, get_replay_source
 
     async def mock_get_current_user():
         return {"wallet_id": "test_wallet", "permissions": ["audit_all_explanations"]}

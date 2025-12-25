@@ -3,8 +3,9 @@ import base64
 import json
 import asyncio
 from unittest.mock import MagicMock, AsyncMock, patch
-from libs.PQC import PQC, KeyPair
-from ATLAS.src.core.pqc_session import pqc_session_manager
+from v13.libs.PQC import PQC, KeyPair, ValidationResult
+from v13.atlas.src.core.pqc_session import pqc_session_manager
+from v13.atlas.src.qfs_client import QFSClient
 
 # Local definition to avoid importing secure_chat.py which triggers Pydantic recursion in test env
 from pydantic import BaseModel

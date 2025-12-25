@@ -278,5 +278,88 @@ def derive_creator_keypair(
     Returns:
         (private_key_hex, public_address)
     """
-    # This wrapper maintains compatibility with the PQC implementation
-    return derive_master_system_key(_DEV_ROOT_SEED, scope)
+    if scope not in ("DEV", "TESTNET"):
+        raise ValueError(f"Invalid scope: {scope}. Must be 'DEV' or 'TESTNET'.")
+
+    # Use scope-specific seed
+    if scope == "DEV":
+        seed = _DEV_ROOT_SEED
+    else:
+        seed = hashlib.sha512(b"QFS_V13_TESTNET_ROOT_SEED").digest()
+
+    # Default path: m/44'/9999'/0'/0/0
+    if path is None:
+        path = [
+            44 + HARDENED_OFFSET,
+            COIN_TYPE_QFS + HARDENED_OFFSET,
+            0 + HARDENED_OFFSET,
+            0,
+            0,
+        ]
+
+    node = HDKey.from_seed(seed)
+    for idx in path:
+        node = node.derive(idx)
+
+    private_key_hex = node.key.hex()
+    # Simple address: hash of the key
+    address_hash = hashlib.sha256(node.key).hexdigest()
+    public_address = f"qfs1{address_hash[:40]}"
+
+    return private_key_hex, public_address
+
+
+# BIP-32 Convenience Wrappers for Legacy Tests
+def derive_master_key(seed: bytes) -> ExtendedKey:
+    """Derive master extended key from seed (BIP-32 Vector 1 compatible)."""
+    node = HDKey.from_seed(seed)
+    return ExtendedKey(
+        key=node.key,
+        chain_code=node.chain_code,
+        depth=node.depth,
+        parent_fingerprint=node.parent_fingerprint,
+        child_number=node.index,
+        is_private=True,
+    )
+
+
+def derive_child_key(parent_key: ExtendedKey, index: int) -> ExtendedKey:
+    """Derive child extended key from parent."""
+    # This is a bit complex as it requires reconstructing HDKey
+    node = HDKey(
+        parent_key.key,
+        parent_key.chain_code,
+        parent_key.depth,
+        parent_key.child_number,
+        parent_key.parent_fingerprint,
+    )
+    child = node.derive(index)
+    return ExtendedKey(
+        key=child.key,
+        chain_code=child.chain_code,
+        depth=child.depth,
+        parent_fingerprint=child.parent_fingerprint,
+        child_number=child.index,
+        is_private=True,
+    )
+
+
+def derive_path(seed: bytes, path: str) -> ExtendedKey:
+    """Derive extended key from seed using a path string."""
+    master = HDKey.from_seed(seed)
+    node = master.derive_path(path)
+    return ExtendedKey(
+        key=node.key,
+        chain_code=node.chain_code,
+        depth=node.depth,
+        parent_fingerprint=node.parent_fingerprint,
+        child_number=node.index,
+        is_private=True,
+    )
+
+
+if __name__ == "__main__":
+    # Test vector 1 check
+    seed = bytes.fromhex("000102030405060708090a0b0c0d0e0f")
+    m = derive_master_key(seed)
+    print(f"Master Key: {m.key.hex()}")

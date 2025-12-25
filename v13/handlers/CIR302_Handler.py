@@ -14,6 +14,7 @@ V13.6 Constitutional Integration:
 
 import json
 import hashlib
+from dataclasses import dataclass
 from typing import Dict, Any, Optional, List, Type
 
 try:
@@ -25,6 +26,14 @@ except ImportError:
 
     # Import ZeroSimAbort
     from v13.libs.fatal_errors import ZeroSimAbort, log_fatal_exception
+
+
+@dataclass
+class QuarantineResult:
+    """Structured result for CIR-302 quarantine."""
+
+    finality_seal: str
+    pqc_cid: str
 
 
 class CIR302_Handler:
@@ -94,6 +103,18 @@ class CIR302_Handler:
             "timestamp": BigNum128(0).to_decimal_string(),
             "pqc_scheme": "None",
         }
+
+    def trigger_quarantine(
+        self, reason: str, system_state: Dict[str, Any]
+    ) -> QuarantineResult:
+        """
+        Produce a structured quarantine result (stub for V13.6).
+        """
+        finality_seal = self.generate_finality_seal(
+            system_state, constitutional_guard_status="quarantined"
+        )
+        pqc_cid = system_state.get("drv_packet", {}).get("pqc_cid", "")
+        return QuarantineResult(finality_seal=finality_seal, pqc_cid=pqc_cid)
 
     def handle_violation(
         self,

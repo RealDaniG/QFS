@@ -9,7 +9,6 @@ from v13.libs.crypto.derivation import derive_creator_keypair
 from v13.libs.keystore.manager import KeystoreManager
 from v13.ledger.writer import LedgerWriter
 from v13.policy.authorization import AuthorizationEngine
-<<<<<<< HEAD
 
 # Expected values for "DEV" scope based on our HKDF-SHA256 logic
 EXPECTED_ADDRESS_DEV = (
@@ -21,28 +20,17 @@ EXPECTED_ADDRESS_TESTNET = (
 )
 # Private key is sensitive, but in this specific fixed-salt/fixed-info implementation, it's deterministic.
 # We test against the address mainly.
-=======
-EXPECTED_ADDRESS_DEV = '0x40d1b50e2b950b1e933b286108335ce73553af2a16b338d408210e9995d72dc9'
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
 
 
 def test_derive_creator_keypair_dev():
-    priv, addr = derive_creator_keypair('DEV')
+    priv, addr = derive_creator_keypair("DEV")
     assert addr == EXPECTED_ADDRESS_DEV
-<<<<<<< HEAD
     assert len(priv) == 64  # 32 bytes hex
 
 
 def test_derive_creator_keypair_testnet():
     priv, addr = derive_creator_keypair("TESTNET")
     assert addr == EXPECTED_ADDRESS_TESTNET
-=======
-    assert len(priv) == 64
-
-def test_derive_creator_keypair_testnet():
-    priv, addr = derive_creator_keypair('TESTNET')
-    assert addr != EXPECTED_ADDRESS_DEV
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     assert len(priv) == 64
 
 
@@ -58,12 +46,11 @@ def test_derive_creator_keypair_replay():
 
 
 def test_derive_creator_keypair_invalid_scope():
-    with pytest.raises(ValueError, match='Invalid scope'):
-        derive_creator_keypair('MAINNET')
+    with pytest.raises(ValueError, match="Invalid scope"):
+        derive_creator_keypair("MAINNET")
 
 
 def test_keystore_manager_save_and_get(tmp_path):
-<<<<<<< HEAD
     # Mock file path
     ks_file = tmp_path / ".qfs_keystore_test.json"
 
@@ -78,25 +65,14 @@ def test_keystore_manager_save_and_get(tmp_path):
     assert wallet["private_key"] == "privkey123"
 
     # Reload from file
-=======
-    ks_file = tmp_path / '.qfs_keystore_test.json'
-    ks = KeystoreManager(str(ks_file))
-    assert not ks.exists('SYSTEM_CREATOR', 'DEV')
-    ks.save_key('SYSTEM_CREATOR', 'DEV', 'privkey123', 'addr123')
-    assert ks.exists('SYSTEM_CREATOR', 'DEV')
-    wallet = ks.get_wallet('SYSTEM_CREATOR', 'DEV')
-    assert wallet['public_address'] == 'addr123'
-    assert wallet['private_key'] == 'privkey123'
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     ks2 = KeystoreManager(str(ks_file))
-    assert ks2.exists('SYSTEM_CREATOR', 'DEV')
-    assert ks2.get_wallet('SYSTEM_CREATOR', 'DEV')['public_address'] == 'addr123'
+    assert ks2.exists("SYSTEM_CREATOR", "DEV")
+    assert ks2.get_wallet("SYSTEM_CREATOR", "DEV")["public_address"] == "addr123"
 
 
 def test_keystore_conflict(tmp_path):
-    ks_file = tmp_path / '.qfs_keystore_test.json'
+    ks_file = tmp_path / ".qfs_keystore_test.json"
     ks = KeystoreManager(str(ks_file))
-<<<<<<< HEAD
 
     ks.save_key("R", "S", "k1", "a1")
 
@@ -106,19 +82,12 @@ def test_keystore_conflict(tmp_path):
     # Different address raises
     with pytest.raises(ValueError, match="Key conflict"):
         ks.save_key("R", "S", "k2", "a2")
-=======
-    ks.save_key('R', 'S', 'k1', 'a1')
-    ks.save_key('R', 'S', 'k1', 'a1')
-    with pytest.raises(ValueError, match='Key conflict'):
-        ks.save_key('R', 'S', 'k2', 'a2')
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
 
 
 @pytest.mark.asyncio
 async def test_ledger_writer_emit(tmp_path):
-    ledger_file = tmp_path / 'test_ledger.jsonl'
+    ledger_file = tmp_path / "test_ledger.jsonl"
     writer = LedgerWriter(str(ledger_file))
-<<<<<<< HEAD
 
     entry = await writer.emit_wallet_registered("addr1", "ROLE", "SCOPE", ["CAP1"])
 
@@ -128,27 +97,20 @@ async def test_ledger_writer_emit(tmp_path):
 
     # Read back (simulated by just checking file presence/content for now, or using a reader if we had one in this test)
     # The LedgerWriter uses GenesisLedger internally which handles writes.
-=======
-    entry = await writer.emit_wallet_registered('addr1', 'ROLE', 'SCOPE', ['CAP1'])
-    assert entry.wallet == 'addr1'
-    assert entry.timestamp == '2025-01-01T00:00:00Z'
-    assert entry.metadata['role'] == 'ROLE'
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
+    import os
+
     assert os.path.exists(ledger_file)
     with open(ledger_file, "r") as f:
         line = f.readline()
         saved = json.loads(line)
-        assert saved['wallet'] == 'addr1'
+        assert saved["wallet"] == "addr1"
 
 
 def test_authorization_replay():
-
     class MockEntry:
-
         def __init__(self, et, meta):
             self.event_type = et
             self.metadata = meta
-<<<<<<< HEAD
 
     entries = [
         MockEntry(
@@ -184,16 +146,6 @@ def test_authorization_replay():
             },
         )
     ]
-=======
-    entries = [MockEntry('WALLET_REGISTERED', {'wallet_id': 'w1', 'role': 'SYSTEM_CREATOR', 'scope': 'DEV', 'capabilities': ['READ', 'WRITE']})]
-    auth = AuthorizationEngine(entries)
-    assert auth.resolve_role('w1') == 'SYSTEM_CREATOR'
-    assert auth.resolve_role('w2') == 'NONE'
-    assert auth.authorize('w1', 'READ', 'DEV') is True
-    assert auth.authorize('w1', 'WRITE', 'DEV') is True
-    assert auth.authorize('w1', 'EXECUTE', 'DEV') is False
-    assert auth.authorize('w1', 'READ', 'PROD') is False
-    entries2 = [MockEntry('WALLET_REGISTERED', {'wallet_id': 'wadmin', 'role': 'SYSTEM_CREATOR', 'scope': 'DEV', 'capabilities': ['LEDGER_READ_ALL']})]
->>>>>>> b27f784 (fix(ci/structure): structural cleanup and genesis_ledger AST fixes)
     auth2 = AuthorizationEngine(entries2)
-    assert auth2.authorize('wadmin', 'READ', 'DEV') is True
+    auth2 = AuthorizationEngine(entries2)
+    assert auth2.authorize("wadmin", "READ", "DEV") is True

@@ -1,6 +1,7 @@
 """
 Test suite for HumorSignalAddon
 """
+
 from fractions import Fraction
 
 import unittest
@@ -12,7 +13,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
 
 try:
-    from v13.ATLAS.src.signals.humor import HumorSignalAddon
+    from v13.atlas.src.signals.humor import HumorSignalAddon
 except ImportError:
     # Fallback if v13 is not top package but ATLAS is in path
     try:

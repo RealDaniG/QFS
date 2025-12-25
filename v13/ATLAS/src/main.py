@@ -119,10 +119,9 @@ if __name__ == "__main__":
     from .config import PORT
 
     uvicorn.run(
-        "v13.ATLAS.src.main:app",
+        "v13.atlas.src.main:app",
         host="0.0.0.0",
         port=PORT,
         reload=True,
         log_level="info",
     )
-

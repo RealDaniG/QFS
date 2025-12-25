@@ -4,7 +4,7 @@ from v13.libs.BigNum128 import BigNum128
 from v13.libs.type_guards import ensure_bignum, ensure_int, safe_enum_serialize
 
 
-class TestEnum(Enum):
+class MockEnumForTesting(Enum):
     TEST_A = "value_a"
     TEST_B = "value_b"
 
@@ -43,7 +43,7 @@ def test_ensure_int():
 
 def test_safe_enum_serialize():
     # Enum -> str
-    assert safe_enum_serialize(TestEnum.TEST_A) == "value_a"
+    assert safe_enum_serialize(MockEnumForTesting.TEST_A) == "value_a"
 
     # str -> str
     assert safe_enum_serialize("value_a") == "value_a"

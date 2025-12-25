@@ -1,6 +1,10 @@
 import os
 from pydantic_settings import BaseSettings
 
+from v13.libs.PQC import PQC, KeyPair, ValidationResult
+from v13.atlas.src.qfs_client import QFSClient
+from v13.atlas.src.qfs_types import OperationBundle
+
 
 class Settings(BaseSettings):
     # Server
@@ -23,6 +27,7 @@ class Settings(BaseSettings):
 
     # Feature flags
     ENABLE_DAILY_REWARDS: bool = True
+    EXPLAIN_THIS_SOURCE: str = "qfs_ledger"
 
     class Config:
         env_file = ".env"
@@ -30,3 +35,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+EXPLAIN_THIS_SOURCE = settings.EXPLAIN_THIS_SOURCE
