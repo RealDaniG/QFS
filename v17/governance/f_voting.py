@@ -68,12 +68,13 @@ def cast_vote(
             f"cannot vote at {timestamp}"
         )
 
-    # Create vote
+    # Create vote - convert weight to BigNum128 string format
+    weight_str = f"{weight:.18f}"
     vote = Vote(
         proposal_id=proposal_id,
         voter_wallet=voter_wallet,
         choice=choice,
-        weight=weight,
+        weight=weight_str,
         timestamp=timestamp,
         signature=signature,
     )

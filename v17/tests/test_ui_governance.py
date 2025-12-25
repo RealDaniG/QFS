@@ -17,7 +17,9 @@ def test_governance_projection_structure():
     try:
         EvidenceBus._chain_tip = "0" * 64
         config = GovernanceConfig(
-            quorum_threshold=0.3, approval_threshold=0.5, voting_period_seconds=1000
+            quorum_threshold="0.300000000000000000",
+            approval_threshold="0.500000000000000000",
+            voting_period_seconds=1000,
         )
 
         # Create

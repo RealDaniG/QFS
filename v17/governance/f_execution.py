@@ -37,6 +37,10 @@ def compute_outcome(
             f"{proposal_state.proposal.voting_ends_at}"
         )
 
+    # Parse thresholds from BigNum128 string format to float
+    quorum_threshold = float(config.quorum_threshold)
+    approval_threshold = float(config.approval_threshold)
+
     # Compute participation rate
     # In production, this would use total eligible voters
     # For now, we use a simple threshold
@@ -45,7 +49,7 @@ def compute_outcome(
     )  # Assume 100 is full participation
 
     # Check quorum
-    if participation_rate < config.quorum_threshold:
+    if participation_rate < quorum_threshold:
         return ExecutionRecord(
             proposal_id=proposal_state.proposal.proposal_id,
             final_outcome="no_quorum",
@@ -55,11 +59,13 @@ def compute_outcome(
             approve_weight=proposal_state.approve_weight,
             reject_weight=proposal_state.reject_weight,
             effects=None,
-            reason=f"Quorum not met: {participation_rate:.2%} < {config.quorum_threshold:.2%}",
+            reason=f"Quorum not met: {participation_rate:.2%} < {quorum_threshold:.2%}",
         )
 
-    # Compute approval rate (excluding abstentions)
-    voting_weight = proposal_state.approve_weight + proposal_state.reject_weight
+    # Compute approval rate (excluding abstentions) - parse string weights
+    approve_weight = float(proposal_state.approve_weight)
+    reject_weight = float(proposal_state.reject_weight)
+    voting_weight = approve_weight + reject_weight
 
     if voting_weight == 0:
         # All abstentions - use tie-break rule
@@ -76,10 +82,10 @@ def compute_outcome(
             reason=f"All votes abstained, tie-break rule applied: {config.tie_break_rule}",
         )
 
-    approval_rate = proposal_state.approve_weight / voting_weight
+    approval_rate = approve_weight / voting_weight
 
     # Check for exact tie
-    if proposal_state.approve_weight == proposal_state.reject_weight:
+    if approve_weight == reject_weight:
         outcome = _apply_tie_break_rule(config.tie_break_rule)
         return ExecutionRecord(
             proposal_id=proposal_state.proposal.proposal_id,
@@ -94,17 +100,17 @@ def compute_outcome(
         )
 
     # Determine outcome based on approval threshold
-    if approval_rate >= config.approval_threshold:
+    if approval_rate >= approval_threshold:
         outcome = "approved"
         reason = (
-            f"Quorum met ({participation_rate:.2%} >= {config.quorum_threshold:.2%}), "
-            f"approval threshold met ({approval_rate:.2%} >= {config.approval_threshold:.2%})"
+            f"Quorum met ({participation_rate:.2%} >= {quorum_threshold:.2%}), "
+            f"approval threshold met ({approval_rate:.2%} >= {approval_threshold:.2%})"
         )
     else:
         outcome = "rejected"
         reason = (
-            f"Quorum met ({participation_rate:.2%} >= {config.quorum_threshold:.2%}), "
-            f"approval threshold not met ({approval_rate:.2%} < {config.approval_threshold:.2%})"
+            f"Quorum met ({participation_rate:.2%} >= {quorum_threshold:.2%}), "
+            f"approval threshold not met ({approval_rate:.2%} < {approval_threshold:.2%})"
         )
 
     return ExecutionRecord(

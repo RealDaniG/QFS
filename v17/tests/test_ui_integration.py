@@ -24,7 +24,9 @@ def test_admin_dashboard_integration():
 
         # 2. Add Data
         config = GovernanceConfig(
-            quorum_threshold=0.3, approval_threshold=0.5, voting_period_seconds=1000
+            quorum_threshold="0.300000000000000000",
+            approval_threshold="0.500000000000000000",
+            voting_period_seconds=1000,
         )
         create_proposal("space_X", "0xAdmin", "Integration Test", "Body", 1000, config)
 

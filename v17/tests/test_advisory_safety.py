@@ -103,7 +103,9 @@ def test_advisory_never_changes_outcome():
 
         # Calculate outcome
         config = GovernanceConfig(
-            quorum_threshold=0.0, approval_threshold=0.5, voting_period_seconds=100
+            quorum_threshold="0.000000000000000000",
+            approval_threshold="0.500000000000000000",
+            voting_period_seconds=100,
         )
 
         # Verify votes counted

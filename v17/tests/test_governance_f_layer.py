@@ -29,8 +29,8 @@ def test_governance_determinism():
 
         # Create config
         config = GovernanceConfig(
-            quorum_threshold=0.5,
-            approval_threshold=0.6,
+            quorum_threshold="0.500000000000000000",
+            approval_threshold="0.600000000000000000",
             voting_period_seconds=86400,
         )
 
@@ -77,8 +77,8 @@ def test_governance_poe_logging():
 
         # Create config
         config = GovernanceConfig(
-            quorum_threshold=0.3,
-            approval_threshold=0.5,
+            quorum_threshold="0.300000000000000000",
+            approval_threshold="0.500000000000000000",
             voting_period_seconds=1000,
         )
 
@@ -141,8 +141,8 @@ def test_governance_outcome_computation():
 
         # Create config
         config = GovernanceConfig(
-            quorum_threshold=0.3,  # 30% participation required
-            approval_threshold=0.6,  # 60% approval required
+            quorum_threshold="0.300000000000000000",  # 30% participation required
+            approval_threshold="0.600000000000000000",  # 60% approval required
             voting_period_seconds=1000,
         )
 
@@ -189,8 +189,8 @@ def test_governance_outcome_computation():
         # Should be approved (quorum met, approval > 60%)
         assert outcome.final_outcome == "approved"
         assert outcome.total_votes == 100
-        assert outcome.approve_weight == 65.0
-        assert outcome.reject_weight == 35.0
+        assert float(outcome.approve_weight) == 65.0
+        assert float(outcome.reject_weight) == 35.0
 
     finally:
         EvidenceBus._log_file = original_log
@@ -210,8 +210,8 @@ def test_governance_tie_breaking():
 
         # Create config with tie-break rule
         config = GovernanceConfig(
-            quorum_threshold=0.3,
-            approval_threshold=0.5,
+            quorum_threshold="0.300000000000000000",
+            approval_threshold="0.500000000000000000",
             voting_period_seconds=1000,
             tie_break_rule="reject",  # Ties default to reject
         )
