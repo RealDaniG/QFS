@@ -11,6 +11,7 @@ env:
   ENV: "dev"
   MOCKQPC_ENABLED: "true"
   CI: "true"
+      PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/v13"
 
 jobs:
   # Stage 1: Auth Static Analysis
@@ -29,6 +30,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pylint black isort mypy
 
       - name: "[AUTH] Lint Auth Modules"
@@ -64,6 +66,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pytest pytest-cov
 
       - name: "[AUTH] Session Model Tests"
@@ -95,6 +98,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pytest
 
       - name: "[AUTH] EvidenceBus Event Tests"
@@ -126,6 +130,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: "[AUTH] Verify Session Schema Version"
         run: |
@@ -164,6 +169,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: "[ZERO-SIM] Auth Module Scan"
         run: |
@@ -211,6 +217,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pytest pytest-cov httpx
 
       - name: "[GITHUB] Run OAuth State Tests"
