@@ -35,6 +35,10 @@ class BountyStateMachine:
                 f"Bounty {bounty.bounty_id} is not OPEN (status: {bounty.status})"
             )
 
+        # Accept both int and BigNum128 for backward compatibility
+        if isinstance(res_amount, int):
+            res_amount = BigNum128.from_int(res_amount)
+
         required_stake = BigNum128.from_int(bounty.res_stake_required)
         if res_amount.value < required_stake.value:
             raise ValueError(
