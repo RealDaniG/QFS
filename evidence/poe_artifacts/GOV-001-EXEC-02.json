@@ -10,17 +10,17 @@
     "parameter_key": "VIRAL_POOL_CAP"
   },
   "poe_version": "1.0",
-  "proof_hash": "sha3_512:9f9cbe8e0dd97651acfdb6e3cedbaf7ff9dc830b4c4d8ee111d45ae1ba08968c77e9a933b857ca35885ad4671fa378406ee8977c8e0527ea401b1529f6617a53",
+  "proof_hash": "sha3_512:f3c1682e657ffbc0e42865ebed1eb1f1e6377481f18d44571ec616077e6ad5fc08040169bb341a6ddf6589c4397ce89a40aa09afa76e5b46714ed235dd5c642b",
   "proposal_hash": "a0d9d35a8308566ea088a1d0c1ff46de0e7d0829a73cbbef5026d4a263a9c59469fa58425fbf11594bf7021c547022409bbf3de3372910e36e980912e7e8bc08",
   "replay_instructions": {
     "command": "python replay_gov_cycle.py --artifact_id GOV-001-EXEC-02",
-    "expected_output_hash": "sha3_512:9f9cbe8e0dd97651acfdb6e3cedbaf7ff9dc830b4c4d8ee111d45ae1ba08968c77e9a933b857ca35885ad4671fa378406ee8977c8e0527ea401b1529f6617a53",
+    "expected_output_hash": "sha3_512:f3c1682e657ffbc0e42865ebed1eb1f1e6377481f18d44571ec616077e6ad5fc08040169bb341a6ddf6589c4397ce89a40aa09afa76e5b46714ed235dd5c642b",
     "inputs_file": "evidence/GOV-001-EXEC-02-inputs.json"
   },
   "runtime_info": {
     "build_hash": "sha3_512:PLACEHOLDER",
     "certifiedmath_version": "1.0.0",
-    "code_commit_hash": "5ce529e7",
+    "code_commit_hash": "315604c3",
     "deterministic_session_timestamp_hash": "sha3_512:87f3be7aef81a3fa47bba5414cf235b0e907b602142aa152af686e24d01a581cfa27badeb7d99f7d2f353458f9a2bbc4c695cad63f189c4afcbb838dd07aa004",
     "python_version": "3.11.7"
   },
