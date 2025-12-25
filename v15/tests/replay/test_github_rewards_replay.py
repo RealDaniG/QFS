@@ -34,16 +34,17 @@ class TestGitHubRewardsReplay(unittest.TestCase):
         OAuth state encoding/decoding must be deterministic.
         """
         session_id = "session_replay_test"
+        timestamp = 1600000000
 
         # Encode
-        state_1 = encode_oauth_state(session_id)
+        state_1 = encode_oauth_state(session_id, timestamp)
 
         # "Replay" (re-encode same session)
-        state_2 = encode_oauth_state(session_id)
+        state_2 = encode_oauth_state(session_id, timestamp)
 
         # Decode both
-        decoded_1 = decode_oauth_state(state_1)
-        decoded_2 = decode_oauth_state(state_2)
+        decoded_1 = decode_oauth_state(state_1, timestamp + 10)
+        decoded_2 = decode_oauth_state(state_2, timestamp + 10)
 
         # All must match
         self.assertEqual(state_1, state_2)

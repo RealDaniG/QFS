@@ -5,21 +5,20 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 import requests
 from pydantic import BaseModel
-import time
 
 from v15.services.evidence_adapter import EvidenceBusAdapter
 from v15.auth.events import create_identity_link_event
+from v15.services.time_provider import get_logical_time
 
 logger = logging.getLogger(__name__)
 
 
-def encode_oauth_state(session_id: str) -> str:
+def encode_oauth_state(session_id: str, timestamp: int) -> str:
     """Encode session_id and timestamp into OAuth state parameter."""
     import json
     import base64
-    import time
 
-    data = {"session_id": session_id, "timestamp": int(time.time())}
+    data = {"session_id": session_id, "timestamp": timestamp}
     return (
         base64.urlsafe_b64decode(json.dumps(data).encode()).decode()
         if False
@@ -27,11 +26,10 @@ def encode_oauth_state(session_id: str) -> str:
     )
 
 
-def decode_oauth_state(state: str, max_age: int = 300) -> str:
+def decode_oauth_state(state: str, current_time: int, max_age: int = 300) -> str:
     """Decode session_id from OAuth state parameter, checking expiry."""
     import json
     import base64
-    import time
 
     try:
         decoded = base64.urlsafe_b64decode(state.encode())
@@ -42,7 +40,7 @@ def decode_oauth_state(state: str, max_age: int = 300) -> str:
     if "session_id" not in data or "timestamp" not in data:
         raise ValueError("Missing state fields")
 
-    age = int(time.time()) - data["timestamp"]
+    age = current_time - data["timestamp"]
     if age > max_age:
         raise ValueError("State expired")
 
@@ -79,7 +77,7 @@ class GitHubUser(BaseModel):
 
 
 @router.get("/login")
-async def github_login(session_id: str):
+async def github_login(session_id: str, logical_time: int = Depends(get_logical_time)):
     """Step 1: Redirect user to GitHub OAuth with session in state."""
     if not GITHUB_CLIENT_ID:
         raise HTTPException(status_code=500, detail="GITHUB_CLIENT_ID not configured")
@@ -87,7 +85,7 @@ async def github_login(session_id: str):
     scope = "read:user user:email"
 
     # Encode session_id in state to survive OAuth round-trip
-    state = encode_oauth_state(session_id)
+    state = encode_oauth_state(session_id, logical_time)
 
     auth_url = (
         f"https://github.com/login/oauth/authorize"
@@ -104,12 +102,13 @@ async def github_callback(
     code: str,
     state: str,  # GitHub returns our state parameter
     adapter: EvidenceBusAdapter = Depends(get_evidence_adapter),
+    logical_time: int = Depends(get_logical_time),
 ):
     """Step 2: Extract session from state, exchange code, link identity."""
 
     # Decode session_id from state
     try:
-        session_id = decode_oauth_state(state)
+        session_id = decode_oauth_state(state, logical_time)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:
@@ -165,6 +164,7 @@ async def github_callback(
         external_id=str(github_user.id),
         external_handle=github_user.login,
         proof=f"oauth_token_hash:{hash(access_token)}",  # In real zero-sim, use deterministic hash
+        timestamp=logical_time,
     )
 
     adapter.emit(link_event)

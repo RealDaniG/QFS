@@ -4,7 +4,6 @@ All events versioned with auth_event_version = 1
 """
 
 from typing import Dict, Any
-from datetime import datetime
 
 AUTH_EVENT_VERSION = 1
 
@@ -15,6 +14,7 @@ def create_session_created_event(
     device_hash: str,
     issued_at: int,
     expires_at: int,
+    timestamp: int,
 ) -> Dict[str, Any]:
     """
     SESSION_CREATED event schema.
@@ -30,12 +30,12 @@ def create_session_created_event(
         "device_hash": device_hash,
         "issued_at": issued_at,
         "expires_at": expires_at,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }
 
 
 def create_session_refreshed_event(
-    session_id: str, refresh_index: int, device_hash: str
+    session_id: str, refresh_index: int, device_hash: str, timestamp: int
 ) -> Dict[str, Any]:
     """
     SESSION_REFRESHED event schema.
@@ -46,11 +46,13 @@ def create_session_refreshed_event(
         "session_id": session_id,
         "refresh_index": refresh_index,
         "device_hash": device_hash,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }
 
 
-def create_session_revoked_event(session_id: str, reason: str) -> Dict[str, Any]:
+def create_session_revoked_event(
+    session_id: str, reason: str, timestamp: int
+) -> Dict[str, Any]:
     """
     SESSION_REVOKED event schema.
     """
@@ -59,11 +61,13 @@ def create_session_revoked_event(session_id: str, reason: str) -> Dict[str, Any]
         "auth_event_version": AUTH_EVENT_VERSION,
         "session_id": session_id,
         "reason": reason,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }
 
 
-def create_device_bound_event(session_id: str, device_hash: str) -> Dict[str, Any]:
+def create_device_bound_event(
+    session_id: str, device_hash: str, timestamp: int
+) -> Dict[str, Any]:
     """
     DEVICE_BOUND event schema.
     """
@@ -72,12 +76,15 @@ def create_device_bound_event(session_id: str, device_hash: str) -> Dict[str, An
         "auth_event_version": AUTH_EVENT_VERSION,
         "session_id": session_id,
         "device_hash": device_hash,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }
 
 
 def create_device_mismatch_event(
-    session_id: str, expected_device_hash: str, actual_device_hash: str
+    session_id: str,
+    expected_device_hash: str,
+    actual_device_hash: str,
+    timestamp: int,
 ) -> Dict[str, Any]:
     """
     DEVICE_MISMATCH event schema.
@@ -88,12 +95,17 @@ def create_device_mismatch_event(
         "session_id": session_id,
         "expected_device_hash": expected_device_hash,
         "actual_device_hash": actual_device_hash,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }
 
 
 def create_identity_link_event(
-    session_id: str, platform: str, external_id: str, external_handle: str, proof: str
+    session_id: str,
+    platform: str,
+    external_id: str,
+    external_handle: str,
+    proof: str,
+    timestamp: int,
 ) -> Dict[str, Any]:
     """
     IDENTITY_LINK_PLATFORM event schema.
@@ -107,5 +119,5 @@ def create_identity_link_event(
         "external_id": external_id,
         "external_handle": external_handle,
         "proof": proof,
-        "timestamp": int(datetime.utcnow().timestamp()),
+        "timestamp": timestamp,
     }

@@ -7,7 +7,6 @@ from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
-import time
 
 from v15.auth.session import Session
 from v15.auth.session_id import SessionIDGenerator
@@ -15,6 +14,7 @@ from v15.auth.device import compute_device_hash, get_device_info
 from v15.auth.events import create_session_created_event
 from v15.services.session_store import SessionStore
 from v15.services.evidence_adapter import EvidenceBusAdapter
+from v15.services.time_provider import get_logical_time
 
 app = FastAPI(title="QFS Auth Service", version="20.0.0-alpha")
 
@@ -49,7 +49,9 @@ async def health():
 
 
 @app.post("/auth/session", response_model=SessionResponse)
-async def create_session(req: LoginRequest):
+async def create_session(
+    req: LoginRequest, logical_time: int = Depends(get_logical_time)
+):
     """
     Create new auth session (wallet login).
 
@@ -66,7 +68,7 @@ async def create_session(req: LoginRequest):
     # For now, accept all (dev mode)
 
     # Generate session ID
-    issued_at = int(time.time())
+    issued_at = logical_time
     session_id = session_id_gen.generate(req.wallet_address, issued_at)
 
     # Compute device hash
@@ -92,6 +94,7 @@ async def create_session(req: LoginRequest):
         device_hash=device_hash,
         issued_at=issued_at,
         expires_at=session.expires_at,
+        timestamp=logical_time,
     )
     evidence_adapter.emit(event)
 
@@ -115,7 +118,9 @@ async def get_session(session_id: str):
 
 
 @app.get("/bounty/rewards")
-async def get_my_rewards(session_id: str):
+async def get_my_rewards(
+    session_id: str, logical_time: int = Depends(get_logical_time)
+):
     """
     Get retro rewards for a session.
     In a real implementation, this would query the F-Layer state or EvidenceBus index.
@@ -129,7 +134,7 @@ async def get_my_rewards(session_id: str):
                 "reason": "GitHub PR #123 (Merged)",
                 "amount": 5.0,
                 "token": "FLX",
-                "timestamp": int(time.time()),
+                "timestamp": logical_time,
             }
         ],
         "total_flx": 5.0,
