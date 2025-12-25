@@ -1,4 +1,4 @@
-```python
+
 """
 Crypto adapter for PQC and MOCKQPC.
 Provides environment-aware routing between mock and real PQC.
