@@ -12,6 +12,25 @@ logger = logging.getLogger("EvidenceBus")
 logger.setLevel(logging.INFO)
 
 
+from dataclasses import dataclass, field
+
+
+@dataclass
+class EvidenceEvent:
+    event_type: str
+    version: int
+    payload: Dict[str, Any]
+    timestamp: int = 0
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "event_type": self.event_type,
+            "version": self.version,
+            **self.payload,
+            "timestamp": self.timestamp or int(logging.time.time()),
+        }
+
+
 class EvidenceBusAdapter:
     def __init__(self):
         self.enabled = True

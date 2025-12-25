@@ -52,7 +52,7 @@ REM STEP 2: START AUTH SERVICE
 REM ================================================================
 echo.
 echo [STEP 2/6] Starting Auth Service on port 8002...
-start "QFS v20 Auth Service" cmd /k "python -m v15.services.auth_service --port 8002"
+start "QFS v20 Auth Service" /min cmd /k "python -m v15.services.auth_service --port 8002"
 echo [%time%] Auth service starting...
 
 REM Wait for auth service
@@ -82,7 +82,7 @@ REM STEP 3: START BACKEND API
 REM ================================================================
 echo.
 echo [STEP 3/6] Starting Backend API on port 8001...
-start "QFS Backend API" cmd /k "python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001"
+start "QFS Backend API" /min cmd /k "python -m uvicorn v13.atlas.src.main_minimal:app --host 0.0.0.0 --port 8001"
 echo [%time%] Backend starting...
 
 REM Wait for backend
@@ -112,9 +112,10 @@ REM STEP 4: START FRONTEND (TURBOPACK)
 REM ================================================================
 echo.
 echo [STEP 4/6] Starting Frontend on port 3000 (Turbopack)...
-cd v13
-start "ATLAS v20 Frontend" cmd /k "npm run dev:fast"
-cd ..
+echo [STEP 4/6] Starting Frontend on port 3000 (Turbopack)...
+cd v13\atlas
+start "ATLAS v20 Frontend" /min cmd /k "npm run dev:fast"
+cd ..\..\
 echo [%time%] Frontend starting...
 
 REM Wait for frontend

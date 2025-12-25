@@ -18,6 +18,11 @@ from v15.services.evidence_adapter import EvidenceBusAdapter
 
 app = FastAPI(title="QFS Auth Service", version="20.0.0-alpha")
 
+# Include GitHub OAuth Router
+from v15.api.github_oauth import router as github_router
+
+app.include_router(github_router)
+
 # Initialize components
 # TODO: Get node_seed from secure config for production
 session_id_gen = SessionIDGenerator(node_seed="dev_node_001")
@@ -107,6 +112,28 @@ async def get_session(session_id: str):
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     return session.to_dict()
+
+
+@app.get("/bounty/rewards")
+async def get_my_rewards(session_id: str):
+    """
+    Get retro rewards for a session.
+    In a real implementation, this would query the F-Layer state or EvidenceBus index.
+    For Phase 2 Alpha, we return mock data or calculate on the fly from a mock ledger.
+    """
+    # Mock data for demonstration
+    return {
+        "round_id": "v20-retro-epoch-1",
+        "rewards": [
+            {
+                "reason": "GitHub PR #123 (Merged)",
+                "amount": 5.0,
+                "token": "FLX",
+                "timestamp": int(time.time()),
+            }
+        ],
+        "total_flx": 5.0,
+    }
 
 
 if __name__ == "__main__":

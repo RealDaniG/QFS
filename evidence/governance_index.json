@@ -1,5 +1,5 @@
 {
-  "chain_head_hash": "sha3_512:25bbba34388885b37878550ab0528976eb9d1d1354a8250b85628430aefb16e3693c4f5f2760f389bb670d4ef1cc3a67172a43600af2d85402071718258e8815",
+  "chain_head_hash": "sha3_512:68d5e799b65930b202e618b9330c0e75063b5d6446dc349194ddd5af7f87ce5ffc618022b8d699823b4a15b555a9e8fa2a037c360cf6d3aa03492b177c379cc1",
   "chain_start_hash": "sha3_512:abd61096adea87376753a966d2c7dcb907e06598804cc23022e014dead067725a7f533846d969df3f0c3f418a889491c047eb9514513c1a9c4d1141eb1e2ab5e",
   "entries": [
     {
@@ -79,9 +79,74 @@
       "sequence_number": 6,
       "this_entry_hash": "sha3_512:25bbba34388885b37878550ab0528976eb9d1d1354a8250b85628430aefb16e3693c4f5f2760f389bb670d4ef1cc3a67172a43600af2d85402071718258e8815",
       "timestamp": "2025-12-25T11:46:56.089649Z"
+    },
+    {
+      "artifact_id": "GOV-001-EXEC-00",
+      "cycle": 0,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:25bbba34388885b37878550ab0528976eb9d1d1354a8250b85628430aefb16e3693c4f5f2760f389bb670d4ef1cc3a67172a43600af2d85402071718258e8815",
+      "proof_hash": "sha3_512:ef4fabef9d612f56083c900ddb31b314b0906a1b58baf29a506b5c162a37bfc0bbe649be9b8c69b2c3df7ed7c8b0946f9c61d9f73019f1bba26b6e859ab42cd5",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-00.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 7,
+      "this_entry_hash": "sha3_512:62051ccfd60e7e34410c2be6cdf906d48218cf41e0d83bc58abdcda6a12fadd03dbe892ca8ed661b766089cce0102a25aeb2b163d70287102d1dc1251892429b",
+      "timestamp": "2025-12-25T11:56:56.753558Z"
+    },
+    {
+      "artifact_id": "GOV-001-EXEC-01",
+      "cycle": 1,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:62051ccfd60e7e34410c2be6cdf906d48218cf41e0d83bc58abdcda6a12fadd03dbe892ca8ed661b766089cce0102a25aeb2b163d70287102d1dc1251892429b",
+      "proof_hash": "sha3_512:b461685511a088a85023003a074bef40feb3697bce3fe310122965fd2bad6ed865060a94c8c67adeefbd8718541d68da4747d33bc819d29a3874842e9a951d34",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-01.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 8,
+      "this_entry_hash": "sha3_512:4e720b674a1dc82084e85b6de5c513e3d77fcbdedccd126f9de709ea146dbc30a5794e7260b517d3c21b09ed6be3257df8e80d5ca54afd8d41e927daf9c9c5fc",
+      "timestamp": "2025-12-25T11:56:56.806892Z"
+    },
+    {
+      "artifact_id": "GOV-001-EXEC-01",
+      "cycle": 1,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:4e720b674a1dc82084e85b6de5c513e3d77fcbdedccd126f9de709ea146dbc30a5794e7260b517d3c21b09ed6be3257df8e80d5ca54afd8d41e927daf9c9c5fc",
+      "proof_hash": "sha3_512:b461685511a088a85023003a074bef40feb3697bce3fe310122965fd2bad6ed865060a94c8c67adeefbd8718541d68da4747d33bc819d29a3874842e9a951d34",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-01.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 9,
+      "this_entry_hash": "sha3_512:bbf5cc80eb6b7613f525acc0881c9efef4a583bf4d144dec09ebbebbe700bb479aa1bb6da6fdd727fcdeaec6b85ed91671449fb1d4b3bdfebecbfc7e963b6d1e",
+      "timestamp": "2025-12-25T11:56:56.854948Z"
+    },
+    {
+      "artifact_id": "GOV-001-EXEC-01",
+      "cycle": 1,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:bbf5cc80eb6b7613f525acc0881c9efef4a583bf4d144dec09ebbebbe700bb479aa1bb6da6fdd727fcdeaec6b85ed91671449fb1d4b3bdfebecbfc7e963b6d1e",
+      "proof_hash": "sha3_512:b461685511a088a85023003a074bef40feb3697bce3fe310122965fd2bad6ed865060a94c8c67adeefbd8718541d68da4747d33bc819d29a3874842e9a951d34",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-01.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 10,
+      "this_entry_hash": "sha3_512:f8259d3aad7cd70ee93de052eb6ec4e72f33412424fc97d1b88fb03ce4e0ad1ee1018a18c656d9159db1f9d1eea0f4e53aa0d2ee497799981416177bef63c121",
+      "timestamp": "2025-12-25T11:56:56.901428Z"
+    },
+    {
+      "artifact_id": "GOV-001-EXEC-02",
+      "cycle": 2,
+      "epoch": 1,
+      "phase": "EXECUTION",
+      "previous_entry_hash": "sha3_512:f8259d3aad7cd70ee93de052eb6ec4e72f33412424fc97d1b88fb03ce4e0ad1ee1018a18c656d9159db1f9d1eea0f4e53aa0d2ee497799981416177bef63c121",
+      "proof_hash": "sha3_512:eb76be152ac6cf58a3648e4f9fcef8267bc8185df3f8ee5f05bb1056be1772a802756825698c7f78b8ba57c35628d290dfee46fdecd1548e7fdaa5cfec5fa08b",
+      "retrieval_path": "evidence/poe_artifacts/GOV-001-EXEC-02.json",
+      "scope": "VIRAL_POOL_CAP",
+      "sequence_number": 11,
+      "this_entry_hash": "sha3_512:68d5e799b65930b202e618b9330c0e75063b5d6446dc349194ddd5af7f87ce5ffc618022b8d699823b4a15b555a9e8fa2a037c360cf6d3aa03492b177c379cc1",
+      "timestamp": "2025-12-25T11:56:56.948717Z"
     }
   ],
   "index_version": "1.0",
-  "last_updated": "2025-12-25T11:46:56.089698Z",
-  "total_entries": 6
+  "last_updated": "2025-12-25T11:56:56.948762Z",
+  "total_entries": 11
 }

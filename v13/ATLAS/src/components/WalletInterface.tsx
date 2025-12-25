@@ -233,39 +233,25 @@ export default function WalletInterface() {
     );
 }
 
+
+
 function GitHubLinkDialog({ sessionToken }: { sessionToken: string | null }) {
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [username, setUsername] = React.useState('');
-    const [status, setStatus] = React.useState<'idle' | 'linking' | 'success' | 'error'>('idle');
     const [linkedUser, setLinkedUser] = React.useState<string | null>(null);
 
-    const handleLink = async () => {
-        if (!sessionToken || !username) return;
-        setStatus('linking');
-        try {
-            const res = await fetch('/api/auth/bind-github', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionToken}`
-                },
-                body: JSON.stringify({
-                    github_username: username,
-                    link_proof: "signed_intent_demo" // Phase 1 Mock. TODO: Replace with real SIWE/link proof.
-                })
-            });
+    // Check if already linked (from localStorage or API call)
+    React.useEffect(() => {
+        const linked = localStorage.getItem('github_linked_user');
+        if (linked) setLinkedUser(linked);
+    }, []);
 
-            if (res.ok) {
-                const data = await res.json();
-                setLinkedUser(data.github_username);
-                setStatus('success');
-                setTimeout(() => setIsOpen(false), 1500);
-            } else {
-                setStatus('error');
-            }
-        } catch (e) {
-            setStatus('error');
+    const handleOAuthRedirect = () => {
+        if (!sessionToken) {
+            alert('Please connect wallet first');
+            return;
         }
+
+        // Redirect to backend OAuth login with session token
+        window.location.href = `http://localhost:8002/auth/github/login?session_id=${sessionToken}`;
     };
 
     if (linkedUser) {
@@ -278,37 +264,14 @@ function GitHubLinkDialog({ sessionToken }: { sessionToken: string | null }) {
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <Button variant="outline" className="w-full justify-start">
-                    <Users className="h-4 w-4 mr-2" />
-                    Link GitHub Account
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <CardHeader>
-                    <CardTitle>Link GitHub Identity</CardTitle>
-                    <CardDescription>
-                        Prove ownership of your GitHub account to receive retroactive rewards.
-                    </CardDescription>
-                </CardHeader>
-                <div className="p-4 space-y-4">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">GitHub Username</label>
-                        <input
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-                            placeholder="e.g. octocat"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
-                    <Button onClick={handleLink} disabled={status === 'linking' || !username} className="w-full">
-                        {status === 'linking' ? 'Linking...' : 'Link Identity'}
-                    </Button>
-                    {status === 'success' && <p className="text-green-600 text-sm text-center">Successfully Linked!</p>}
-                    {status === 'error' && <p className="text-red-600 text-sm text-center">Link Failed</p>}
-                </div>
-            </DialogContent>
-        </Dialog>
+        <Button
+            onClick={handleOAuthRedirect}
+            variant="outline"
+            className="w-full justify-start"
+        >
+            <Users className="h-4 w-4 mr-2" />
+            Link GitHub Account
+        </Button>
     );
 }
+

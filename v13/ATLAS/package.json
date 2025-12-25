@@ -4,6 +4,7 @@
   "description": "ATLAS v19 - Decentralized Intelligence Network with IPFS, libp2p, and Advisory AI",
   "scripts": {
     "dev": "next dev",
+    "dev:fast": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "test:e2e": "npx playwright test",

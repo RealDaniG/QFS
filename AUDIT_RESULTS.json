@@ -1,0 +1,251 @@
+{
+  "timestamp": "2025-12-25T12:56:57.213728",
+  "qfs_version": "20.0.0-alpha",
+  "atlas_version": "1.5.5",
+  "total_tests": 37,
+  "passed_tests": 37,
+  "failed_tests": 0,
+  "invariants": [
+    {
+      "invariant_id": "GOV-I1",
+      "description": "Quorum (30%) and Supermajority (66%) via integer math only",
+      "component": "ProposalEngine",
+      "test_coverage": [
+        "test_integer_thresholds"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_integer_thresholds"
+    },
+    {
+      "invariant_id": "GOV-I2",
+      "description": "Proposal IDs are content-addressed (SHA3-512)",
+      "component": "ProposalEngine",
+      "test_coverage": [
+        "test_deterministic_id"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_deterministic_id"
+    },
+    {
+      "invariant_id": "GOV-R1",
+      "description": "Immutable parameters cannot be modified",
+      "component": "GovernanceParameterRegistry",
+      "test_coverage": [
+        "test_immutable_protection",
+        "test_immutable_protection_under_load"
+      ],
+      "status": "PASS",
+      "evidence": "test_proposal_engine.py::test_immutable_protection, test_stress_campaign.py::test_immutable_protection_under_load"
+    },
+    {
+      "invariant_id": "TRIG-I1",
+      "description": "Active parameters constant within epoch",
+      "component": "GovernanceTrigger",
+      "test_coverage": [
+        "test_full_execution_lifecycle"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py::test_full_execution_lifecycle"
+    },
+    {
+      "invariant_id": "REPLAY-I1",
+      "description": "Bit-for-bit deterministic replay (0 drift)",
+      "component": "ProposalEngine + Registry + Trigger",
+      "test_coverage": [
+        "test_bit_for_bit_replay",
+        "test_campaign_replay_drift"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_replay.py::test_bit_for_bit_replay, test_stress_campaign.py::test_campaign_replay_drift"
+    },
+    {
+      "invariant_id": "AEGIS-G1",
+      "description": "Active Snapshot == Registry at sync points",
+      "component": "GovernanceCoherenceCheck",
+      "test_coverage": [
+        "test_full_execution_lifecycle",
+        "test_campaign_replay_drift"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py + test_stress_campaign.py (AEGIS checks)"
+    },
+    {
+      "invariant_id": "ECON-I1",
+      "description": "VIRAL_POOL_CAP read from GovernanceTrigger snapshot",
+      "component": "ViralRewardBinder",
+      "test_coverage": [
+        "test_full_execution_lifecycle"
+      ],
+      "status": "PASS",
+      "evidence": "test_stage_6_simulation.py::test_full_execution_lifecycle"
+    },
+    {
+      "invariant_id": "HEALTH-I1",
+      "description": "All metrics derived from deterministic, on-ledger data",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_deterministic_metrics"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_deterministic_metrics"
+    },
+    {
+      "invariant_id": "HEALTH-I2",
+      "description": "Critical failures return non-zero exit code",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_aegis_fail_detection"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_aegis_fail_detection"
+    },
+    {
+      "invariant_id": "HEALTH-I3",
+      "description": "No external dependencies or network calls",
+      "component": "ProtocolHealthCheck",
+      "test_coverage": [
+        "test_health_check_no_external_dependencies"
+      ],
+      "status": "PASS",
+      "evidence": "test_protocol_health_check.py::test_health_check_no_external_dependencies"
+    },
+    {
+      "invariant_id": "DASH-I1",
+      "description": "Dashboard is read-only (no state mutations)",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_read_only"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_read_only"
+    },
+    {
+      "invariant_id": "DASH-I2",
+      "description": "All displayed data sourced from governance modules",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_data_accuracy_parameters"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_data_accuracy_parameters"
+    },
+    {
+      "invariant_id": "DASH-I3",
+      "description": "PoE artifacts displayed match actual proof chain",
+      "component": "GovernanceDashboard",
+      "test_coverage": [
+        "test_dashboard_poe_artifacts_section"
+      ],
+      "status": "PASS",
+      "evidence": "test_governance_dashboard.py::test_dashboard_poe_artifacts_section"
+    },
+    {
+      "invariant_id": "AUTH-S1",
+      "description": "Session schema v1 frozen with all required fields",
+      "component": "SessionModel",
+      "test_coverage": [
+        "test_session_schema_version",
+        "test_session_required_fields"
+      ],
+      "status": "PASS",
+      "evidence": "test_auth_schema.py::test_session_schema_version, test_session_model.py::test_session_required_fields"
+    },
+    {
+      "invariant_id": "AUTH-S2",
+      "description": "Session IDs are deterministic (counter + node seed + wallet hash)",
+      "component": "SessionService",
+      "test_coverage": [
+        "test_deterministic_session_id",
+        "test_session_id_collision_resistance"
+      ],
+      "status": "PASS",
+      "evidence": "test_deterministic_session.py::test_deterministic_session_id"
+    },
+    {
+      "invariant_id": "AUTH-D1",
+      "description": "Device hash is deterministic, coarse, and low-entropy",
+      "component": "DeviceBinding",
+      "test_coverage": [
+        "test_device_hash_deterministic",
+        "test_device_hash_stability"
+      ],
+      "status": "PASS",
+      "evidence": "test_device_binding.py::test_device_hash_deterministic"
+    },
+    {
+      "invariant_id": "AUTH-D2",
+      "description": "Device mismatch emits DEVICE_MISMATCH and downgrades scopes",
+      "component": "DeviceBinding",
+      "test_coverage": [
+        "test_device_mismatch_event",
+        "test_device_mismatch_scope_downgrade"
+      ],
+      "status": "PASS",
+      "evidence": "test_device_binding.py::test_device_mismatch_event"
+    },
+    {
+      "invariant_id": "AUTH-P1",
+      "description": "Every account can have a MOCKPQC key; sessions include PQC subject",
+      "component": "MOCKPQC Auth",
+      "test_coverage": [
+        "test_mockpqc_key_storage",
+        "test_session_pqc_subject"
+      ],
+      "status": "PASS",
+      "evidence": "test_mockpqc_auth.py::test_mockpqc_key_storage"
+    },
+    {
+      "invariant_id": "AUTH-P2",
+      "description": "MOCKPQC 'signatures' are deterministic hashes (no real crypto)",
+      "component": "MOCKPQC Auth",
+      "test_coverage": [
+        "test_mockpqc_deterministic_sign"
+      ],
+      "status": "PASS",
+      "evidence": "test_mockpqc_auth.py::test_mockpqc_deterministic_sign"
+    },
+    {
+      "invariant_id": "AUTH-E1",
+      "description": "All auth events have auth_event_version = 1",
+      "component": "EvidenceBus Auth Events",
+      "test_coverage": [
+        "test_auth_event_versioning"
+      ],
+      "status": "PASS",
+      "evidence": "test_auth_events.py::test_auth_event_versioning"
+    },
+    {
+      "invariant_id": "AUTH-E2",
+      "description": "SESSION_CREATED, SESSION_REFRESHED, SESSION_REVOKED, DEVICE_BOUND, DEVICE_MISMATCH events emitted",
+      "component": "EvidenceBus Auth Events",
+      "test_coverage": [
+        "test_session_created_event",
+        "test_device_bound_event"
+      ],
+      "status": "PASS",
+      "evidence": "test_auth_events.py::test_session_created_event, test_auth_events.py::test_device_bound_event"
+    },
+    {
+      "invariant_id": "AUTH-R1",
+      "description": "Auth sessions are bit-for-bit reproducible from EvidenceBus events",
+      "component": "SessionReplay",
+      "test_coverage": [
+        "test_session_replay_deterministic",
+        "test_auth_event_chain_integrity"
+      ],
+      "status": "PASS",
+      "evidence": "test_session_replay.py::test_session_replay_deterministic"
+    },
+    {
+      "invariant_id": "AUTH-A1",
+      "description": "resolveSubjectIdentity (wallet+PQC) separate from resolveTrustContext (device+MFA+OIDC)",
+      "component": "AuthService",
+      "test_coverage": [
+        "test_authority_hierarchy_separation"
+      ],
+      "status": "PASS",
+      "evidence": "test_session_model.py::test_authority_hierarchy_separation"
+    }
+  ],
+  "overall_status": "PASS"
+}

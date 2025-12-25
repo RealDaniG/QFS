@@ -1,0 +1,39 @@
+{
+  "after_state_hash": "sha3_512:b4c04f3dc8b9c14ec956ad33eae03a37b73b7bdb39f65c76e587a51bf9c5fe2f36ed36bbb7f852459014fc0b8da58f5be88c285c6a8e9e9126431d618d19d03d",
+  "artifact_id": "GOV-001-EXEC-01",
+  "before_state_hash": "sha3_512:bd331450285f191c802a4730247b026885871c85ffba425bcccbe2901b743103beb3d361048451537929f62361d28a0feb1cbef8345bbcf90993ce1a3e11fc70",
+  "execution_phase": "EXECUTION",
+  "execution_trace_hash": "sha3_512:5f94e7811c86326730211391c25501195d73361c020e68104dde20fe5ba06954e474a04720e89e0aff2edec4ca25a2a4b744451bd0620de37cbba2ca902bf994",
+  "governance_scope": {
+    "cycle": 1,
+    "epoch": 1,
+    "parameter_key": "VIRAL_POOL_CAP"
+  },
+  "poe_version": "1.0",
+  "proof_hash": "sha3_512:b461685511a088a85023003a074bef40feb3697bce3fe310122965fd2bad6ed865060a94c8c67adeefbd8718541d68da4747d33bc819d29a3874842e9a951d34",
+  "proposal_hash": "a0d9d35a8308566ea088a1d0c1ff46de0e7d0829a73cbbef5026d4a263a9c59469fa58425fbf11594bf7021c547022409bbf3de3372910e36e980912e7e8bc08",
+  "replay_instructions": {
+    "command": "python replay_gov_cycle.py --artifact_id GOV-001-EXEC-01",
+    "expected_output_hash": "sha3_512:b461685511a088a85023003a074bef40feb3697bce3fe310122965fd2bad6ed865060a94c8c67adeefbd8718541d68da4747d33bc819d29a3874842e9a951d34",
+    "inputs_file": "evidence/GOV-001-EXEC-01-inputs.json"
+  },
+  "runtime_info": {
+    "build_hash": "sha3_512:PLACEHOLDER",
+    "certifiedmath_version": "1.0.0",
+    "code_commit_hash": "2aa9efcd",
+    "deterministic_session_timestamp_hash": "sha3_512:87f3be7aef81a3fa47bba5414cf235b0e907b602142aa152af686e24d01a581cfa27badeb7d99f7d2f353458f9a2bbc4c695cad63f189c4afcbb838dd07aa004",
+    "python_version": "3.11.7"
+  },
+  "signatures": {
+    "dilithium_signature": "base64:PLACEHOLDER",
+    "nod_address": "NOD_0x0000000000000000",
+    "signature_timestamp": "2024-01-01T00:00:00Z"
+  },
+  "vote_breakdown": {
+    "no_stake": 1000,
+    "quorum_met": true,
+    "supermajority_met": true,
+    "total_stake": 3000,
+    "yes_stake": 2000
+  }
+}
