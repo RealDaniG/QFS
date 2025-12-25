@@ -35,8 +35,9 @@ class TestGitHubOAuthState(unittest.TestCase):
         """State encoding must be deterministic for same input."""
         session_id = "test_session_123"
 
-        state_1 = encode_oauth_state(session_id)
-        state_2 = encode_oauth_state(session_id)
+        timestamp = 1735130000
+        state_1 = encode_oauth_state(session_id, timestamp)
+        state_2 = encode_oauth_state(session_id, timestamp)
 
         self.assertEqual(state_1, state_2)
 
@@ -44,15 +45,17 @@ class TestGitHubOAuthState(unittest.TestCase):
         """Decoded state must match original session_id."""
         session_id = "test_session_456"
 
-        state = encode_oauth_state(session_id)
-        decoded_session_id = decode_oauth_state(state)
+        timestamp = 1735130000
+        state = encode_oauth_state(session_id, timestamp)
+        decoded_session_id = decode_oauth_state(state, timestamp)
 
         self.assertEqual(decoded_session_id, session_id)
 
     def test_state_includes_timestamp(self):
         """State should include timestamp for expiry checks."""
         session_id = "test_session_789"
-        state = encode_oauth_state(session_id)
+        timestamp = 1735130000
+        state = encode_oauth_state(session_id, timestamp)
 
         # Decode manually to inspect
         decoded = json.loads(base64.urlsafe_b64decode(state))
@@ -64,18 +67,18 @@ class TestGitHubOAuthState(unittest.TestCase):
     def test_expired_state_rejected(self):
         """State older than 5 minutes should be rejected."""
 
-        # Create state 6 minutes in the past
+        current_time = int(time.time())
         old_state = base64.urlsafe_b64encode(
             json.dumps(
                 {
                     "session_id": "old_session",
-                    "timestamp": int(time.time()) - 360,  # 6 minutes ago
+                    "timestamp": current_time - 360,  # 6 minutes ago
                 }
             ).encode()
         ).decode()
 
         with self.assertRaises(ValueError):
-            decode_oauth_state(old_state, max_age=300)  # 5 min max
+            decode_oauth_state(old_state, current_time, max_age=300)  # 5 min max
 
 
 if __name__ == "__main__":

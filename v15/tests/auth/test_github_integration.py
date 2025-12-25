@@ -16,11 +16,17 @@ async def test_github_callback_success():
     Test successful exchange of code for token and identity linking.
     """
     mock_adapter = MagicMock()
+    from v15.api.github_oauth import encode_oauth_state
+
+    # 1. Prepare valid state
+    logical_time = 1735130000
+    state = encode_oauth_state("sess_001", logical_time)
 
     with (
         patch("v15.api.github_oauth.requests") as mock_requests,
         patch("v15.api.github_oauth.GITHUB_CLIENT_ID", "mock_id"),
         patch("v15.api.github_oauth.GITHUB_CLIENT_SECRET", "mock_secret"),
+        patch("v15.api.github_oauth.get_logical_time", return_value=logical_time),
     ):
         # Mock Token Exchange
         mock_requests.post.return_value.json.return_value = {
@@ -37,8 +43,12 @@ async def test_github_callback_success():
         }
         mock_requests.get.return_value.status_code = 200
 
+        # Call with state and matching logical_time
         response = await github_callback(
-            code="mock_code", session_id="sess_001", adapter=mock_adapter
+            code="mock_code",
+            state=state,
+            adapter=mock_adapter,
+            logical_time=logical_time,
         )
 
         assert response["status"] == "success"
@@ -47,9 +57,19 @@ async def test_github_callback_success():
         # Verify specific event emission
         mock_adapter.emit.assert_called_once()
         event = mock_adapter.emit.call_args[0][0]
-        assert event["event_type"] == "IDENTITY_LINK_GITHUB"
-        assert event["external_handle"] == "testuser"
-        assert event["session_id"] == "sess_001"
+
+        # Use bracket access if event is dict, or attribute if object
+        # Based on github_oauth.py: link_event = create_identity_link_event(...)
+        # We need to know if create_identity_link_event returns a dict or object.
+        # Let's assume dict for now and fix if it fails assertion.
+        try:
+            assert event["event_type"] == "IDENTITY_LINK_GITHUB"
+            assert event["external_handle"] == "testuser"
+            assert event["session_id"] == "sess_001"
+        except (TypeError, KeyError):
+            assert event.event_type == "IDENTITY_LINK_GITHUB"
+            assert event.external_handle == "testuser"
+            assert event.session_id == "sess_001"
 
 
 @pytest.mark.asyncio

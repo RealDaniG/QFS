@@ -6,7 +6,8 @@ Full end-to-end determinism verification.
 import unittest
 import json
 import base64
-from v15.api.time_provider import set_test_time, clear_test_time, decode_oauth_state
+from v15.api.time_provider import set_test_time, clear_test_time
+from v15.api.github_oauth import encode_oauth_state, decode_oauth_state
 
 # We need to import event creators and reward computation.
 # v15/auth/events.py exists.

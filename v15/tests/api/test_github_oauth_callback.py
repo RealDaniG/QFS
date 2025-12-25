@@ -14,60 +14,63 @@ class TestGitHubOAuthCallback(unittest.TestCase):
     """
 
     def setUp(self):
+        from v15.api.time_provider import set_test_time
+
+        self.timestamp = 1735130000
+        set_test_time(self.timestamp)
         self.client = TestClient(app)
+
+    def tearDown(self):
+        from v15.api.time_provider import clear_test_time
+
+        clear_test_time()
 
     def test_callback_with_valid_state(self):
         """Valid state should trigger identity link."""
         session_id = "valid_session_123"
-        state = encode_oauth_state(session_id)
+        state = encode_oauth_state(session_id, self.timestamp)
 
-        # We need to mock the EvidenceBusAdapter and the GitHub API calls
-        # because the callback endpoint makes network requests.
-        # But for Phase 3.1 unit test, we might just assert it fails at the next step (missing credentials)
-        # OR we mock everything.
-        # Given the user provided code didn't show mocks, I assume it expects failure or we should add mocks.
-        # I will add mocks to be safe.
-        from unittest.mock import patch
+        from unittest.mock import patch, MagicMock
 
-        with (
-            patch("v15.api.github_oauth.GITHUB_CLIENT_ID", "mock_id"),
-            patch("v15.api.github_oauth.GITHUB_CLIENT_SECRET", "mock_secret"),
-            patch("requests.post") as mock_post,
-            patch("requests.get") as mock_get,
-            patch("v15.api.github_oauth.get_evidence_adapter") as mock_adapter,
-        ):
-            mock_post.return_value.status_code = 200
-            mock_post.return_value.json.return_value = {
-                "access_token": "token",
-                "token_type": "bearer",
-                "scope": "read:user",
-            }
+        mock_adapter = MagicMock()
 
-            mock_get.return_value.status_code = 200
-            mock_get.return_value.json.return_value = {
-                "id": 123,
-                "login": "testuser",
-                "avatar_url": "http://avatar",
-            }
+        # Override dependency in FastAPI
+        from v15.api.github_oauth import get_evidence_adapter
 
-            # The callback returns a RedirectResponse in standard flow?
-            # Or JSON?
-            # In v15/api/github_oauth.py it currently returns JSON in the implemented version
-            # (Step 1198 added the logic but didn't show the return,
-            # Step 1192 implementation showed `return {"status": "linked", ...}`).
-            # Let's assume JSON for now based on typical API unless it redirects to frontend.
+        app.dependency_overrides[get_evidence_adapter] = lambda: mock_adapter
 
-            response = self.client.get(
-                f"/auth/github/callback?code=mock_code&state={state}"
-            )
+        try:
+            with (
+                patch("v15.api.github_oauth.GITHUB_CLIENT_ID", "mock_id"),
+                patch("v15.api.github_oauth.GITHUB_CLIENT_SECRET", "mock_secret"),
+                patch("v15.api.github_oauth.requests") as mock_requests,
+            ):
+                mock_requests.post.return_value.status_code = 200
+                mock_requests.post.return_value.json.return_value = {
+                    "access_token": "token",
+                    "token_type": "bearer",
+                    "scope": "read:user",
+                }
 
-            # If it redirects, status 302? If it returns JSON, 200?
-            # Adjust assertion based on actual code.
-            # I will assert 200 OK for now.
-            if response.status_code == 307 or response.status_code == 302:
-                self.assertTrue(True)
-            else:
+                mock_requests.get.return_value.status_code = 200
+                mock_requests.get.return_value.json.return_value = {
+                    "id": 123,
+                    "login": "testuser",
+                    "avatar_url": "http://avatar",
+                }
+
+                response = self.client.get(
+                    f"/auth/github/callback?code=mock_code&state={state}"
+                )
+
                 self.assertEqual(response.status_code, 200)
+                data = response.json()
+                self.assertEqual(data["status"], "success")
+                self.assertEqual(data["handle"], "testuser")
+                mock_adapter.emit.assert_called_once()
+        finally:
+            # Clean up override
+            app.dependency_overrides.clear()
 
     def test_callback_with_invalid_state(self):
         """Invalid state should return 400."""
@@ -79,7 +82,7 @@ class TestGitHubOAuthCallback(unittest.TestCase):
 
     def test_callback_without_code(self):
         """Missing code parameter should return 422 (FastAPI validation)."""
-        state = encode_oauth_state("session_123")
+        state = encode_oauth_state("session_123", self.timestamp)
 
         response = self.client.get(f"/auth/github/callback?state={state}")
 
