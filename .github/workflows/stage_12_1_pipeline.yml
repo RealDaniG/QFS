@@ -34,6 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pylint mypy black
 
       - name: Run linting
@@ -73,6 +74,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: Run v15 Full Audit Suite
         id: audit
@@ -135,6 +137,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: Run deterministic replay tests
         run: |
@@ -181,6 +184,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: Run health check tests
         run: |
@@ -229,6 +233,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
 
       - name: Run Scenario 1 (Change Emission Cap)
         run: |
