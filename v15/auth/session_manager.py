@@ -7,14 +7,11 @@ Tokens are self-contained and can be validated on any cluster node.
 
 import hashlib
 import json
-from typing import Dict, Optional, TypedDict
+from typing import Dict, Optional, TypedDict, Any
 
 from v15.evidence.bus import EvidenceBus
-from v18.crypto.wallet_auth_crypto import (
-    wallet_auth_crypto,
-    AsconContext,
-    AsconCiphertext,
-)
+from v18.crypto.wallet_auth_crypto import wallet_auth_crypto
+from v18.crypto.ascon_adapter import AsconContext, AsconCiphertext
 
 
 class SessionData(TypedDict):
@@ -35,7 +32,9 @@ class SessionManager:
     - Optional revocation list for early termination
     """
 
-    def __init__(self, session_ttl_seconds: int = 3600 * 24, time_provider=None):
+    def __init__(
+        self, session_ttl_seconds: int = 3600 * 24, time_provider: Optional[Any] = None
+    ) -> None:
         self._ttl = session_ttl_seconds
         # Optional revocation list (session_id -> revocation timestamp)
         # This allows early termination without breaking stateless validation
@@ -47,7 +46,7 @@ class SessionManager:
     def _get_current_time(self) -> float:
         """Get current time. Uses injectable provider or Zero-Sim default."""
         if self._time_provider is not None:
-            return self._time_provider()
+            return float(self._time_provider())
         return 0.0  # Zero-Sim deterministic time
 
     def create_session(self, wallet_address: str, scopes: list[str]) -> str:
@@ -208,7 +207,7 @@ class SessionManager:
         )
         return True
 
-    def _cleanup_revocations(self):
+    def _cleanup_revocations(self) -> None:
         """
         Remove expired entries from revocation list.
 

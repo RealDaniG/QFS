@@ -9,10 +9,8 @@ Zero-Sim Compliant:
 
 import hashlib
 import json
-from typing import Any, Dict, Optional
-
-# V15 Crypto
-from v15.crypto.adapter import sign_poe, verify_poe
+from typing import Any, Dict
+from v15.crypto.adapter import sign_poe
 
 
 class EvidenceBus:
@@ -72,7 +70,7 @@ class EvidenceBus:
         return cls._chain_tip
 
     @classmethod
-    def get_events(cls, limit: int = 100) -> list[Dict]:
+    def get_events(cls, limit: int = 100) -> list[Dict[str, Any]]:
         """Read events from the local chain log."""
         events = []
         try:

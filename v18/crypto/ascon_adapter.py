@@ -33,7 +33,7 @@ class AsconDigest(BaseModel):
 class IAsconAdapter:
     """Interface for Ascon-based authenticated encryption and hashing."""
 
-    def __init__(self, emit_callback: Optional[Any] = None):
+    def __init__(self, emit_callback: Optional[Any] = None) -> None:
         self.emit_callback = emit_callback
 
     def ascon_aead_encrypt(
@@ -57,7 +57,9 @@ class IAsconAdapter:
     def ascon_hash(self, context: AsconContext, message: bytes) -> AsconDigest:
         raise NotImplementedError
 
-    def _log_event(self, event_type: str, context: AsconContext, digest_or_tag: str):
+    def _log_event(
+        self, event_type: str, context: AsconContext, digest_or_tag: str
+    ) -> None:
         """Log the crypto operation to EvidenceBus via the callback."""
         if self.emit_callback:
             event = {

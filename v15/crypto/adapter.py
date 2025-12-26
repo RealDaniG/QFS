@@ -4,7 +4,7 @@ Provides environment-aware routing between mock and real PQC.
 """
 
 import os
-from typing import Optional
+from typing import Optional, Any
 
 
 # ============================================================================
@@ -93,7 +93,7 @@ def _should_use_mockqpc(env_override: Optional[str] = None) -> bool:
 # ============================================================================
 
 
-def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None):
+def _validate_pqc_usage(use_real_pqc: bool, env_override: Optional[str] = None) -> None:
     """
     Validate that PQC usage is allowed in current environment.
 
@@ -229,14 +229,14 @@ def verify_poe(
         return _mockqpc_verify(data, signature, current_env)
 
 
-def sign_poe_batch(data_list: list, use_real_pqc: bool = False) -> list:
+def sign_poe_batch(data_list: list[bytes], use_real_pqc: bool = False) -> list[bytes]:
     """Batch sign data."""
     return [sign_poe(d, use_real_pqc=use_real_pqc) for d in data_list]
 
 
 def verify_poe_batch(
-    data_list: list, sig_list: list, use_real_pqc: bool = False
-) -> list:
+    data_list: list[bytes], sig_list: list[bytes], use_real_pqc: bool = False
+) -> list[bool]:
     """Batch verify signatures."""
     if len(data_list) != len(sig_list):
         raise ValueError("Data and signature lists must be same length")
@@ -245,7 +245,7 @@ def verify_poe_batch(
     ]
 
 
-def get_crypto_info() -> dict:
+def get_crypto_info() -> dict[str, Any]:
     """Get current crypto configuration info."""
     return {
         "env": _get_env(),
