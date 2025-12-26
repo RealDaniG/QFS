@@ -16,6 +16,7 @@
 **Status:** V18.0.0-rc1 Live • V20 Integration Active • GitHub Identity & Retro Rewards Live
 **Current Focus:** Auth Integration (v20), Zero-Sim Remediation, PQC Anchoring
 **Architecture:** MOCKQPC-first • Zero-Sim enforced • EvidenceBus-centric • Privacy-first data strategy • AGPL-3.0 licensed  
+**Social Layer:** v2 (HSMF integration + Sybil Resistance) • Self-Identifying Code (Build Manifests)
 
 [**📂 Repo Structure**](REPO_STRUCTURE.md) • [**✅ Integration Status**](docs/V18_INTEGRATION_STATUS_DETAILED.md) • [**🧪 Testing Guide**](docs/TESTING.md)
 
@@ -137,6 +138,8 @@ Most digital platforms suffer from structural issues:
 - ✅ **Distributed Interface**: DistributedFeed and WalletInterface live
 - ✅ **Secure Infrastructure**: AuthGate-protected views and route guards
 - ✅ **Hardened Core**: Post-HSMF Proofs and Zero-Sim Scanner (v13.5).
+- ✅ **Social Layer v2**: Deterministic Rewards, Sybil Resistance, HSMF-Integrated Coherence.
+- ✅ **Code Identity**: `/api/meta/build` exposes build manifests; EvidenceBus links rewards to code provenance.
 
 ### For Users
 
@@ -343,6 +346,7 @@ npm run dev
 ### Architecture & Planning
 
 - [Platform Evolution Plan](./docs/PLATFORM_EVOLUTION_PLAN.md) - Strategic roadmap
+- [Social Identity Runbook](./docs/RUNBOOK_SOCIAL_IDENTITY.md) - **New:** Verification guide for Social v2 & Code Identity
 
 ---
 

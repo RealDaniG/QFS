@@ -22,7 +22,10 @@ from src.api.routes import (
     transactions,
     evidence,
     p2p,
+    p2p,
     bounties,
+    meta,
+    social,
 )
 
 # Setup structured logging
@@ -75,11 +78,13 @@ app.include_router(evidence.router)
 app.include_router(content.discovery_router, prefix="/api/v18")
 app.include_router(p2p.router, prefix="/api/p2p", tags=["p2p"])
 app.include_router(bounties.router)
+app.include_router(social.router)
 
 # Explicitly register V1 legacy routers with prefixes for tool compatibility
 # Explicitly register V1 legacy routers with prefixes for tool compatibility
 app.include_router(wallets.router, tags=["wallets-v1"])
 app.include_router(transactions.router, tags=["transactions-v1"])
+app.include_router(meta.router)
 
 
 # Health Check

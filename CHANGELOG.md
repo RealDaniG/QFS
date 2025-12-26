@@ -1,5 +1,20 @@
 # Changelog
 
+## [v13.5.0-social-v2] - 2025-12-26
+
+### Added
+
+- **Social API Endpoint**: `/api/v13/social/*` routes with file-backed persistence.
+- **EvidenceBus Wiring**: `SOCIAL_REWARD_APPLIED` events now active with `build_manifest_sha256`.
+- **Self-Identifying Code**: `build_info.py` and `meta` router to expose build identity.
+- **Electron UI**: "Code Identity" column in Social Rewards view.
+
+### Changed
+
+- **CoherenceSpec**: Upgraded to v1.1 (HSMF integration).
+- **Determinism**: Strict BigNum128 usage in rewards path.
+- **Security**: Production nodes now enforce build identity (validate_production_identity).
+
 ## [V18.0.0-rc1] - 2025-12-25
 
 ### Added

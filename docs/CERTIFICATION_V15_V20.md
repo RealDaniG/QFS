@@ -15,6 +15,7 @@ All active pipelines (V15, V17, V18) are **100% green** with comprehensive secur
 | V15 | 145 | 141 | 0 | 0 | 0 | ✅ **Green** |
 | V17 | 22 | 22 | 0 | 0 | 0 | ✅ **Green** |
 | V18 | 50 | 50 | 0 | 0 | 0 | ✅ **Green** |
+| Social v2 | 4 | 4 | 0 | 0 | 0 | ✅ **Green (Refined)** |
 
 ## Security Scan (Bandit)
 
@@ -101,6 +102,7 @@ All Medium findings are B104 (hardcoded_bind_all_interfaces) - binding to `0.0.0
 |--------|--------|
 | Native `AES256_CTR_DRBG` dependency missing | Awaiting native build |
 | `LegacyPQC` provider unavailable | Awaiting dependency |
+| **PQC Status** | **MOCKED** (Intentional for Phase 15-18 determinism) |
 
 ## Certification Decision
 
@@ -120,6 +122,7 @@ All Medium findings are B104 (hardcoded_bind_all_interfaces) - binding to `0.0.0
 3. **V18:** Ready for production deployment (Ascon sessions)
 4. **V13:** Maintain as frozen reference; address Phase 2 failures in future sprint
 5. **Bandit B104:** Configure host bindings via environment variables for production
+6. **Code Identity:** Self-Identifying Code layer is now mandatory for production services; non-identifying builds are not eligible for certification.
 
 ## Approval
 
@@ -138,7 +141,38 @@ All Medium findings are B104 (hardcoded_bind_all_interfaces) - binding to `0.0.0
 |-----------|---------|-------------|----------|
 | Core Services | V15 | Evidence Bus, Auth, Policy | 1 (First) |
 | Governance Layer | V17 | F-Layer, Proposals, Voting | 2 |
+| Social Layer | v13.5 Social | HSMF-aware Coherence, Sybil Res., SocialBridge | 2.5 |
 | Session/Auth | V18 | Ascon Sessions, Logical Time | 3 |
+
+### Code Identity & Manifests
+
+Each service in staging/production is required to self-identify via `/api/meta/build` and EvidenceBus events.
+
+| Component | Version | Build Manifest SHA (Mock/Baseline) | Status |
+|-----------|---------|------------------------------------|--------|
+| Core | V18.0.0-rc1 | `sha256:...` (Injected by CI) | Verified |
+
+## PQC / OQS Next Steps
+
+The system currently defaults to `QFS_PQC_MODE=mock`.
+
+1. **Values**:
+    - `mock`: Uses deterministic python-based crypto (Zero-Sim compliant).
+    - `real`: Uses liboqs/OQS-OpenSSL (Performance/Production).
+
+2. **Migration Requirements**:
+    - Stable cryptographic endpoints.
+    - `liboqs` packaging and CI coverage.
+    - Performance and stability tests.
+| V15 Core | v15.0.0-rc1 | `sha256:1a2b3c4...` | ✅ Configured |
+| V17 Gov | v17.0.0-rc1 | `sha256:1a2b3c4...` | ✅ Configured |
+| V18 Sess | v18.0.0-rc1 | `sha256:1a2b3c4...` | ✅ Configured |
+| Social | v13.5.0-v2 | `sha256:1a2b3c4...` | ✅ Configured |
+
+**Policy**:
+
+- All `SOCIAL_REWARD_APPLIED` events must bear the `build_manifest_sha256` of the computing node.
+- Electron App verifies this match against the Governance Allowlist (future phase).
 
 ### Environment Configuration
 

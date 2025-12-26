@@ -15,6 +15,22 @@ We operate in **standing workstreams** rather than rigid phases.
 
 ---
 
+---
+
+## Completed (v13.5 / v14)
+
+- [x] **Social Layer v2**: Deterministic rewards, Sybil resistance, HSMF integration.
+- [x] **Self-Identifying Code**: Build identity injected via CI and exposed at runtime.
+- [x] **EvidenceBus Wiring**: Social rewards linked to code provenance.
+
+## PQC / OQS Preparation
+
+- [ ] **Mode Verification**: `QFS_PQC_MODE=mock` verified in staging.
+- [ ] **Real OQS Provider Implementation**:
+  - [ ] `liboqs` packaging and CI pipeline.
+  - [ ] Performance benchmarks (mock vs real).
+  - [ ] `QFS_PQC_MODE=real` switchover.
+
 ## Workstream A: Living Posts Layer
 
 *Status: Protocol Planned*
