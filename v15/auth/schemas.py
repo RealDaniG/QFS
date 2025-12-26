@@ -2,7 +2,7 @@
 Auth Schemas (v16 Baseline)
 """
 
-from typing import Optional
+from typing import List
 from pydantic import BaseModel, Field
 
 

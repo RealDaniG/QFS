@@ -5,7 +5,7 @@ FastAPI microservice for authentication operations.
 
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 import uvicorn
 
 from v15.auth.session import Session
@@ -15,12 +15,11 @@ from v15.auth.events import create_session_created_event
 from v15.services.session_store import SessionStore
 from v15.services.evidence_adapter import EvidenceBusAdapter
 from v15.api.time_provider import get_logical_time
+from v15.api.github_oauth import router as github_router
 
 app = FastAPI(title="QFS Auth Service", version="20.0.0-alpha")
 
 # Include GitHub OAuth Router
-from v15.api.github_oauth import router as github_router
-
 app.include_router(github_router)
 
 # Initialize components
@@ -31,6 +30,8 @@ evidence_adapter = EvidenceBusAdapter()
 
 
 class LoginRequest(BaseModel):
+    """Payload for wallet-based login."""
+
     wallet_address: str
     signature: str
     nonce: str

@@ -37,13 +37,16 @@ jobs:
           if [ -f "v15/requirements.txt" ]; then pip install -r v15/requirements.txt; fi
           pip install pylint mypy black
 
+      - name: Create reports directory
+        run: mkdir -p reports/static
+
       - name: Run linting
         run: |
-          pylint v15/ --fail-under=8.0
+          pylint v15/ --fail-under=8.0 | tee reports/static/pylint.log
 
       - name: Run type checking
         run: |
-          mypy v15/ --strict
+          mypy v15/ --strict | tee reports/static/mypy.log
 
       - name: Check formatting
         run: |
@@ -54,9 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: stage-a-results
-          path: |
-            .pylint.log
-            .mypy.log
+          path: reports/static/*.log
 
   stage-b-v15-audit-suite:
     name: "Stage B: v15 Audit Suite (Quality Gate)"

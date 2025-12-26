@@ -61,11 +61,11 @@ def get_device_info() -> Tuple[str, str, str]:
     app_uuid_file = os.path.join(os.path.expanduser("~"), ".qfs_app_uuid")
 
     if os.path.exists(app_uuid_file):
-        with open(app_uuid_file, "r") as f:
+        with open(app_uuid_file, "r", encoding="utf-8") as f:
             app_uuid = f.read().strip()
     else:
         app_uuid = str(uuid.uuid4())
-        with open(app_uuid_file, "w") as f:
+        with open(app_uuid_file, "w", encoding="utf-8") as f:
             f.write(app_uuid)
 
     return (os_family, cpu_arch, app_uuid)

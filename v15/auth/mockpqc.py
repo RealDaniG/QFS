@@ -5,7 +5,7 @@ Deterministic "signatures" using hashes (no real crypto).
 
 from dataclasses import dataclass
 import hashlib
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 
 
 @dataclass
